@@ -30,6 +30,8 @@ dependencies:
   http: ^0.12.1
   json_annotation: ^3.0.1
   rxdart: ^0.24.1
+  timeago: ^2.0.26
+  intl: ^0.16.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

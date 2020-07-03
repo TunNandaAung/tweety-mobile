@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
+import 'package:tweety_mobile/blocs/bloc/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/simple_bloc_observer.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
+import 'package:tweety_mobile/repositories/tweet_repository.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
 import 'package:tweety_mobile/screens/home_screen.dart';
 import 'package:tweety_mobile/screens/login_screen.dart';
 import 'package:tweety_mobile/screens/splash_screen.dart';
+import 'package:tweety_mobile/services/tweet_api_client.dart';
 import 'package:tweety_mobile/services/user_api_client.dart';
 import 'package:tweety_mobile/theme/app_theme.dart';
 import 'package:tweety_mobile/theme/bloc/theme_bloc.dart';
@@ -52,11 +55,19 @@ class _TweetyState extends State<Tweety> {
 
   @override
   Widget build(BuildContext context) {
-    // final client = http.Client();
+    final client = http.Client();
+    final TweetRepository tweetRepository = TweetRepository(
+      tweetApiClient: TweetApiClient(httpClient: client),
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider<ThemeBloc>(
           create: (context) => ThemeBloc(),
+        ),
+        BlocProvider<TweetBloc>(
+          create: (context) => TweetBloc(
+            tweetRepository: tweetRepository,
+          ),
         ),
       ],
       child: _buildWithTheme(context),

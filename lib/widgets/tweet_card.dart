@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tweety_mobile/models/tweet.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class TweetCard extends StatelessWidget {
-  const TweetCard({Key key}) : super(key: key);
+  final Tweet tweet;
+  const TweetCard({Key key, this.tweet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,22 +21,21 @@ class TweetCard extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        contentPadding: EdgeInsets.all(6.0),
-        leading: Container(
-          height: 50.0,
-          width: 50.0,
-          decoration: BoxDecoration(
-            color: Colors.green,
-            shape: BoxShape.circle,
+        contentPadding: EdgeInsets.all(8.0),
+        leading: CircleAvatar(
+          radius: 30.0,
+          backgroundImage: NetworkImage(
+            tweet.user.avatar,
           ),
         ),
         title: RichText(
           text: TextSpan(
-            text: "Flutter",
+            text: tweet.user.name,
             style: Theme.of(context).textTheme.caption,
             children: [
               TextSpan(
-                text: "@flutterio  04 Dec 18",
+                text: "@${tweet.user.username}  " +
+                    timeago.format(tweet.createdAt),
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 14,
@@ -43,9 +45,9 @@ class TweetCard extends StatelessWidget {
           ),
         ),
         subtitle: Padding(
-          padding: EdgeInsets.only(top: 8.0),
+          padding: EdgeInsets.only(top: 10.0),
           child: Text(
-            "We just announced the general availability of Flutter 1.0 at #FlutterLive! \n\nThank you to all the amazing engineers who made this possible and to our awesome community for their support.",
+            tweet.body,
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
