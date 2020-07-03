@@ -184,6 +184,13 @@ class _LoginFormState extends State<LoginForm> {
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: BorderSide.none,
                                     ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        width: 3.0,
+                                        color: Colors.red,
+                                      ),
+                                    ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: BorderSide(
@@ -214,6 +221,13 @@ class _LoginFormState extends State<LoginForm> {
                                     enabledBorder: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: BorderSide.none,
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        width: 3.0,
+                                        color: Colors.red,
+                                      ),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
