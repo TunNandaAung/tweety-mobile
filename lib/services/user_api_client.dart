@@ -289,7 +289,7 @@ class UserApiClient {
   }
 
   Future<String> getAvatar() async {
-    final url = '$baseUrl/api/profile/avatar';
+    final url = '$baseUrl/profile/avatar';
 
     final token = Prefer.prefs.getString('token');
 

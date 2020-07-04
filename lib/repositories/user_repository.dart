@@ -92,4 +92,8 @@ class UserRepository {
   Future<void> requestPasswordResetInfo(String email) async {
     return userApiClient.requestPasswordResetInfo(email);
   }
+
+  Future<String> getAvatar() async {
+    return userApiClient.getAvatar();
+  }
 }

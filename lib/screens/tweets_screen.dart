@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
 import 'package:tweety_mobile/blocs/bloc/tweet_bloc.dart';
+import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
@@ -61,8 +62,23 @@ class _TweetScreenState extends State<TweetScreen> {
             iconTheme: IconThemeData(
               color: Colors.black,
             ),
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(Prefer.prefs.getString('avatar')),
+            leading: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  if (state is AvatarLoaded) {
+                    return CircleAvatar(
+                      radius: 15.0,
+                      backgroundColor: Colors.white,
+                      backgroundImage: NetworkImage(state.avatar),
+                    );
+                  }
+                  return CircleAvatar(
+                    radius: 15.0,
+                    backgroundColor: Colors.white,
+                  );
+                },
+              ),
             ),
             title: Text(
               'Tweety',

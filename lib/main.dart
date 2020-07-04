@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
 import 'package:tweety_mobile/blocs/bloc/tweet_bloc.dart';
+import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/blocs/simple_bloc_observer.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/repositories/tweet_repository.dart';
@@ -59,6 +60,9 @@ class _TweetyState extends State<Tweety> {
     final TweetRepository tweetRepository = TweetRepository(
       tweetApiClient: TweetApiClient(httpClient: client),
     );
+    final UserRepository userRepository = UserRepository(
+      userApiClient: UserApiClient(httpClient: client),
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider<ThemeBloc>(
@@ -69,6 +73,9 @@ class _TweetyState extends State<Tweety> {
             tweetRepository: tweetRepository,
           ),
         ),
+        BlocProvider<ProfileBloc>(
+          create: (context) => ProfileBloc(userRepository: userRepository),
+        )
       ],
       child: _buildWithTheme(context),
     );

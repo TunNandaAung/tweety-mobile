@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/bloc/tweet_bloc.dart';
+import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/models/bottom_nav.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/screens/explore_screen.dart';
@@ -26,8 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _pageController = PageController();
-    BlocProvider.of<TweetBloc>(context).add(
-      FetchTweet(),
+    BlocProvider.of<ProfileBloc>(context).add(
+      GetAvatar(),
     );
     _scrollController.addListener(_onScroll);
   }
