@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/bloc/tweet_bloc.dart';
+import 'package:tweety_mobile/models/bottom_nav.dart';
 import 'package:tweety_mobile/models/tweet.dart';
-import 'package:tweety_mobile/widgets/loading_indicator.dart';
-import 'package:tweety_mobile/widgets/refresh.dart';
-import 'package:tweety_mobile/widgets/tweet_card.dart';
+import 'package:tweety_mobile/screens/explore_screen.dart';
+import 'package:tweety_mobile/screens/notifications_screen.dart';
+import 'package:tweety_mobile/screens/tweets_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -17,10 +18,14 @@ class _HomeScreenState extends State<HomeScreen> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
 
+  int _currentIndex = 0;
+
+  PageController _pageController;
+
   @override
   void initState() {
     super.initState();
-
+    _pageController = PageController();
     BlocProvider.of<TweetBloc>(context).add(
       FetchTweet(),
     );
@@ -29,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    _pageController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -43,83 +49,68 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void changePage(int index) {
+    setState(() {
+      _currentIndex = index;
+      _pageController.jumpToPage(index);
+    });
+  }
+
   List<Tweet> tweets = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        controller: _scrollController,
-        physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics()),
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            elevation: 20.0,
-            floating: true,
-            title: Text(
-              'Tweety',
-              style: TextStyle(letterSpacing: 1.0, color: Colors.black),
-            ),
-            centerTitle: true,
-          ),
-          SliverToBoxAdapter(child: SizedBox(height: 12.0)),
-          BlocBuilder<TweetBloc, TweetState>(
-            builder: (context, state) {
-              if (state is TweetLoading) {
-                return SliverFillRemaining(
-                  child: LoadingIndicator(),
-                );
-              }
-              if (state is TweetLoaded) {
-                tweets = state.tweets;
-                if (state.tweets.isEmpty) {
-                  return SliverFillRemaining(
-                    child: Text(
-                      'No tweets yet!',
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  );
-                }
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => index >= tweets.length
-                        ? LoadingIndicator()
-                        : Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 5.0,
-                            ),
-                            child: TweetCard(
-                              tweet: tweets[index],
-                            ),
-                          ),
-                    childCount: state.hasReachedMax
-                        ? state.tweets.length
-                        : state.tweets.length + 1,
-                  ),
-                );
-              }
-              if (state is TweetError) {
-                return SliverToBoxAdapter(
-                  child: Container(
-                    child: Refresh(
-                      title: 'Couldn\'t load feed',
-                      onPressed: () {
-                        BlocProvider.of<TweetBloc>(context).add(
-                          RefreshTweet(),
-                        );
-                      },
+      body: SizedBox.expand(
+        child: PageView(
+          physics:
+              NeverScrollableScrollPhysics(), // Disable swipe to change page
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() => _currentIndex = index);
+          },
+          children: <Widget>[
+            TweetScreen(),
+            ExploreScreen(),
+            NotificationScreen(),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: changePage,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Color(0xFFEDF2F7),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
+        elevation: 1.0,
+        items: bottomNavItems
+            .asMap()
+            .map((key, value) => MapEntry(
+                  key,
+                  BottomNavigationBarItem(
+                    title: Text(''),
+                    icon: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 3.0,
+                        horizontal: 16.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _currentIndex == key
+                            ? Theme.of(context).primaryColor
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: _currentIndex == key
+                          ? Icon(value.activeIcon)
+                          : Icon(value.defaultIcon),
                     ),
                   ),
-                );
-              }
-              return SliverFillRemaining(
-                child: LoadingIndicator(),
-              );
-            },
-          ),
-        ],
+                ))
+            .values
+            .toList(),
       ),
     );
   }
