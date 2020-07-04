@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
 import 'package:tweety_mobile/blocs/bloc/tweet_bloc.dart';
 import 'package:tweety_mobile/models/tweet.dart';
+import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/tweet_card.dart';
@@ -56,11 +58,26 @@ class _TweetScreenState extends State<TweetScreen> {
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 20.0,
             floating: true,
+            iconTheme: IconThemeData(
+              color: Colors.black,
+            ),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(Prefer.prefs.getString('avatar')),
+            ),
             title: Text(
               'Tweety',
               style: TextStyle(letterSpacing: 1.0, color: Colors.black),
             ),
             centerTitle: true,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.exit_to_app),
+                onPressed: () =>
+                    BlocProvider.of<AuthenticationBloc>(context).add(
+                  AuthenticationLoggedOut(),
+                ),
+              )
+            ],
           ),
           BlocBuilder<TweetBloc, TweetState>(
             builder: (context, state) {

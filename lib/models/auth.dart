@@ -17,8 +17,9 @@ class Auth extends Equatable {
   static Auth fromJson(dynamic json) {
     final authData = json['data'];
     return Auth(
-        token: authData['token'] as String,
-        userID: authData['user_id'] as int,
-        username: authData['username'] as String);
+      token: authData['token'] as String,
+      userID: authData['user_id'] as int,
+      username: authData['username'] as String,
+    );
   }
 }

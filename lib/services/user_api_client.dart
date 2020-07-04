@@ -287,4 +287,27 @@ class UserApiClient {
     }
     return;
   }
+
+  Future<String> getAvatar() async {
+    final url = '$baseUrl/api/profile/avatar';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.get(
+      url,
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      },
+    );
+    if (response.statusCode != 200) {
+      print(response.body);
+      throw Exception('Invalid Credentials');
+    }
+
+    final avatar = jsonDecode(response.body)['data']['avatar'] as String;
+    print(avatar);
+    return avatar;
+  }
 }
