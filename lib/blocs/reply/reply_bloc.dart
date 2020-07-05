@@ -74,11 +74,6 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
   }
 
   bool _hasReachedMax(ReplyState state, FetchReply event) {
-    if (state is ReplyLoaded && state.replies.first.tweet.id != event.tweetID) {
-      state = ReplyEmpty();
-      return false;
-    }
-
     return state is ReplyLoaded && state.hasReachedMax;
   }
 

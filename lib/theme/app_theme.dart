@@ -11,6 +11,7 @@ final appThemeData = {
         textTheme: TextTheme(
       caption: TextStyle(color: Colors.black),
     )),
+    dividerColor: Colors.grey[300],
     textTheme: TextTheme(
       caption: TextStyle(
         color: Colors.black,
