@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
-import 'package:tweety_mobile/blocs/bloc/tweet_bloc.dart';
+import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/models/tweet.dart';
-import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/tweet_card.dart';
