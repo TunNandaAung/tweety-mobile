@@ -25,7 +25,7 @@ class TweetCard extends StatelessWidget {
           ListTile(
             contentPadding: EdgeInsets.all(8.0),
             leading: CircleAvatar(
-              radius: 30.0,
+              radius: 25.0,
               backgroundImage: NetworkImage(
                 tweet.user.avatar,
               ),

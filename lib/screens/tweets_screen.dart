@@ -4,18 +4,19 @@ import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/models/tweet.dart';
+import 'package:tweety_mobile/screens/tweet_screen.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/tweet_card.dart';
 
-class TweetScreen extends StatefulWidget {
-  TweetScreen({Key key}) : super(key: key);
+class TweetsScreen extends StatefulWidget {
+  TweetsScreen({Key key}) : super(key: key);
 
   @override
-  _TweetScreenState createState() => _TweetScreenState();
+  _TweetsScreenState createState() => _TweetsScreenState();
 }
 
-class _TweetScreenState extends State<TweetScreen> {
+class _TweetsScreenState extends State<TweetsScreen> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
 
@@ -120,8 +121,15 @@ class _TweetScreenState extends State<TweetScreen> {
                               horizontal: 8.0,
                               vertical: 5.0,
                             ),
-                            child: TweetCard(
-                              tweet: tweets[index],
+                            child: GestureDetector(
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        TweetScreen(tweet: tweets[index])),
+                              ),
+                              child: TweetCard(
+                                tweet: tweets[index],
+                              ),
                             ),
                           ),
                     childCount: state.hasReachedMax

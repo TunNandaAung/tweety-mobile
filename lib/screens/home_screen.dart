@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() => _currentIndex = index);
           },
           children: <Widget>[
-            TweetScreen(),
+            TweetsScreen(),
             ExploreScreen(),
             NotificationScreen(),
           ],

@@ -3,18 +3,19 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:tweety_mobile/constants/api_constants.dart';
-import 'package:tweety_mobile/models/tweet_paginator.dart';
+import 'package:tweety_mobile/models/reply_paginator.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:meta/meta.dart';
 
-class TweetApiClient {
+class ReplyApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  TweetApiClient({@required this.httpClient}) : assert(httpClient != null);
+  ReplyApiClient({@required this.httpClient}) : assert(httpClient != null);
 
-  Future<TweetPaginator> fetchTweets(int pageNumber) async {
-    final url = '$baseUrl/tweets?page=$pageNumber&page[number]=$pageNumber';
+  Future<ReplyPaginator> fetchReplies(int tweetID, int pageNumber) async {
+    final url =
+        '$baseUrl/tweets/$tweetID/replies?page=$pageNumber&page[number]=$pageNumber';
 
     final token = Prefer.prefs.getString('token');
 
@@ -24,11 +25,11 @@ class TweetApiClient {
         );
     print(response.statusCode);
     if (response.statusCode != 200) {
-      throw Exception('Error getting tweets.');
+      throw Exception('Error getting replies.');
     }
 
-    final tweetsJson = jsonDecode(response.body)['data'];
+    final repliesJson = jsonDecode(response.body)['data'];
 
-    return TweetPaginator.fromJson(tweetsJson);
+    return ReplyPaginator.fromJson(repliesJson);
   }
 }

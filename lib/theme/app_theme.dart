@@ -7,6 +7,10 @@ final appThemeData = {
     brightness: Brightness.light,
     primaryColor: Color(0xFF4299E1),
     scaffoldBackgroundColor: Color(0xFFF7F7F7),
+    appBarTheme: AppBarTheme(
+        textTheme: TextTheme(
+      caption: TextStyle(color: Colors.black),
+    )),
     textTheme: TextTheme(
       caption: TextStyle(
         color: Colors.black,
