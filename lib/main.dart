@@ -84,9 +84,6 @@ class _TweetyState extends State<Tweety> {
         BlocProvider<ProfileBloc>(
           create: (context) => ProfileBloc(userRepository: userRepository),
         ),
-        BlocProvider<ReplyBloc>(
-          create: (context) => ReplyBloc(replyRepository: replyRepository),
-        )
       ],
       child: _buildWithTheme(context),
     );

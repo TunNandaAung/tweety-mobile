@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
 
@@ -17,6 +18,17 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
         super(ReplyEmpty());
 
   @override
+  Stream<Transition<ReplyEvent, ReplyState>> transformEvents(
+    Stream<ReplyEvent> events,
+    TransitionFunction<ReplyEvent, ReplyState> transitionFn,
+  ) {
+    return super.transformEvents(
+      events.debounceTime(const Duration(milliseconds: 500)),
+      transitionFn,
+    );
+  }
+
+  @override
   Stream<ReplyState> mapEventToState(ReplyEvent event) async* {
     if (event is FetchReply) {
       yield* _mapFetchReplyToState(event);
@@ -27,8 +39,7 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
 
   Stream<ReplyState> _mapFetchReplyToState(FetchReply event) async* {
     final currentState = state;
-
-    if (!_hasReachedMax(currentState)) {
+    if (!_hasReachedMax(currentState, event)) {
       try {
         if (currentState is ReplyEmpty) {
           final replyPaginator = await replyRepository.getReplies(
@@ -62,8 +73,14 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
     }
   }
 
-  bool _hasReachedMax(ReplyState state) =>
-      state is ReplyLoaded && state.hasReachedMax;
+  bool _hasReachedMax(ReplyState state, FetchReply event) {
+    if (state is ReplyLoaded && state.replies.first.tweet.id != event.tweetID) {
+      state = ReplyEmpty();
+      return false;
+    }
+
+    return state is ReplyLoaded && state.hasReachedMax;
+  }
 
   Stream<ReplyState> _mapRefreshReplyToState(RefreshReply event) async* {
     try {

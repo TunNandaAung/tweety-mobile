@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
+import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/models/tweet.dart';
+import 'package:tweety_mobile/repositories/reply_repository.dart';
 import 'package:tweety_mobile/screens/tweet_screen.dart';
+import 'package:tweety_mobile/services/reply_api_client.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/tweet_card.dart';
@@ -122,11 +126,24 @@ class _TweetsScreenState extends State<TweetsScreen> {
                               vertical: 5.0,
                             ),
                             child: GestureDetector(
-                              onTap: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        TweetScreen(tweet: tweets[index])),
-                              ),
+                              onTap: () {
+                                final ReplyRepository replyRepository =
+                                    ReplyRepository(
+                                  replyApiClient:
+                                      ReplyApiClient(httpClient: http.Client()),
+                                );
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          BlocProvider<ReplyBloc>(
+                                            create: (context) => ReplyBloc(
+                                                replyRepository:
+                                                    replyRepository),
+                                            child: TweetScreen(
+                                                tweet: tweets[index]),
+                                          )),
+                                );
+                              },
                               child: TweetCard(
                                 tweet: tweets[index],
                               ),
@@ -153,7 +170,7 @@ class _TweetsScreenState extends State<TweetsScreen> {
                 );
               }
               return SliverFillRemaining(
-                child: LoadingIndicator(),
+                child: LoadingIndicator(size: 21.0),
               );
             },
           ),

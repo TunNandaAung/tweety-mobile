@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/repositories/tweet_repository.dart';
 
@@ -15,6 +16,17 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
   TweetBloc({@required this.tweetRepository})
       : assert(tweetRepository != null),
         super(TweetEmpty());
+
+  @override
+  Stream<Transition<TweetEvent, TweetState>> transformEvents(
+    Stream<TweetEvent> events,
+    TransitionFunction<TweetEvent, TweetState> transitionFn,
+  ) {
+    return super.transformEvents(
+      events.debounceTime(const Duration(milliseconds: 500)),
+      transitionFn,
+    );
+  }
 
   @override
   Stream<TweetState> mapEventToState(TweetEvent event) async* {
