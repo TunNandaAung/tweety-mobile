@@ -6,12 +6,13 @@ final appThemeData = {
   AppTheme.Light: ThemeData(
     brightness: Brightness.light,
     primaryColor: Color(0xFF4299E1),
+    cardColor: Colors.white,
     scaffoldBackgroundColor: Color(0xFFF7F7F7),
     appBarTheme: AppBarTheme(
         textTheme: TextTheme(
       caption: TextStyle(color: Colors.black),
     )),
-    dividerColor: Colors.grey[300],
+    dividerColor: Colors.grey[500],
     textTheme: TextTheme(
       caption: TextStyle(
         color: Colors.black,

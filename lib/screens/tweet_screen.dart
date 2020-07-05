@@ -48,7 +48,6 @@ class _TweetScreenState extends State<TweetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var _tabs = ['tab1', 'tab2'];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -77,7 +76,7 @@ class _TweetScreenState extends State<TweetScreen> {
               sliver: SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0, vertical: 10.0),
+                      horizontal: 8.0, vertical: 5.0),
                   child: TweetCard(
                     tweet: widget.tweet,
                   ),
@@ -91,69 +90,90 @@ class _TweetScreenState extends State<TweetScreen> {
           bottom: false,
           child: Builder(
             builder: (BuildContext context) {
-              return CustomScrollView(
-                key: PageStorageKey<String>(widget.tweet.body),
-                slivers: <Widget>[
-                  SliverOverlapInjector(
-                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                        context),
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    sliver: BlocBuilder<ReplyBloc, ReplyState>(
-                      builder: (context, state) {
-                        if (state is ReplyError) {
-                          return SliverToBoxAdapter(
-                            child: Container(
-                              child: Refresh(
-                                title: 'Couldn\'t load replies',
-                                onPressed: () {
-                                  BlocProvider.of<ReplyBloc>(context).add(
-                                    RefreshReply(tweetID: widget.tweet.id),
-                                  );
-                                },
-                              ),
-                            ),
-                          );
-                        }
-                        if (state is ReplyLoaded) {
-                          if (state.replies.isEmpty) {
-                            return SliverFillRemaining(
-                              child: Center(
-                                child: Text('No replies yet!',
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1),
+              return Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(.03),
+                            blurRadius: 10.0,
+                            offset: Offset(
+                              -10,
+                              -10,
+                            ))
+                      ]),
+                  child: CustomScrollView(
+                    key: PageStorageKey<String>(widget.tweet.body),
+                    slivers: <Widget>[
+                      SliverOverlapInjector(
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                            context),
+                      ),
+                      BlocBuilder<ReplyBloc, ReplyState>(
+                        builder: (context, state) {
+                          if (state is ReplyError) {
+                            return SliverToBoxAdapter(
+                              child: Container(
+                                child: Refresh(
+                                  title: 'Couldn\'t load replies',
+                                  onPressed: () {
+                                    BlocProvider.of<ReplyBloc>(context).add(
+                                      RefreshReply(tweetID: widget.tweet.id),
+                                    );
+                                  },
+                                ),
                               ),
                             );
                           }
-                          return SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) => index >= state.replies.length
-                                  ? LoadingIndicator()
-                                  : Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 8.0,
-                                        vertical: 5.0,
-                                      ),
-                                      child: ReplyWidget(
-                                        reply: state.replies[index],
-                                      ),
-                                    ),
-                              childCount: state.hasReachedMax
-                                  ? state.replies.length
-                                  : state.replies.length + 1,
+                          if (state is ReplyLoaded) {
+                            if (state.replies.isEmpty) {
+                              return SliverFillRemaining(
+                                child: Center(
+                                  child: Text('No replies yet!',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1),
+                                ),
+                              );
+                            }
+                            return SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) =>
+                                    index >= state.replies.length
+                                        ? LoadingIndicator()
+                                        : Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 8.0,
+                                              vertical: 5.0,
+                                            ),
+                                            child: Container(
+                                              child: ReplyWidget(
+                                                reply: state.replies[index],
+                                              ),
+                                            ),
+                                          ),
+                                childCount: state.hasReachedMax
+                                    ? state.replies.length
+                                    : state.replies.length + 1,
+                              ),
+                            );
+                          }
+                          return SliverFillRemaining(
+                            child: Center(
+                              child: CircularProgressIndicator(),
                             ),
                           );
-                        }
-                        return SliverFillRemaining(
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                ],
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               );
             },
           ),
@@ -170,131 +190,125 @@ class ReplyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5.0),
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              contentPadding: EdgeInsets.all(8.0),
-              leading: CircleAvatar(
-                radius: 25.0,
-                backgroundImage: NetworkImage(
-                  reply.owner.avatar,
-                ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5.0),
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.all(8.0),
+            leading: CircleAvatar(
+              radius: 25.0,
+              backgroundImage: NetworkImage(
+                reply.owner.avatar,
               ),
-              title: RichText(
-                text: TextSpan(
-                  text: reply.owner.name,
-                  style: Theme.of(context).textTheme.caption,
-                  children: [
-                    TextSpan(
-                      text: "@${reply.owner.username}  " +
-                          timeago.format(reply.createdAt, locale: 'en_short'),
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 14,
-                      ),
+            ),
+            title: RichText(
+              text: TextSpan(
+                text: reply.owner.name,
+                style: Theme.of(context).textTheme.caption,
+                children: [
+                  TextSpan(
+                    text: "@${reply.owner.username}  " +
+                        timeago.format(reply.createdAt, locale: 'en_short'),
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
                     ),
-                  ],
-                ),
-              ),
-              subtitle: Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: Text(
-                  reply.body,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-            ),
-            Divider(
-              color: Colors.grey[300],
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      reply.likesCount > 0
-                          ? Padding(
-                              padding: EdgeInsets.only(right: 3.0),
-                              child: Text(
-                                reply.likesCount.toString(),
-                                style: TextStyle(
-                                  color: reply.isLiked
-                                      ? Color(0xFF68D391)
-                                      : Color(0xFFA0AEC0),
-                                ),
-                              ),
-                            )
-                          : Container(),
-                      Icon(
-                        Icons.thumb_up,
-                        size: 18.0,
-                        color: reply.isLiked
-                            ? Color(0xFF68D391)
-                            : Color(0xFFA0AEC0),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      reply.dislikesCount > 0
-                          ? Padding(
-                              padding: EdgeInsets.only(right: 3.0),
-                              child: Text(
-                                reply.dislikesCount.toString(),
-                                style: TextStyle(
-                                  color: reply.isDisliked
-                                      ? Color(0xFFE53E3E)
-                                      : Color(0xFFA0AEC0),
-                                ),
-                              ),
-                            )
-                          : Container(),
-                      Icon(
-                        Icons.thumb_down,
-                        size: 18.0,
-                        color: reply.isDisliked
-                            ? Color(0xFFE53E3E)
-                            : Color(0xFFA0AEC0),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      reply.childrenCount > 0
-                          ? Padding(
-                              padding: EdgeInsets.only(right: 3.0),
-                              child: Text(
-                                reply.childrenCount.toString(),
-                                style: TextStyle(
-                                  color: Color(0xFFA0AEC0),
-                                ),
-                              ),
-                            )
-                          : Container(),
-                      Icon(
-                        Icons.comment,
-                        size: 18.0,
-                        color: Color(0xFFA0AEC0),
-                      ),
-                    ],
                   ),
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+            subtitle: Padding(
+              padding: EdgeInsets.only(top: 10.0),
+              child: Text(
+                reply.body,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+          ),
+          Divider(
+            color: Colors.grey[300],
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    reply.likesCount > 0
+                        ? Padding(
+                            padding: EdgeInsets.only(right: 3.0),
+                            child: Text(
+                              reply.likesCount.toString(),
+                              style: TextStyle(
+                                color: reply.isLiked
+                                    ? Color(0xFF68D391)
+                                    : Color(0xFFA0AEC0),
+                              ),
+                            ),
+                          )
+                        : Container(),
+                    Icon(
+                      Icons.thumb_up,
+                      size: 18.0,
+                      color:
+                          reply.isLiked ? Color(0xFF68D391) : Color(0xFFA0AEC0),
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    reply.dislikesCount > 0
+                        ? Padding(
+                            padding: EdgeInsets.only(right: 3.0),
+                            child: Text(
+                              reply.dislikesCount.toString(),
+                              style: TextStyle(
+                                color: reply.isDisliked
+                                    ? Color(0xFFE53E3E)
+                                    : Color(0xFFA0AEC0),
+                              ),
+                            ),
+                          )
+                        : Container(),
+                    Icon(
+                      Icons.thumb_down,
+                      size: 18.0,
+                      color: reply.isDisliked
+                          ? Color(0xFFE53E3E)
+                          : Color(0xFFA0AEC0),
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    reply.childrenCount > 0
+                        ? Padding(
+                            padding: EdgeInsets.only(right: 3.0),
+                            child: Text(
+                              reply.childrenCount.toString(),
+                              style: TextStyle(
+                                color: Color(0xFFA0AEC0),
+                              ),
+                            ),
+                          )
+                        : Container(),
+                    Icon(
+                      Icons.comment,
+                      size: 18.0,
+                      color: Color(0xFFA0AEC0),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Divider(),
+        ],
       ),
     );
   }
