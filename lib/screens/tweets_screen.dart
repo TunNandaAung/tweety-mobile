@@ -73,7 +73,7 @@ class _TweetsScreenState extends State<TweetsScreen> {
                   if (state is AvatarLoaded) {
                     return CircleAvatar(
                       radius: 15.0,
-                      backgroundColor: Colors.white,
+                      backgroundColor: Theme.of(context).cardColor,
                       backgroundImage: NetworkImage(state.avatar),
                     );
                   }

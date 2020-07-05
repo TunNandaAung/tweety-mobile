@@ -29,6 +29,7 @@ class TweetCard extends StatelessWidget {
               backgroundImage: NetworkImage(
                 tweet.user.avatar,
               ),
+              backgroundColor: Theme.of(context).cardColor,
             ),
             title: RichText(
               text: TextSpan(
