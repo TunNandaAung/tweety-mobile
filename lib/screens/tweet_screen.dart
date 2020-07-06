@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:tweety_mobile/blocs/children_reply/children_reply_bloc.dart';
 import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
-import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/models/tweet.dart';
+import 'package:tweety_mobile/repositories/reply_repository.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
+import 'package:tweety_mobile/widgets/reply.dart';
 import 'package:tweety_mobile/widgets/tweet_card.dart';
 
 class TweetScreen extends StatefulWidget {
   final Tweet tweet;
-  const TweetScreen({Key key, this.tweet}) : super(key: key);
+  final ReplyRepository replyRepository;
+  const TweetScreen({Key key, this.tweet, this.replyRepository})
+      : super(key: key);
 
   @override
   _TweetScreenState createState() => _TweetScreenState();
@@ -144,20 +147,27 @@ class _TweetScreenState extends State<TweetScreen> {
                             }
                             return SliverList(
                               delegate: SliverChildBuilderDelegate(
-                                (context, index) =>
-                                    index >= state.replies.length
-                                        ? LoadingIndicator()
-                                        : Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 8.0,
-                                              vertical: 5.0,
-                                            ),
-                                            child: Container(
-                                              child: ReplyWidget(
-                                                reply: state.replies[index],
-                                              ),
-                                            ),
+                                (context, index) => index >=
+                                        state.replies.length
+                                    ? LoadingIndicator()
+                                    : Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8.0,
+                                          vertical: 5.0,
+                                        ),
+                                        child: Container(
+                                            child:
+                                                BlocProvider<ChildrenReplyBloc>(
+                                          create: (context) =>
+                                              ChildrenReplyBloc(
+                                            replyRepository:
+                                                widget.replyRepository,
                                           ),
+                                          child: ReplyWidget(
+                                            reply: state.replies[index],
+                                          ),
+                                        )),
+                                      ),
                                 childCount: state.hasReachedMax
                                     ? state.replies.length
                                     : state.replies.length + 1,
@@ -178,137 +188,6 @@ class _TweetScreenState extends State<TweetScreen> {
             },
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ReplyWidget extends StatelessWidget {
-  final Reply reply;
-
-  const ReplyWidget({Key key, @required this.reply}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.0),
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            contentPadding: EdgeInsets.all(8.0),
-            leading: CircleAvatar(
-              radius: 25.0,
-              backgroundImage: NetworkImage(
-                reply.owner.avatar,
-              ),
-            ),
-            title: RichText(
-              text: TextSpan(
-                text: reply.owner.name,
-                style: Theme.of(context).textTheme.caption,
-                children: [
-                  TextSpan(
-                    text: "@${reply.owner.username}  " +
-                        timeago.format(reply.createdAt, locale: 'en_short'),
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            subtitle: Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text(
-                reply.body,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-            ),
-          ),
-          Divider(
-            color: Colors.grey[300],
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    reply.likesCount > 0
-                        ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Text(
-                              reply.likesCount.toString(),
-                              style: TextStyle(
-                                color: reply.isLiked
-                                    ? Color(0xFF68D391)
-                                    : Color(0xFFA0AEC0),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Icon(
-                      Icons.thumb_up,
-                      size: 18.0,
-                      color:
-                          reply.isLiked ? Color(0xFF68D391) : Color(0xFFA0AEC0),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    reply.dislikesCount > 0
-                        ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Text(
-                              reply.dislikesCount.toString(),
-                              style: TextStyle(
-                                color: reply.isDisliked
-                                    ? Color(0xFFE53E3E)
-                                    : Color(0xFFA0AEC0),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Icon(
-                      Icons.thumb_down,
-                      size: 18.0,
-                      color: reply.isDisliked
-                          ? Color(0xFFE53E3E)
-                          : Color(0xFFA0AEC0),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    reply.childrenCount > 0
-                        ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Text(
-                              reply.childrenCount.toString(),
-                              style: TextStyle(
-                                color: Color(0xFFA0AEC0),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Icon(
-                      Icons.comment,
-                      size: 18.0,
-                      color: Color(0xFFA0AEC0),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Divider(),
-        ],
       ),
     );
   }

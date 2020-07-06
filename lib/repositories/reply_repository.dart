@@ -11,4 +11,9 @@ class ReplyRepository {
   Future<ReplyPaginator> getReplies({int tweetID, int pageNumber}) async {
     return replyApiClient.fetchReplies(tweetID, pageNumber);
   }
+
+  Future<ReplyPaginator> getChildrenReplies(
+      {int parentID, int pageNumber}) async {
+    return replyApiClient.fetchChildrenReplies(parentID, pageNumber);
+  }
 }

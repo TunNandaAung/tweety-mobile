@@ -140,7 +140,9 @@ class _TweetsScreenState extends State<TweetsScreen> {
                                                 replyRepository:
                                                     replyRepository),
                                             child: TweetScreen(
-                                                tweet: tweets[index]),
+                                                tweet: tweets[index],
+                                                replyRepository:
+                                                    replyRepository),
                                           )),
                                 );
                               },
