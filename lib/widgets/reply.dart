@@ -16,169 +16,169 @@ class ReplyWidget extends StatefulWidget {
 }
 
 class _ReplyWidgetState extends State<ReplyWidget> {
-  List childrenReplies = [];
-  int repliesLeft() {
-    return widget.reply.childrenCount - childrenReplies.length;
-  }
-
   bool isButtonEnabled(ChildrenReplyState state) =>
       state is! ChildrenReplyLoading;
 
+  List<Reply> childrenReplies = [];
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.0),
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            contentPadding: EdgeInsets.all(8.0),
-            leading: CircleAvatar(
-              radius: 25.0,
-              backgroundImage: NetworkImage(
-                widget.reply.owner.avatar,
+    return BlocListener<ChildrenReplyBloc, ChildrenReplyState>(
+      listener: (context, state) {
+        if (state is ChildrenReplyLoaded) {
+          setState(() {
+            isLoading = false;
+            childrenReplies = state.childrenReplies;
+          });
+        }
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.0),
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              contentPadding: EdgeInsets.all(8.0),
+              leading: CircleAvatar(
+                radius: 25.0,
+                backgroundImage: NetworkImage(
+                  widget.reply.owner.avatar,
+                ),
+              ),
+              title: RichText(
+                text: TextSpan(
+                  text: widget.reply.owner.name,
+                  style: Theme.of(context).textTheme.caption,
+                  children: [
+                    TextSpan(
+                      text: "@${widget.reply.owner.username}  " +
+                          timeago.format(widget.reply.createdAt,
+                              locale: 'en_short'),
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              subtitle: Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: Text(
+                  widget.reply.body,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
               ),
             ),
-            title: RichText(
-              text: TextSpan(
-                text: widget.reply.owner.name,
-                style: Theme.of(context).textTheme.caption,
-                children: [
-                  TextSpan(
-                    text: "@${widget.reply.owner.username}  " +
-                        timeago.format(widget.reply.createdAt,
-                            locale: 'en_short'),
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                    ),
+            Divider(color: Colors.grey[300]),
+            Padding(
+              padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      widget.reply.likesCount > 0
+                          ? Padding(
+                              padding: EdgeInsets.only(right: 3.0),
+                              child: Text(
+                                widget.reply.likesCount.toString(),
+                                style: TextStyle(
+                                  color: widget.reply.isLiked
+                                      ? Color(0xFF68D391)
+                                      : Color(0xFFA0AEC0),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      Icon(
+                        Icons.thumb_up,
+                        size: 18.0,
+                        color: widget.reply.isLiked
+                            ? Color(0xFF68D391)
+                            : Color(0xFFA0AEC0),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      widget.reply.dislikesCount > 0
+                          ? Padding(
+                              padding: EdgeInsets.only(right: 3.0),
+                              child: Text(
+                                widget.reply.dislikesCount.toString(),
+                                style: TextStyle(
+                                  color: widget.reply.isDisliked
+                                      ? Color(0xFFE53E3E)
+                                      : Color(0xFFA0AEC0),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      Icon(
+                        Icons.thumb_down,
+                        size: 18.0,
+                        color: widget.reply.isDisliked
+                            ? Color(0xFFE53E3E)
+                            : Color(0xFFA0AEC0),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      widget.reply.childrenCount > 0
+                          ? Padding(
+                              padding: EdgeInsets.only(right: 3.0),
+                              child: Text(
+                                widget.reply.childrenCount.toString(),
+                                style: TextStyle(
+                                  color: Color(0xFFA0AEC0),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      Icon(
+                        Icons.comment,
+                        size: 18.0,
+                        color: Color(0xFFA0AEC0),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-            subtitle: Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text(
-                widget.reply.body,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
+            Divider(),
+            Padding(
+              padding: EdgeInsets.only(left: 18.0),
+              child: Column(
+                  children: childrenReplies
+                      .map((reply) => ChildrenReply(
+                            reply: reply,
+                          ))
+                      .toList()),
             ),
-          ),
-          Divider(),
-          Padding(
-            padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    widget.reply.likesCount > 0
-                        ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Text(
-                              widget.reply.likesCount.toString(),
-                              style: TextStyle(
-                                color: widget.reply.isLiked
-                                    ? Color(0xFF68D391)
-                                    : Color(0xFFA0AEC0),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Icon(
-                      Icons.thumb_up,
-                      size: 18.0,
-                      color: widget.reply.isLiked
-                          ? Color(0xFF68D391)
-                          : Color(0xFFA0AEC0),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    widget.reply.dislikesCount > 0
-                        ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Text(
-                              widget.reply.dislikesCount.toString(),
-                              style: TextStyle(
-                                color: widget.reply.isDisliked
-                                    ? Color(0xFFE53E3E)
-                                    : Color(0xFFA0AEC0),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Icon(
-                      Icons.thumb_down,
-                      size: 18.0,
-                      color: widget.reply.isDisliked
-                          ? Color(0xFFE53E3E)
-                          : Color(0xFFA0AEC0),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    widget.reply.childrenCount > 0
-                        ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Text(
-                              widget.reply.childrenCount.toString(),
-                              style: TextStyle(
-                                color: Color(0xFFA0AEC0),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Icon(
-                      Icons.comment,
-                      size: 18.0,
-                      color: Color(0xFFA0AEC0),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Divider(),
-          Padding(
-            padding: EdgeInsets.only(left: 18.0),
-            child: BlocBuilder<ChildrenReplyBloc, ChildrenReplyState>(
+            BlocBuilder<ChildrenReplyBloc, ChildrenReplyState>(
               builder: (context, state) {
                 if (state is ChildrenReplyLoading) {
                   return LoadingIndicator(
                     size: 20.0,
-                    strokeWidth: 0.8,
+                    strokeWidth: 1.0,
                   );
                 }
                 if (state is ChildrenReplyLoaded) {
-                  childrenReplies = state.childrenReplies;
-                  return Column(
-                      children: state.childrenReplies
-                          .map((reply) => ChildrenReply(
-                                reply: reply,
-                              ))
-                          .toList());
+                  return _fetchMore(state.repliesLeft, state);
                 }
-                return Container();
+
+                return widget.reply.childrenCount > 0
+                    ? _fetchMore(widget.reply.childrenCount, state)
+                    : Container();
               },
             ),
-          ),
-          BlocBuilder<ChildrenReplyBloc, ChildrenReplyState>(
-            builder: (context, state) {
-              if (state is ChildrenReplyLoaded) {
-                return _fetchMore(state.repliesLeft, state);
-              }
-
-              return widget.reply.childrenCount > 0
-                  ? _fetchMore(widget.reply.childrenCount, state)
-                  : Container();
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -187,20 +187,28 @@ class _ReplyWidgetState extends State<ReplyWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        GestureDetector(
-          onTap: () => isButtonEnabled(state)
-              ? BlocProvider.of<ChildrenReplyBloc>(context).add(
-                  FetchChildrenReply(
-                    parentID: widget.reply.id,
-                    childrenCount: widget.reply.childrenCount,
-                  ),
-                )
-              : null,
-          child: Text(
-            'View $repliesLeft more ' + (repliesLeft > 1 ? 'replies' : 'reply'),
-            style: TextStyle(color: Theme.of(context).primaryColor),
-          ),
-        ),
+        repliesLeft > 0
+            ? GestureDetector(
+                onTap: () {
+                  if (isButtonEnabled(state)) {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    BlocProvider.of<ChildrenReplyBloc>(context).add(
+                      FetchChildrenReply(
+                        parentID: widget.reply.id,
+                        childrenCount: widget.reply.childrenCount,
+                      ),
+                    );
+                  }
+                },
+                child: Text(
+                  'View $repliesLeft more ' +
+                      (repliesLeft > 1 ? 'replies' : 'reply'),
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+              )
+            : Container(),
       ],
     );
   }

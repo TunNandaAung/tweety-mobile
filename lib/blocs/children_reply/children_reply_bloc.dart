@@ -35,8 +35,10 @@ class ChildrenReplyBloc extends Bloc<ChildrenReplyEvent, ChildrenReplyState> {
       try {
         if (currentState is ChildrenReplyEmpty) {
           yield ChildrenReplyLoading();
+
           final replyPaginator = await replyRepository.getChildrenReplies(
               parentID: event.parentID, pageNumber: 1);
+
           yield ChildrenReplyLoaded(
             childrenReplies: replyPaginator.replies,
             hasReachedMax: replyPaginator.lastPage == 1 ? true : false,
@@ -47,12 +49,15 @@ class ChildrenReplyBloc extends Bloc<ChildrenReplyEvent, ChildrenReplyState> {
 
         if (currentState is ChildrenReplyLoaded) {
           yield ChildrenReplyLoading();
+
           var pageNumber = currentState.pageNumber + 1;
+
           final replyPaginator = await replyRepository.getChildrenReplies(
               parentID: event.parentID, pageNumber: pageNumber);
 
           yield replyPaginator.replies.isEmpty
-              ? currentState.copyWith(hasReachedMax: true, repliesLeft: 0)
+              ? currentState.copyWith(
+                  hasReachedMax: true, repliesLeft: 0, isLoading: false)
               : ChildrenReplyLoaded(
                   childrenReplies:
                       currentState.childrenReplies + replyPaginator.replies,

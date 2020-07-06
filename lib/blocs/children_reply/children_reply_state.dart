@@ -18,18 +18,19 @@ class ChildrenReplyLoaded extends ChildrenReplyState {
   final int pageNumber;
   final int repliesLeft;
 
-  const ChildrenReplyLoaded(
-      {@required this.childrenReplies,
-      this.hasReachedMax,
-      this.pageNumber = 1,
-      this.repliesLeft})
-      : assert(childrenReplies != null);
+  const ChildrenReplyLoaded({
+    @required this.childrenReplies,
+    this.hasReachedMax,
+    this.pageNumber = 1,
+    this.repliesLeft,
+  }) : assert(childrenReplies != null);
 
   ChildrenReplyLoaded copyWith({
     List<Reply> childrenReplies,
     bool hasReachedMax,
     int pageNumber,
     int repliesLeft,
+    bool isLoading,
   }) {
     return ChildrenReplyLoaded(
       childrenReplies: childrenReplies ?? this.childrenReplies,

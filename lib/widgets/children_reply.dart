@@ -50,9 +50,6 @@ class _ChildrenReplyState extends State<ChildrenReply> {
               ),
             ),
           ),
-          Divider(
-            color: Colors.grey[300],
-          ),
           Padding(
             padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
             child: Row(
