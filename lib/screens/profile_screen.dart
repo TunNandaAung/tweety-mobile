@@ -13,6 +13,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   double translate = -avatarMaximumRadius;
   bool isExpanded = true;
   double offset = 0.0;
+  String _title = "";
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +73,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return <Widget>[
                   SliverAppBar(
+                    title: !isExpanded ? Text('test') : Text(''),
                     expandedHeight: expandedHeader,
-                    backgroundColor: Colors.transparent,
+                    backgroundColor: Colors.blue[500],
                     leading: BackButton(
                       color: isExpanded ? Colors.grey : Colors.white,
                     ),
