@@ -34,7 +34,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
         }
       },
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5.0),
+        padding: const EdgeInsets.all(5.0),
         child: Column(
           children: <Widget>[
             ListTile(
@@ -44,6 +44,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 backgroundImage: NetworkImage(
                   widget.reply.owner.avatar,
                 ),
+                backgroundColor: Colors.white,
               ),
               title: RichText(
                 text: TextSpan(
@@ -70,7 +71,6 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 ),
               ),
             ),
-            Divider(color: Colors.grey[300]),
             Padding(
               padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
               child: Row(
@@ -126,31 +126,33 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                       ),
                     ],
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      widget.reply.childrenCount > 0
-                          ? Padding(
-                              padding: EdgeInsets.only(right: 3.0),
-                              child: Text(
-                                widget.reply.childrenCount.toString(),
-                                style: TextStyle(
-                                  color: Color(0xFFA0AEC0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        widget.reply.childrenCount > 0
+                            ? Padding(
+                                padding: EdgeInsets.only(right: 3.0),
+                                child: Text(
+                                  widget.reply.childrenCount.toString(),
+                                  style: TextStyle(
+                                    color: Color(0xFFA0AEC0),
+                                  ),
                                 ),
-                              ),
-                            )
-                          : Container(),
-                      Icon(
-                        Icons.comment,
-                        size: 18.0,
-                        color: Color(0xFFA0AEC0),
-                      ),
-                    ],
+                              )
+                            : Container(),
+                        Icon(
+                          Icons.comment,
+                          size: 18.0,
+                          color: Color(0xFFA0AEC0),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-            Divider(),
             Padding(
               padding: EdgeInsets.only(left: 18.0),
               child: Column(

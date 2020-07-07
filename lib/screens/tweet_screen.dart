@@ -104,7 +104,7 @@ class _TweetScreenState extends State<TweetScreen> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.black.withOpacity(.03),
+                            color: Colors.black.withOpacity(0.3),
                             blurRadius: 10.0,
                             offset: Offset(
                               -10,

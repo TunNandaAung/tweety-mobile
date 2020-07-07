@@ -129,7 +129,7 @@ class _ChildrenReplyState extends State<ChildrenReply> {
               ],
             ),
           ),
-          Divider(),
+          Divider(color: Colors.grey[300]),
         ],
       ),
     );
