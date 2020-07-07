@@ -40,31 +40,9 @@ class _NavDrawerState extends State<NavDrawer> {
             children: <Widget>[
               BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
                 if (state is ProfileLoaded) {
-                  return new UserAccountsDrawerHeader(
-                    accountName: Text(state.user.name,
-                        style: TextStyle(color: Colors.black, fontSize: 18.0)),
-                    accountEmail: Text(
-                      '@' + state.user.username,
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundColor: Colors.grey[100],
-                      child: Container(
-                        width: 90.0,
-                        height: 90.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: NetworkImage(state.user.avatar),
-                            fit: BoxFit.contain,
-                          ),
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 2.0,
-                          ),
-                        ),
-                      ),
-                    ),
+                  return new Container(
+                    width: double.infinity,
+                    height: size.height * 0.24,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
@@ -74,12 +52,89 @@ class _NavDrawerState extends State<NavDrawer> {
                                 Theme.of(context).primaryColor.withOpacity(.2),
                             offset: Offset(10, 10),
                             blurRadius: 12),
+                        BoxShadow(
+                            color:
+                                Theme.of(context).primaryColor.withOpacity(.2),
+                            offset: Offset(-10, -10),
+                            blurRadius: 12),
                       ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundColor: Colors.grey[100],
+                            backgroundImage: NetworkImage(state.user.avatar),
+                            radius: 25.0,
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          Text(
+                            state.user.name,
+                            style: Theme.of(context).textTheme.caption.copyWith(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          Text(
+                            '@' + state.user.username,
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                          SizedBox(height: size.height * 0.02),
+                          Row(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    state.user.followsCount.toString(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                        ),
+                                  ),
+                                  SizedBox(width: 5.0),
+                                  Text(
+                                    'Following',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: size.width * 0.03),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    state.user.followersCount.toString(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                        ),
+                                  ),
+                                  SizedBox(width: 5.0),
+                                  Text(
+                                    'Follower',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   );
                 }
                 return Container(
-                  height: 180.0,
+                  height: size.height * 0.24,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
@@ -111,6 +166,7 @@ class _NavDrawerState extends State<NavDrawer> {
                         // Navigator.pushNamed(
                         //     context, '/${navItems[counter].title}');
                       },
+                      boxColor: Theme.of(context).hintColor.withOpacity(.05),
                       title: navItems[counter].title,
                       icon: navItems[counter].icon,
                       iconColor: Theme.of(context).hintColor,

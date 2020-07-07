@@ -7,19 +7,18 @@ class NavigationModel {
 }
 
 List<NavigationModel> navItems = [
-  NavigationModel(title: 'favorite', icon: Icons.favorite_border),
   NavigationModel(
-    title: 'settings',
+    title: 'Profile',
+    icon: Icons.person,
+  ),
+  NavigationModel(
+    title: 'Settings',
     icon: Icons.settings,
   ),
   // NavigationModel(
   //   title: 'help',
   //   icon: Icons.help_outline,
   // ),
-  NavigationModel(
-    title: 'about',
-    icon: Icons.info_outline,
-  ),
 ];
 
 final TextStyle navItemStyle = TextStyle(fontSize: 18, color: Colors.black);

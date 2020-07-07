@@ -15,23 +15,31 @@ class _AvatarButtonState extends State<AvatarButton> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: BlocBuilder<ProfileBloc, ProfileState>(
-        builder: (context, state) {
-          if (state is AvatarLoaded) {
-            return GestureDetector(
-              onTap: () => widget.scaffoldKey.currentState.openDrawer(),
-              child: CircleAvatar(
+      child: GestureDetector(
+        onTap: () => widget.scaffoldKey.currentState.openDrawer(),
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is AvatarLoaded) {
+              return CircleAvatar(
                 radius: 15.0,
                 backgroundColor: Theme.of(context).cardColor,
                 backgroundImage: NetworkImage(state.avatar),
-              ),
+              );
+            }
+
+            if (state is ProfileLoaded) {
+              return CircleAvatar(
+                radius: 15.0,
+                backgroundColor: Theme.of(context).cardColor,
+                backgroundImage: NetworkImage(state.user.avatar),
+              );
+            }
+            return CircleAvatar(
+              radius: 15.0,
+              backgroundColor: Colors.white,
             );
-          }
-          return CircleAvatar(
-            radius: 15.0,
-            backgroundColor: Colors.white,
-          );
-        },
+          },
+        ),
       ),
     );
   }

@@ -10,16 +10,29 @@ Widget navigationItem(context,
   return Container(
     decoration: BoxDecoration(
       color: boxColor,
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(10.0),
     ),
-    child: ListTile(
-      title: Text(title,
-          style: textStyle ?? TextStyle(fontWeight: FontWeight.w600)),
-      trailing: Icon(
-        icon,
-        color: iconColor,
+    // child: ListTile(
+    //   title: Text(title,
+    //       style: textStyle ?? TextStyle(fontWeight: FontWeight.w600)),
+    //   trailing: Icon(
+    //     icon,
+    //     color: iconColor,
+    //   ),
+    //   onTap: onTap,
+    // ),
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          Icon(icon, color: iconColor, size: 30.0),
+          SizedBox(width: 20.0),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.caption.copyWith(fontSize: 18.0),
+          )
+        ],
       ),
-      onTap: onTap,
     ),
   );
 }
