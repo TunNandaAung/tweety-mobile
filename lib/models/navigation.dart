@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 class NavigationModel {
   String title;
   IconData icon;
-  NavigationModel({this.title, this.icon});
+  String route;
+  NavigationModel({this.title, this.icon, this.route});
 }
 
 List<NavigationModel> navItems = [
   NavigationModel(
     title: 'Profile',
     icon: Icons.person,
+    route: 'profile',
   ),
   NavigationModel(
     title: 'Settings',

@@ -163,8 +163,8 @@ class _NavDrawerState extends State<NavDrawer> {
                         setState(() {
                           currentSelectedIndex = counter;
                         });
-                        // Navigator.pushNamed(
-                        //     context, '/${navItems[counter].title}');
+                        Navigator.pushNamed(
+                            context, '/${navItems[counter].route}');
                       },
                       boxColor: Theme.of(context).hintColor.withOpacity(.05),
                       title: navItems[counter].title,
