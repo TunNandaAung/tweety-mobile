@@ -4,17 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
 import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
-import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
 import 'package:tweety_mobile/screens/tweet_screen.dart';
 import 'package:tweety_mobile/services/reply_api_client.dart';
+import 'package:tweety_mobile/widgets/avatar_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
+import 'package:tweety_mobile/widgets/nav_drawer.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/tweet_card.dart';
 
 class TweetsScreen extends StatefulWidget {
-  TweetsScreen({Key key}) : super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  TweetsScreen({Key key, this.scaffoldKey}) : super(key: key);
 
   @override
   _TweetsScreenState createState() => _TweetsScreenState();
@@ -50,10 +53,12 @@ class _TweetsScreenState extends State<TweetsScreen> {
   }
 
   List<Tweet> tweets = [];
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: CustomScrollView(
         controller: _scrollController,
         physics: const BouncingScrollPhysics(
@@ -66,23 +71,8 @@ class _TweetsScreenState extends State<TweetsScreen> {
             iconTheme: IconThemeData(
               color: Colors.black,
             ),
-            leading: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: BlocBuilder<ProfileBloc, ProfileState>(
-                builder: (context, state) {
-                  if (state is AvatarLoaded) {
-                    return CircleAvatar(
-                      radius: 15.0,
-                      backgroundColor: Theme.of(context).cardColor,
-                      backgroundImage: NetworkImage(state.avatar),
-                    );
-                  }
-                  return CircleAvatar(
-                    radius: 15.0,
-                    backgroundColor: Colors.white,
-                  );
-                },
-              ),
+            leading: AvatarButton(
+              scaffoldKey: widget.scaffoldKey,
             ),
             title: Text(
               'Tweety',

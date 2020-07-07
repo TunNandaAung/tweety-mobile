@@ -7,6 +7,7 @@ import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/screens/explore_screen.dart';
 import 'package:tweety_mobile/screens/notifications_screen.dart';
 import 'package:tweety_mobile/screens/tweets_screen.dart';
+import 'package:tweety_mobile/widgets/nav_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -58,10 +59,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Tweet> tweets = [];
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: NavDrawer('/'),
       body: SizedBox.expand(
         child: PageView(
           physics:
@@ -71,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() => _currentIndex = index);
           },
           children: <Widget>[
-            TweetsScreen(),
+            TweetsScreen(scaffoldKey: _scaffoldKey),
             ExploreScreen(),
             NotificationScreen(),
           ],

@@ -132,7 +132,7 @@ class UserApiClient {
           headers: requestHeaders(token),
         );
     if (response.statusCode != 200) {
-      throw Exception('Invalid Credentials');
+      throw Exception('Error fetching profile.');
     }
 
     final userJson = jsonDecode(response.body)['data'];

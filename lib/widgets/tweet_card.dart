@@ -39,10 +39,7 @@ class TweetCard extends StatelessWidget {
                   TextSpan(
                     text: "@${tweet.user.username}  " +
                         timeago.format(tweet.createdAt, locale: 'en_short'),
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ],
               ),

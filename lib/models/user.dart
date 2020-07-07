@@ -18,6 +18,12 @@ class User {
   @JsonKey(name: 'created_at')
   DateTime createdAt;
 
+  @JsonKey(name: 'follows_count')
+  int followsCount;
+
+  @JsonKey(name: 'followers_count')
+  int followersCount;
+
   User({
     this.id,
     this.name,
@@ -27,6 +33,8 @@ class User {
     this.email,
     this.avatar,
     this.createdAt,
+    this.followsCount,
+    this.followersCount,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

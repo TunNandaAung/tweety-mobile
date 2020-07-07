@@ -7,6 +7,7 @@ final appThemeData = {
     brightness: Brightness.light,
     primaryColor: Color(0xFF4299E1),
     cardColor: Colors.white,
+    hintColor: Color(0xFFA0AEC0),
     scaffoldBackgroundColor: Color(0xFFf3f6fb),
     appBarTheme: AppBarTheme(
         textTheme: TextTheme(
@@ -22,6 +23,10 @@ final appThemeData = {
       bodyText1: TextStyle(
         color: Colors.black,
         fontSize: 14.0,
+      ),
+      bodyText2: TextStyle(
+        color: Colors.grey,
+        fontSize: 14,
       ),
     ),
   ),
