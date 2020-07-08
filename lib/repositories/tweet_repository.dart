@@ -11,4 +11,9 @@ class TweetRepository {
   Future<TweetPaginator> getTweets(int pageNumber) async {
     return tweetApiClient.fetchTweets(pageNumber);
   }
+
+  Future<TweetPaginator> getUserTweets(
+      {String username, int pageNumber}) async {
+    return tweetApiClient.fetchUserTweets(username, pageNumber);
+  }
 }

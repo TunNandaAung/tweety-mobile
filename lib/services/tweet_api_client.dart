@@ -31,4 +31,25 @@ class TweetApiClient {
 
     return TweetPaginator.fromJson(tweetsJson);
   }
+
+  Future<TweetPaginator> fetchUserTweets(
+      String username, int pageNumber) async {
+    final url =
+        '$baseUrl/profiles/$username/tweets?page=$pageNumber&page[number]=$pageNumber';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.get(
+          url,
+          headers: requestHeaders(token),
+        );
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      throw Exception('Error getting tweets.');
+    }
+
+    final tweetsJson = jsonDecode(response.body)['data'];
+
+    return TweetPaginator.fromJson(tweetsJson);
+  }
 }
