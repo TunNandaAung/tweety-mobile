@@ -10,10 +10,26 @@ final appThemeData = {
     hintColor: Color(0xFF718096),
     scaffoldBackgroundColor: Color(0xFFf3f6fb),
     appBarTheme: AppBarTheme(
-        textTheme: TextTheme(
-      caption: TextStyle(color: Colors.black),
-    )),
+      textTheme: TextTheme(
+        caption: TextStyle(color: Colors.black),
+      ),
+      iconTheme: IconThemeData(color: Colors.black),
+    ),
     dividerColor: Colors.grey[500],
+    tabBarTheme: TabBarTheme(
+      labelStyle: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
+      unselectedLabelStyle: TextStyle(
+        color: Color(0xFF718096),
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
+      unselectedLabelColor: Colors.grey,
+      labelColor: Colors.black,
+    ),
     textTheme: TextTheme(
       caption: TextStyle(
         color: Colors.black,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
+import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -87,14 +88,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return <Widget>[
                   SliverAppBar(
-                      title: !isExpanded ? Text('test') : Text(''),
                       expandedHeight: expandedHeader,
-                      backgroundColor: Colors.blue[500],
-                      leading: BackButton(
-                        color: isExpanded ? Colors.grey : Colors.white,
-                      ),
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      iconTheme: Theme.of(context).appBarTheme.iconTheme,
+                      leading: isExpanded
+                          ? Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: isExpanded
+                                      ? Colors.black.withOpacity(.2)
+                                      : Colors.black.withOpacity(.7),
+                                ),
+                                child: BackButton(
+                                  color: Theme.of(context).cardColor,
+                                ),
+                              ),
+                            )
+                          : BackButton(),
                       pinned: true,
-                      elevation: 5.0,
+                      elevation: 0.0,
                       forceElevated: true,
                       flexibleSpace: BlocBuilder<ProfileBloc, ProfileState>(
                         builder: (context, state) {
@@ -112,17 +127,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             );
                           }
                           if (state is ProfileLoaded) {
-                            Container(
+                            return Container(
                               decoration: BoxDecoration(
                                   color: isExpanded
                                       ? Colors.transparent
-                                      : Colors.blue[800],
+                                      : Theme.of(context)
+                                          .scaffoldBackgroundColor,
                                   image: isExpanded
                                       ? DecorationImage(
                                           fit: BoxFit.cover,
-                                          alignment: Alignment.bottomCenter,
+                                          alignment: Alignment.center,
                                           image:
-                                              NetworkImage(state.user.avatar),
+                                              NetworkImage(state.user.banner),
                                         )
                                       : null),
                               child: Align(
@@ -131,8 +147,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ? Transform(
                                         transform: Matrix4.identity()
                                           ..translate(0.0, avatarMaximumRadius),
-                                        child: MyAvatar(
+                                        child: TweetyAvatar(
                                           size: avatarRadius,
+                                          avatar: state.user.avatar,
                                         ),
                                       )
                                     : SizedBox.shrink(),
@@ -142,46 +159,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           return Container();
                         },
                       )),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              isExpanded
-                                  ? SizedBox(
-                                      height: avatarMinimumRadius * 2,
+                  BlocBuilder<ProfileBloc, ProfileState>(
+                    builder: (context, state) {
+                      if (state is ProfileLoaded) {
+                        return SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    isExpanded
+                                        ? SizedBox(
+                                            height: avatarMinimumRadius * 2,
+                                          )
+                                        : TweetyAvatar(
+                                            size: avatarMinimumRadius,
+                                            avatar: state.user.avatar,
+                                          ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5.0, horizontal: 10.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.lightBlue,
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: Text(
+                                          "Following",
+                                          style: TextStyle(
+                                              fontSize: 17.0,
+                                              color: Colors.white),
+                                        ),
+                                      ),
                                     )
-                                  : MyAvatar(
-                                      size: avatarMinimumRadius,
-                                    ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 5.0, horizontal: 10.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.lightBlue,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: Text(
-                                    "Following",
-                                    style: TextStyle(
-                                        fontSize: 17.0, color: Colors.white),
-                                  ),
+                                  ],
                                 ),
-                              )
-                            ],
+                                TweetyHeader(user: state.user),
+                              ],
+                            ),
                           ),
-                          TwitterHeader(),
-                        ],
-                      ),
-                    ),
+                        );
+                      }
+                      return SliverToBoxAdapter(
+                        child: Container(),
+                      );
+                    },
                   ),
                   SliverPersistentHeader(
                     pinned: true,
@@ -218,10 +249,13 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Colors.blueGrey[900],
+      color: Theme.of(context).scaffoldBackgroundColor,
       height: size,
       child: TabBar(
         isScrollable: true,
+        unselectedLabelStyle:
+            Theme.of(context).tabBarTheme.unselectedLabelStyle,
+        labelStyle: Theme.of(context).tabBarTheme.labelStyle,
         tabs: <Widget>[
           Tab(
             text: "Tweets",
@@ -246,40 +280,39 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
   }
 }
 
-class TwitterHeader extends StatelessWidget {
+class TweetyHeader extends StatelessWidget {
+  final User user;
+
+  const TweetyHeader({Key key, this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8, top: 0.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "Flutter",
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 22.0,
-                fontWeight: FontWeight.bold),
+            user.name,
+            style: Theme.of(context).textTheme.caption.copyWith(
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           SizedBox(
             height: 5.0,
           ),
           Text(
-            "@flutterio",
-            style: TextStyle(
-                color: Colors.grey,
-                fontSize: 15.0,
-                fontWeight: FontWeight.w200),
+            "@" + user.username,
+            style: Theme.of(context).textTheme.bodyText2,
           ),
           SizedBox(
             height: 10.0,
           ),
           Text(
-            "Google’s mobile app SDK for building beautiful native apps on iOS and Android in record time // For support visit http://stackoverflow.com/tags/flutter",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 15.0,
-            ),
+            user.description ?? '',
+            style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  fontSize: 15.0,
+                ),
           )
         ],
       ),
@@ -314,10 +347,11 @@ class Tweet extends StatelessWidget {
   }
 }
 
-class MyAvatar extends StatelessWidget {
+class TweetyAvatar extends StatelessWidget {
   final double size;
+  final String avatar;
 
-  const MyAvatar({Key key, this.size}) : super(key: key);
+  const TweetyAvatar({Key key, this.size, this.avatar}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -325,17 +359,18 @@ class MyAvatar extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8.0),
       child: DecoratedBox(
         decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.grey[800],
-              width: 2.0,
-            ),
+            // border: Border.all(
+            //   color: Colors.grey[800],
+            //   width: 2.0,
+            // ),
             shape: BoxShape.circle),
         child: Padding(
           padding: const EdgeInsets.all(2.0),
           child: CircleAvatar(
             radius: size,
-            backgroundImage:
-                AssetImage("assets/images/twitter_flutter_logo.jpg"),
+            backgroundImage: avatar == null
+                ? AssetImage("assets/images/twitter_flutter_logo.jpg")
+                : NetworkImage(avatar),
           ),
         ),
       ),
