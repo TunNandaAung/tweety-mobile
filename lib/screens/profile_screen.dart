@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
+import 'package:tweety_mobile/widgets/loading_indicator.dart';
 
 class ProfileScreen extends StatefulWidget {
+  final String username;
+
+  const ProfileScreen({Key key, this.username}) : super(key: key);
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  TabController _tabController;
   static double avatarMaximumRadius = 40.0;
   static double avatarMinimumRadius = 15.0;
   double avatarRadius = avatarMaximumRadius;
@@ -16,98 +23,125 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _title = "";
 
   @override
+  void initState() {
+    BlocProvider.of<ProfileBloc>(context)
+        .add(FetchProfile(username: widget.username));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.blueGrey[900],
-        body: NotificationListener<ScrollUpdateNotification>(
-          onNotification: (scrollNotification) {
-            final pixels = scrollNotification.metrics.pixels;
+        body: DefaultTabController(
+          length: 2,
+          child: NotificationListener<ScrollUpdateNotification>(
+            onNotification: (scrollNotification) {
+              final pixels = scrollNotification.metrics.pixels;
 
-            // check if scroll is vertical ( left to right OR right to left)
-            final scrollTabs = (scrollNotification.metrics.axisDirection ==
-                    AxisDirection.right ||
-                scrollNotification.metrics.axisDirection == AxisDirection.left);
+              // check if scroll is vertical ( left to right OR right to left)
+              final scrollTabs = (scrollNotification.metrics.axisDirection ==
+                      AxisDirection.right ||
+                  scrollNotification.metrics.axisDirection ==
+                      AxisDirection.left);
 
-            if (!scrollTabs) {
-              // and here prevents animation of avatar when you scroll tabs
-              if (expandedHeader - pixels <= kToolbarHeight) {
-                if (isExpanded) {
-                  translate = 0.0;
-                  setState(() {
-                    isExpanded = false;
-                  });
-                }
-              } else {
-                translate = -avatarMaximumRadius + pixels;
-                if (translate > 0) {
-                  translate = 0.0;
-                }
-                if (!isExpanded) {
-                  setState(() {
-                    isExpanded = true;
-                  });
-                }
-              }
-
-              offset = pixels * 0.4;
-
-              final newSize = (avatarMaximumRadius - offset);
-
-              setState(() {
-                if (newSize < avatarMinimumRadius) {
-                  avatarRadius = avatarMinimumRadius;
-                } else if (newSize > avatarMaximumRadius) {
-                  avatarRadius = avatarMaximumRadius;
+              if (!scrollTabs) {
+                // and here prevents animation of avatar when you scroll tabs
+                if (expandedHeader - pixels <= kToolbarHeight) {
+                  if (isExpanded) {
+                    translate = 0.0;
+                    setState(() {
+                      isExpanded = false;
+                    });
+                  }
                 } else {
-                  avatarRadius = newSize;
+                  translate = -avatarMaximumRadius + pixels;
+                  if (translate > 0) {
+                    translate = 0.0;
+                  }
+                  if (!isExpanded) {
+                    setState(() {
+                      isExpanded = true;
+                    });
+                  }
                 }
-              });
-            }
-            return false;
-          },
-          child: DefaultTabController(
-            length: 2,
+
+                offset = pixels * 0.4;
+
+                final newSize = (avatarMaximumRadius - offset);
+
+                setState(() {
+                  if (newSize < avatarMinimumRadius) {
+                    avatarRadius = avatarMinimumRadius;
+                  } else if (newSize > avatarMaximumRadius) {
+                    avatarRadius = avatarMaximumRadius;
+                  } else {
+                    avatarRadius = newSize;
+                  }
+                });
+              }
+              return false;
+            },
             child: NestedScrollView(
               physics: ClampingScrollPhysics(),
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return <Widget>[
                   SliverAppBar(
-                    title: !isExpanded ? Text('test') : Text(''),
-                    expandedHeight: expandedHeader,
-                    backgroundColor: Colors.blue[500],
-                    leading: BackButton(
-                      color: isExpanded ? Colors.grey : Colors.white,
-                    ),
-                    pinned: true,
-                    elevation: 5.0,
-                    forceElevated: true,
-                    flexibleSpace: Container(
-                      decoration: BoxDecoration(
-                          color: isExpanded
-                              ? Colors.transparent
-                              : Colors.blue[800],
-                          image: isExpanded
-                              ? DecorationImage(
-                                  fit: BoxFit.cover,
-                                  alignment: Alignment.bottomCenter,
-                                  image: AssetImage(
-                                      "assets/images/twitter_flutter_bg.png"))
-                              : null),
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: isExpanded
-                            ? Transform(
-                                transform: Matrix4.identity()
-                                  ..translate(0.0, avatarMaximumRadius),
-                                child: MyAvatar(
-                                  size: avatarRadius,
-                                ),
-                              )
-                            : SizedBox.shrink(),
+                      title: !isExpanded ? Text('test') : Text(''),
+                      expandedHeight: expandedHeader,
+                      backgroundColor: Colors.blue[500],
+                      leading: BackButton(
+                        color: isExpanded ? Colors.grey : Colors.white,
                       ),
-                    ),
-                  ),
+                      pinned: true,
+                      elevation: 5.0,
+                      forceElevated: true,
+                      flexibleSpace: BlocBuilder<ProfileBloc, ProfileState>(
+                        builder: (context, state) {
+                          if (state is ProfileError) {
+                            return Center(
+                              child: Text(
+                                'Couldn\'t load prodfile.',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            );
+                          }
+                          if (state is ProfileLoading) {
+                            return LoadingIndicator(
+                              size: 21.0,
+                            );
+                          }
+                          if (state is ProfileLoaded) {
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: isExpanded
+                                      ? Colors.transparent
+                                      : Colors.blue[800],
+                                  image: isExpanded
+                                      ? DecorationImage(
+                                          fit: BoxFit.cover,
+                                          alignment: Alignment.bottomCenter,
+                                          image:
+                                              NetworkImage(state.user.avatar),
+                                        )
+                                      : null),
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: isExpanded
+                                    ? Transform(
+                                        transform: Matrix4.identity()
+                                          ..translate(0.0, avatarMaximumRadius),
+                                        child: MyAvatar(
+                                          size: avatarRadius,
+                                        ),
+                                      )
+                                    : SizedBox.shrink(),
+                              ),
+                            );
+                          }
+                          return Container();
+                        },
+                      )),
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10.0),
@@ -151,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SliverPersistentHeader(
                     pinned: true,
-                    delegate: TwitterTabs(50.0),
+                    delegate: TweetyTabs(50.0),
                   ),
                 ];
               },
@@ -175,10 +209,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-class TwitterTabs extends SliverPersistentHeaderDelegate {
+class TweetyTabs extends SliverPersistentHeaderDelegate {
   final double size;
 
-  TwitterTabs(this.size);
+  TweetyTabs(this.size);
 
   @override
   Widget build(
@@ -207,7 +241,7 @@ class TwitterTabs extends SliverPersistentHeaderDelegate {
   double get minExtent => size;
 
   @override
-  bool shouldRebuild(TwitterTabs oldDelegate) {
+  bool shouldRebuild(TweetyTabs oldDelegate) {
     return oldDelegate.size != size;
   }
 }

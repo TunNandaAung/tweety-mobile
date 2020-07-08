@@ -152,7 +152,7 @@ class UserApiClient {
     if (response.statusCode != 200) {
       throw Exception('Error fetching profile.');
     }
-
+    print(response.body);
     final userJson = jsonDecode(response.body)['data'];
 
     return User.fromJson(userJson);

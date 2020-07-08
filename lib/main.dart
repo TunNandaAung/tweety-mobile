@@ -11,7 +11,7 @@ import 'package:tweety_mobile/repositories/tweet_repository.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
 import 'package:tweety_mobile/screens/home_screen.dart';
 import 'package:tweety_mobile/screens/login_screen.dart';
-import 'package:tweety_mobile/screens/profile_screen.dart';
+import 'package:tweety_mobile/screens/profile_wrapper.dart';
 import 'package:tweety_mobile/screens/splash_screen.dart';
 import 'package:tweety_mobile/services/reply_api_client.dart';
 import 'package:tweety_mobile/services/tweet_api_client.dart';
@@ -67,10 +67,6 @@ class _TweetyState extends State<Tweety> {
       userApiClient: UserApiClient(httpClient: client),
     );
 
-    final ReplyRepository replyRepository = ReplyRepository(
-      replyApiClient: ReplyApiClient(httpClient: client),
-    );
-
     return MultiBlocProvider(
       providers: [
         BlocProvider<ThemeBloc>(
@@ -109,7 +105,7 @@ class _TweetyState extends State<Tweety> {
                 return SplashScreen();
               });
             },
-            '/profile': (context) => ProfileScreen(),
+            '/profile': (context) => ProfileWrapper(),
           },
         );
       },

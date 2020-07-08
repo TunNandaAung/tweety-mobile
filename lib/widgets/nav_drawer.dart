@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/models/navigation.dart';
+import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/nav_item.dart';
 
@@ -164,8 +165,15 @@ class _NavDrawerState extends State<NavDrawer> {
                         setState(() {
                           currentSelectedIndex = counter;
                         });
-                        Navigator.pushNamed(
-                            context, '/${navItems[counter].route}');
+                        if (navItems[counter].title == 'Profile') {
+                          Navigator.pushNamed(
+                            context,
+                            '/${navItems[counter].route}',
+                            arguments: Prefer.prefs.getString('userName'),
+                          );
+                        } else
+                          Navigator.pushNamed(
+                              context, '/${navItems[counter].route}');
                       },
                       boxColor: Theme.of(context).hintColor.withOpacity(.05),
                       title: navItems[counter].title,
