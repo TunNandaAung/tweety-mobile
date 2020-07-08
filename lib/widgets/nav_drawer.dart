@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
+import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/models/navigation.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/nav_item.dart';
@@ -18,8 +18,8 @@ class _NavDrawerState extends State<NavDrawer> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ProfileBloc>(context).add(
-      FetchProfile(),
+    BlocProvider.of<AuthProfileBloc>(context).add(
+      FetchAuthProfile(),
     );
   }
 
@@ -38,8 +38,9 @@ class _NavDrawerState extends State<NavDrawer> {
               bottom: size.height * 0.03),
           child: Column(
             children: <Widget>[
-              BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-                if (state is ProfileLoaded) {
+              BlocBuilder<AuthProfileBloc, AuthProfileState>(
+                  builder: (context, state) {
+                if (state is AuthProfileLoaded) {
                   return new Container(
                     width: double.infinity,
                     height: size.height * 0.24,

@@ -122,8 +122,26 @@ class UserApiClient {
     return Auth.fromJson(authJson);
   }
 
-  Future<User> fetchInfo() async {
+  Future<User> fetchAuthInfo() async {
     final url = '$baseUrl/profile';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.get(
+          url,
+          headers: requestHeaders(token),
+        );
+    if (response.statusCode != 200) {
+      throw Exception('Error fetching profile.');
+    }
+
+    final userJson = jsonDecode(response.body)['data'];
+
+    return User.fromJson(userJson);
+  }
+
+  Future<User> fetchUserInfo(String username) async {
+    final url = '$baseUrl/profiles/$username';
 
     final token = Prefer.prefs.getString('token');
 

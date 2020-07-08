@@ -50,8 +50,12 @@ class UserRepository {
     );
   }
 
-  Future<User> getUserInfo() async {
-    return userApiClient.fetchInfo();
+  Future<User> getAuthUserInfo() async {
+    return userApiClient.fetchAuthInfo();
+  }
+
+  Future<User> getUserInfo(String userName) async {
+    return userApiClient.fetchUserInfo(userName);
   }
 
   Future<void> updateInfo(

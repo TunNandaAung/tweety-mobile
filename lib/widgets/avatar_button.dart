@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
+import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 
 class AvatarButton extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -17,7 +17,7 @@ class _AvatarButtonState extends State<AvatarButton> {
       padding: const EdgeInsets.all(12.0),
       child: GestureDetector(
         onTap: () => widget.scaffoldKey.currentState.openDrawer(),
-        child: BlocBuilder<ProfileBloc, ProfileState>(
+        child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
           builder: (context, state) {
             if (state is AvatarLoaded) {
               return CircleAvatar(
@@ -27,7 +27,7 @@ class _AvatarButtonState extends State<AvatarButton> {
               );
             }
 
-            if (state is ProfileLoaded) {
+            if (state is AuthProfileLoaded) {
               return CircleAvatar(
                 radius: 15.0,
                 backgroundColor: Theme.of(context).cardColor,

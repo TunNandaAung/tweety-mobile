@@ -1,31 +1,31 @@
-part of 'profile_bloc.dart';
+part of 'auth_profile_bloc.dart';
 
-abstract class ProfileEvent extends Equatable {
-  const ProfileEvent();
+abstract class AuthProfileEvent extends Equatable {
+  const AuthProfileEvent();
 }
 
-class FetchProfile extends ProfileEvent {
+class FetchAuthProfile extends AuthProfileEvent {
   @override
   List<Object> get props => [];
 }
 
-class RefreshProfile extends ProfileEvent {
+class RefreshAuthProfile extends AuthProfileEvent {
   @override
   List<Object> get props => [];
 }
 
-class GetAvatar extends ProfileEvent {
+class GetAvatar extends AuthProfileEvent {
   @override
   List<Object> get props => [];
 }
 
-class UpdateProfileInfo extends ProfileEvent {
+class UpdateAuthProfileInfo extends AuthProfileEvent {
   final String name;
   final String shopAddress;
   final String phone;
   final String shopName;
 
-  const UpdateProfileInfo({
+  const UpdateAuthProfileInfo({
     @required this.name,
     @required this.shopAddress,
     @required this.phone,
@@ -37,15 +37,15 @@ class UpdateProfileInfo extends ProfileEvent {
 
   @override
   String toString() {
-    return 'UpdateProfileInfo { name: $name, shopAddress: $shopAddress, phone: $phone, shopName: $shopName }';
+    return 'UpdateAuthProfileInfo { name: $name, shopAddress: $shopAddress, phone: $phone, shopName: $shopName }';
   }
 }
 
-class UpdateProfileEmail extends ProfileEvent {
+class UpdateAuthProfileEmail extends AuthProfileEvent {
   final String password;
   final String email;
 
-  const UpdateProfileEmail({
+  const UpdateAuthProfileEmail({
     @required this.password,
     @required this.email,
   });
@@ -55,16 +55,16 @@ class UpdateProfileEmail extends ProfileEvent {
 
   @override
   String toString() {
-    return 'UpdateProfileEMail { email: $email, password: $password}';
+    return 'UpdateAuthProfileEMail { email: $email, password: $password}';
   }
 }
 
-class UpdateProfilePassword extends ProfileEvent {
+class UpdateAuthProfilePassword extends AuthProfileEvent {
   final String oldPassword;
   final String newPassword;
   final String newPasswordConfirmation;
 
-  const UpdateProfilePassword({
+  const UpdateAuthProfilePassword({
     @required this.oldPassword,
     @required this.newPassword,
     @required this.newPasswordConfirmation,
@@ -75,14 +75,14 @@ class UpdateProfilePassword extends ProfileEvent {
 
   @override
   String toString() {
-    return 'UpdateProfilePassword { oldPassword: $oldPassword, newPassword: $newPassword, newPasswordConfirmation: $newPasswordConfirmation }';
+    return 'UpdateAuthProfilePassword { oldPassword: $oldPassword, newPassword: $newPassword, newPasswordConfirmation: $newPasswordConfirmation }';
   }
 }
 
-class UpdateProfileImage extends ProfileEvent {
+class UpdateAuthProfileImage extends AuthProfileEvent {
   final File image;
 
-  const UpdateProfileImage({
+  const UpdateAuthProfileImage({
     @required this.image,
   });
 
@@ -90,7 +90,7 @@ class UpdateProfileImage extends ProfileEvent {
   List<Object> get props => [image];
 }
 
-class RequestPasswordResetInfo extends ProfileEvent {
+class RequestPasswordResetInfo extends AuthProfileEvent {
   final String email;
 
   const RequestPasswordResetInfo({

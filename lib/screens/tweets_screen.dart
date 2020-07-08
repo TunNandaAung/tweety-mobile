@@ -10,7 +10,6 @@ import 'package:tweety_mobile/screens/tweet_screen.dart';
 import 'package:tweety_mobile/services/reply_api_client.dart';
 import 'package:tweety_mobile/widgets/avatar_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
-import 'package:tweety_mobile/widgets/nav_drawer.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/tweet_card.dart';
 
