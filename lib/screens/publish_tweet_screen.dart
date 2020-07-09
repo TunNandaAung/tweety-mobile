@@ -41,10 +41,6 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
     characterLmitValue = (_bodyController.text.length * 100) / 25500.0;
   }
 
-  limitExceed() {
-    return _bodyController.text.length > limit;
-  }
-
   reachWarningLimit() {
     return _bodyController.text.length > (limit - 21);
   }
@@ -134,46 +130,7 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      _bodyController.text != null && reachErrorLimit()
-                          ? Padding(
-                              padding: EdgeInsets.only(right: 10),
-                              child: Text(
-                                '${255 - _bodyController.text.length}',
-                                style: TextStyle(
-                                  color: Colors.red[400],
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18.0,
-                                ),
-                              ),
-                            )
-                          : Stack(
-                              alignment: Alignment.center,
-                              children: <Widget>[
-                                Container(
-                                  child: CircularProgressIndicator(
-                                    value: characterLmitValue,
-                                    backgroundColor: Colors.grey,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      getIndicatorColor(),
-                                    ),
-                                  ),
-                                ),
-                                reachWarningLimit()
-                                    ? Text(
-                                        '${255 - _bodyController.text.length}',
-                                        style: TextStyle(
-                                          color: getIndicatorColor(),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    : Text(
-                                        '',
-                                        style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      )
-                              ],
-                            ),
+                      _characterLimitIndicator(),
                     ],
                   ),
                 ),
@@ -183,5 +140,48 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
         ),
       ),
     );
+  }
+
+  Widget _characterLimitIndicator() {
+    return _bodyController.text != null && reachErrorLimit()
+        ? Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: Text(
+              '${limit.toInt() - _bodyController.text.length}',
+              style: TextStyle(
+                color: Colors.red[400],
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0,
+              ),
+            ),
+          )
+        : Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Container(
+                child: CircularProgressIndicator(
+                  value: characterLmitValue,
+                  backgroundColor: Colors.grey,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    getIndicatorColor(),
+                  ),
+                ),
+              ),
+              reachWarningLimit()
+                  ? Text(
+                      '${limit.toInt() - _bodyController.text.length}',
+                      style: TextStyle(
+                        color: getIndicatorColor(),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : Text(
+                      '',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+            ],
+          );
   }
 }
