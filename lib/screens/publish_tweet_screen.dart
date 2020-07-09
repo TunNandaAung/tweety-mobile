@@ -69,43 +69,69 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Container(
         child: Stack(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
                 children: <Widget>[
-                  CircleAvatar(
-                    backgroundColor: Colors.blue,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Cancel',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      FlatButton(
+                        onPressed: () {},
+                        color: Theme.of(context).primaryColor,
+                        disabledColor: Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Text(
+                          'Publish',
+                          style: Theme.of(context).textTheme.button.copyWith(
+                                color: Colors.white,
+                              ),
+                        ),
+                      )
+                    ],
                   ),
-                  Container(
-                    width: 320.0,
-                    height: null,
-                    child: SingleChildScrollView(
-                      child: TextFormField(
-                        controller: _bodyController,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundColor: Colors.blue,
+                      ),
+                      Container(
+                        width: 320.0,
+                        height: null,
+                        child: SingleChildScrollView(
+                          child: TextFormField(
+                            controller: _bodyController,
+                            maxLines: null,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
 
-                          hintText: "Say something about task ...",
-                          // errorStyle: TextStyle(fontFamily: 'Poppins-Medium'),
-                          hintStyle: TextStyle(color: Colors.black),
+                              hintText: "Say something about task ...",
+                              // errorStyle: TextStyle(fontFamily: 'Poppins-Medium'),
+                              hintStyle: TextStyle(color: Colors.black),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
-              )),
+              ),
             ),
             Align(
               alignment: Alignment.bottomCenter,

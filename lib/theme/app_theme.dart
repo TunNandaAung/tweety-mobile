@@ -44,6 +44,11 @@ final appThemeData = {
         color: Color(0xFF718096),
         fontSize: 14,
       ),
+      headline6: TextStyle(
+        color: Color(0xFF4299E1),
+        fontSize: 18,
+        fontWeight: FontWeight.w400,
+      ),
     ),
   ),
 };
