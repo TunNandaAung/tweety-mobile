@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:tweety_mobile/models/bottom_nav.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/screens/explore_screen.dart';
 import 'package:tweety_mobile/screens/notifications_screen.dart';
+import 'package:tweety_mobile/screens/publish_tweet_screen.dart';
 import 'package:tweety_mobile/screens/tweets_screen.dart';
 import 'package:tweety_mobile/widgets/nav_drawer.dart';
 
@@ -117,6 +119,50 @@ class _HomeScreenState extends State<HomeScreen> {
             .values
             .toList(),
       ),
+      floatingActionButton: OpenContainer(
+          closedShape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(65.0),
+            ),
+          ),
+          closedColor: Theme.of(context).primaryColor,
+          closedElevation: 0.0,
+          transitionDuration: Duration(milliseconds: 500),
+          openBuilder: (context, action) => PublishTweetScreen(),
+          transitionType: ContainerTransitionType.fade,
+          closedBuilder: (BuildContext context, VoidCallback openContainer) {
+            return Container(
+              width: 60.0,
+              height: 60.0,
+              decoration: BoxDecoration(
+                // gradient: LinearGradient(
+                //   colors: [Color(0xFF2F80ED), Color(0xFF56CCF2)],
+                // ),
+                color: Theme.of(context).primaryColor,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                      color: Color(0xFF2F80ED).withOpacity(.3),
+                      offset: Offset(0.0, 8.0),
+                      blurRadius: 8.0)
+                ],
+              ),
+              child: RawMaterialButton(
+                shape: CircleBorder(),
+                child: Icon(
+                  Icons.add,
+                  size: 35.0,
+                  color: Colors.white,
+                ),
+                // onPressed: () {
+
+                //   Navigator.push(context,
+                //       MaterialPageRoute(builder: (context) => AddProductScreen()));
+                // },
+                onPressed: openContainer,
+              ),
+            );
+          }),
     );
   }
 }
