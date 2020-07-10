@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PublishTweetScreen extends StatefulWidget {
   PublishTweetScreen({Key key}) : super(key: key);
@@ -11,6 +15,9 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
   final TextEditingController _bodyController = TextEditingController();
   double characterLmitValue = 0;
   double limit = 255;
+
+  File _image;
+  bool _imageInProcess = false;
 
   @override
   void initState() {
@@ -66,6 +73,41 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
     return Theme.of(context).primaryColor;
   }
 
+  Future _getImage(ImageSource source) async {
+    final picker = ImagePicker();
+
+    setState(() {
+      _imageInProcess = true;
+    });
+
+    final pickedFile = await picker.getImage(source: source);
+
+    File image = File(pickedFile.path);
+
+    if (image != null) {
+      File croppedImage = await ImageCropper.cropImage(
+        sourcePath: image.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 100,
+        compressFormat: ImageCompressFormat.png,
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Edit image',
+          toolbarColor: Theme.of(context).scaffoldBackgroundColor,
+          activeControlsWidgetColor: Theme.of(context).primaryColor,
+        ),
+      );
+
+      setState(() {
+        _image = croppedImage;
+        _imageInProcess = false;
+      });
+    } else {
+      setState(() {
+        _imageInProcess = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +115,7 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
         child: Stack(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10.0),
               child: ListView(
                 children: <Widget>[
                   Row(
@@ -107,26 +149,42 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
                       CircleAvatar(
                         backgroundColor: Colors.blue,
                       ),
-                      Container(
-                        width: 320.0,
-                        height: null,
-                        child: SingleChildScrollView(
-                          child: TextFormField(
-                            controller: _bodyController,
-                            maxLines: null,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
+                      Column(
+                        children: <Widget>[
+                          Container(
+                            width: 320.0,
+                            height: null,
+                            child: SingleChildScrollView(
+                              child: TextFormField(
+                                controller: _bodyController,
+                                maxLines: null,
+                                style: Theme.of(context).textTheme.subtitle1,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
 
-                              hintText: "Say something about task ...",
-                              // errorStyle: TextStyle(fontFamily: 'Poppins-Medium'),
-                              hintStyle: TextStyle(color: Colors.black),
+                                  hintText: "What's up,doc?",
+                                  // errorStyle: TextStyle(fontFamily: 'Poppins-Medium'),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          _image != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  child: Image(
+                                    image: FileImage(_image),
+                                    width: 320.0,
+                                  ),
+                                )
+                              : Container(),
+                        ],
                       ),
                     ],
                   ),
@@ -154,8 +212,39 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () {
+                              _getImage(ImageSource.camera);
+                            },
+                            child: Container(
+                              height: 40.0,
+                              child: Icon(
+                                Icons.camera,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              _getImage(ImageSource.gallery);
+                            },
+                            child: Container(
+                              height: 40.0,
+                              child: Icon(
+                                Icons.image,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       _characterLimitIndicator(),
                     ],
                   ),
@@ -185,6 +274,8 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
             alignment: Alignment.center,
             children: <Widget>[
               Container(
+                height: 25.0,
+                width: 25.0,
                 child: CircularProgressIndicator(
                   value: characterLmitValue,
                   backgroundColor: Colors.grey,

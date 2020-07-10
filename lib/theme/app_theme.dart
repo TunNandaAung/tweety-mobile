@@ -49,6 +49,11 @@ final appThemeData = {
         fontSize: 18,
         fontWeight: FontWeight.w400,
       ),
+      subtitle1: TextStyle(
+        color: Colors.black,
+        fontSize: 18,
+        fontWeight: FontWeight.w400,
+      ),
     ),
   ),
 };
