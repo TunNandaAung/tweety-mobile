@@ -160,6 +160,7 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
                             child: SingleChildScrollView(
                               child: TextFormField(
                                 controller: _bodyController,
+                                autofocus: true,
                                 maxLines: null,
                                 style: Theme.of(context).textTheme.subtitle1,
                                 decoration: InputDecoration(
@@ -178,15 +179,7 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
                               ),
                             ),
                           ),
-                          _image != null
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  child: Image(
-                                    image: FileImage(_image),
-                                    width: 320.0,
-                                  ),
-                                )
-                              : Container(),
+                          _image != null ? _tweetImage() : Container(),
                         ],
                       ),
                     ],
@@ -257,6 +250,45 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _tweetImage() {
+    return Stack(
+      children: <Widget>[
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: Image(
+            image: FileImage(_image),
+            width: 320.0,
+          ),
+        ),
+        Positioned(
+            top: 8.0,
+            right: 8.0,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _image = null;
+                });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.black.withOpacity(
+                    .65,
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(3.0),
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.grey[300],
+                  ),
+                ),
+              ),
+            )),
+      ],
     );
   }
 
