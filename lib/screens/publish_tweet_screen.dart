@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 
 class PublishTweetScreen extends StatefulWidget {
   PublishTweetScreen({Key key}) : super(key: key);
@@ -122,9 +124,12 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        'Cancel',
-                        style: Theme.of(context).textTheme.headline6,
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Text(
+                          'Cancel',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
                       ),
                       FlatButton(
                         onPressed: () {},
@@ -146,9 +151,7 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: Colors.blue,
-                      ),
+                      _userAvatar(),
                       Column(
                         children: <Widget>[
                           Container(
@@ -254,6 +257,32 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _userAvatar() {
+    return BlocBuilder<AuthProfileBloc, AuthProfileState>(
+      builder: (context, state) {
+        if (state is AvatarLoaded) {
+          return CircleAvatar(
+            radius: 20.0,
+            backgroundColor: Theme.of(context).cardColor,
+            backgroundImage: NetworkImage(state.avatar),
+          );
+        }
+
+        if (state is AuthProfileLoaded) {
+          return CircleAvatar(
+            radius: 20.0,
+            backgroundColor: Theme.of(context).cardColor,
+            backgroundImage: NetworkImage(state.user.avatar),
+          );
+        }
+        return CircleAvatar(
+          radius: 20.0,
+          backgroundColor: Colors.white,
+        );
+      },
     );
   }
 
