@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
+import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 
 class PublishTweetScreen extends StatefulWidget {
   PublishTweetScreen({Key key}) : super(key: key);
@@ -20,6 +21,13 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
 
   File _image;
   bool _imageInProcess = false;
+
+  bool get isPopulated =>
+      _bodyController.text.isNotEmpty && _bodyController.text.length < 255;
+
+  bool isButtonEnabled() {
+    return isPopulated;
+  }
 
   @override
   void initState() {
@@ -132,7 +140,7 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
                         ),
                       ),
                       FlatButton(
-                        onPressed: () {},
+                        onPressed: isButtonEnabled() ? _onFormSubmitted : null,
                         color: Theme.of(context).primaryColor,
                         disabledColor: Colors.grey,
                         shape: RoundedRectangleBorder(
@@ -361,5 +369,12 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
                     ),
             ],
           );
+  }
+
+  void _onFormSubmitted() {
+    BlocProvider.of<TweetBloc>(context).add(
+      PublishTweet(body: _bodyController.text, image: _image),
+    );
+    Navigator.of(context).pop();
   }
 }

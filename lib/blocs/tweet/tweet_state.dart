@@ -41,3 +41,16 @@ class TweetLoaded extends TweetState {
 }
 
 class TweetError extends TweetState {}
+
+class TweetPublishing extends TweetState {}
+
+class TweetPublished extends TweetState {
+  final Tweet tweet;
+
+  const TweetPublished({@required this.tweet}) : assert(tweet != null);
+
+  @override
+  List<Object> get props => [tweet];
+}
+
+class PublishTweetError extends TweetState {}

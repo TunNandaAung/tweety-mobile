@@ -46,9 +46,36 @@ class TweetCard extends StatelessWidget {
             ),
             subtitle: Padding(
               padding: EdgeInsets.only(top: 10.0),
-              child: Text(
-                tweet.body,
-                style: Theme.of(context).textTheme.bodyText1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    tweet.body,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  tweet.image != null
+                      ? Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Container(
+                            height: 200.0,
+                            width: 320.0,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(0, 5),
+                                  blurRadius: 10.0,
+                                )
+                              ],
+                              image: DecorationImage(
+                                  image: NetworkImage(tweet.image),
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
+                        )
+                      : Container()
+                ],
               ),
             ),
           ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -34,6 +35,8 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
       yield* _mapFetchTweetToState(event);
     } else if (event is RefreshTweet) {
       yield* _mapRefreshTweetToState(event);
+    } else if (event is PublishTweet) {
+      yield* _mapPublishTweetToState(event);
     }
   }
 
@@ -84,6 +87,28 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
       return;
     } catch (_) {
       yield state;
+    }
+  }
+
+  Stream<TweetState> _mapPublishTweetToState(PublishTweet event) async* {
+    final currentState = state;
+
+    try {
+      final tweet =
+          await tweetRepository.publishTweet(event.body, image: event.image);
+
+      if (currentState is TweetLoaded) {
+        final List<Tweet> updatedTweet = List.from(currentState.tweets)
+          ..insert(0, tweet);
+        yield TweetPublished(tweet: tweet);
+
+        yield currentState.copyWith(tweets: updatedTweet);
+      }
+    } catch (_) {
+      if (currentState is TweetLoaded) {
+        yield currentState;
+        yield PublishTweetError();
+      }
     }
   }
 }

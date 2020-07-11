@@ -13,3 +13,13 @@ class RefreshTweet extends TweetEvent {
   @override
   List<Object> get props => [];
 }
+
+class PublishTweet extends TweetEvent {
+  final String body;
+  final File image;
+
+  const PublishTweet({@required this.body, this.image}) : assert(body != null);
+
+  @override
+  List<Object> get props => [];
+}
