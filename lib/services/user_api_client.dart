@@ -12,8 +12,7 @@ import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:http_parser/http_parser.dart';
 
 class UserApiClient {
-  static const baseUrl =
-      ApiConstants.BASE_URL; //url generated with `valet share command`
+  static const baseUrl = ApiConstants.BASE_URL;
   static final userName = Prefer.prefs.getString('userName');
   final http.Client httpClient;
 

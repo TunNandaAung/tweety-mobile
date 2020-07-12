@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:tweety_mobile/widgets/like_dislike_buttons.dart';
 
 class TweetCard extends StatelessWidget {
   final Tweet tweet;
@@ -87,54 +88,11 @@ class TweetCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    tweet.likesCount > 0
-                        ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Text(
-                              tweet.likesCount.toString(),
-                              style: TextStyle(
-                                color: tweet.isLiked
-                                    ? Color(0xFF68D391)
-                                    : Color(0xFFA0AEC0),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Icon(
-                      Icons.thumb_up,
-                      size: 18.0,
-                      color:
-                          tweet.isLiked ? Color(0xFF68D391) : Color(0xFFA0AEC0),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    tweet.dislikesCount > 0
-                        ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Text(
-                              tweet.dislikesCount.toString(),
-                              style: TextStyle(
-                                color: tweet.isDisliked
-                                    ? Color(0xFFE53E3E)
-                                    : Color(0xFFA0AEC0),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Icon(
-                      Icons.thumb_down,
-                      size: 18.0,
-                      color: tweet.isDisliked
-                          ? Color(0xFFE53E3E)
-                          : Color(0xFFA0AEC0),
-                    ),
-                  ],
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: LikeDislikeButtons(
+                    tweet: tweet,
+                  ),
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
