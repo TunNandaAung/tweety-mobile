@@ -191,7 +191,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                               ),
                             ),
                           ),
-                          _image != null ? _tweetImage() : Container(),
+                          _image != null ? _formImage() : Container(),
                         ],
                       ),
                     ],
@@ -265,7 +265,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
     );
   }
 
-  Widget _tweetImage() {
+  Widget _formImage() {
     return Stack(
       children: <Widget>[
         ClipRRect(

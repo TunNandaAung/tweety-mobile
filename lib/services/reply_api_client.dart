@@ -1,11 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart';
+import 'package:meta/meta.dart';
+
 import 'package:tweety_mobile/constants/api_constants.dart';
+import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/models/reply_paginator.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
-import 'package:meta/meta.dart';
 
 class ReplyApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
@@ -52,5 +58,48 @@ class ReplyApiClient {
     final repliesJson = jsonDecode(response.body)['data'];
 
     return ReplyPaginator.fromJson(repliesJson);
+  }
+
+  Future<Reply> addReply(int tweetID, String body, {File image}) async {
+    final url = '$baseUrl/tweets/$tweetID/reply';
+
+    final request = await prepareRequest(body, image, url);
+    final response = await request.send();
+
+    if (response.statusCode != 201) {
+      var _response = await http.Response.fromStream(response);
+      print(_response.body);
+      throw Exception('Error adding reply');
+    }
+    var _response = await http.Response.fromStream(response);
+    print(_response.body);
+
+    final replyJson = jsonDecode(_response.body)['data'];
+
+    return Reply.fromJson(replyJson);
+  }
+
+  Future<MultipartRequest> prepareRequest(String body, File image, url) async {
+    final token = Prefer.prefs.getString('token');
+
+    final request = http.MultipartRequest('POST', Uri.parse(url));
+    request.fields['body'] = body;
+
+    if (image != null) {
+      var stream = new http.ByteStream(Stream.castFrom(image.openRead()));
+      var length = await image.length();
+      var multipartFile = new MultipartFile("image", stream, length,
+          filename: basename(image.path),
+          contentType: MediaType('multipart', 'form-data'));
+      request.files.add(multipartFile);
+    }
+
+    Map<String, String> _headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    request.headers.addAll(_headers);
+    return request;
   }
 }

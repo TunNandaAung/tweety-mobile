@@ -41,3 +41,19 @@ class ReplyLoaded extends ReplyState {
 }
 
 class ReplyError extends ReplyState {}
+
+class ReplyAdding extends ReplyState {}
+
+class ReplyAdded extends ReplyState {
+  final Reply reply;
+
+  const ReplyAdded({@required this.reply}) : assert(reply != null);
+
+  @override
+  List<Object> get props => [reply];
+
+  @override
+  String toString() => 'ReplyAdded';
+}
+
+class AddReplyError extends ReplyState {}

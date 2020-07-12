@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:tweety_mobile/widgets/like_dislike_buttons.dart';
 
 class ChildrenReply extends StatefulWidget {
   final Reply reply;
@@ -55,55 +56,11 @@ class _ChildrenReplyState extends State<ChildrenReply> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    widget.reply.likesCount > 0
-                        ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Text(
-                              widget.reply.likesCount.toString(),
-                              style: TextStyle(
-                                color: widget.reply.isLiked
-                                    ? Color(0xFF68D391)
-                                    : Color(0xFFA0AEC0),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Icon(
-                      Icons.thumb_up,
-                      size: 18.0,
-                      color: widget.reply.isLiked
-                          ? Color(0xFF68D391)
-                          : Color(0xFFA0AEC0),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    widget.reply.dislikesCount > 0
-                        ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Text(
-                              widget.reply.dislikesCount.toString(),
-                              style: TextStyle(
-                                color: widget.reply.isDisliked
-                                    ? Color(0xFFE53E3E)
-                                    : Color(0xFFA0AEC0),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Icon(
-                      Icons.thumb_down,
-                      size: 18.0,
-                      color: widget.reply.isDisliked
-                          ? Color(0xFFE53E3E)
-                          : Color(0xFFA0AEC0),
-                    ),
-                  ],
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: LikeDislikeButtons(
+                    reply: widget.reply,
+                  ),
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

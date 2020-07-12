@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -34,6 +35,8 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
       yield* _mapFetchReplyToState(event);
     } else if (event is RefreshReply) {
       yield* _mapRefreshReplyToState(event);
+    } else if (event is AddReply) {
+      yield* _mapAddReplyToState(event);
     }
   }
 
@@ -88,5 +91,16 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
     } catch (_) {
       yield state;
     }
+  }
+
+  Stream<ReplyState> _mapAddReplyToState(AddReply event) async* {
+    try {
+      final reply = await replyRepository.addReply(event.tweetID, event.body,
+          image: event.image);
+      yield ReplyAdded(reply: reply);
+    } catch (e) {
+      yield AddReplyError();
+    }
+    // yield ReplyError();
   }
 }

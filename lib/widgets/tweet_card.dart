@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tweety_mobile/models/tweet.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:tweety_mobile/models/tweet.dart';
+import 'package:tweety_mobile/widgets/add_reply_button.dart';
 import 'package:tweety_mobile/widgets/like_dislike_buttons.dart';
 
 class TweetCard extends StatelessWidget {
@@ -94,27 +95,7 @@ class TweetCard extends StatelessWidget {
                     tweet: tweet,
                   ),
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    tweet.repliesCount > 0
-                        ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Text(
-                              tweet.repliesCount.toString(),
-                              style: TextStyle(
-                                color: Color(0xFFA0AEC0),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Icon(
-                      Icons.comment,
-                      size: 18.0,
-                      color: Color(0xFFA0AEC0),
-                    ),
-                  ],
-                ),
+                AddReplyButton(tweet: tweet)
               ],
             ),
           )
