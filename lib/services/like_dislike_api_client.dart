@@ -24,7 +24,25 @@ class LikeDislikeApiClient {
         );
 
     if (response.statusCode != 200) {
-      throw Exception('Error liking tweet.');
+      throw Exception('Error liking.');
+    }
+
+    final responseJson = jsonDecode(response.body);
+
+    return LikeDislike.fromJson(responseJson);
+  }
+
+  Future<LikeDislike> dislike(int id, String subject) async {
+    final url = '$baseUrl/$subject/$id/dislike';
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.delete(
+          url,
+          headers: requestHeaders(token),
+        );
+
+    if (response.statusCode != 200) {
+      throw Exception('Error disliking.');
     }
 
     final responseJson = jsonDecode(response.body);

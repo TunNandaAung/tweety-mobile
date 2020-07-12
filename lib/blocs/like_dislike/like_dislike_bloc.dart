@@ -19,17 +19,30 @@ class LikeDislikeBloc extends Bloc<LikeDislikeEvent, LikeDislikeState> {
   Stream<LikeDislikeState> mapEventToState(
     LikeDislikeEvent event,
   ) async* {
-    if (event is LikeTweet) {
-      yield* _mapLikeTweetToState(event);
+    if (event is Like) {
+      yield* _mapLikeToState(event);
+    } else if (event is Dislike) {
+      yield* _mapDislikeToState(event);
     }
   }
 
-  Stream<LikeDislikeState> _mapLikeTweetToState(LikeTweet event) async* {
+  Stream<LikeDislikeState> _mapLikeToState(Like event) async* {
     try {
       final response = await likeDislikeRepository.like(
-          id: event.tweetID, subject: 'tweets');
+          id: event.tweetID, subject: event.subject);
 
       yield Liked(like: response);
+    } catch (e) {
+      yield LikeDislikeError();
+    }
+  }
+
+  Stream<LikeDislikeState> _mapDislikeToState(Dislike event) async* {
+    try {
+      final response = await likeDislikeRepository.dislike(
+          id: event.tweetID, subject: event.subject);
+
+      yield Disliked(dislike: response);
     } catch (e) {
       yield LikeDislikeError();
     }

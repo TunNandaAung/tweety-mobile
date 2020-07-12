@@ -4,21 +4,25 @@ abstract class LikeDislikeEvent extends Equatable {
   const LikeDislikeEvent();
 }
 
-class LikeTweet extends LikeDislikeEvent {
+class Like extends LikeDislikeEvent {
   final int tweetID;
+  final String subject;
 
-  const LikeTweet({
+  const Like({
     @required this.tweetID,
+    @required this.subject,
   });
   @override
   List<Object> get props => [tweetID];
 }
 
-class DislikeTweet extends LikeDislikeEvent {
+class Dislike extends LikeDislikeEvent {
   final int tweetID;
+  final String subject;
 
-  const DislikeTweet({
+  const Dislike({
     @required this.tweetID,
+    @required this.subject,
   });
   @override
   List<Object> get props => [tweetID];

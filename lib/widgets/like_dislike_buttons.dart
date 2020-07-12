@@ -65,19 +65,41 @@ class _BuildWidgetState extends State<BuildWidget> {
     super.initState();
   }
 
+  void updateLikes() {
+    setState(() {
+      !_isLiked ? _likesCount++ : _likesCount--;
+
+      _isLiked = !_isLiked;
+      _isDisliked = false;
+
+      _dislikesCount > 0 ? _dislikesCount-- : _dislikesCount;
+    });
+  }
+
+  void updateDislikes() {
+    setState(() {
+      !_isDisliked ? _dislikesCount++ : _dislikesCount--;
+
+      _isDisliked = !_isDisliked;
+      _isLiked = false;
+
+      _likesCount > 0 ? _likesCount-- : _likesCount;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<LikeDislikeBloc, LikeDislikeState>(
       listener: (context, state) {
         if (state is Liked) {
-          setState(() {
-            state.like.liked ? _likesCount++ : _likesCount--;
+          // setState(() {
+          //   state.like.liked ? _likesCount++ : _likesCount--;
 
-            _isLiked = !_isLiked;
-            _isDisliked = false;
+          //   _isLiked = !_isLiked;
+          //   _isDisliked = false;
 
-            _dislikesCount > 0 ? _dislikesCount-- : _dislikesCount;
-          });
+          //   _dislikesCount > 0 ? _dislikesCount-- : _dislikesCount;
+          // });
         }
       },
       child: Row(
@@ -100,11 +122,14 @@ class _BuildWidgetState extends State<BuildWidget> {
                   : Container(),
               InkWell(
                 onTap: () {
-                  if (isTweet) {
-                    BlocProvider.of<LikeDislikeBloc>(context).add(
-                      LikeTweet(tweetID: subject.id),
-                    );
-                  }
+                  isTweet
+                      ? BlocProvider.of<LikeDislikeBloc>(context).add(
+                          Like(tweetID: subject.id, subject: 'tweets'),
+                        )
+                      : BlocProvider.of<LikeDislikeBloc>(context).add(
+                          Like(tweetID: subject.id, subject: 'replies'),
+                        );
+                  updateLikes();
                 },
                 child: Icon(
                   Icons.thumb_up,
@@ -130,10 +155,22 @@ class _BuildWidgetState extends State<BuildWidget> {
                       ),
                     )
                   : Container(),
-              Icon(
-                Icons.thumb_down,
-                size: 18.0,
-                color: _isDisliked ? Color(0xFFE53E3E) : Color(0xFFA0AEC0),
+              InkWell(
+                onTap: () {
+                  isTweet
+                      ? BlocProvider.of<LikeDislikeBloc>(context).add(
+                          Dislike(tweetID: subject.id, subject: 'tweets'),
+                        )
+                      : BlocProvider.of<LikeDislikeBloc>(context).add(
+                          Dislike(tweetID: subject.id, subject: 'replies'),
+                        );
+                  updateDislikes();
+                },
+                child: Icon(
+                  Icons.thumb_down,
+                  size: 18.0,
+                  color: _isDisliked ? Color(0xFFE53E3E) : Color(0xFFA0AEC0),
+                ),
               ),
             ],
           ),

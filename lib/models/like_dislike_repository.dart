@@ -11,4 +11,8 @@ class LikeDislikeRepository {
   Future<LikeDislike> like({int id, String subject}) async {
     return likeApiClient.like(id, subject);
   }
+
+  Future<LikeDislike> dislike({int id, String subject}) async {
+    return likeApiClient.dislike(id, subject);
+  }
 }
