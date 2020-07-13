@@ -4,13 +4,16 @@ import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
+import 'package:tweety_mobile/screens/tweet_wrapper.dart';
 import 'package:tweety_mobile/services/reply_api_client.dart';
 import 'package:tweety_mobile/screens/add_reply_screen.dart';
 
 class AddReplyButton extends StatelessWidget {
   final Tweet tweet;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const AddReplyButton({Key key, @required this.tweet}) : super(key: key);
+  const AddReplyButton({Key key, @required this.tweet, this.scaffoldKey})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,7 @@ class AddReplyButton extends StatelessWidget {
       child: AddReplyButtonWidget(
         tweet: tweet,
         replyRepository: replyRepository,
+        scaffoldKey: scaffoldKey,
       ),
     );
   }
@@ -30,8 +34,9 @@ class AddReplyButton extends StatelessWidget {
 class AddReplyButtonWidget extends StatefulWidget {
   final Tweet tweet;
   final ReplyRepository replyRepository;
+  final GlobalKey<ScaffoldState> scaffoldKey;
   const AddReplyButtonWidget(
-      {Key key, @required this.tweet, this.replyRepository})
+      {Key key, @required this.tweet, this.replyRepository, this.scaffoldKey})
       : super(key: key);
 
   @override
@@ -57,6 +62,33 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
           setState(() {
             repliesCount++;
           });
+          widget.scaffoldKey.currentState
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                backgroundColor: Theme.of(context).primaryColor,
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Your reply was added!"),
+                  ],
+                ),
+                action: SnackBarAction(
+                    label: 'View',
+                    textColor: Colors.white,
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              TweetWrapper(tweet: widget.tweet),
+                        ),
+                      );
+                    }),
+              ),
+            );
         }
         if (state is AddReplyError) {
           Scaffold.of(context)
@@ -67,48 +99,48 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
                 behavior: SnackBarBehavior.floating,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
-                backgroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Colors.red,
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Your tweet was published!"),
+                    Text("Couldn't add reply."),
                   ],
                 ),
               ),
             );
         }
       },
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          repliesCount > 0
-              ? Padding(
-                  padding: EdgeInsets.only(right: 3.0),
-                  child: Text(
-                    repliesCount.toString(),
-                    style: TextStyle(
-                      color: Color(0xFFA0AEC0),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => BlocProvider.value(
+                      value: _replyBloc,
+                      child: AddReplyScreen(tweet: widget.tweet),
+                    )),
+          );
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            repliesCount > 0
+                ? Padding(
+                    padding: EdgeInsets.only(right: 3.0),
+                    child: Text(
+                      repliesCount.toString(),
+                      style: TextStyle(
+                        color: Color(0xFFA0AEC0),
+                      ),
                     ),
-                  ),
-                )
-              : Container(),
-          InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (context) => BlocProvider.value(
-                          value: _replyBloc,
-                          child: AddReplyScreen(tweet: widget.tweet),
-                        )),
-              );
-            },
-            child: Icon(
+                  )
+                : Container(),
+            Icon(
               Icons.comment,
               size: 18.0,
               color: Color(0xFFA0AEC0),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

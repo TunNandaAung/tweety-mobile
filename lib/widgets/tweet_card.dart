@@ -6,7 +6,8 @@ import 'package:tweety_mobile/widgets/like_dislike_buttons.dart';
 
 class TweetCard extends StatelessWidget {
   final Tweet tweet;
-  const TweetCard({Key key, this.tweet}) : super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const TweetCard({Key key, this.tweet, this.scaffoldKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +96,10 @@ class TweetCard extends StatelessWidget {
                     tweet: tweet,
                   ),
                 ),
-                AddReplyButton(tweet: tweet)
+                AddReplyButton(
+                  tweet: tweet,
+                  scaffoldKey: scaffoldKey,
+                )
               ],
             ),
           )

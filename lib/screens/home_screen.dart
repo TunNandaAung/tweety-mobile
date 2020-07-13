@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/models/bottom_nav.dart';
@@ -69,59 +70,63 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: NavDrawer('/'),
-      body: BlocListener<TweetBloc, TweetState>(
-        listener: (context, state) {
-          if (state is TweetPublished) {
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  elevation: 6.0,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Your tweet was published!"),
-                    ],
-                  ),
-                  action: SnackBarAction(
-                      label: 'View',
-                      textColor: Colors.white,
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                TweetWrapper(tweet: state.tweet),
-                          ),
-                        );
-                      }),
-                ),
-              );
-          }
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<TweetBloc, TweetState>(
+            listener: (context, state) {
+              if (state is TweetPublished) {
+                Scaffold.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      elevation: 6.0,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      backgroundColor: Theme.of(context).primaryColor,
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Your tweet was published!"),
+                        ],
+                      ),
+                      action: SnackBarAction(
+                          label: 'View',
+                          textColor: Colors.white,
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    TweetWrapper(tweet: state.tweet),
+                              ),
+                            );
+                          }),
+                    ),
+                  );
+              }
 
-          if (state is PublishTweetError) {
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  elevation: 6.0,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  backgroundColor: Colors.red,
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Couldn't publish tweet"),
-                    ],
-                  ),
-                ),
-              );
-          }
-        },
+              if (state is PublishTweetError) {
+                Scaffold.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      elevation: 6.0,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      backgroundColor: Colors.red,
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Couldn't publish tweet"),
+                        ],
+                      ),
+                    ),
+                  );
+              }
+            },
+          ),
+        ],
         child: SizedBox.expand(
           child: PageView(
             physics:
@@ -156,7 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: Text(''),
                     icon: Container(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 3.0,
                         horizontal: 16.0,
                       ),
                       decoration: BoxDecoration(
@@ -209,11 +213,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   size: 35.0,
                   color: Colors.white,
                 ),
-                // onPressed: () {
-
-                //   Navigator.push(context,
-                //       MaterialPageRoute(builder: (context) => AddProductScreen()));
-                // },
                 onPressed: openContainer,
               ),
             );

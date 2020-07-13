@@ -158,6 +158,7 @@ class _TweetsScreenState extends State<TweetsScreen> {
                                   },
                                   child: TweetCard(
                                     tweet: tweets[index],
+                                    scaffoldKey: widget.scaffoldKey,
                                   ),
                                 ),
                               ),

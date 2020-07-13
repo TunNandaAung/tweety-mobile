@@ -38,7 +38,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
 
   String get replyingTo =>
       widget.ownerName == Prefer.prefs.getString('userName')
-          ? ""
+          ? "Replying to yourself"
           : 'Replying to @' + widget.ownerName;
 
   @override
@@ -167,7 +167,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                       )
                     ],
                   ),
-                  widget.isReply
+                  widget.isReply && replyingTo.length > 0
                       ? Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: 8.0, horizontal: 0.0),
