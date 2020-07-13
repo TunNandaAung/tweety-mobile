@@ -94,10 +94,18 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
   }
 
   Stream<ReplyState> _mapAddReplyToState(AddReply event) async* {
+    final currentState = state;
     try {
       final reply = await replyRepository.addReply(event.tweetID, event.body,
           image: event.image);
-      yield ReplyAdded(reply: reply);
+      if (currentState is ReplyLoaded) {
+        final List<Reply> updatedReplies = List.from(currentState.replies)
+          ..insert(0, reply);
+
+        yield ReplyAdded(reply: reply);
+        yield currentState.copyWith(replies: updatedReplies);
+      } else
+        yield ReplyAdded(reply: reply);
     } catch (e) {
       yield AddReplyError();
     }

@@ -60,10 +60,11 @@ class ReplyApiClient {
     return ReplyPaginator.fromJson(repliesJson);
   }
 
-  Future<Reply> addReply(int tweetID, String body, {File image}) async {
+  Future<Reply> addReply(int tweetID, String body,
+      {File image, int parentID}) async {
     final url = '$baseUrl/tweets/$tweetID/reply';
 
-    final request = await prepareRequest(body, image, url);
+    final request = await prepareRequest(body, image, parentID, url);
     final response = await request.send();
 
     if (response.statusCode != 201) {
@@ -79,11 +80,16 @@ class ReplyApiClient {
     return Reply.fromJson(replyJson);
   }
 
-  Future<MultipartRequest> prepareRequest(String body, File image, url) async {
+  Future<MultipartRequest> prepareRequest(
+      String body, File image, int parentID, url) async {
     final token = Prefer.prefs.getString('token');
 
     final request = http.MultipartRequest('POST', Uri.parse(url));
     request.fields['body'] = body;
+
+    if (parentID != null) {
+      request.fields['parent_id'] = parentID.toString();
+    }
 
     if (image != null) {
       var stream = new http.ByteStream(Stream.castFrom(image.openRead()));

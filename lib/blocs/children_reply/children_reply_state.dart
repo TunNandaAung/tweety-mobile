@@ -50,3 +50,19 @@ class ChildrenReplyLoaded extends ChildrenReplyState {
 }
 
 class ChildrenReplyError extends ChildrenReplyState {}
+
+class ChildrenReplyAdding extends ChildrenReplyState {}
+
+class ChildrenReplyAdded extends ChildrenReplyState {
+  final Reply reply;
+
+  const ChildrenReplyAdded({@required this.reply}) : assert(reply != null);
+
+  @override
+  List<Object> get props => [reply];
+
+  @override
+  String toString() => 'ChildrenReplyAdded';
+}
+
+class AddChildrenReplyError extends ChildrenReplyState {}

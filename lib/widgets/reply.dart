@@ -3,14 +3,19 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:tweety_mobile/blocs/children_reply/children_reply_bloc.dart';
 import 'package:tweety_mobile/models/reply.dart';
+import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/widgets/children_reply.dart';
 import 'package:tweety_mobile/widgets/like_dislike_buttons.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 
+import 'add_children_reply_button.dart';
+
 class ReplyWidget extends StatefulWidget {
   final Reply reply;
+  final Tweet tweet;
 
-  const ReplyWidget({Key key, @required this.reply}) : super(key: key);
+  const ReplyWidget({Key key, @required this.reply, this.tweet})
+      : super(key: key);
 
   @override
   _ReplyWidgetState createState() => _ReplyWidgetState();
@@ -32,6 +37,48 @@ class _ReplyWidgetState extends State<ReplyWidget> {
             isLoading = false;
             childrenReplies = state.childrenReplies;
           });
+        }
+        if (state is ChildrenReplyAdded) {
+          // var currentState = widget.scaffoldKey == null
+          //     ? Scaffold.of(context)
+          //     : widget.scaffoldKey.currentState;
+          // childrenReplies.add(state.reply);
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                backgroundColor: Theme.of(context).primaryColor,
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Your reply was added!"),
+                  ],
+                ),
+              ),
+            );
+        }
+        if (state is AddChildrenReplyError) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                elevation: 6.0,
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                backgroundColor: Colors.red,
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Couldn't add reply."),
+                  ],
+                ),
+              ),
+            );
         }
       },
       child: Padding(
@@ -83,28 +130,11 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                       reply: widget.reply,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        widget.reply.childrenCount > 0
-                            ? Padding(
-                                padding: EdgeInsets.only(right: 3.0),
-                                child: Text(
-                                  widget.reply.childrenCount.toString(),
-                                  style: TextStyle(
-                                    color: Color(0xFFA0AEC0),
-                                  ),
-                                ),
-                              )
-                            : Container(),
-                        Icon(
-                          Icons.comment,
-                          size: 18.0,
-                          color: Color(0xFFA0AEC0),
-                        ),
-                      ],
+                  BlocProvider.value(
+                    value: BlocProvider.of<ChildrenReplyBloc>(context),
+                    child: AddChildrenReplyButton(
+                      tweet: widget.tweet,
+                      parent: widget.reply,
                     ),
                   ),
                 ],
@@ -122,7 +152,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
             BlocBuilder<ChildrenReplyBloc, ChildrenReplyState>(
               builder: (context, state) {
                 if (state is ChildrenReplyLoading) {
-                  return LoadingIndicator();
+                  return LoadingIndicator(size: 15.0);
                 }
                 if (state is ChildrenReplyLoaded) {
                   return _fetchMore(state.repliesLeft, state);
@@ -152,9 +182,8 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                     });
                     BlocProvider.of<ChildrenReplyBloc>(context).add(
                       FetchChildrenReply(
-                        parentID: widget.reply.id,
-                        childrenCount: widget.reply.childrenCount,
-                      ),
+                          parentID: widget.reply.id,
+                          childrenCount: repliesLeft),
                     );
                   }
                 },

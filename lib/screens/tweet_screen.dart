@@ -165,6 +165,7 @@ class _TweetScreenState extends State<TweetScreen> {
                                           ),
                                           child: ReplyWidget(
                                             reply: state.replies[index],
+                                            tweet: widget.tweet,
                                           ),
                                         )),
                                       ),

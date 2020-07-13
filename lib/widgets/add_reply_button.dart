@@ -62,7 +62,12 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
           setState(() {
             repliesCount++;
           });
-          widget.scaffoldKey.currentState
+
+          var currentState = widget.scaffoldKey == null
+              ? Scaffold.of(context)
+              : widget.scaffoldKey.currentState;
+
+          currentState
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
@@ -114,10 +119,13 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) => BlocProvider.value(
-                      value: _replyBloc,
-                      child: AddReplyScreen(tweet: widget.tweet),
-                    )),
+              builder: (context) => BlocProvider.value(
+                value: _replyBloc,
+                child: AddReplyScreen(
+                  tweet: widget.tweet,
+                ),
+              ),
+            ),
           );
         },
         child: Row(

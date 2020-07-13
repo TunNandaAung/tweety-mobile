@@ -23,4 +23,10 @@ class ReplyRepository {
   Future<Reply> addReply(int tweetID, String body, {File image}) async {
     return replyApiClient.addReply(tweetID, body, image: image);
   }
+
+  Future<Reply> addChildren(int tweetID, String body,
+      {File image, int parentID}) async {
+    return replyApiClient.addReply(tweetID, body,
+        image: image, parentID: parentID);
+  }
 }

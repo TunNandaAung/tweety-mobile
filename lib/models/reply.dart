@@ -8,9 +8,6 @@ part 'reply.g.dart';
 class Reply {
   int id;
 
-  @JsonKey(name: 'parent_id')
-  int parentID;
-
   @JsonKey(nullable: true)
   String image;
   String body;
@@ -39,7 +36,6 @@ class Reply {
 
   Reply({
     this.id,
-    this.parentID,
     this.image,
     this.body,
     this.childrenCount,

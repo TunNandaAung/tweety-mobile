@@ -12,3 +12,17 @@ class FetchChildrenReply extends ChildrenReplyEvent {
   @override
   List<Object> get props => [];
 }
+
+class AddChildrenReply extends ChildrenReplyEvent {
+  final int tweetID;
+  final String body;
+  final File image;
+  final int parentID;
+
+  AddChildrenReply(
+      {@required this.tweetID, @required this.body, this.image, this.parentID})
+      : assert(body != null);
+
+  @override
+  List<Object> get props => [];
+}

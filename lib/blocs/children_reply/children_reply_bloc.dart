@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -21,6 +22,8 @@ class ChildrenReplyBloc extends Bloc<ChildrenReplyEvent, ChildrenReplyState> {
   ) async* {
     if (event is FetchChildrenReply) {
       yield* _mapFetchChildrenReplyToState(event);
+    } else if (event is AddChildrenReply) {
+      yield* _mapAddChildrenReplyToState(event);
     }
   }
 
@@ -72,5 +75,27 @@ class ChildrenReplyBloc extends Bloc<ChildrenReplyEvent, ChildrenReplyState> {
         yield ChildrenReplyError();
       }
     }
+  }
+
+  Stream<ChildrenReplyState> _mapAddChildrenReplyToState(
+      AddChildrenReply event) async* {
+    final currentState = state;
+    try {
+      final reply = await replyRepository.addChildren(event.tweetID, event.body,
+          image: event.image, parentID: event.parentID);
+      if (currentState is ChildrenReplyLoaded) {
+        final List<Reply> updatedReplies =
+            List.from(currentState.childrenReplies)..insert(0, reply);
+
+        yield ChildrenReplyAdded(reply: reply);
+        yield currentState.copyWith(childrenReplies: updatedReplies);
+      } else {
+        yield ChildrenReplyAdded(reply: reply);
+        yield ChildrenReplyEmpty();
+      }
+    } catch (e) {
+      yield AddChildrenReplyError();
+    }
+    // yield AddReplyError();
   }
 }

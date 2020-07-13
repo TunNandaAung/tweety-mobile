@@ -9,7 +9,6 @@ part of 'reply.dart';
 Reply _$ReplyFromJson(Map<String, dynamic> json) {
   return Reply(
     id: json['id'] as int,
-    parentID: json['parent_id'] as int,
     image: json['image'] as String,
     body: json['body'] as String,
     childrenCount: json['children_count'] as int,
@@ -31,7 +30,6 @@ Reply _$ReplyFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ReplyToJson(Reply instance) => <String, dynamic>{
       'id': instance.id,
-      'parent_id': instance.parentID,
       'image': instance.image,
       'body': instance.body,
       'children_count': instance.childrenCount,
