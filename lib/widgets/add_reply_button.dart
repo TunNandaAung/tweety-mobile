@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tweety_mobile/blocs/children_reply/children_reply_bloc.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,8 +21,16 @@ class AddReplyButton extends StatelessWidget {
     final ReplyRepository replyRepository = ReplyRepository(
       replyApiClient: ReplyApiClient(httpClient: http.Client()),
     );
-    return BlocProvider<ReplyBloc>(
-      create: (context) => ReplyBloc(replyRepository: replyRepository),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ReplyBloc>(
+          create: (context) => ReplyBloc(replyRepository: replyRepository),
+        ),
+        BlocProvider<ChildrenReplyBloc>(
+          create: (context) =>
+              ChildrenReplyBloc(replyRepository: replyRepository),
+        ),
+      ],
       child: AddReplyButtonWidget(
         tweet: tweet,
         replyRepository: replyRepository,
@@ -56,65 +65,76 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ReplyBloc, ReplyState>(
-      listener: (context, state) {
-        if (state is ReplyAdded) {
-          setState(() {
-            repliesCount++;
-          });
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ReplyBloc, ReplyState>(
+          listener: (context, state) {
+            if (state is ReplyAdded) {
+              setState(() {
+                repliesCount++;
+              });
 
-          var currentState = widget.scaffoldKey == null
-              ? Scaffold.of(context)
-              : widget.scaffoldKey.currentState;
+              var currentState = widget.scaffoldKey == null
+                  ? Scaffold.of(context)
+                  : widget.scaffoldKey.currentState;
 
-          currentState
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                backgroundColor: Theme.of(context).primaryColor,
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Your reply was added!"),
-                  ],
-                ),
-                action: SnackBarAction(
-                    label: 'View',
-                    textColor: Colors.white,
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              TweetWrapper(tweet: widget.tweet),
-                        ),
-                      );
-                    }),
-              ),
-            );
-        }
-        if (state is AddReplyError) {
-          Scaffold.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                elevation: 6.0,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                backgroundColor: Colors.red,
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Couldn't add reply."),
-                  ],
-                ),
-              ),
-            );
-        }
-      },
+              currentState
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Your reply was added!"),
+                      ],
+                    ),
+                    action: SnackBarAction(
+                        label: 'View',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  TweetWrapper(tweet: widget.tweet),
+                            ),
+                          );
+                        }),
+                  ),
+                );
+            }
+            if (state is AddReplyError) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    elevation: 6.0,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    backgroundColor: Colors.red,
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Couldn't add reply."),
+                      ],
+                    ),
+                  ),
+                );
+            }
+          },
+        ),
+        BlocListener<ChildrenReplyBloc, ChildrenReplyState>(
+          listener: (context, state) {
+            if (state is ChildrenReplyAdded) {
+              repliesCount++;
+            }
+          },
+        ),
+      ],
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(

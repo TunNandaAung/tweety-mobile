@@ -37,6 +37,8 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
       yield* _mapRefreshTweetToState(event);
     } else if (event is PublishTweet) {
       yield* _mapPublishTweetToState(event);
+    } else if (event is UpdateReplyCount) {
+      yield* _mapUpdateReplyCountToState(event);
     }
   }
 
@@ -109,6 +111,41 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
         yield currentState;
         yield PublishTweetError();
       }
+    }
+  }
+
+  Stream<TweetState> _mapUpdateReplyCountToState(
+      UpdateReplyCount event) async* {
+    final currentState = state;
+
+    try {
+      if (currentState is TweetLoaded) {
+        final index = currentState.tweets
+            .indexWhere((element) => element.id == event.tweetID);
+
+        final tweet = currentState.tweets
+            .firstWhere((element) => element.id == event.tweetID);
+
+        final List<Tweet> updatedTweet = List.from(currentState.tweets)
+          ..replaceRange(index, index + 1, [
+            new Tweet(
+              id: tweet.id,
+              image: tweet.image,
+              body: tweet.body,
+              isLiked: tweet.isLiked,
+              isDisliked: tweet.isDisliked,
+              repliesCount: tweet.repliesCount + event.count,
+              likesCount: tweet.likesCount,
+              dislikesCount: tweet.dislikesCount,
+              createdAt: tweet.createdAt,
+              user: tweet.user,
+            )
+          ]);
+
+        yield currentState.copyWith(tweets: updatedTweet);
+      }
+    } catch (_) {
+      yield state;
     }
   }
 }

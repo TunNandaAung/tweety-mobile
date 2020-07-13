@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/children_reply/children_reply_bloc.dart';
+import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
@@ -68,6 +69,8 @@ class _AddChildrenReplyButtonWidgetState
             childrenCount++;
           });
         }
+        BlocProvider.of<TweetBloc>(context)
+            .add(UpdateReplyCount(count: 1, tweetID: widget.tweet.id));
       },
       child: InkWell(
         onTap: () {

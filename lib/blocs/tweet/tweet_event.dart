@@ -23,3 +23,13 @@ class PublishTweet extends TweetEvent {
   @override
   List<Object> get props => [];
 }
+
+class UpdateReplyCount extends TweetEvent {
+  final int tweetID;
+  final int count;
+
+  UpdateReplyCount({this.tweetID, this.count});
+
+  @override
+  List<Object> get props => [];
+}

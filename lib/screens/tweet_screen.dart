@@ -94,7 +94,7 @@ class _TweetScreenState extends State<TweetScreen> {
           child: Builder(
             builder: (BuildContext context) {
               return Padding(
-                padding: EdgeInsets.only(top: 8.0),
+                padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,

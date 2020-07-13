@@ -41,6 +41,7 @@ class Tweet {
     this.likesCount,
     this.dislikesCount,
     this.createdAt,
+    this.user,
   });
 
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
