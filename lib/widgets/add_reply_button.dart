@@ -58,6 +58,25 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
             repliesCount++;
           });
         }
+        if (state is AddReplyError) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                elevation: 6.0,
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                backgroundColor: Theme.of(context).primaryColor,
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Your tweet was published!"),
+                  ],
+                ),
+              ),
+            );
+        }
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,7 +98,7 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
                 MaterialPageRoute(
                     builder: (context) => BlocProvider.value(
                           value: _replyBloc,
-                          child: AddReplyScreen(tweetID: widget.tweet.id),
+                          child: AddReplyScreen(tweet: widget.tweet),
                         )),
               );
             },

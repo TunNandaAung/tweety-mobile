@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
+import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/screens/tweet_reply_form.dart';
 
 class AddReplyScreen extends StatefulWidget {
-  final tweetID;
-  AddReplyScreen({Key key, @required this.tweetID}) : super(key: key);
+  final Tweet tweet;
+  AddReplyScreen({Key key, @required this.tweet}) : super(key: key);
 
   @override
   _AddReplyScreenState createState() => _AddReplyScreenState();
@@ -16,10 +17,11 @@ class _AddReplyScreenState extends State<AddReplyScreen> {
   Widget build(BuildContext context) {
     return TweetReplyForm(
       isReply: true,
+      ownerName: widget.tweet.user.username,
       onSave: (body, image) {
         BlocProvider.of<ReplyBloc>(context).add(
           AddReply(
-            tweetID: widget.tweetID,
+            tweetID: widget.tweet.id,
             body: body,
             image: image,
           ),

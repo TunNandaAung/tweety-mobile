@@ -5,14 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
+import 'package:tweety_mobile/preferences/preferences.dart';
 
 typedef OnSaveCallback = Function(String body, File image);
 
 class TweetReplyForm extends StatefulWidget {
   final OnSaveCallback onSave;
   final bool isReply;
+  final String ownerName;
 
-  TweetReplyForm({Key key, this.onSave, this.isReply}) : super(key: key);
+  TweetReplyForm({Key key, this.onSave, this.isReply, this.ownerName})
+      : super(key: key);
 
   @override
   _TweetReplyFormState createState() => _TweetReplyFormState();
@@ -32,6 +35,11 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   bool isButtonEnabled() {
     return isPopulated;
   }
+
+  String get replyingTo =>
+      widget.ownerName == Prefer.prefs.getString('userName')
+          ? ""
+          : 'Replying to @' + widget.ownerName;
 
   @override
   void initState() {
@@ -159,6 +167,20 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                       )
                     ],
                   ),
+                  widget.isReply
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 0.0),
+                          child: Text(
+                            '$replyingTo',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(
+                                    color: Theme.of(context).primaryColor),
+                          ),
+                        )
+                      : Container(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
