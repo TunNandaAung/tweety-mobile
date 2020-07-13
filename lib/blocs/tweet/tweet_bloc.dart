@@ -128,17 +128,8 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
 
         final List<Tweet> updatedTweet = List.from(currentState.tweets)
           ..replaceRange(index, index + 1, [
-            new Tweet(
-              id: tweet.id,
-              image: tweet.image,
-              body: tweet.body,
-              isLiked: tweet.isLiked,
-              isDisliked: tweet.isDisliked,
+            tweet.copyWith(
               repliesCount: tweet.repliesCount + event.count,
-              likesCount: tweet.likesCount,
-              dislikesCount: tweet.dislikesCount,
-              createdAt: tweet.createdAt,
-              user: tweet.user,
             )
           ]);
 

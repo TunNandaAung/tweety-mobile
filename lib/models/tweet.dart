@@ -47,4 +47,30 @@ class Tweet {
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
 
   Map<String, dynamic> toJson() => _$TweetToJson(this);
+
+  Tweet copyWith({
+    int id,
+    String image,
+    String body,
+    bool isLiked,
+    bool isDisliked,
+    int repliesCount,
+    int likesCount,
+    int dislikesCount,
+    DateTime createdAt,
+    User user,
+  }) {
+    return Tweet(
+      id: id ?? this.id,
+      image: image ?? this.image,
+      body: body ?? this.body,
+      isLiked: isLiked ?? this.isLiked,
+      isDisliked: isDisliked ?? this.isDisliked,
+      repliesCount: repliesCount ?? this.repliesCount,
+      likesCount: likesCount ?? this.likesCount,
+      dislikesCount: dislikesCount ?? this.dislikesCount,
+      createdAt: createdAt ?? this.createdAt,
+      user: user ?? this.user,
+    );
+  }
 }
