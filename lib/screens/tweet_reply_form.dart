@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
+import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 
 typedef OnSaveCallback = Function(String body, File image);
@@ -12,9 +13,11 @@ typedef OnSaveCallback = Function(String body, File image);
 class TweetReplyForm extends StatefulWidget {
   final OnSaveCallback onSave;
   final bool isReply;
-  final String ownerName;
+  final User owner;
+  final bool shouldDisplayTweet;
 
-  TweetReplyForm({Key key, this.onSave, this.isReply, this.ownerName})
+  TweetReplyForm(
+      {Key key, this.onSave, this.isReply, this.owner, this.shouldDisplayTweet})
       : super(key: key);
 
   @override
@@ -27,7 +30,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   double limit = 255;
 
   File _image;
-  // bool _imageInProcess = false;
+  bool _imageInProcess = false;
 
   bool get isPopulated =>
       _bodyController.text.isNotEmpty && _bodyController.text.length < 255;
@@ -37,9 +40,9 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   }
 
   String get replyingTo =>
-      widget.ownerName == Prefer.prefs.getString('userName')
+      widget.owner.username == Prefer.prefs.getString('userName')
           ? "Replying to yourself"
-          : 'Replying to @' + widget.ownerName;
+          : 'Replying to @' + widget.owner.username;
 
   @override
   void initState() {
@@ -167,6 +170,23 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                       )
                     ],
                   ),
+                  // widget.shouldDisplayTweet
+                  //     ? Padding(
+                  //         padding: EdgeInsets.symmetric(
+                  //             vertical: 8.0, horizontal: 0.0),
+                  //         child: Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           children: <Widget>[
+                  //             CircleAvatar(
+                  //               radius: 15.0,
+                  //               backgroundColor: Theme.of(context).cardColor,
+                  //               backgroundImage: NetworkImage(widget.owner.avatar),
+                  //             ),
+                  //             Text(widget.tweet.b)
+                  //           ],
+                  //         ),
+                  //       )
+                  //     : Container(),
                   widget.isReply && replyingTo.length > 0
                       ? Padding(
                           padding: EdgeInsets.symmetric(

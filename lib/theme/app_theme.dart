@@ -8,6 +8,7 @@ final appThemeData = {
     primaryColor: Color(0xFF4299E1),
     cardColor: Colors.white,
     hintColor: Color(0xFF718096),
+    cursorColor: Colors.black,
     scaffoldBackgroundColor: Color(0xFFf3f6fb),
     appBarTheme: AppBarTheme(
       textTheme: TextTheme(

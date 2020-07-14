@@ -214,7 +214,7 @@ class _TweetScreenState extends State<TweetScreen> {
                             }
                             return SliverFillRemaining(
                               child: Center(
-                                child: CircularProgressIndicator(),
+                                child: LoadingIndicator(),
                               ),
                             );
                           },

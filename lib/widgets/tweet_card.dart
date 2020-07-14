@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:tweety_mobile/models/tweet.dart';
+import 'package:tweety_mobile/screens/photo_view_screen.dart';
 import 'package:tweety_mobile/widgets/add_reply_button.dart';
 import 'package:tweety_mobile/widgets/like_dislike_buttons.dart';
 
@@ -59,21 +60,35 @@ class TweetCard extends StatelessWidget {
                   tweet.image != null
                       ? Padding(
                           padding: EdgeInsets.only(top: 12.0),
-                          child: Container(
-                            height: 200.0,
-                            width: 320.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  offset: Offset(0, 5),
-                                  blurRadius: 10.0,
-                                )
-                              ],
-                              image: DecorationImage(
-                                  image: NetworkImage(tweet.image),
-                                  fit: BoxFit.cover),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => PhotoViewScreen(
+                                    title: '',
+                                    actionText: '',
+                                    imageProvider: NetworkImage(tweet.image),
+                                    onTap: () {},
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 200.0,
+                              width: 320.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    offset: Offset(0, 5),
+                                    blurRadius: 10.0,
+                                  )
+                                ],
+                                image: DecorationImage(
+                                    image: NetworkImage(tweet.image),
+                                    fit: BoxFit.cover),
+                              ),
                             ),
                           ),
                         )

@@ -19,7 +19,7 @@ class _AddChildrenReplyScreenState extends State<AddChildrenReplyScreen> {
   Widget build(BuildContext context) {
     return TweetReplyForm(
       isReply: true,
-      ownerName: widget.parent.owner.username,
+      owner: widget.parent.owner,
       onSave: (body, image) {
         BlocProvider.of<ChildrenReplyBloc>(context).add(
           AddChildrenReply(

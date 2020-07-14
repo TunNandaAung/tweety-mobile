@@ -19,7 +19,8 @@ class _AddReplyScreenState extends State<AddReplyScreen> {
   Widget build(BuildContext context) {
     return TweetReplyForm(
       isReply: true,
-      ownerName: widget.tweet.user.username,
+      shouldDisplayTweet: widget.shouldDisplayTweet ?? false,
+      owner: widget.tweet.user,
       onSave: (body, image) {
         BlocProvider.of<ReplyBloc>(context).add(
           AddReply(
