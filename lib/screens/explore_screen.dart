@@ -106,9 +106,66 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                   horizontal: 8.0,
                                   vertical: 5.0,
                                 ),
-                                child: GestureDetector(
-                                  onTap: () {},
-                                  child: Text(users[index].name),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    color: Theme.of(context).cardColor,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                      vertical: 5.0,
+                                    ),
+                                    child: GestureDetector(
+                                      onTap: () {},
+                                      child: ListTile(
+                                        contentPadding: EdgeInsets.all(8.0),
+                                        leading: CircleAvatar(
+                                          radius: 25.0,
+                                          backgroundImage: NetworkImage(
+                                            users[index].avatar,
+                                          ),
+                                          backgroundColor:
+                                              Theme.of(context).cardColor,
+                                        ),
+                                        title: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            RichText(
+                                              text: TextSpan(
+                                                text: users[index].name,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .caption,
+                                              ),
+                                            ),
+                                            Text(
+                                              '@' + users[index].username,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2,
+                                            )
+                                          ],
+                                        ),
+                                        subtitle: Padding(
+                                          padding: EdgeInsets.only(top: 10.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                users[index].description ?? '',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                         childCount: state.users.length,
