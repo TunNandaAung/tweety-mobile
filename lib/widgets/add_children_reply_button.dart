@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/children_reply/children_reply_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/models/tweet.dart';
-import 'package:tweety_mobile/repositories/reply_repository.dart';
 import 'package:tweety_mobile/screens/add_children_reply_screen.dart';
-import 'package:tweety_mobile/services/reply_api_client.dart';
 
 class AddChildrenReplyButton extends StatelessWidget {
   final Tweet tweet;
@@ -53,6 +50,7 @@ class _AddChildrenReplyButtonWidgetState
   set childrenCount(int childrenCount) =>
       widget.parent.childrenCount = childrenCount;
 
+  // ignore: close_sinks
   ChildrenReplyBloc _childrenReplyBloc;
   @override
   void initState() {

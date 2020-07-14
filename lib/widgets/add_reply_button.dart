@@ -49,6 +49,7 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
   int get repliesCount => widget.tweet.repliesCount;
   set repliesCount(int repliesCount) =>
       widget.tweet.repliesCount = repliesCount;
+  // ignore: close_sinks
   ReplyBloc _replyBloc;
   @override
   void initState() {

@@ -26,6 +26,7 @@ class TweetScreen extends StatefulWidget {
 class _TweetScreenState extends State<TweetScreen> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
+  // ignore: close_sinks
   ReplyBloc _replyBloc;
 
   @override

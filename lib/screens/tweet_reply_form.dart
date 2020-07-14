@@ -27,7 +27,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   double limit = 255;
 
   File _image;
-  bool _imageInProcess = false;
+  // bool _imageInProcess = false;
 
   bool get isPopulated =>
       _bodyController.text.isNotEmpty && _bodyController.text.length < 255;
