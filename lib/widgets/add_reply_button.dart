@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tweety_mobile/blocs/children_reply/children_reply_bloc.dart';
+import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,11 +11,9 @@ import 'package:tweety_mobile/services/reply_api_client.dart';
 import 'package:tweety_mobile/screens/add_reply_screen.dart';
 
 class AddReplyButton extends StatelessWidget {
-  final Tweet tweet;
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final Widget child;
 
-  const AddReplyButton({Key key, @required this.tweet, this.scaffoldKey})
-      : super(key: key);
+  const AddReplyButton({Key key, @required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +30,15 @@ class AddReplyButton extends StatelessWidget {
               ChildrenReplyBloc(replyRepository: replyRepository),
         ),
       ],
-      child: AddReplyButtonWidget(
-        tweet: tweet,
-        replyRepository: replyRepository,
-        scaffoldKey: scaffoldKey,
-      ),
+      child: child,
     );
   }
 }
 
 class AddReplyButtonWidget extends StatefulWidget {
   final Tweet tweet;
-  final ReplyRepository replyRepository;
   final GlobalKey<ScaffoldState> scaffoldKey;
-  const AddReplyButtonWidget(
-      {Key key, @required this.tweet, this.replyRepository, this.scaffoldKey})
+  const AddReplyButtonWidget({Key key, @required this.tweet, this.scaffoldKey})
       : super(key: key);
 
   @override
@@ -70,9 +63,12 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
         BlocListener<ReplyBloc, ReplyState>(
           listener: (context, state) {
             if (state is ReplyAdded) {
-              setState(() {
-                repliesCount++;
-              });
+              BlocProvider.of<TweetBloc>(context).add(
+                UpdateReplyCount(
+                  count: widget.tweet.repliesCount + 1,
+                  tweetID: widget.tweet.id,
+                ),
+              );
 
               var currentState = widget.scaffoldKey == null
                   ? Scaffold.of(context)
@@ -124,13 +120,6 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
                     ),
                   ),
                 );
-            }
-          },
-        ),
-        BlocListener<ChildrenReplyBloc, ChildrenReplyState>(
-          listener: (context, state) {
-            if (state is ChildrenReplyAdded) {
-              repliesCount++;
             }
           },
         ),

@@ -6,7 +6,9 @@ import 'package:tweety_mobile/screens/tweet_reply_form.dart';
 
 class AddReplyScreen extends StatefulWidget {
   final Tweet tweet;
-  AddReplyScreen({Key key, @required this.tweet}) : super(key: key);
+  final shouldDisplayTweet;
+  AddReplyScreen({Key key, @required this.tweet, this.shouldDisplayTweet})
+      : super(key: key);
 
   @override
   _AddReplyScreenState createState() => _AddReplyScreenState();

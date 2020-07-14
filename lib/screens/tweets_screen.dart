@@ -70,8 +70,7 @@ class _TweetsScreenState extends State<TweetsScreen> {
           }
         },
         child: RefreshIndicator(
-          backgroundColor: Colors.grey[200],
-          color: Colors.black,
+          color: Theme.of(context).primaryColor,
           strokeWidth: 1.0,
           onRefresh: () {
             BlocProvider.of<TweetBloc>(context).add(

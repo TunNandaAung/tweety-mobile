@@ -129,7 +129,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
         final List<Tweet> updatedTweet = List.from(currentState.tweets)
           ..replaceRange(index, index + 1, [
             tweet.copyWith(
-              repliesCount: tweet.repliesCount + event.count,
+              repliesCount: event.count,
             )
           ]);
 

@@ -97,9 +97,11 @@ class TweetCard extends StatelessWidget {
                   ),
                 ),
                 AddReplyButton(
-                  tweet: tweet,
-                  scaffoldKey: scaffoldKey,
-                )
+                  child: AddReplyButtonWidget(
+                    tweet: tweet,
+                    scaffoldKey: scaffoldKey,
+                  ),
+                ),
               ],
             ),
           )
