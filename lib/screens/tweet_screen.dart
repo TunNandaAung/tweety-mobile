@@ -85,6 +85,22 @@ class _TweetScreenState extends State<TweetScreen> {
                 tweetID: widget.tweet.id,
               ),
             );
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  backgroundColor: Theme.of(context).primaryColor,
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Your reply was added!"),
+                    ],
+                  ),
+                ),
+              );
           }
         },
         child: NestedScrollView(
@@ -254,7 +270,7 @@ class _TweetScreenState extends State<TweetScreen> {
                   },
                 ),
                 Container(
-                  width: 350.0,
+                  width: 340.0,
                   height: 40.0,
                   padding: EdgeInsets.symmetric(horizontal: 15.0),
                   alignment: Alignment.center,

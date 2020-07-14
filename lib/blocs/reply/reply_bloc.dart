@@ -100,7 +100,7 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
           image: event.image);
       if (currentState is ReplyLoaded) {
         final List<Reply> updatedReplies = List.from(currentState.replies)
-          ..insert(0, reply);
+          ..add(reply);
 
         yield ReplyAdded(reply: reply);
         yield currentState.copyWith(replies: updatedReplies);
