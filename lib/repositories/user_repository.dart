@@ -100,4 +100,8 @@ class UserRepository {
   Future<String> getAvatar() async {
     return userApiClient.getAvatar();
   }
+
+  Future<List<User>> explore() async {
+    return userApiClient.explore();
+  }
 }

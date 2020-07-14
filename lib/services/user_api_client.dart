@@ -310,21 +310,32 @@ class UserApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-      url,
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        HttpHeaders.acceptHeader: 'application/json',
-        HttpHeaders.authorizationHeader: 'Bearer $token'
-      },
-    );
+    final response =
+        await this.httpClient.get(url, headers: requestHeaders(token));
     if (response.statusCode != 200) {
       print(response.body);
       throw Exception('Invalid Credentials');
     }
 
     final avatar = jsonDecode(response.body)['data']['avatar'] as String;
-    print(avatar);
     return avatar;
+  }
+
+  Future<List<User>> explore() async {
+    final url = '$baseUrl/explore';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response =
+        await this.httpClient.get(url, headers: requestHeaders(token));
+
+    if (response.statusCode != 200) {
+      print(response.body);
+      throw Exception('Error getting response');
+    }
+
+    final usersJson = jsonDecode(response.body)['data'] as List;
+
+    return usersJson.map((user) => User.fromJson(user)).toList();
   }
 }

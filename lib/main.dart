@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
+import 'package:tweety_mobile/blocs/explore/explore_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/blocs/simple_bloc_observer.dart';
@@ -77,6 +78,9 @@ class _TweetyState extends State<Tweety> {
         ),
         BlocProvider<AuthProfileBloc>(
           create: (context) => AuthProfileBloc(userRepository: userRepository),
+        ),
+        BlocProvider<ExploreBloc>(
+          create: (context) => ExploreBloc(userRepository: userRepository),
         ),
       ],
       child: _buildWithTheme(context),
