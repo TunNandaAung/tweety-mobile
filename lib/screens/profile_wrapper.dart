@@ -27,9 +27,9 @@ class ProfileWrapper extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ProfileBloc>(
-          create: (context) => ProfileBloc(userRepository: userRepository),
-        ),
+        // BlocProvider<ProfileBloc>(
+        //   create: (context) => ProfileBloc(userRepository: userRepository),
+        // ),
         BlocProvider<ProfileTweetBloc>(
           create: (context) =>
               ProfileTweetBloc(tweetRepository: tweetRepository),

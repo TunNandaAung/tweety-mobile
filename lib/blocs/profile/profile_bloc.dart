@@ -25,13 +25,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
+  bool _sameProfile(ProfileState state, username) =>
+      state is ProfileLoaded && state.user.username == username;
+
   Stream<ProfileState> _mapFetchProfileToState(FetchProfile event) async* {
-    yield ProfileLoading();
-    try {
-      final user = await userRepository.getUserInfo(event.username);
-      yield ProfileLoaded(user: user);
-    } catch (_) {
-      yield ProfileError();
+    final currentState = state;
+
+    if (!_sameProfile(currentState, event.username)) {
+      yield ProfileLoading();
+      try {
+        final user = await userRepository.getUserInfo(event.username);
+        yield ProfileLoaded(user: user);
+      } catch (_) {
+        yield ProfileError();
+      }
+    } else {
+      yield currentState;
     }
   }
 }

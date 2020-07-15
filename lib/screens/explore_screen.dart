@@ -2,13 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:tweety_mobile/blocs/explore/explore_bloc.dart';
-import 'package:tweety_mobile/blocs/profile_tweet/profile_tweet_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
-import 'package:tweety_mobile/repositories/tweet_repository.dart';
-import 'package:tweety_mobile/screens/profile_screen.dart';
-import 'package:tweety_mobile/services/tweet_api_client.dart';
 import 'package:tweety_mobile/widgets/avatar_button.dart';
 import 'package:tweety_mobile/widgets/follow_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
@@ -146,20 +141,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       ),
       child: GestureDetector(
         onTap: () {
-          final client = http.Client();
-          final TweetRepository tweetRepository = TweetRepository(
-            tweetApiClient: TweetApiClient(httpClient: client),
-          );
-
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => BlocProvider<ProfileTweetBloc>(
-              create: (context) =>
-                  ProfileTweetBloc(tweetRepository: tweetRepository),
-              child: ProfileScreen(
-                username: user.username,
-              ),
-            ),
-          ));
+          Navigator.of(context).pushNamed('/profile', arguments: user.username);
         },
         child: Container(
           decoration: BoxDecoration(
