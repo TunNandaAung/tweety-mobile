@@ -37,6 +37,10 @@ final appThemeData = {
         fontWeight: FontWeight.w600,
         fontSize: 16,
       ),
+      button: TextStyle(
+        color: Colors.white,
+        fontSize: 14.0,
+      ),
       bodyText1: TextStyle(
         color: Colors.black,
         fontSize: 14.0,

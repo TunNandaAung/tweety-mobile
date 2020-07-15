@@ -20,6 +20,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['created_at'] as String),
     followsCount: json['follows_count'] as int,
     followersCount: json['followers_count'] as int,
+    isFollowed: json['is_followed'] as bool,
   );
 }
 
@@ -34,4 +35,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'created_at': instance.createdAt?.toIso8601String(),
       'follows_count': instance.followsCount,
       'followers_count': instance.followersCount,
+      'is_followed': instance.isFollowed,
     };

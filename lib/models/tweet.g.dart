@@ -19,9 +19,10 @@ Tweet _$TweetFromJson(Map<String, dynamic> json) {
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
-  )..user = json['user'] == null
-      ? null
-      : User.fromJson(json['user'] as Map<String, dynamic>);
+    user: json['user'] == null
+        ? null
+        : User.fromJson(json['user'] as Map<String, dynamic>),
+  );
 }
 
 Map<String, dynamic> _$TweetToJson(Tweet instance) => <String, dynamic>{

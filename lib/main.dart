@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
 import 'package:tweety_mobile/blocs/explore/explore_bloc.dart';
+import 'package:tweety_mobile/blocs/follow/follow_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/blocs/simple_bloc_observer.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
+import 'package:tweety_mobile/repositories/follow_repository.dart';
 import 'package:tweety_mobile/repositories/tweet_repository.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
 import 'package:tweety_mobile/screens/home_screen.dart';
@@ -14,6 +16,7 @@ import 'package:tweety_mobile/screens/login_screen.dart';
 import 'package:tweety_mobile/screens/profile_wrapper.dart';
 import 'package:tweety_mobile/screens/publish_tweet_screen.dart';
 import 'package:tweety_mobile/screens/splash_screen.dart';
+import 'package:tweety_mobile/services/follow_api_client.dart';
 import 'package:tweety_mobile/services/tweet_api_client.dart';
 import 'package:tweety_mobile/services/user_api_client.dart';
 import 'package:tweety_mobile/theme/app_theme.dart';
@@ -66,6 +69,10 @@ class _TweetyState extends State<Tweety> {
     final UserRepository userRepository = UserRepository(
       userApiClient: UserApiClient(httpClient: client),
     );
+    final FollowRepository followRepository = FollowRepository(
+      followApiClient: FollowApiClient(httpClient: client),
+    );
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<ThemeBloc>(
@@ -81,6 +88,9 @@ class _TweetyState extends State<Tweety> {
         ),
         BlocProvider<ExploreBloc>(
           create: (context) => ExploreBloc(userRepository: userRepository),
+        ),
+        BlocProvider<FollowBloc>(
+          create: (context) => FollowBloc(followRepository: followRepository),
         ),
       ],
       child: _buildWithTheme(context),

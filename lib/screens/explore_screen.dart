@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/explore/explore_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/widgets/avatar_button.dart';
+import 'package:tweety_mobile/widgets/follow_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
 
@@ -128,24 +129,31 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                           backgroundColor:
                                               Theme.of(context).cardColor,
                                         ),
-                                        title: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        title: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
-                                            RichText(
-                                              text: TextSpan(
-                                                text: users[index].name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .caption,
-                                              ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                RichText(
+                                                  text: TextSpan(
+                                                    text: users[index].name,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .caption,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '@' + users[index].username,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2,
+                                                )
+                                              ],
                                             ),
-                                            Text(
-                                              '@' + users[index].username,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText2,
-                                            )
+                                            FollowButton(user: users[index]),
                                           ],
                                         ),
                                         subtitle: Padding(

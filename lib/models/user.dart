@@ -24,6 +24,9 @@ class User {
   @JsonKey(name: 'followers_count')
   int followersCount;
 
+  @JsonKey(name: 'is_followed')
+  bool isFollowed;
+
   User({
     this.id,
     this.name,
@@ -35,6 +38,7 @@ class User {
     this.createdAt,
     this.followsCount,
     this.followersCount,
+    this.isFollowed,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
