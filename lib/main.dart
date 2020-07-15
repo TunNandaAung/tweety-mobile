@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
 import 'package:tweety_mobile/blocs/explore/explore_bloc.dart';
 import 'package:tweety_mobile/blocs/follow/follow_bloc.dart';
+import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
+import 'package:tweety_mobile/blocs/profile_tweet/profile_tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/blocs/simple_bloc_observer.dart';
@@ -91,6 +93,9 @@ class _TweetyState extends State<Tweety> {
         ),
         BlocProvider<FollowBloc>(
           create: (context) => FollowBloc(followRepository: followRepository),
+        ),
+        BlocProvider<ProfileBloc>(
+          create: (context) => ProfileBloc(userRepository: userRepository),
         ),
       ],
       child: _buildWithTheme(context),

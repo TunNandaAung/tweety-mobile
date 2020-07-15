@@ -41,7 +41,6 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
   }
 
   Stream<ExploreState> _mapRefreshExploreToState(event) async* {
-    yield ExploreUserLoading();
     try {
       final users = await userRepository.explore();
       yield ExploreUserLoaded(users: users);

@@ -2,8 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
 import 'package:tweety_mobile/blocs/explore/explore_bloc.dart';
+import 'package:tweety_mobile/blocs/profile_tweet/profile_tweet_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
+import 'package:tweety_mobile/repositories/tweet_repository.dart';
+import 'package:tweety_mobile/screens/profile_screen.dart';
+import 'package:tweety_mobile/services/tweet_api_client.dart';
 import 'package:tweety_mobile/widgets/avatar_button.dart';
 import 'package:tweety_mobile/widgets/follow_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
@@ -102,80 +107,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       delegate: SliverChildBuilderDelegate(
                         (context, index) => index >= users.length
                             ? LoadingIndicator()
-                            : Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                  vertical: 5.0,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    color: Theme.of(context).cardColor,
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8.0,
-                                      vertical: 5.0,
-                                    ),
-                                    child: GestureDetector(
-                                      onTap: () {},
-                                      child: ListTile(
-                                        contentPadding: EdgeInsets.all(8.0),
-                                        leading: CircleAvatar(
-                                          radius: 25.0,
-                                          backgroundImage: NetworkImage(
-                                            users[index].avatar,
-                                          ),
-                                          backgroundColor:
-                                              Theme.of(context).cardColor,
-                                        ),
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                RichText(
-                                                  text: TextSpan(
-                                                    text: users[index].name,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .caption,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  '@' + users[index].username,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText2,
-                                                )
-                                              ],
-                                            ),
-                                            FollowButton(user: users[index]),
-                                          ],
-                                        ),
-                                        subtitle: Padding(
-                                          padding: EdgeInsets.only(top: 10.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(
-                                                users[index].description ?? '',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            : _userCard(users[index]),
                         childCount: state.users.length,
                       ),
                     );
@@ -200,6 +132,88 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 },
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _userCard(User user) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: 8.0,
+        vertical: 5.0,
+      ),
+      child: GestureDetector(
+        onTap: () {
+          final client = http.Client();
+          final TweetRepository tweetRepository = TweetRepository(
+            tweetApiClient: TweetApiClient(httpClient: client),
+          );
+
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => BlocProvider<ProfileTweetBloc>(
+              create: (context) =>
+                  ProfileTweetBloc(tweetRepository: tweetRepository),
+              child: ProfileScreen(
+                username: user.username,
+              ),
+            ),
+          ));
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0),
+            color: Theme.of(context).cardColor,
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 5.0,
+            ),
+            child: ListTile(
+              contentPadding: EdgeInsets.all(8.0),
+              leading: CircleAvatar(
+                radius: 25.0,
+                backgroundImage: NetworkImage(
+                  user.avatar,
+                ),
+                backgroundColor: Theme.of(context).cardColor,
+              ),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      RichText(
+                        text: TextSpan(
+                          text: user.name,
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                      ),
+                      Text(
+                        '@' + user.username,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      )
+                    ],
+                  ),
+                  FollowButton(user: user),
+                ],
+              ),
+              subtitle: Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      user.description ?? '',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),

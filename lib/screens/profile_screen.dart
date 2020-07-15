@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/blocs/profile_tweet/profile_tweet_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
+import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/screens/tweet_wrapper.dart';
+import 'package:tweety_mobile/widgets/follow_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
+import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/tweet_card.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -189,21 +192,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(right: 10.0),
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 5.0, horizontal: 10.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.lightBlue,
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        child: Text(
-                                          "Following",
-                                          style: TextStyle(
-                                              fontSize: 17.0,
-                                              color: Colors.white),
-                                        ),
-                                      ),
+                                      child: widget.username !=
+                                              Prefer.prefs.getString('userName')
+                                          ? FollowButton(user: state.user)
+                                          : Container(),
                                     )
                                   ],
                                 ),
@@ -229,6 +221,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   builder: (context, state) {
                     if (state is ProfileTweetLoading) {
                       return LoadingIndicator();
+                    }
+
+                    if (state is ProfileTweetError) {
+                      return Refresh(
+                        title: "Couldn't load tweets!",
+                        onPressed: () {
+                          BlocProvider.of<ProfileTweetBloc>(context).add(
+                              FetchProfileTweet(username: widget.username));
+                        },
+                      );
                     }
 
                     if (state is ProfileTweetLoaded) {
