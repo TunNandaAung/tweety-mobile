@@ -30,8 +30,6 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
       yield* _mapUpdateAuthProfilePasswordToState(event);
     } else if (event is UpdateAuthProfileEmail) {
       yield* _mapUpdateAuthProfileEmailToState(event);
-    } else if (event is UpdateAuthProfileImage) {
-      yield* _mapUpdateAuthProfileImageToState(event);
     } else if (event is RequestPasswordResetInfo) {
       yield* _mapRequestPasswordResetInfoToState(event);
     } else if (event is GetAvatar) {
@@ -80,11 +78,19 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
       UpdateAuthProfileInfo event) async* {
     yield AuthProfileInfoUpdating();
     try {
-      await userRepository.updateInfo(
-          event.name, event.shopAddress, event.phone, event.shopName);
-      yield AuthProfileInfoUpdateSuccess();
-    } catch (_) {
-      yield AuthProfileError();
+      final user = await userRepository.updateProfile(
+          name: event.name,
+          username: event.username,
+          description: event.description,
+          avatar: event.avatar,
+          banner: event.banner);
+
+      Prefer.prefs.remove('userName');
+      Prefer.prefs.setString('userName', user.username);
+
+      yield AuthProfileInfoUpdateSuccess(user: user);
+    } catch (e) {
+      yield AuthProfileErrorMessage(errorMessage: e.message);
     }
   }
 
@@ -107,17 +113,6 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
     yield AuthProfileInfoUpdating();
     try {
       await userRepository.updateEmail(event.password, event.email);
-      yield AuthProfileInfoUpdateSuccess();
-    } catch (e) {
-      yield AuthProfileErrorMessage(errorMessage: e.message);
-    }
-  }
-
-  Stream<AuthProfileState> _mapUpdateAuthProfileImageToState(
-      UpdateAuthProfileImage event) async* {
-    yield AuthProfileInfoUpdating();
-    try {
-      await userRepository.updateImage(event.image);
       yield AuthProfileInfoUpdateSuccess();
     } catch (e) {
       yield AuthProfileErrorMessage(errorMessage: e.message);

@@ -426,6 +426,7 @@ class TweetyAvatar extends StatelessWidget {
           padding: const EdgeInsets.all(2.0),
           child: CircleAvatar(
             radius: size,
+            backgroundColor: Theme.of(context).cardColor,
             backgroundImage: avatar == null
                 ? AssetImage("assets/images/twitter_flutter_logo.jpg")
                 : NetworkImage(avatar),
@@ -442,32 +443,35 @@ class EditProfileButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => EditProfileScreen(
-              user: user,
+    return BlocProvider.value(
+      value: BlocProvider.of<ProfileBloc>(context),
+      child: FlatButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => EditProfileScreen(
+                user: user,
+              ),
             ),
-          ),
-        );
-      },
-      color: Colors.transparent,
-      disabledColor: Colors.grey,
-      padding: EdgeInsets.all(0.0),
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-            color: Theme.of(context).primaryColor,
-            width: 1,
-            style: BorderStyle.solid),
-        borderRadius: BorderRadius.circular(30.0),
-      ),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      child: Text(
-        'Edit Profile',
-        style: Theme.of(context).textTheme.button.copyWith(
+          );
+        },
+        color: Colors.transparent,
+        disabledColor: Colors.grey,
+        padding: EdgeInsets.all(0.0),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
               color: Theme.of(context).primaryColor,
-            ),
+              width: 1,
+              style: BorderStyle.solid),
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        child: Text(
+          'Edit Profile',
+          style: Theme.of(context).textTheme.button.copyWith(
+                color: Theme.of(context).primaryColor,
+              ),
+        ),
       ),
     );
   }

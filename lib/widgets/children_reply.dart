@@ -25,6 +25,7 @@ class _ChildrenReplyState extends State<ChildrenReply> {
               backgroundImage: NetworkImage(
                 widget.reply.owner.avatar,
               ),
+              backgroundColor: Theme.of(context).cardColor,
             ),
             title: RichText(
               text: TextSpan(

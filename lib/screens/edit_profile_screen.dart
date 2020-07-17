@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
+import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -15,6 +18,12 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool isButtonEnabled(AuthProfileState state) {
+    return _formKey.currentState.validate() &&
+        state is! AuthProfileInfoUpdating;
+  }
+
   bool _autovalidate = false;
   File _avatar;
   File _banner;
@@ -143,209 +152,271 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0.0,
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
-        title: Text(
-          'Edit Profile',
-          style: TextStyle(letterSpacing: 1.0, color: Colors.black),
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(13.0),
-            child: FlatButton(
-              // onPressed: isButtonEnabled() ? _onFormSubmitted : null,
-              onPressed: _onFormSubmitted,
-              color: Theme.of(context).primaryColor,
-              disabledColor: Colors.grey,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              child: Text(
-                'Save',
-                style: Theme.of(context).textTheme.button.copyWith(
-                      color: Colors.white,
-                    ),
-              ),
-            ),
-          )
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(12.0),
-        child: ListView(
-          children: <Widget>[
-            Form(
-              key: _formKey,
-              autovalidate: _autovalidate,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Profile Avatar',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  SizedBox(width: 20.0),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: GestureDetector(
-                        onTap: () => selectImageDialog(context, isAvatar: true),
-                        child: CircleAvatar(
-                          radius: 50.0,
-                          backgroundColor: Theme.of(context).cardColor,
-                          backgroundImage: _avatar == null
-                              ? NetworkImage(widget.user.avatar)
-                              : FileImage(_avatar),
-                        ),
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 0.0,
+          iconTheme: IconThemeData(
+            color: Colors.black,
+          ),
+          title: Text(
+            'Edit Profile',
+            style: TextStyle(letterSpacing: 1.0, color: Colors.black),
+          ),
+          centerTitle: true,
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(13.0),
+              child: FlatButton(
+                // onPressed: isButtonEnabled() ? _onFormSubmitted : null,
+                onPressed: _onFormSubmitted,
+                color: Theme.of(context).primaryColor,
+                disabledColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Text(
+                  'Save',
+                  style: Theme.of(context).textTheme.button.copyWith(
+                        color: Colors.white,
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  Text(
-                    'Profile Banner',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  SizedBox(height: 10.0),
-                  GestureDetector(
-                    onTap: () => selectImageDialog(context, isAvatar: false),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: Image(
-                        image: _banner == null
-                            ? NetworkImage(widget.user.banner)
-                            : FileImage(_banner),
-                        width: 400.0,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  Text(
-                    'Name',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  SizedBox(height: 10.0),
-                  TextFormField(
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w500),
-                    initialValue: widget.user.name,
-                    decoration: InputDecoration(
-                      filled: true,
-                      focusColor: Colors.white,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          width: 2.0,
-                          color: Colors.red,
-                        ),
-                      ),
-                      hintText: 'Name',
-                      hintStyle: TextStyle(
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    validator: (val) {
-                      return val.trim().isEmpty ? 'Name cannot be empty' : null;
-                    },
-                    onSaved: (value) => _name = value,
-                  ),
-                  SizedBox(height: 20.0),
-                  Text(
-                    'Username',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  SizedBox(height: 10.0),
-                  TextFormField(
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w500),
-                    initialValue: widget.user.username,
-                    decoration: InputDecoration(
-                      filled: true,
-                      focusColor: Colors.white,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          width: 2.0,
-                          color: Colors.red,
-                        ),
-                      ),
-                      hintText: 'Username',
-                      hintStyle: TextStyle(
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    validator: (val) {
-                      return val.trim().isEmpty
-                          ? 'Username cannot be empty'
-                          : null;
-                    },
-                    onSaved: (value) => _username = value,
-                  ),
-                  SizedBox(height: 20.0),
-                  Text(
-                    'Description',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  SizedBox(height: 10.0),
-                  TextFormField(
-                    maxLines: 5,
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w500),
-                    initialValue: widget.user.description,
-                    decoration: InputDecoration(
-                      filled: true,
-                      focusColor: Colors.white,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          width: 2.0,
-                          color: Colors.red,
-                        ),
-                      ),
-                      hintText: 'A little info about yourself?',
-                      hintStyle: TextStyle(
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    onSaved: (value) => _description = value,
-                  ),
-                ],
+                ),
               ),
             )
           ],
         ),
-      ),
-    );
+        body: BlocListener<AuthProfileBloc, AuthProfileState>(
+          listener: (context, state) {
+            if (state is AuthProfileErrorMessage) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    elevation: 6.0,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    backgroundColor: Colors.red,
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          state.errorMessage,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+            }
+            if (state is AuthProfileInfoUpdating) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    elevation: 6.0,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    backgroundColor: Colors.black26,
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Saving...',
+                        ),
+                        CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+            }
+            if (state is AuthProfileInfoUpdateSuccess) {
+              BlocProvider.of<ProfileBloc>(context)
+                  .add(RefreshProfile(user: state.user));
+              BlocProvider.of<AuthProfileBloc>(context).add(FetchAuthProfile());
+
+              Navigator.of(context).pop();
+            }
+          },
+          child: Padding(
+            padding: EdgeInsets.all(12.0),
+            child: ListView(
+              children: <Widget>[
+                Form(
+                  key: _formKey,
+                  autovalidate: _autovalidate,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Profile Avatar',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      SizedBox(width: 20.0),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: GestureDetector(
+                            onTap: () =>
+                                selectImageDialog(context, isAvatar: true),
+                            child: CircleAvatar(
+                              radius: 50.0,
+                              backgroundColor: Theme.of(context).cardColor,
+                              backgroundImage: _avatar == null
+                                  ? NetworkImage(widget.user.avatar)
+                                  : FileImage(_avatar),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20.0),
+                      Text(
+                        'Profile Banner',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      SizedBox(height: 10.0),
+                      GestureDetector(
+                        onTap: () =>
+                            selectImageDialog(context, isAvatar: false),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: Image(
+                            image: _banner == null
+                                ? NetworkImage(widget.user.banner)
+                                : FileImage(_banner),
+                            width: 400.0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20.0),
+                      Text(
+                        'Name',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      SizedBox(height: 10.0),
+                      TextFormField(
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w500),
+                        initialValue: widget.user.name,
+                        decoration: InputDecoration(
+                          filled: true,
+                          focusColor: Colors.white,
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              width: 2.0,
+                              color: Colors.red,
+                            ),
+                          ),
+                          hintText: 'Name',
+                          hintStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        validator: (val) {
+                          return val.trim().isEmpty
+                              ? 'Name cannot be empty'
+                              : null;
+                        },
+                        onSaved: (value) => _name = value,
+                      ),
+                      SizedBox(height: 20.0),
+                      Text(
+                        'Username',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      SizedBox(height: 10.0),
+                      TextFormField(
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w500),
+                        initialValue: widget.user.username,
+                        decoration: InputDecoration(
+                          filled: true,
+                          focusColor: Colors.white,
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              width: 2.0,
+                              color: Colors.red,
+                            ),
+                          ),
+                          hintText: 'Username',
+                          hintStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        validator: (val) {
+                          return val.trim().isEmpty
+                              ? 'Username cannot be empty'
+                              : null;
+                        },
+                        onSaved: (value) => _username = value,
+                      ),
+                      SizedBox(height: 20.0),
+                      Text(
+                        'Description',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      SizedBox(height: 10.0),
+                      TextFormField(
+                        maxLines: 5,
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w500),
+                        initialValue: widget.user.description,
+                        decoration: InputDecoration(
+                          filled: true,
+                          focusColor: Colors.white,
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              width: 2.0,
+                              color: Colors.red,
+                            ),
+                          ),
+                          hintText: 'A little info about yourself?',
+                          hintStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        onSaved: (value) => _description = value,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
   }
 
   void _onFormSubmitted() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       print("CALLED");
-      // BlocProvider.of<ProfileBloc>(context).add(
-      //   UpdateProfileInfo(
-      //     name: _name,
-      //     shopAddress: _address,
-      //     phone: _phone,
-      //     shopName: _shopName,
-      //   ),
-      // );
+      BlocProvider.of<AuthProfileBloc>(context).add(
+        UpdateAuthProfileInfo(
+          name: _name,
+          username: _username,
+          description: _description,
+          avatar: _avatar,
+          banner: _banner,
+        ),
+      );
     } else {
       setState(() {
         _autovalidate = true;

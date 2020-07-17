@@ -157,31 +157,41 @@ class UserApiClient {
     return User.fromJson(userJson);
   }
 
-  Future<void> editInfo(
-      {String name, String shopAddress, String phone, String shopName}) async {
-    final url = '$baseUrl/$userName/update-info';
+  Future<User> editProfile(
+      {String name,
+      String username,
+      String description,
+      File avatar,
+      File banner}) async {
+    final authUsername = Prefer.prefs.getString('userName');
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.patch(
-          url,
-          headers: requestHeaders(token),
-          body: jsonEncode(
-            <String, String>{
-              'name': name,
-              'address': shopAddress,
-              'shop_name': shopName,
-              'phone': phone,
-            },
-          ),
-        );
-    if (response.statusCode != 201) {
-      var responseJson = jsonDecode(response.body);
-      print(responseJson);
+    final url = '$baseUrl/profiles/$authUsername';
 
-      throw Exception('Error updating info!');
+    final request = await prepareResquest(
+        name, username, description, avatar, banner, url, 'PATCH');
+
+    Map<String, String> _headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    request.headers.addAll(_headers);
+    final response = await request.send();
+
+    var _response = await http.Response.fromStream(response);
+
+    if (response.statusCode == 422) {
+      var errorJson = jsonDecode(_response.body)['errors'];
+
+      if (errorJson['username'] != null) {
+        throw Exception('Username already taken.');
+      }
+    } else if (response.statusCode != 201) {
+      throw Exception('Error updating profile!');
     }
-    return;
+    return User.fromJson(jsonDecode(_response.body)['data']);
   }
 
   Future<String> editPassword(
@@ -251,35 +261,6 @@ class UserApiClient {
     return;
   }
 
-  Future<void> editImage(File image) async {
-    final url = '$baseUrl/profile/avatar';
-    final token = Prefer.prefs.getString('token');
-
-    final request = http.MultipartRequest('POST', Uri.parse(url));
-    var stream = new http.ByteStream(Stream.castFrom(image.openRead()));
-    var length = await image.length();
-    var multipartFile = new MultipartFile("avatar", stream, length,
-        filename: basename(image.path),
-        contentType: MediaType('multipart', 'form-data'));
-    request.files.add(multipartFile);
-
-    Map<String, String> _headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token'
-    };
-
-    request.headers.addAll(_headers);
-    final response = await request.send();
-
-    if (response.statusCode != 204) {
-      var _response = await http.Response.fromStream(response);
-      print(_response.body);
-      throw Exception('Error updating image.');
-    }
-
-    return;
-  }
-
   Future<void> requestPasswordResetInfo(String email) async {
     final url = '$baseUrl/password/forgot';
 
@@ -337,5 +318,43 @@ class UserApiClient {
     final usersJson = jsonDecode(response.body)['data'] as List;
 
     return usersJson.map((user) => User.fromJson(user)).toList();
+  }
+
+  Future<MultipartRequest> prepareResquest(
+      String name,
+      String username,
+      String description,
+      File avatar,
+      File banner,
+      String url,
+      String method) async {
+    final request = http.MultipartRequest('POST', Uri.parse(url));
+    if (method == 'PATCH') {
+      request.fields['_method'] = 'PATCH';
+    }
+
+    request.fields['name'] = name;
+    request.fields['username'] = username;
+    request.fields['description'] = description;
+
+    if (avatar != null) {
+      var stream = new http.ByteStream(Stream.castFrom(avatar.openRead()));
+      var length = await avatar.length();
+      var multipartFile = new MultipartFile("avatar", stream, length,
+          filename: basename(avatar.path),
+          contentType: MediaType('multipart', 'form-data'));
+      request.files.add(multipartFile);
+    }
+
+    if (banner != null) {
+      var stream = new http.ByteStream(Stream.castFrom(banner.openRead()));
+      var length = await banner.length();
+      var multipartFile = new MultipartFile("banner", stream, length,
+          filename: basename(banner.path),
+          contentType: MediaType('multipart', 'form-data'));
+      request.files.add(multipartFile);
+    }
+
+    return request;
   }
 }

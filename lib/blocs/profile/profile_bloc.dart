@@ -22,6 +22,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async* {
     if (event is FetchProfile) {
       yield* _mapFetchProfileToState(event);
+    } else if (event is RefreshProfile) {
+      yield* _mapRefreshProfileToState(event);
     }
   }
 
@@ -42,5 +44,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } else {
       yield currentState;
     }
+  }
+
+  Stream<ProfileState> _mapRefreshProfileToState(RefreshProfile event) async* {
+    yield ProfileLoaded(user: event.user);
   }
 }

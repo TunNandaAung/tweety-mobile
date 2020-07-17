@@ -36,7 +36,7 @@ class _AvatarButtonState extends State<AvatarButton> {
             }
             return CircleAvatar(
               radius: 15.0,
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).cardColor,
             );
           },
         ),

@@ -58,12 +58,6 @@ class UserRepository {
     return userApiClient.fetchUserInfo(userName);
   }
 
-  Future<void> updateInfo(
-      String name, String shopAddress, String phone, String shopName) async {
-    return userApiClient.editInfo(
-        name: name, shopAddress: shopAddress, phone: phone, shopName: shopName);
-  }
-
   Future<String> updatePassword(String oldPassword, String newPassword,
       String newPasswordConfirmation) async {
     return userApiClient.editPassword(
@@ -79,8 +73,19 @@ class UserRepository {
     );
   }
 
-  Future<void> updateImage(File image) async {
-    return userApiClient.editImage(image);
+  Future<User> updateProfile(
+      {String name,
+      String username,
+      String description,
+      File avatar,
+      File banner}) async {
+    return userApiClient.editProfile(
+      name: name,
+      username: username,
+      description: description,
+      avatar: avatar,
+      banner: banner,
+    );
   }
 
   // Future<String> getFcmtoken() async {

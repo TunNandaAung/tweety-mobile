@@ -21,23 +21,24 @@ class GetAvatar extends AuthProfileEvent {
 
 class UpdateAuthProfileInfo extends AuthProfileEvent {
   final String name;
-  final String shopAddress;
-  final String phone;
-  final String shopName;
+  final String username;
+  final String description;
+  final File avatar;
+  final File banner;
 
-  const UpdateAuthProfileInfo({
-    @required this.name,
-    @required this.shopAddress,
-    @required this.phone,
-    @required this.shopName,
-  });
+  const UpdateAuthProfileInfo(
+      {@required this.name,
+      @required this.username,
+      @required this.description,
+      @required this.avatar,
+      @required this.banner});
 
   @override
-  List<Object> get props => [name, shopAddress, phone, shopName];
+  List<Object> get props => [name, username, description, avatar, banner];
 
   @override
   String toString() {
-    return 'UpdateAuthProfileInfo { name: $name, shopAddress: $shopAddress, phone: $phone, shopName: $shopName }';
+    return 'UpdateAuthProfileInfo { name: $name, username: $username, description: $description }';
   }
 }
 

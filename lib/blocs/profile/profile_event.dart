@@ -14,6 +14,10 @@ class FetchProfile extends ProfileEvent {
 }
 
 class RefreshProfile extends ProfileEvent {
+  final User user;
+
+  const RefreshProfile({@required this.user});
+
   @override
   List<Object> get props => [];
 }

@@ -366,7 +366,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
         }
         return CircleAvatar(
           radius: 20.0,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).cardColor,
         );
       },
     );

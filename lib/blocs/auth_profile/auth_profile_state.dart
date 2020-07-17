@@ -31,7 +31,14 @@ class AuthProfileLoaded extends AuthProfileState {
 
 class AuthProfileError extends AuthProfileState {}
 
-class AuthProfileInfoUpdateSuccess extends AuthProfileState {}
+class AuthProfileInfoUpdateSuccess extends AuthProfileState {
+  final User user;
+
+  const AuthProfileInfoUpdateSuccess({this.user}) : assert(user != null);
+
+  @override
+  List<Object> get props => [user];
+}
 
 class AuthProfileInfoUpdating extends AuthProfileState {}
 

@@ -92,7 +92,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 backgroundImage: NetworkImage(
                   widget.reply.owner.avatar,
                 ),
-                backgroundColor: Colors.white,
+                backgroundColor: Theme.of(context).cardColor,
               ),
               title: RichText(
                 text: TextSpan(
