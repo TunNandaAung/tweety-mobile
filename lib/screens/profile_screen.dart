@@ -5,6 +5,7 @@ import 'package:tweety_mobile/blocs/profile_tweet/profile_tweet_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/screens/edit_profile_screen.dart';
+import 'package:tweety_mobile/screens/photo_view_screen.dart';
 import 'package:tweety_mobile/screens/tweet_wrapper.dart';
 import 'package:tweety_mobile/widgets/follow_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
@@ -135,32 +136,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             );
                           }
                           if (state is ProfileLoaded) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                  color: isExpanded
-                                      ? Colors.transparent
-                                      : Theme.of(context)
-                                          .scaffoldBackgroundColor,
-                                  image: isExpanded
-                                      ? DecorationImage(
-                                          fit: BoxFit.cover,
-                                          alignment: Alignment.center,
-                                          image:
+                            return GestureDetector(
+                              onTap: () => isExpanded
+                                  ? Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => PhotoViewScreen(
+                                          title: '',
+                                          imageProvider:
                                               NetworkImage(state.user.banner),
-                                        )
-                                      : null),
-                              child: Align(
-                                alignment: Alignment.bottomLeft,
-                                child: isExpanded
-                                    ? Transform(
-                                        transform: Matrix4.identity()
-                                          ..translate(0.0, avatarMaximumRadius),
-                                        child: TweetyAvatar(
-                                          size: avatarRadius,
-                                          avatar: state.user.avatar,
                                         ),
-                                      )
-                                    : SizedBox.shrink(),
+                                      ),
+                                    )
+                                  : null,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: isExpanded
+                                        ? Colors.transparent
+                                        : Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                    image: isExpanded
+                                        ? DecorationImage(
+                                            fit: BoxFit.cover,
+                                            alignment: Alignment.center,
+                                            image:
+                                                NetworkImage(state.user.banner),
+                                          )
+                                        : null),
+                                child: Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: isExpanded
+                                      ? Transform(
+                                          transform: Matrix4.identity()
+                                            ..translate(
+                                                0.0, avatarMaximumRadius),
+                                          child: TweetyAvatar(
+                                            size: avatarRadius,
+                                            avatar: state.user.avatar,
+                                          ),
+                                        )
+                                      : SizedBox.shrink(),
+                                ),
                               ),
                             );
                           }
@@ -424,12 +439,22 @@ class TweetyAvatar extends StatelessWidget {
             shape: BoxShape.circle),
         child: Padding(
           padding: const EdgeInsets.all(2.0),
-          child: CircleAvatar(
-            radius: size,
-            backgroundColor: Theme.of(context).cardColor,
-            backgroundImage: avatar == null
-                ? AssetImage("assets/images/twitter_flutter_logo.jpg")
-                : NetworkImage(avatar),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => PhotoViewScreen(
+                  title: '',
+                  imageProvider: NetworkImage(avatar),
+                ),
+              ),
+            ),
+            child: CircleAvatar(
+              radius: size,
+              backgroundColor: Theme.of(context).cardColor,
+              backgroundImage: avatar == null
+                  ? AssetImage("assets/images/twitter_flutter_logo.jpg")
+                  : NetworkImage(avatar),
+            ),
           ),
         ),
       ),
