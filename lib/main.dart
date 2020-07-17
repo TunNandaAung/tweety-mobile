@@ -125,7 +125,7 @@ class _TweetyState extends State<Tweety> {
             },
             '/profile': (context) => ProfileWrapper(),
             '/publish-tweet': (context) => PublishTweetScreen(),
-            '/edit-profile': (context) => EditProfileScreen(),
+            // '/edit-profile': (context) => EditProfileScreen(),
           },
         );
       },

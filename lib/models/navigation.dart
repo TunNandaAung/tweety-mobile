@@ -18,11 +18,11 @@ List<NavigationModel> navItems = [
     icon: Icons.settings,
     route: 'publish-tweet',
   ),
-  NavigationModel(
-    title: 'Settings',
-    icon: Icons.settings,
-    route: 'edit-profile',
-  ),
+  // NavigationModel(
+  //   title: 'Settings',
+  //   icon: Icons.settings,
+  //   route: 'edit-profile',
+  // ),
   // NavigationModel(
   //   title: 'help',
   //   icon: Icons.help_outline,

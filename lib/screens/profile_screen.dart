@@ -4,6 +4,7 @@ import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/blocs/profile_tweet/profile_tweet_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
+import 'package:tweety_mobile/screens/edit_profile_screen.dart';
 import 'package:tweety_mobile/screens/tweet_wrapper.dart';
 import 'package:tweety_mobile/widgets/follow_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
@@ -195,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       child: widget.username !=
                                               Prefer.prefs.getString('userName')
                                           ? FollowButton(user: state.user)
-                                          : Container(),
+                                          : EditProfileButton(user: state.user),
                                     )
                                   ],
                                 ),
@@ -430,6 +431,43 @@ class TweetyAvatar extends StatelessWidget {
                 : NetworkImage(avatar),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class EditProfileButton extends StatelessWidget {
+  final User user;
+  const EditProfileButton({Key key, @required this.user}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => EditProfileScreen(
+              user: user,
+            ),
+          ),
+        );
+      },
+      color: Colors.transparent,
+      disabledColor: Colors.grey,
+      padding: EdgeInsets.all(0.0),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+            color: Theme.of(context).primaryColor,
+            width: 1,
+            style: BorderStyle.solid),
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      child: Text(
+        'Edit Profile',
+        style: Theme.of(context).textTheme.button.copyWith(
+              color: Theme.of(context).primaryColor,
+            ),
       ),
     );
   }

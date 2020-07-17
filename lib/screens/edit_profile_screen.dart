@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tweety_mobile/models/user.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  EditProfileScreen({Key key}) : super(key: key);
+  final User user;
+  EditProfileScreen({Key key, @required this.user}) : super(key: key);
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -197,8 +199,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           radius: 50.0,
                           backgroundColor: Theme.of(context).cardColor,
                           backgroundImage: _avatar == null
-                              ? AssetImage(
-                                  'assets/images/twitter_flutter_bg.png')
+                              ? NetworkImage(widget.user.avatar)
                               : FileImage(_avatar),
                         ),
                       ),
@@ -216,7 +217,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       borderRadius: BorderRadius.circular(20.0),
                       child: Image(
                         image: _banner == null
-                            ? AssetImage('assets/images/twitter_flutter_bg.png')
+                            ? NetworkImage(widget.user.banner)
                             : FileImage(_banner),
                         width: 400.0,
                       ),
@@ -231,6 +232,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   TextFormField(
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.w500),
+                    initialValue: widget.user.name,
                     decoration: InputDecoration(
                       filled: true,
                       focusColor: Colors.white,
@@ -243,13 +245,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         borderSide: BorderSide(
                           width: 2.0,
                           color: Colors.red,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          width: 2.0,
-                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                       hintText: 'Name',
@@ -271,6 +266,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   TextFormField(
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.w500),
+                    initialValue: widget.user.username,
                     decoration: InputDecoration(
                       filled: true,
                       focusColor: Colors.white,
@@ -283,13 +279,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         borderSide: BorderSide(
                           width: 2.0,
                           color: Colors.red,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          width: 2.0,
-                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                       hintText: 'Username',
@@ -314,6 +303,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 5,
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.w500),
+                    initialValue: widget.user.description,
                     decoration: InputDecoration(
                       filled: true,
                       focusColor: Colors.white,
@@ -326,13 +316,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         borderSide: BorderSide(
                           width: 2.0,
                           color: Colors.red,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          width: 2.0,
-                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                       hintText: 'A little info about yourself?',
