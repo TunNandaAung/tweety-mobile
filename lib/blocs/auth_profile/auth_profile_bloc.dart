@@ -34,6 +34,8 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
       yield* _mapRequestPasswordResetInfoToState(event);
     } else if (event is GetAvatar) {
       yield* _mapGetAvatarToState(event);
+    } else if (event is ReloadAuthProfile) {
+      yield* _mapReloadAuthProfileToState(event);
     }
   }
 
@@ -72,6 +74,11 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
     } catch (_) {
       yield AuthProfileError();
     }
+  }
+
+  Stream<AuthProfileState> _mapReloadAuthProfileToState(
+      ReloadAuthProfile event) async* {
+    yield AuthProfileLoaded(user: event.user);
   }
 
   Stream<AuthProfileState> _mapUpdateAuthProfileInfoToState(

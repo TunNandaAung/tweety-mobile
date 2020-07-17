@@ -101,3 +101,12 @@ class RequestPasswordResetInfo extends AuthProfileEvent {
   @override
   List<Object> get props => [email];
 }
+
+class ReloadAuthProfile extends AuthProfileEvent {
+  final User user;
+
+  const ReloadAuthProfile({@required this.user});
+
+  @override
+  List<Object> get props => [];
+}

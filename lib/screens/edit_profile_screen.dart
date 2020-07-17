@@ -236,7 +236,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             if (state is AuthProfileInfoUpdateSuccess) {
               BlocProvider.of<ProfileBloc>(context)
                   .add(RefreshProfile(user: state.user));
-              BlocProvider.of<AuthProfileBloc>(context).add(FetchAuthProfile());
+              BlocProvider.of<AuthProfileBloc>(context)
+                  .add(ReloadAuthProfile(user: state.user));
 
               Navigator.of(context).pop();
             }
