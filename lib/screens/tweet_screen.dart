@@ -77,33 +77,44 @@ class _TweetScreenState extends State<TweetScreen> {
           ),
         ),
       ),
-      body: BlocListener<ReplyBloc, ReplyState>(
-        listener: (context, state) {
-          if (state is ReplyAdded) {
-            BlocProvider.of<TweetBloc>(context).add(
-              UpdateReplyCount(
-                count: widget.tweet.repliesCount + 1,
-                tweetID: widget.tweet.id,
-              ),
-            );
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Your reply was added!"),
-                    ],
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<ReplyBloc, ReplyState>(
+            listener: (context, state) {
+              if (state is ReplyAdded) {
+                BlocProvider.of<TweetBloc>(context).add(
+                  UpdateReplyCount(
+                    count: widget.tweet.repliesCount + 1,
+                    tweetID: widget.tweet.id,
                   ),
-                ),
-              );
-          }
-        },
+                );
+                Scaffold.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      backgroundColor: Theme.of(context).primaryColor,
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Your reply was added!"),
+                        ],
+                      ),
+                    ),
+                  );
+              }
+            },
+          ),
+          BlocListener<TweetBloc, TweetState>(
+            listener: (context, state) {
+              if (state is TweetDeleted) {
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+        ],
         child: NestedScrollView(
           controller: _scrollController,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
