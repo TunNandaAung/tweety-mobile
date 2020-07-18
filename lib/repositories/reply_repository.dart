@@ -29,4 +29,8 @@ class ReplyRepository {
     return replyApiClient.addReply(tweetID, body,
         image: image, parentID: parentID);
   }
+
+  Future<void> deleteReply(int replyID) async {
+    return replyApiClient.deleteReply(replyID);
+  }
 }

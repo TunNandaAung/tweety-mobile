@@ -108,4 +108,21 @@ class ReplyApiClient {
     request.headers.addAll(_headers);
     return request;
   }
+
+  Future<void> deleteReply(int replyID) async {
+    final url = '$baseUrl/replies/$replyID';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.delete(
+          url,
+          headers: requestHeaders(token),
+        );
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      throw Exception('Error Deleting replies.');
+    }
+
+    return;
+  }
 }

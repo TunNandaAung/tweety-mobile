@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/children_reply/children_reply_bloc.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:tweety_mobile/widgets/like_dislike_buttons.dart';
+import 'package:tweety_mobile/widgets/reply_actions_modal.dart';
 
 class ChildrenReply extends StatefulWidget {
   final Reply reply;
@@ -14,8 +17,9 @@ class ChildrenReply extends StatefulWidget {
 class _ChildrenReplyState extends State<ChildrenReply> {
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.0),
+      padding: EdgeInsets.symmetric(horizontal: 0.0),
       child: Column(
         children: <Widget>[
           ListTile(
@@ -27,22 +31,39 @@ class _ChildrenReplyState extends State<ChildrenReply> {
               ),
               backgroundColor: Theme.of(context).cardColor,
             ),
-            title: RichText(
-              text: TextSpan(
-                text: widget.reply.owner.name,
-                style: Theme.of(context).textTheme.caption,
-                children: [
-                  TextSpan(
-                    text: "@${widget.reply.owner.username}  " +
-                        timeago.format(widget.reply.createdAt,
-                            locale: 'en_short'),
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: size.width / 2.2,
+                  child: RichText(
+                    text: TextSpan(
+                      text: widget.reply.owner.name,
+                      style: Theme.of(context).textTheme.caption,
+                      children: [
+                        TextSpan(
+                          text: "@${widget.reply.owner.username}",
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+                Text(
+                  timeago.format(widget.reply.createdAt, locale: 'en_short'),
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+                IconButton(
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  onPressed: () => ReplyActionsModal()
+                      .mainBottomSheet(context, widget.reply, onTap: () {
+                    Navigator.of(context).pop();
+                    BlocProvider.of<ChildrenReplyBloc>(context).add(
+                      DeleteChildrenReply(reply: widget.reply),
+                    );
+                  }),
+                ),
+              ],
             ),
             subtitle: Padding(
               padding: EdgeInsets.only(top: 10.0),

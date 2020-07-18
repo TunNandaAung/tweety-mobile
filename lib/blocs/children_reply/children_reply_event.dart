@@ -26,3 +26,12 @@ class AddChildrenReply extends ChildrenReplyEvent {
   @override
   List<Object> get props => [];
 }
+
+class DeleteChildrenReply extends ChildrenReplyEvent {
+  final Reply reply;
+
+  DeleteChildrenReply({this.reply}) : assert(reply != null);
+
+  @override
+  List<Object> get props => [];
+}

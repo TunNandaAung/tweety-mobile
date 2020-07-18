@@ -66,9 +66,22 @@ class _AddChildrenReplyButtonWidgetState
           setState(() {
             childrenCount++;
           });
+          BlocProvider.of<TweetBloc>(context).add(
+            UpdateReplyCount(
+                count: widget.tweet.repliesCount + 1, tweetID: widget.tweet.id),
+          );
         }
-        BlocProvider.of<TweetBloc>(context)
-            .add(UpdateReplyCount(count: 1, tweetID: widget.tweet.id));
+
+        if (state is ChildrenReplyDeleted) {
+          setState(() {
+            childrenCount--;
+          });
+          BlocProvider.of<TweetBloc>(context).add(
+            UpdateReplyCount(
+                count: widget.tweet.repliesCount - state.count,
+                tweetID: widget.tweet.id),
+          );
+        }
       },
       child: InkWell(
         onTap: () {

@@ -118,7 +118,8 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
     final currentState = state;
     if (currentState is ReplyLoaded) {
       try {
-        // await tweetRepository.deleteTweet(event.tweetID);
+        await replyRepository.deleteReply(event.reply.id);
+
         final List<Reply> updatedReplies =
             _removeReply(currentState.replies, event);
 

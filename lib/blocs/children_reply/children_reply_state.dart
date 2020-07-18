@@ -66,3 +66,16 @@ class ChildrenReplyAdded extends ChildrenReplyState {
 }
 
 class AddChildrenReplyError extends ChildrenReplyState {}
+
+class ChildrenReplyDeleting extends ChildrenReplyState {}
+
+class ChildrenReplyDeleted extends ChildrenReplyState {
+  final count;
+
+  ChildrenReplyDeleted({@required this.count});
+
+  @override
+  List<Object> get props => [count];
+}
+
+class DeleteChildrenReplyError extends ChildrenReplyState {}

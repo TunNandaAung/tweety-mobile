@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
 
@@ -24,6 +25,8 @@ class ChildrenReplyBloc extends Bloc<ChildrenReplyEvent, ChildrenReplyState> {
       yield* _mapFetchChildrenReplyToState(event);
     } else if (event is AddChildrenReply) {
       yield* _mapAddChildrenReplyToState(event);
+    } else if (event is DeleteChildrenReply) {
+      yield* _mapDeleteChildrenReplyToState(event);
     }
   }
 
@@ -97,5 +100,31 @@ class ChildrenReplyBloc extends Bloc<ChildrenReplyEvent, ChildrenReplyState> {
       yield AddChildrenReplyError();
     }
     // yield AddReplyError();
+  }
+
+  Stream<ChildrenReplyState> _mapDeleteChildrenReplyToState(
+      DeleteChildrenReply event) async* {
+    final currentState = state;
+    if (currentState is ChildrenReplyLoaded) {
+      try {
+        await replyRepository.deleteReply(event.reply.id);
+
+        final List<Reply> updatedReplies =
+            _removeReply(currentState.childrenReplies, event);
+
+        yield ChildrenReplyDeleted(count: 1);
+
+        yield currentState.copyWith(
+          childrenReplies: updatedReplies,
+        );
+      } catch (e) {
+        yield DeleteChildrenReplyError();
+        yield currentState;
+      }
+    }
+  }
+
+  List<Reply> _removeReply(List<Reply> repies, DeleteChildrenReply event) {
+    return repies.where((reply) => reply.id != event.reply.id).toList();
   }
 }

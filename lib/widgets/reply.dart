@@ -65,6 +65,25 @@ class _ReplyWidgetState extends State<ReplyWidget> {
               ),
             );
         }
+        if (state is ChildrenReplyDeleted) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                backgroundColor: Theme.of(context).primaryColor,
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Your reply was deleted!"),
+                  ],
+                ),
+              ),
+            );
+        }
         if (state is AddChildrenReplyError) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
@@ -85,108 +104,105 @@ class _ReplyWidgetState extends State<ReplyWidget> {
             );
         }
       },
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              contentPadding: EdgeInsets.all(8.0),
-              leading: CircleAvatar(
-                radius: 25.0,
-                backgroundImage: NetworkImage(
-                  widget.reply.owner.avatar,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.all(8.0),
+            leading: CircleAvatar(
+              radius: 25.0,
+              backgroundImage: NetworkImage(
+                widget.reply.owner.avatar,
+              ),
+              backgroundColor: Theme.of(context).cardColor,
+            ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: size.width / 1.92,
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                      text: widget.reply.owner.name,
+                      style: Theme.of(context).textTheme.caption,
+                      children: [
+                        TextSpan(
+                          text: "@${widget.reply.owner.username}",
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                backgroundColor: Theme.of(context).cardColor,
-              ),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: size.width / 1.95,
-                    child: RichText(
-                      overflow: TextOverflow.ellipsis,
-                      text: TextSpan(
-                        text: widget.reply.owner.name,
-                        style: Theme.of(context).textTheme.caption,
-                        children: [
-                          TextSpan(
-                            text: "@${widget.reply.owner.username}",
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Text(
-                    timeago.format(widget.reply.createdAt, locale: 'en_short'),
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.keyboard_arrow_down),
-                    onPressed: () => ReplyActionsModal()
-                        .mainBottomSheet(context, widget.reply, onTap: () {
-                      Navigator.of(context).pop();
-                      BlocProvider.of<ReplyBloc>(context).add(
-                        DeleteReply(reply: widget.reply),
-                      );
-                    }),
-                  ),
-                ],
-              ),
-              subtitle: Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: Text(
-                  widget.reply.body,
-                  style: Theme.of(context).textTheme.bodyText1,
+                Text(
+                  timeago.format(widget.reply.createdAt, locale: 'en_short'),
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
+                IconButton(
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  onPressed: () => ReplyActionsModal()
+                      .mainBottomSheet(context, widget.reply, onTap: () {
+                    Navigator.of(context).pop();
+                    BlocProvider.of<ReplyBloc>(context).add(
+                      DeleteReply(reply: widget.reply),
+                    );
+                  }),
+                ),
+              ],
+            ),
+            subtitle: Padding(
+              padding: EdgeInsets.only(top: 10.0),
+              child: Text(
+                widget.reply.body,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width / 3,
-                    child: LikeDislikeButtons(
-                      reply: widget.reply,
-                    ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: LikeDislikeButtons(
+                    reply: widget.reply,
                   ),
-                  BlocProvider.value(
-                    value: BlocProvider.of<ChildrenReplyBloc>(context),
-                    child: AddChildrenReplyButton(
-                      tweet: widget.tweet,
-                      parent: widget.reply,
-                    ),
+                ),
+                BlocProvider.value(
+                  value: BlocProvider.of<ChildrenReplyBloc>(context),
+                  child: AddChildrenReplyButton(
+                    tweet: widget.tweet,
+                    parent: widget.reply,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 18.0),
-              child: Column(
-                  children: childrenReplies
-                      .map((reply) => ChildrenReply(
-                            reply: reply,
-                          ))
-                      .toList()),
-            ),
-            BlocBuilder<ChildrenReplyBloc, ChildrenReplyState>(
-              builder: (context, state) {
-                if (state is ChildrenReplyLoading) {
-                  return LoadingIndicator(size: 15.0);
-                }
-                if (state is ChildrenReplyLoaded) {
-                  return _fetchMore(state.repliesLeft, state);
-                }
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 18.0),
+            child: Column(
+                children: childrenReplies
+                    .map((reply) => ChildrenReply(
+                          reply: reply,
+                        ))
+                    .toList()),
+          ),
+          BlocBuilder<ChildrenReplyBloc, ChildrenReplyState>(
+            builder: (context, state) {
+              if (state is ChildrenReplyLoading) {
+                return LoadingIndicator(size: 15.0);
+              }
+              if (state is ChildrenReplyLoaded) {
+                return _fetchMore(state.repliesLeft, state);
+              }
 
-                return widget.reply.childrenCount > 0
-                    ? _fetchMore(widget.reply.childrenCount, state)
-                    : Container();
-              },
-            ),
-          ],
-        ),
+              return widget.reply.childrenCount > 0
+                  ? _fetchMore(widget.reply.childrenCount, state)
+                  : Container();
+            },
+          ),
+        ],
       ),
     );
   }
