@@ -4,6 +4,7 @@ import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/screens/photo_view_screen.dart';
 import 'package:tweety_mobile/widgets/add_reply_button.dart';
 import 'package:tweety_mobile/widgets/like_dislike_buttons.dart';
+import 'package:tweety_mobile/widgets/tweet_actions_modal.dart';
 
 class TweetCard extends StatelessWidget {
   final Tweet tweet;
@@ -12,6 +13,7 @@ class TweetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
@@ -35,18 +37,33 @@ class TweetCard extends StatelessWidget {
               ),
               backgroundColor: Theme.of(context).cardColor,
             ),
-            title: RichText(
-              text: TextSpan(
-                text: tweet.user.name,
-                style: Theme.of(context).textTheme.caption,
-                children: [
-                  TextSpan(
-                    text: "@${tweet.user.username}  " +
-                        timeago.format(tweet.createdAt, locale: 'en_short'),
-                    style: Theme.of(context).textTheme.bodyText2,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: size.width / 1.6,
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                      text: tweet.user.name,
+                      style: Theme.of(context).textTheme.caption,
+                      children: [
+                        TextSpan(
+                          text: "@${tweet.user.username}  " +
+                              timeago.format(tweet.createdAt,
+                                  locale: 'en_short'),
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  onPressed: () =>
+                      TweetActionsModal().mainBottomSheet(context, tweet),
+                ),
+              ],
             ),
             subtitle: Padding(
               padding: EdgeInsets.only(top: 10.0),
