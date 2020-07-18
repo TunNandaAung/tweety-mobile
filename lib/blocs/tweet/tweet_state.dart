@@ -54,3 +54,9 @@ class TweetPublished extends TweetState {
 }
 
 class PublishTweetError extends TweetState {}
+
+class TweetDeleting extends TweetState {}
+
+class TweetDeleted extends TweetState {}
+
+class DeleteTweetError extends TweetState {}

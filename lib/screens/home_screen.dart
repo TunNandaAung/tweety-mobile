@@ -104,6 +104,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
               }
 
+              if (state is TweetDeleted) {
+                Scaffold.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      elevation: 6.0,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      backgroundColor: Theme.of(context).primaryColor,
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Your tweet was deleted!"),
+                        ],
+                      ),
+                    ),
+                  );
+              }
+
               if (state is PublishTweetError) {
                 Scaffold.of(context)
                   ..hideCurrentSnackBar()

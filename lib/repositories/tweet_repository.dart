@@ -23,4 +23,8 @@ class TweetRepository {
   Future<Tweet> publishTweet(String body, {File image}) async {
     return tweetApiClient.publishTweet(body, image: image);
   }
+
+  Future<void> deleteTweet(int tweetID) async {
+    return tweetApiClient.deleteTweet(tweetID);
+  }
 }

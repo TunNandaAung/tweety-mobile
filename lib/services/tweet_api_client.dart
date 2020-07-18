@@ -97,4 +97,21 @@ class TweetApiClient {
 
     return Tweet.fromJson(tweetJson);
   }
+
+  Future<void> deleteTweet(int tweetID) async {
+    final url = '$baseUrl/tweets/$tweetID';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.delete(
+          url,
+          headers: requestHeaders(token),
+        );
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      throw Exception('Error Deleting tweets.');
+    }
+
+    return;
+  }
 }

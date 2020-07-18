@@ -39,6 +39,8 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
       yield* _mapPublishTweetToState(event);
     } else if (event is UpdateReplyCount) {
       yield* _mapUpdateReplyCountToState(event);
+    } else if (event is DeleteTweet) {
+      yield* _mapDeleteTweetToState(event);
     }
   }
 
@@ -138,5 +140,29 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
     } catch (_) {
       yield state;
     }
+  }
+
+  Stream<TweetState> _mapDeleteTweetToState(DeleteTweet event) async* {
+    final currentState = state;
+    if (currentState is TweetLoaded) {
+      try {
+        await tweetRepository.deleteTweet(event.tweetID);
+        final List<Tweet> updatedTweets =
+            _removeTweet(currentState.tweets, event);
+
+        // yield TweetLoading();
+        yield TweetDeleted();
+        yield currentState.copyWith(
+          tweets: updatedTweets,
+        );
+      } catch (e) {
+        yield DeleteTweetError();
+        yield currentState;
+      }
+    }
+  }
+
+  List<Tweet> _removeTweet(List<Tweet> tweets, DeleteTweet event) {
+    return tweets.where((tweet) => tweet.id != event.tweetID).toList();
   }
 }
