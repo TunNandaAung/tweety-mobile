@@ -41,7 +41,7 @@ class TweetCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  width: size.width / 1.6,
+                  width: size.width / 1.9,
                   child: RichText(
                     overflow: TextOverflow.ellipsis,
                     text: TextSpan(
@@ -49,14 +49,16 @@ class TweetCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.caption,
                       children: [
                         TextSpan(
-                          text: "@${tweet.user.username}  " +
-                              timeago.format(tweet.createdAt,
-                                  locale: 'en_short'),
+                          text: "@${tweet.user.username}",
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ],
                     ),
                   ),
+                ),
+                Text(
+                  timeago.format(tweet.createdAt, locale: 'en_short'),
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
                 IconButton(
                   icon: Icon(Icons.keyboard_arrow_down),

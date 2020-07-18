@@ -37,6 +37,8 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
       yield* _mapRefreshReplyToState(event);
     } else if (event is AddReply) {
       yield* _mapAddReplyToState(event);
+    } else if (event is DeleteReply) {
+      yield* _mapDeleteReplyToState(event);
     }
   }
 
@@ -110,5 +112,29 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
       yield AddReplyError();
     }
     // yield AddReplyError();
+  }
+
+  Stream<ReplyState> _mapDeleteReplyToState(DeleteReply event) async* {
+    final currentState = state;
+    if (currentState is ReplyLoaded) {
+      try {
+        // await tweetRepository.deleteTweet(event.tweetID);
+        final List<Reply> updatedReplies =
+            _removeReply(currentState.replies, event);
+
+        // yield TweetLoading();
+        yield ReplyDeleted(count: event.reply.childrenCount + 1);
+        yield currentState.copyWith(
+          replies: updatedReplies,
+        );
+      } catch (e) {
+        yield DeleteReplyError();
+        yield currentState;
+      }
+    }
+  }
+
+  List<Reply> _removeReply(List<Reply> repies, DeleteReply event) {
+    return repies.where((reply) => reply.id != event.reply.id).toList();
   }
 }

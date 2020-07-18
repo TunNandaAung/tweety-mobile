@@ -104,6 +104,29 @@ class _TweetScreenState extends State<TweetScreen> {
                       ),
                     ),
                   );
+              } else if (state is ReplyDeleted) {
+                BlocProvider.of<TweetBloc>(context).add(
+                  UpdateReplyCount(
+                    count: (widget.tweet.repliesCount - state.count),
+                    tweetID: widget.tweet.id,
+                  ),
+                );
+                Scaffold.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      backgroundColor: Theme.of(context).primaryColor,
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Your reply was deleted!"),
+                        ],
+                      ),
+                    ),
+                  );
               }
             },
           ),
@@ -195,28 +218,36 @@ class _TweetScreenState extends State<TweetScreen> {
                               }
                               return SliverList(
                                 delegate: SliverChildBuilderDelegate(
-                                  (context, index) =>
-                                      index >= state.replies.length
-                                          ? LoadingIndicator()
-                                          : Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 8.0,
-                                                vertical: 5.0,
+                                  (context, index) => index >=
+                                          state.replies.length
+                                      ? LoadingIndicator()
+                                      : Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8.0,
+                                            vertical: 5.0,
+                                          ),
+                                          child: Container(
+                                            child: MultiBlocProvider(
+                                              providers: [
+                                                BlocProvider<ChildrenReplyBloc>(
+                                                  create: (context) =>
+                                                      ChildrenReplyBloc(
+                                                    replyRepository:
+                                                        widget.replyRepository,
+                                                  ),
+                                                ),
+                                                BlocProvider.value(
+                                                  value: BlocProvider.of<
+                                                      ReplyBloc>(context),
+                                                ),
+                                              ],
+                                              child: ReplyWidget(
+                                                reply: state.replies[index],
+                                                tweet: widget.tweet,
                                               ),
-                                              child: Container(
-                                                  child: BlocProvider<
-                                                      ChildrenReplyBloc>(
-                                                create: (context) =>
-                                                    ChildrenReplyBloc(
-                                                  replyRepository:
-                                                      widget.replyRepository,
-                                                ),
-                                                child: ReplyWidget(
-                                                  reply: state.replies[index],
-                                                  tweet: widget.tweet,
-                                                ),
-                                              )),
                                             ),
+                                          ),
+                                        ),
                                   childCount: state.hasReachedMax
                                       ? state.replies.length
                                       : state.replies.length + 1,

@@ -33,3 +33,12 @@ class AddReply extends ReplyEvent {
   @override
   List<Object> get props => [];
 }
+
+class DeleteReply extends ReplyEvent {
+  final Reply reply;
+
+  DeleteReply({this.reply}) : assert(reply != null);
+
+  @override
+  List<Object> get props => [];
+}

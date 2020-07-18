@@ -57,3 +57,16 @@ class ReplyAdded extends ReplyState {
 }
 
 class AddReplyError extends ReplyState {}
+
+class ReplyDeleting extends ReplyState {}
+
+class ReplyDeleted extends ReplyState {
+  final count;
+
+  ReplyDeleted({@required this.count});
+
+  @override
+  List<Object> get props => [count];
+}
+
+class DeleteReplyError extends ReplyState {}

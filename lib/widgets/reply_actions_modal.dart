@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tweety_mobile/models/tweet.dart';
+import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
-import 'package:tweety_mobile/widgets/delete_tweet_dialog.dart';
+import 'package:tweety_mobile/widgets/delete_reply_dialog.dart';
 
-class TweetActionsModal {
-  mainBottomSheet(BuildContext context, Tweet tweet) {
+class ReplyActionsModal {
+  mainBottomSheet(BuildContext context, Reply reply, {VoidCallback onTap}) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
@@ -33,18 +33,18 @@ class TweetActionsModal {
                   ),
                 ),
                 SizedBox(height: 10.0),
-                tweet.user.username == Prefer.prefs.getString('userName')
+                reply.owner.username == Prefer.prefs.getString('userName')
                     ? GestureDetector(
                         onTap: () {
                           Navigator.of(context).pop();
-                          deleteTweetDialog(context, tweet.id);
+                          deleteReplyDialog(context, reply, onTap);
                         },
                         child: Row(
                           children: [
                             Icon(Icons.delete, color: Colors.red),
                             SizedBox(width: 10.0),
                             Text(
-                              'Delete Tweet',
+                              'Delete Reply',
                               style: Theme.of(context)
                                   .textTheme
                                   .caption
@@ -60,7 +60,7 @@ class TweetActionsModal {
                             color: Theme.of(context).cursorColor,
                           ),
                           SizedBox(width: 10.0),
-                          Text('Unfollow ${tweet.user.name}',
+                          Text('Unfollow ${reply.owner.name}',
                               style: Theme.of(context).textTheme.caption)
                         ],
                       )
