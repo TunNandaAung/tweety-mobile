@@ -32,6 +32,11 @@ final appThemeData = {
       labelColor: Colors.black,
     ),
     textTheme: TextTheme(
+      headline5: TextStyle(
+        color: Colors.black,
+        fontSize: 20.0,
+        fontWeight: FontWeight.w500,
+      ),
       caption: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w600,

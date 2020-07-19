@@ -16,7 +16,7 @@ List<NavigationModel> navItems = [
   NavigationModel(
     title: 'Settings',
     icon: Icons.settings,
-    route: 'publish-tweet',
+    route: 'settings',
   ),
   // NavigationModel(
   //   title: 'Settings',

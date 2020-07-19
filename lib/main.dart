@@ -16,6 +16,7 @@ import 'package:tweety_mobile/screens/home_screen.dart';
 import 'package:tweety_mobile/screens/login_screen.dart';
 import 'package:tweety_mobile/screens/profile_wrapper.dart';
 import 'package:tweety_mobile/screens/publish_tweet_screen.dart';
+import 'package:tweety_mobile/screens/settings_screen.dart';
 import 'package:tweety_mobile/screens/splash_screen.dart';
 import 'package:tweety_mobile/services/follow_api_client.dart';
 import 'package:tweety_mobile/services/tweet_api_client.dart';
@@ -123,6 +124,7 @@ class _TweetyState extends State<Tweety> {
             },
             '/profile': (context) => ProfileWrapper(),
             '/publish-tweet': (context) => PublishTweetScreen(),
+            '/settings': (context) => SettingsScreen(),
             // '/edit-profile': (context) => EditProfileScreen(),
           },
         );
