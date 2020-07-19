@@ -29,6 +29,9 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -48,111 +51,137 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Form(
-                key: _formKey,
-                child: Column(
+              Container(
+                height: size.height,
+                child: Stack(
                   children: <Widget>[
-                    TextFormField(
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500),
-                      decoration: InputDecoration(
-                          filled: true,
-                          focusColor: Colors.white,
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide.none,
+                    Form(
+                      key: _formKey,
+                      autovalidate: _autovalidate,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Re-enter your password to verify',
+                            style: Theme.of(context).textTheme.bodyText2,
                           ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              width: 3.0,
-                              color: Colors.red,
-                            ),
+                          SizedBox(height: 10.0),
+                          TextFormField(
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500),
+                            decoration: InputDecoration(
+                                filled: true,
+                                focusColor: Theme.of(context).primaryColor,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide.none,
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    width: 2.0,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                prefixIcon: Icon(Icons.lock_outline),
+                                suffixIcon: IconButton(
+                                    icon: _isPasswordHidden
+                                        ? Icon(Icons.visibility_off)
+                                        : Icon(Icons.visibility),
+                                    onPressed: () {
+                                      _toggleVisibility();
+                                    }),
+                                hintText: 'Password'),
+                            obscureText: _isPasswordHidden,
+                            validator: (val) {
+                              return val.trim().isEmpty
+                                  ? 'Password cannot be empty.'
+                                  : null;
+                            },
+                            onSaved: (value) => _password = value,
                           ),
-                          prefixIcon: Icon(Icons.mail),
-                          hintText: 'Email'),
-                      autovalidate: true,
-                      autocorrect: false,
-                      validator: (val) {
-                        return !Validators.isValidEmail(val)
-                            ? 'Invalid email.'
-                            : null;
-                      },
-                      onSaved: (value) => _email = value,
+                          SizedBox(height: 30.0),
+                          Text(
+                            'Enter your new email address',
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                          SizedBox(height: 10.0),
+                          TextFormField(
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500),
+                            decoration: InputDecoration(
+                                filled: true,
+                                focusColor: Colors.white,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide.none,
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    width: 2.0,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                prefixIcon: Icon(Icons.mail),
+                                hintText: 'Email'),
+                            validator: (val) {
+                              return !Validators.isValidEmail(val)
+                                  ? 'Invalid email.'
+                                  : null;
+                            },
+                            onSaved: (value) => _email = value,
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(height: 30.0),
-                    TextFormField(
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500),
-                      decoration: InputDecoration(
-                          filled: true,
-                          focusColor: Theme.of(context).primaryColor,
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide.none,
+                    AnimatedPositioned(
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.easeOutQuad,
+                      bottom: keyboardOpen ? size.height * 0.55 : 100.0,
+                      child: InkWell(
+                        // onTap: isButtonEnabled(state) ? _onFormSubmitted : null,
+                        onTap: _onFormSubmitted,
+                        child: Container(
+                          width: size.width * 0.94,
+                          padding: EdgeInsets.symmetric(vertical: 15.0),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                            color: Theme.of(context).primaryColor,
                           ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              width: 3.0,
-                              color: Colors.red,
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                'Update',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18.0,
+                                    letterSpacing: 1.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(width: 20.0),
+                              Icon(
+                                Icons.arrow_forward,
+                                color: Colors.white,
+                              )
+                            ],
                           ),
-                          prefixIcon: Icon(Icons.lock_outline),
-                          suffixIcon: IconButton(
-                              icon: _isPasswordHidden
-                                  ? Icon(Icons.visibility_off)
-                                  : Icon(Icons.visibility),
-                              onPressed: () {
-                                _toggleVisibility();
-                              }),
-                          hintText: 'Password'),
-                      obscureText: _isPasswordHidden,
-                      autovalidate: true,
-                      autocorrect: false,
-                      validator: (val) {
-                        return val.trim().isEmpty
-                            ? 'Password cannot be empty.'
-                            : null;
-                      },
-                      onSaved: (value) => _password = value,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              InkWell(
-                // onTap: isButtonEnabled(state) ? _onFormSubmitted : null,
-                onTap: _onFormSubmitted,
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 15.0),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      color: Colors.blue,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Update',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18.0,
-                              letterSpacing: 1.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(width: 20.0),
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                        )
-                      ],
-                    )),
-              ),
+              )
             ],
           ),
         ),
