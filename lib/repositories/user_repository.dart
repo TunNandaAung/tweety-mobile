@@ -60,7 +60,7 @@ class UserRepository {
 
   Future<String> updatePassword(String oldPassword, String newPassword,
       String newPasswordConfirmation) async {
-    return userApiClient.editPassword(
+    return userApiClient.updatePassword(
         oldPassword: oldPassword,
         newPassword: newPassword,
         newPasswordConfirmation: newPasswordConfirmation);

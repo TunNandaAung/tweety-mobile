@@ -194,11 +194,11 @@ class UserApiClient {
     return User.fromJson(jsonDecode(_response.body)['data']);
   }
 
-  Future<String> editPassword(
+  Future<String> updatePassword(
       {String oldPassword,
       String newPassword,
       String newPasswordConfirmation}) async {
-    final url = '$baseUrl/$userName/update-password';
+    final url = '$baseUrl/auth/password';
 
     final token = Prefer.prefs.getString('token');
 

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/screens/update_email.dart';
+import 'package:tweety_mobile/screens/update_password.dart';
 import 'package:tweety_mobile/widgets/settings_list_tile.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
@@ -60,6 +61,24 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                 ),
               );
           }
+          if (state is AuthProfilePasswordUpdateSuccess) {
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  backgroundColor: Theme.of(context).primaryColor,
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Password successfully updated!"),
+                    ],
+                  ),
+                ),
+              );
+          }
         },
         child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
           builder: (context, state) {
@@ -77,6 +96,18 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                         builder: (context) => UpdateEmailScreen(
                           user: user,
                         ),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 20.0),
+                settingsListTile(
+                  context,
+                  'Password',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => UpdatePasswordScreen(),
                       ),
                     );
                   },
