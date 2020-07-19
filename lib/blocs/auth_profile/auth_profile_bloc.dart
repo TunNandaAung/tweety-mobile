@@ -36,6 +36,8 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
       yield* _mapGetAvatarToState(event);
     } else if (event is ReloadAuthProfile) {
       yield* _mapReloadAuthProfileToState(event);
+    } else if (event is UpdateAuthProfileEmail) {
+      yield* _mapUpdateAuthProfileEmailToState(event);
     }
   }
 
@@ -117,10 +119,11 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
 
   Stream<AuthProfileState> _mapUpdateAuthProfileEmailToState(
       UpdateAuthProfileEmail event) async* {
-    yield AuthProfileInfoUpdating();
+    yield AuthProfileEmailUpdating();
     try {
-      await userRepository.updateEmail(event.password, event.email);
-      yield AuthProfileInfoUpdateSuccess();
+      final user =
+          await userRepository.updateEmail(event.password, event.email);
+      yield AuthProfileInfoUpdateSuccess(user: user);
     } catch (e) {
       yield AuthProfileErrorMessage(errorMessage: e.message);
     }

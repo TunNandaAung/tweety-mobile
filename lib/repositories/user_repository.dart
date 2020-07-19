@@ -66,8 +66,8 @@ class UserRepository {
         newPasswordConfirmation: newPasswordConfirmation);
   }
 
-  Future<void> updateEmail(String password, String email) async {
-    return userApiClient.editEmail(
+  Future<User> updateEmail(String password, String email) async {
+    return userApiClient.updateEmail(
       password: password,
       email: email,
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
-import 'package:tweety_mobile/screens/change_email.dart';
+import 'package:tweety_mobile/screens/update_email.dart';
 import 'package:tweety_mobile/widgets/settings_list_tile.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
@@ -18,44 +20,72 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          leading: BackButton(
-            color: Colors.black,
-          ),
-          title: Hero(
-            tag: 'settings__account',
-            child: Text(
-              'Account',
-              style: Theme.of(context).appBarTheme.textTheme.caption,
-            ),
-          ),
-          centerTitle: true,
-          elevation: 0.0,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-            ),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        leading: BackButton(
+          color: Colors.black,
+        ),
+        title: Hero(
+          tag: 'settings__account',
+          child: Text(
+            'Account',
+            style: Theme.of(context).appBarTheme.textTheme.caption,
           ),
         ),
-        body: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-          children: <Widget>[
-            settingsListTile(
-              context,
-              'Email',
-              user: widget.user,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ChangeEmailScreen(
-                      user: widget.user,
-                    ),
+        centerTitle: true,
+        elevation: 0.0,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+          ),
+        ),
+      ),
+      body: BlocListener<AuthProfileBloc, AuthProfileState>(
+        listener: (context, state) {
+          if (state is AuthProfileInfoUpdateSuccess) {
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  backgroundColor: Theme.of(context).primaryColor,
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Email successfully updated!"),
+                    ],
                   ),
-                );
-              },
-            ),
-          ],
-        ));
+                ),
+              );
+          }
+        },
+        child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
+          builder: (context, state) {
+            var user = (state is AuthProfileLoaded) ? state.user : widget.user;
+            return ListView(
+              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              children: <Widget>[
+                settingsListTile(
+                  context,
+                  'Email',
+                  user: user,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => UpdateEmailScreen(
+                          user: user,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
   }
 }

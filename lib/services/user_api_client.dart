@@ -229,8 +229,8 @@ class UserApiClient {
     return jsonDecode(response.body)['data'];
   }
 
-  Future<void> editEmail({String password, String email}) async {
-    final url = '$baseUrl/$userName/update-email';
+  Future<User> updateEmail({String password, String email}) async {
+    final url = '$baseUrl/auth/email';
 
     final token = Prefer.prefs.getString('token');
 
@@ -258,7 +258,8 @@ class UserApiClient {
 
       throw Exception('Error updating email!');
     }
-    return;
+
+    return User.fromJson(jsonDecode(response.body)['data']);
   }
 
   Future<void> requestPasswordResetInfo(String email) async {
