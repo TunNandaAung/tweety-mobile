@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/following_list/following_list_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
+import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/user_card.dart';
@@ -16,15 +17,15 @@ class FollowListScreen extends StatefulWidget {
 }
 
 class _FollowListScreenState extends State<FollowListScreen> {
-  bool shouldAddSafeArea = false;
+  final _scrollThreshold = 200.0;
   ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
     // _tabController = TabController(initialIndex: 0, length: 4, vsync: this);
-    // BlocProvider.of<ProductBloc>(context).add(
-    //   FetchProduct(companyID: widget.company.id),
-    // );
+    BlocProvider.of<FollowingListBloc>(context).add(
+      FetchFollowingList(user: widget.profileUser),
+    );
     _scrollController.addListener(_scrollListener);
   }
 
@@ -36,17 +37,12 @@ class _FollowListScreenState extends State<FollowListScreen> {
   }
 
   void _scrollListener() {
-    if (_scrollController.position.userScrollDirection ==
-        ScrollDirection.forward) {
-      print('Forward');
-      setState(() {
-        shouldAddSafeArea = false;
-      });
-    } else if (_scrollController.position.userScrollDirection ==
-        ScrollDirection.reverse) {
-      setState(() {
-        shouldAddSafeArea = true;
-      });
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      BlocProvider.of<FollowingListBloc>(context).add(
+        FetchFollowingList(user: widget.profileUser),
+      );
     }
   }
 
@@ -68,7 +64,7 @@ class _FollowListScreenState extends State<FollowListScreen> {
                       color: Colors.black,
                     ),
                     title: Text(
-                      'User',
+                      widget.profileUser.name,
                       style: Theme.of(context).appBarTheme.textTheme.caption,
                     ),
                     centerTitle: true,
@@ -90,13 +86,15 @@ class _FollowListScreenState extends State<FollowListScreen> {
                     }
                     if (state is FollowingListLoaded) {
                       var users = state.users;
+                      if (state.users.isEmpty) {
+                        return _followingEmptyText();
+                      }
                       return ListView.builder(
                         itemBuilder: (context, index) => index >= users.length
                             ? LoadingIndicator()
                             : Padding(
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                  vertical: 5.0,
+                                  horizontal: 5.0,
                                 ),
                                 child: GestureDetector(
                                   onTap: () => Navigator.of(context).pushNamed(
@@ -122,7 +120,7 @@ class _FollowListScreenState extends State<FollowListScreen> {
                         },
                       );
                     }
-                    return Container();
+                    return LoadingIndicator();
                   },
                 ),
                 ListView.builder(
@@ -140,6 +138,42 @@ class _FollowListScreenState extends State<FollowListScreen> {
           )),
     );
   }
+
+  Widget _followingEmptyText() {
+    return Center(
+      child: widget.profileUser.username == Prefer.prefs.getString('userName')
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "You don't have any followers yet!",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 5.0),
+                Text(
+                  "When someone follows you, you'll see theme here.",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+              ],
+            )
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                "${widget.profileUser.name} don't have any followers yet!",
+                textAlign: TextAlign.center,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+    );
+  }
 }
 
 class TweetyTabs extends SliverPersistentHeaderDelegate {
@@ -152,14 +186,8 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              offset: Offset(1, 10),
-              blurRadius: 10.0,
-            )
-          ]),
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
       height: 50.0,
       child: TabBar(
         unselectedLabelStyle:

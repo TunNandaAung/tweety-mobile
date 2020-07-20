@@ -405,10 +405,13 @@ class TweetyHeader extends StatelessWidget {
                           fontSize: 15.0, fontWeight: FontWeight.bold),
                       children: [
                         TextSpan(
-                          text: "  Following",
+                          text: " Following",
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ]),
+                ),
+                SizedBox(
+                  width: 5.0,
                 ),
                 RichText(
                   text: TextSpan(
@@ -417,7 +420,7 @@ class TweetyHeader extends StatelessWidget {
                           fontSize: 15.0, fontWeight: FontWeight.bold),
                       children: [
                         TextSpan(
-                          text: "  Followers",
+                          text: " Followers",
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ]),
