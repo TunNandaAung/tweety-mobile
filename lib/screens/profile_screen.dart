@@ -5,6 +5,7 @@ import 'package:tweety_mobile/blocs/profile_tweet/profile_tweet_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/screens/edit_profile_screen.dart';
+import 'package:tweety_mobile/screens/follow_list_wrapper.dart';
 import 'package:tweety_mobile/screens/photo_view_screen.dart';
 import 'package:tweety_mobile/screens/tweet_wrapper.dart';
 import 'package:tweety_mobile/widgets/follow_button.dart';
@@ -390,37 +391,39 @@ class TweetyHeader extends StatelessWidget {
           SizedBox(
             height: 10.0,
           ),
-          Row(
-            children: <Widget>[
-              RichText(
-                text: TextSpan(
-                    text: user.followsCount.toString(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        .copyWith(fontSize: 15.0, fontWeight: FontWeight.bold),
-                    children: [
-                      TextSpan(
-                        text: "  Following",
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
-                    ]),
-              ),
-              RichText(
-                text: TextSpan(
-                    text: user.followersCount.toString(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        .copyWith(fontSize: 15.0, fontWeight: FontWeight.bold),
-                    children: [
-                      TextSpan(
-                        text: "  Followers",
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
-                    ]),
-              ),
-            ],
+          GestureDetector(
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => FollowListWrapper(
+                      user: user,
+                    ))),
+            child: Row(
+              children: <Widget>[
+                RichText(
+                  text: TextSpan(
+                      text: user.followsCount.toString(),
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          fontSize: 15.0, fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                          text: "  Following",
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ]),
+                ),
+                RichText(
+                  text: TextSpan(
+                      text: user.followersCount.toString(),
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          fontSize: 15.0, fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                          text: "  Followers",
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ]),
+                ),
+              ],
+            ),
           )
         ],
       ),
