@@ -52,4 +52,24 @@ class FollowApiClient {
 
     return UserPaginator.fromJson(usersJson);
   }
+
+  Future<UserPaginator> fetchFollowers(String username, int pageNumber) async {
+    final url =
+        '$baseUrl/profiles/$username/followers?page=$pageNumber&page[number]=$pageNumber';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.get(
+          url,
+          headers: requestHeaders(token),
+        );
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      throw Exception('Error getting followers list.');
+    }
+
+    final usersJson = jsonDecode(response.body)['data'];
+
+    return UserPaginator.fromJson(usersJson);
+  }
 }

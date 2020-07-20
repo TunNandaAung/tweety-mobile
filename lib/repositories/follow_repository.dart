@@ -16,4 +16,8 @@ class FollowRepository {
   Future<UserPaginator> getFollowing({String username, int pageNumber}) async {
     return followApiClient.fetchFollowing(username, pageNumber);
   }
+
+  Future<UserPaginator> getFollowers({String username, int pageNumber}) async {
+    return followApiClient.fetchFollowers(username, pageNumber);
+  }
 }
