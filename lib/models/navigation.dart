@@ -18,11 +18,11 @@ List<NavigationModel> navItems = [
     icon: Icons.settings,
     route: 'settings',
   ),
-  NavigationModel(
-    title: 'Settings',
-    icon: Icons.settings,
-    route: 'follow-list',
-  ),
+  // NavigationModel(
+  //   title: 'Settings',
+  //   icon: Icons.settings,
+  //   route: 'follow-list',
+  // ),
   // NavigationModel(
   //   title: 'help',
   //   icon: Icons.help_outline,

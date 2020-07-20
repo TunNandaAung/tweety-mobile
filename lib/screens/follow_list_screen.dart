@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/following_list/following_list_bloc.dart';
+import 'package:tweety_mobile/models/user.dart';
+import 'package:tweety_mobile/widgets/loading_indicator.dart';
+import 'package:tweety_mobile/widgets/refresh.dart';
+import 'package:tweety_mobile/widgets/user_card.dart';
 
 class FollowListScreen extends StatefulWidget {
-  FollowListScreen({Key key}) : super(key: key);
+  final User profileUser;
+  FollowListScreen({Key key, @required this.profileUser}) : super(key: key);
 
   @override
   _FollowListScreenState createState() => _FollowListScreenState();
@@ -76,19 +83,51 @@ class _FollowListScreenState extends State<FollowListScreen> {
                 ];
               },
               body: TabBarView(children: [
-                ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 5.0),
-                  key: PageStorageKey('tab1'),
-                  itemCount: 100,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      title: Text('Item $index'),
-                    );
+                BlocBuilder<FollowingListBloc, FollowingListState>(
+                  builder: (context, state) {
+                    if (state is FollowingListLoading) {
+                      return LoadingIndicator();
+                    }
+                    if (state is FollowingListLoaded) {
+                      var users = state.users;
+                      return ListView.builder(
+                        itemBuilder: (context, index) => index >= users.length
+                            ? LoadingIndicator()
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 5.0,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () => Navigator.of(context).pushNamed(
+                                      '/profile',
+                                      arguments: widget.profileUser.username),
+                                  child: UserCard(
+                                    user: users[index],
+                                  ),
+                                ),
+                              ),
+                        itemCount: state.hasReachedMax
+                            ? state.users.length
+                            : state.users.length + 1,
+                      );
+                    }
+                    if (state is FollowingListError) {
+                      return Refresh(
+                        title: 'Couldn\'t load feed',
+                        onPressed: () {
+                          BlocProvider.of<FollowingListBloc>(context).add(
+                            RefreshFollowingList(user: widget.profileUser),
+                          );
+                        },
+                      );
+                    }
+                    return Container();
                   },
                 ),
                 ListView.builder(
                   padding: EdgeInsets.symmetric(vertical: 5.0),
-                  key: PageStorageKey('tab2'),
+                  key: PageStorageKey('followes'),
                   itemCount: 100,
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(

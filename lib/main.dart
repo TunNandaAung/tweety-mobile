@@ -126,7 +126,6 @@ class _TweetyState extends State<Tweety> {
             '/profile': (context) => ProfileWrapper(),
             '/publish-tweet': (context) => PublishTweetScreen(),
             '/settings': (context) => SettingsScreen(),
-            '/follow-list': (context) => FollowListScreen(),
           },
         );
       },

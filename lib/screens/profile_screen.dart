@@ -386,6 +386,41 @@ class TweetyHeader extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText1.copyWith(
                   fontSize: 15.0,
                 ),
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          Row(
+            children: <Widget>[
+              RichText(
+                text: TextSpan(
+                    text: user.followsCount.toString(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(fontSize: 15.0, fontWeight: FontWeight.bold),
+                    children: [
+                      TextSpan(
+                        text: "  Following",
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                    ]),
+              ),
+              RichText(
+                text: TextSpan(
+                    text: user.followersCount.toString(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(fontSize: 15.0, fontWeight: FontWeight.bold),
+                    children: [
+                      TextSpan(
+                        text: "  Followers",
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                    ]),
+              ),
+            ],
           )
         ],
       ),

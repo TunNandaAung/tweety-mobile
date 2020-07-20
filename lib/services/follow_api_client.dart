@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/user.dart';
+import 'package:tweety_mobile/models/user_paginator.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 
 class FollowApiClient {
@@ -30,5 +31,25 @@ class FollowApiClient {
 
     final userJson = jsonDecode(response.body)['data'];
     return User.fromJson(userJson);
+  }
+
+  Future<UserPaginator> fetchFollowing(String username, int pageNumber) async {
+    final url =
+        '$baseUrl/profiles/$username/following?page=$pageNumber&page[number]=$pageNumber';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.get(
+          url,
+          headers: requestHeaders(token),
+        );
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      throw Exception('Error getting following list.');
+    }
+
+    final usersJson = jsonDecode(response.body)['data'];
+
+    return UserPaginator.fromJson(usersJson);
   }
 }
