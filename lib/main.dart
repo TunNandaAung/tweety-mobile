@@ -4,12 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
 import 'package:tweety_mobile/blocs/explore/explore_bloc.dart';
 import 'package:tweety_mobile/blocs/follow/follow_bloc.dart';
+import 'package:tweety_mobile/blocs/notification/notification_bloc.dart';
 import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/blocs/simple_bloc_observer.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/repositories/follow_repository.dart';
+import 'package:tweety_mobile/repositories/notification_repository.dart';
 import 'package:tweety_mobile/repositories/tweet_repository.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
 import 'package:tweety_mobile/screens/follow_list_screen.dart';
@@ -20,6 +22,7 @@ import 'package:tweety_mobile/screens/publish_tweet_screen.dart';
 import 'package:tweety_mobile/screens/settings_screen.dart';
 import 'package:tweety_mobile/screens/splash_screen.dart';
 import 'package:tweety_mobile/services/follow_api_client.dart';
+import 'package:tweety_mobile/services/notification_api_client.dart';
 import 'package:tweety_mobile/services/tweet_api_client.dart';
 import 'package:tweety_mobile/services/user_api_client.dart';
 import 'package:tweety_mobile/theme/app_theme.dart';
@@ -76,6 +79,11 @@ class _TweetyState extends State<Tweety> {
       followApiClient: FollowApiClient(httpClient: client),
     );
 
+    final NotificationRepository notificationRepository =
+        NotificationRepository(
+      notificationApiClient: NotificationApiClient(httpClient: client),
+    );
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<ThemeBloc>(
@@ -98,6 +106,9 @@ class _TweetyState extends State<Tweety> {
         BlocProvider<ProfileBloc>(
           create: (context) => ProfileBloc(userRepository: userRepository),
         ),
+        BlocProvider<NotificationBloc>(
+            create: (context) => NotificationBloc(
+                notificationRepository: notificationRepository)),
       ],
       child: _buildWithTheme(context),
     );

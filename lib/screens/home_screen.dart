@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/notification/notification_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/models/bottom_nav.dart';
@@ -11,6 +12,7 @@ import 'package:tweety_mobile/screens/publish_tweet_screen.dart';
 import 'package:tweety_mobile/screens/tweet_wrapper.dart';
 import 'package:tweety_mobile/screens/tweets_screen.dart';
 import 'package:tweety_mobile/widgets/nav_drawer.dart';
+import 'package:tweety_mobile/widgets/notifications_button.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -59,6 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
       _currentIndex = index;
       _pageController.jumpToPage(index);
     });
+    // if (index == 2) {
+    //   BlocProvider.of<NotificationBloc>(context).add(ResetNotificationCounts());
+    // }
   }
 
   List<Tweet> tweets = [];
@@ -172,30 +177,58 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,
         elevation: 1.0,
-        items: bottomNavItems
-            .asMap()
-            .map((key, value) => MapEntry(
-                  key,
-                  BottomNavigationBarItem(
-                    title: Text(''),
-                    icon: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: _currentIndex == key
-                            ? Theme.of(context).primaryColor
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: _currentIndex == key
-                          ? Icon(value.activeIcon)
-                          : Icon(value.defaultIcon),
-                    ),
-                  ),
-                ))
-            .values
-            .toList(),
+        iconSize: 27.0,
+
+        // items: bottomNavItems
+        //     .asMap()
+        //     .map((key, value) => MapEntry(
+        //           key,
+        //           BottomNavigationBarItem(
+        //             title: Text(''),
+        //             icon: Container(
+        //               padding: const EdgeInsets.symmetric(
+        //                 horizontal: 16.0,
+        //               ),
+        //               decoration: BoxDecoration(
+        //                 color: _currentIndex == key
+        //                     ? Theme.of(context).primaryColor
+        //                     : Colors.transparent,
+        //                 borderRadius: BorderRadius.circular(20.0),
+        //               ),
+        //               child: _currentIndex == key
+        //                   ? Icon(value.activeIcon)
+        //                   : Icon(value.defaultIcon),
+        //             ),
+        //           ),
+        //         ))
+        //     .values
+        //     .toList(),
+        items: [
+          BottomNavigationBarItem(
+            title: Text(''),
+            icon: _currentIndex == 0
+                ? Icon(bottomNavItems[0].activeIcon,
+                    color: Theme.of(context).primaryColor)
+                : Icon(bottomNavItems[0].defaultIcon),
+          ),
+          BottomNavigationBarItem(
+            title: Text(''),
+            icon: _currentIndex == 1
+                ? Icon(bottomNavItems[1].activeIcon,
+                    color: Theme.of(context).primaryColor)
+                : Icon(bottomNavItems[1].defaultIcon),
+          ),
+          BottomNavigationBarItem(
+            title: Text(''),
+            icon: NotificationButton(
+              bubbleColor: Colors.red,
+              icon: _currentIndex == 2
+                  ? Icon(bottomNavItems[2].activeIcon,
+                      color: Theme.of(context).primaryColor)
+                  : Icon(bottomNavItems[2].defaultIcon),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: OpenContainer(
           closedShape: const RoundedRectangleBorder(
