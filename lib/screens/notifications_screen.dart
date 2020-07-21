@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/notification/notification_bloc.dart';
+import 'package:tweety_mobile/utils/helpers.dart';
 import 'package:tweety_mobile/widgets/avatar_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
@@ -108,25 +109,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 child: Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Container(
-                                        width: 75.0,
-                                        height: 75.0,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                          // image: DecorationImage(
-                                          //   image: NetworkImage(notification
-                                          //       .data.notifier.avatar),
-                                          //   fit: BoxFit.contain,
-                                          // ),
-                                          border: Border.all(
-                                            color: Colors.white,
-                                            width: 2.0,
-                                          ),
-                                        ),
-                                      ),
                                       SizedBox(width: 10.0),
+                                      mapNotificationTypeToIcon(
+                                          notification.type),
+                                      SizedBox(width: 15.0),
                                       Flexible(
                                         child: Container(
                                           child: Column(
@@ -135,12 +124,28 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: <Widget>[
-                                              Text(
-                                                notification.data.message,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 15.0),
+                                              Container(
+                                                width: 30.0,
+                                                height: 30.0,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white,
+                                                  // image: DecorationImage(
+                                                  //   image: NetworkImage(notification
+                                                  //       .data.notifier.avatar),
+                                                  //   fit: BoxFit.contain,
+                                                  // ),
+                                                  border: Border.all(
+                                                    color: Colors.white,
+                                                    width: 2.0,
+                                                  ),
+                                                ),
                                               ),
+                                              SizedBox(height: 5.0),
+                                              Text(notification.data.message,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption),
                                               SizedBox(height: 5.0),
                                               Text(
                                                 timeago.format(
