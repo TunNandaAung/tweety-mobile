@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/models/user.dart';
 
 part 'notification_data.g.dart';
@@ -9,11 +10,14 @@ class NotificationData {
   User notifier;
   String link;
   String type;
+  @JsonKey(nullable: true)
+  Tweet arg;
 
   @JsonKey(nullable: true)
   String screen;
 
-  NotificationData({this.message, this.notifier, this.link, this.screen});
+  NotificationData(
+      {this.message, this.notifier, this.link, this.screen, this.arg});
 
   factory NotificationData.fromJson(Map<String, dynamic> json) =>
       _$NotificationDataFromJson(json);

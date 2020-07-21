@@ -89,8 +89,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             return InkWell(
                               onTap: notification.data.screen != null
                                   ? () {
-                                      Navigator.of(context)
-                                          .pushNamed(notification.data.screen);
+                                      Navigator.of(context).pushNamed(
+                                          notification.data.screen,
+                                          arguments: notification.data.arg);
                                     }
                                   : () {},
                               child: Container(

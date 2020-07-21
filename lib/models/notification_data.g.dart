@@ -14,6 +14,9 @@ NotificationData _$NotificationDataFromJson(Map<String, dynamic> json) {
         : User.fromJson(json['notifier'] as Map<String, dynamic>),
     link: json['link'] as String,
     screen: json['screen'] as String,
+    arg: json['arg'] == null
+        ? null
+        : Tweet.fromJson(json['arg'] as Map<String, dynamic>),
   )..type = json['type'] as String;
 }
 
@@ -23,5 +26,6 @@ Map<String, dynamic> _$NotificationDataToJson(NotificationData instance) =>
       'notifier': instance.notifier,
       'link': instance.link,
       'type': instance.type,
+      'arg': instance.arg,
       'screen': instance.screen,
     };
