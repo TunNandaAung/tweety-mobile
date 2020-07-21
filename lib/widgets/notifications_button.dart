@@ -52,7 +52,7 @@ class _NotificationButtonState extends State<NotificationButton> {
                 ),
               );
             }
-            return Container();
+            return Container(height: 0, width: 0);
           },
         )
       ],
