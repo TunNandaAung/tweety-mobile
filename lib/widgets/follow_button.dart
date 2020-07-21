@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/blocs/follow/follow_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
 
@@ -18,7 +19,19 @@ class _FollowButtonState extends State<FollowButton> {
 
   @override
   Widget build(BuildContext context) {
-    return _isFollowed ? _unfollowButton() : _followButton();
+    return BlocListener<FollowBloc, FollowState>(
+      listener: (context, state) {
+        if (state is Followed) {
+          BlocProvider.of<AuthProfileBloc>(context)
+              .add(ReloadAuthProfile(user: state.user));
+        }
+        if (state is Unfollowed) {
+          BlocProvider.of<AuthProfileBloc>(context)
+              .add(ReloadAuthProfile(user: state.user));
+        }
+      },
+      child: _isFollowed ? _unfollowButton() : _followButton(),
+    );
   }
 
   Widget _followButton() {
