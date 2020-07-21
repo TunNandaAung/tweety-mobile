@@ -30,29 +30,37 @@ class TweetCard extends StatelessWidget {
         children: <Widget>[
           ListTile(
             contentPadding: EdgeInsets.all(8.0),
-            leading: CircleAvatar(
-              radius: 25.0,
-              backgroundImage: NetworkImage(
-                tweet.user.avatar,
+            leading: InkWell(
+              onTap: () => Navigator.of(context)
+                  .pushNamed('/profile', arguments: tweet.user.username),
+              child: CircleAvatar(
+                radius: 25.0,
+                backgroundImage: NetworkImage(
+                  tweet.user.avatar,
+                ),
+                backgroundColor: Theme.of(context).cardColor,
               ),
-              backgroundColor: Theme.of(context).cardColor,
             ),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
-                  width: size.width / 1.9,
-                  child: RichText(
-                    overflow: TextOverflow.ellipsis,
-                    text: TextSpan(
-                      text: tweet.user.name,
-                      style: Theme.of(context).textTheme.caption,
-                      children: [
-                        TextSpan(
-                          text: "@${tweet.user.username}",
-                          style: Theme.of(context).textTheme.bodyText2,
-                        ),
-                      ],
+                InkWell(
+                  onTap: () => Navigator.of(context)
+                      .pushNamed('/profile', arguments: tweet.user.username),
+                  child: Container(
+                    width: size.width / 1.9,
+                    child: RichText(
+                      overflow: TextOverflow.ellipsis,
+                      text: TextSpan(
+                        text: tweet.user.name,
+                        style: Theme.of(context).textTheme.caption,
+                        children: [
+                          TextSpan(
+                            text: "@${tweet.user.username}",
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

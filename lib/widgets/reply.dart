@@ -108,29 +108,37 @@ class _ReplyWidgetState extends State<ReplyWidget> {
         children: <Widget>[
           ListTile(
             contentPadding: EdgeInsets.all(8.0),
-            leading: CircleAvatar(
-              radius: 25.0,
-              backgroundImage: NetworkImage(
-                widget.reply.owner.avatar,
+            leading: InkWell(
+              onTap: () => Navigator.of(context).pushNamed('/profile',
+                  arguments: widget.reply.owner.username),
+              child: CircleAvatar(
+                radius: 25.0,
+                backgroundImage: NetworkImage(
+                  widget.reply.owner.avatar,
+                ),
+                backgroundColor: Theme.of(context).cardColor,
               ),
-              backgroundColor: Theme.of(context).cardColor,
             ),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
-                  width: size.width / 1.92,
-                  child: RichText(
-                    overflow: TextOverflow.ellipsis,
-                    text: TextSpan(
-                      text: widget.reply.owner.name,
-                      style: Theme.of(context).textTheme.caption,
-                      children: [
-                        TextSpan(
-                          text: "@${widget.reply.owner.username}",
-                          style: Theme.of(context).textTheme.bodyText2,
-                        ),
-                      ],
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/profile',
+                      arguments: widget.reply.owner.username),
+                  child: Container(
+                    width: size.width / 1.92,
+                    child: RichText(
+                      overflow: TextOverflow.ellipsis,
+                      text: TextSpan(
+                        text: widget.reply.owner.name,
+                        style: Theme.of(context).textTheme.caption,
+                        children: [
+                          TextSpan(
+                            text: "@${widget.reply.owner.username}",
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
