@@ -18,7 +18,7 @@ import 'package:tweety_mobile/widgets/tweet_card.dart';
 class TweetsScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  TweetsScreen({Key key, this.scaffoldKey}) : super(key: key);
+  TweetsScreen({Key key, @required this.scaffoldKey}) : super(key: key);
 
   @override
   _TweetsScreenState createState() => _TweetsScreenState();

@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               TweetsScreen(scaffoldKey: _scaffoldKey),
               ExploreScreen(scaffoldKey: _scaffoldKey),
-              NotificationScreen(),
+              NotificationsScreen(scaffoldKey: _scaffoldKey),
             ],
           ),
         ),
