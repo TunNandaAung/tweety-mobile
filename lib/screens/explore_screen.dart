@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/explore/explore_bloc.dart';
+import 'package:tweety_mobile/blocs/tweet_search/tweet_search_bloc.dart';
 import 'package:tweety_mobile/blocs/user_search/user_search_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/screens/search_screen.dart';
@@ -82,7 +83,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     User selected = await showSearch<User>(
                       context: context,
                       delegate: SearchScreen(
-                          BlocProvider.of<UserSearchBloc>(context)),
+                          BlocProvider.of<UserSearchBloc>(context),
+                          BlocProvider.of<TweetSearchBloc>(context)),
                     );
                     print(selected);
                   },

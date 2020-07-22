@@ -6,5 +6,5 @@ class UserSearchEvent {
   const UserSearchEvent(this.query);
 
   @override
-  String toString() => 'ProductSearchEvent { query: $query }';
+  String toString() => 'UserSearchEvent { query: $query }';
 }

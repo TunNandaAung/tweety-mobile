@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/tweet_search/tweet_search_bloc.dart';
 import 'package:tweety_mobile/blocs/user_search/user_search_bloc.dart';
 import 'package:tweety_mobile/constants/constants.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
+import 'package:tweety_mobile/widgets/tweet_card.dart';
 import 'package:tweety_mobile/widgets/user_card.dart';
 
 class SearchScreen extends SearchDelegate<User> {
   final Bloc<UserSearchEvent, UserSearchState> userSearchBloc;
+  final Bloc<TweetSearchEvent, TweetSearchState> tweetSearchBloc;
 
-  SearchScreen(this.userSearchBloc);
+  SearchScreen(this.userSearchBloc, this.tweetSearchBloc);
 
   List<String> recentSearches =
       Prefer.prefs.getStringList("recent_searches") ?? [];
@@ -110,8 +113,14 @@ class SearchScreen extends SearchDelegate<User> {
 
   @override
   Widget buildResults(BuildContext context) {
-    userSearchBloc.add(UserSearchEvent(query));
+    searchType == 'user'
+        ? userSearchBloc.add(UserSearchEvent(query))
+        : tweetSearchBloc.add(TweetSearchEvent(query));
 
+    return searchType == 'user' ? userResults() : tweetResults();
+  }
+
+  Widget userResults() {
     return BlocBuilder(
       bloc: userSearchBloc,
       builder: (BuildContext context, UserSearchState state) {
@@ -123,8 +132,8 @@ class SearchScreen extends SearchDelegate<User> {
                 padding: const EdgeInsets.all(12.0),
                 child: Text(
                   searchType == 'user'
-                      ? 'Searching users...'
-                      : 'Searching tweets..',
+                      ? 'Searching for users...'
+                      : 'Searching for tweets..',
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
@@ -168,12 +177,74 @@ class SearchScreen extends SearchDelegate<User> {
     );
   }
 
+  Widget tweetResults() {
+    return BlocBuilder(
+      bloc: tweetSearchBloc,
+      builder: (BuildContext context, TweetSearchState state) {
+        if (state.isLoading) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  searchType == 'user'
+                      ? 'Searching for users...'
+                      : 'Searching for tweets..',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ),
+              Center(
+                child: LoadingIndicator(),
+              ),
+            ],
+          );
+        }
+        if (state.hasError) {
+          return Center(
+            child: Container(
+              child: Text('Error', style: TextStyle(color: Colors.red)),
+            ),
+          );
+        }
+        return state.tweets.length > 0
+            ? Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 5.0,
+                ),
+                child: ListView.separated(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 5.0,
+                  ),
+                  shrinkWrap: true,
+                  separatorBuilder: (context, counter) {
+                    return SizedBox(height: 10.0);
+                  },
+                  itemBuilder: (context, index) =>
+                      TweetCard(tweet: state.tweets[index]),
+                  itemCount: state.tweets.length,
+                ),
+              )
+            : Center(
+                child: Container(
+                  child: Text(
+                    'No result match your search.',
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              );
+      },
+    );
+  }
   // @override
   // Widget buildSuggestions(BuildContext context) => Container();
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (query.isNotEmpty) {
+    if (query.isNotEmpty && searchType == 'user') {
       userSearchBloc.add(UserSearchEvent(query));
     }
 
@@ -223,7 +294,7 @@ class SearchScreen extends SearchDelegate<User> {
                           InkWell(
                             onTap: () async {
                               await Prefer.prefs
-                                  .setStringList('recent_product_searches', []);
+                                  .setStringList('recent_searches', []);
                               setState(() {
                                 print("CALLED");
                                 recentSearches = [];
@@ -256,8 +327,12 @@ class SearchScreen extends SearchDelegate<User> {
                           itemBuilder: (context, index) => ListTile(
                             onTap: () {
                               query = recentSearches[index];
-                              userSearchBloc
-                                  .add(UserSearchEvent(recentSearches[index]));
+
+                              searchType == 'user'
+                                  ? userSearchBloc.add(
+                                      UserSearchEvent(recentSearches[index]))
+                                  : tweetSearchBloc.add(
+                                      TweetSearchEvent(recentSearches[index]));
                             },
                             title: RichText(
                               text: TextSpan(
@@ -281,81 +356,83 @@ class SearchScreen extends SearchDelegate<User> {
                 p.username.toLowerCase().startsWith(query.toLowerCase()))
             .toList();
 
-        return Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Container(
-            height: double.infinity,
-            color: Colors.transparent,
-            child: ListView.separated(
-              separatorBuilder: (context, counter) {
-                return SizedBox(height: 10.0);
-              },
-              itemBuilder: (context, index) => Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.0),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(0, 10),
-                          blurRadius: 10.0),
-                    ]),
-                child: ListTile(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/profile',
-                        arguments: suggestionList[index]);
-                  },
-                  title: RichText(
-                    text: TextSpan(
-                        text: suggestionList[index]
-                            .name
-                            .substring(0, query.length),
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).cursorColor,
-                          fontWeight: FontWeight.bold,
+        return searchType == 'user'
+            ? Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Container(
+                  height: double.infinity,
+                  color: Colors.transparent,
+                  child: ListView.separated(
+                    separatorBuilder: (context, counter) {
+                      return SizedBox(height: 10.0);
+                    },
+                    itemBuilder: (context, index) => Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black12,
+                                offset: Offset(0, 10),
+                                blurRadius: 10.0),
+                          ]),
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/profile',
+                              arguments: suggestionList[index]);
+                        },
+                        title: RichText(
+                          text: TextSpan(
+                              text: suggestionList[index]
+                                  .name
+                                  .substring(0, query.length),
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).cursorColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: suggestionList[index]
+                                      .name
+                                      .substring(query.length),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black26,
+                                  ),
+                                )
+                              ]),
                         ),
-                        children: [
-                          TextSpan(
-                            text: suggestionList[index]
-                                .name
-                                .substring(query.length),
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black26,
-                            ),
-                          )
-                        ]),
-                  ),
-                  subtitle: RichText(
-                    text: TextSpan(
-                        text: '@' +
-                            suggestionList[index]
-                                .username
-                                .substring(0, query.length),
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Theme.of(context).cursorColor,
-                          fontWeight: FontWeight.bold,
+                        subtitle: RichText(
+                          text: TextSpan(
+                              text: '@' +
+                                  suggestionList[index]
+                                      .username
+                                      .substring(0, query.length),
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Theme.of(context).cursorColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: suggestionList[index]
+                                      .username
+                                      .substring(query.length),
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black26,
+                                  ),
+                                )
+                              ]),
                         ),
-                        children: [
-                          TextSpan(
-                            text: suggestionList[index]
-                                .username
-                                .substring(query.length),
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black26,
-                            ),
-                          )
-                        ]),
+                      ),
+                    ),
+                    itemCount: suggestionList.length,
                   ),
                 ),
-              ),
-              itemCount: suggestionList.length,
-            ),
-          ),
-        );
+              )
+            : Container();
       },
     );
   }

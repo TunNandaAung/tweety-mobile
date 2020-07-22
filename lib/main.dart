@@ -9,6 +9,7 @@ import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/blocs/simple_bloc_observer.dart';
+import 'package:tweety_mobile/blocs/tweet_search/tweet_search_bloc.dart';
 import 'package:tweety_mobile/blocs/user_search/user_search_bloc.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/repositories/follow_repository.dart';
@@ -119,6 +120,10 @@ class _TweetyState extends State<Tweety> {
         BlocProvider<UserSearchBloc>(
           create: (context) =>
               UserSearchBloc(searchRepository: searchRepository),
+        ),
+        BlocProvider<TweetSearchBloc>(
+          create: (context) =>
+              TweetSearchBloc(searchRepository: searchRepository),
         ),
       ],
       child: _buildWithTheme(context),
