@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/user_search/user_search_bloc.dart';
+import 'package:tweety_mobile/constants/constants.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
@@ -14,6 +15,8 @@ class SearchScreen extends SearchDelegate<User> {
   List<String> recentSearches =
       Prefer.prefs.getStringList("recent_searches") ?? [];
 
+  String searchType = 'user';
+
   @override
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -22,6 +25,13 @@ class SearchScreen extends SearchDelegate<User> {
       primaryColor: Color(0xFFf3f6fb),
       primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.black),
       primaryColorBrightness: Brightness.light,
+      textTheme: TextTheme(
+        headline6: TextStyle(
+          color: Theme.of(context).cursorColor,
+          fontSize: 18,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         fillColor: Theme.of(context).cursorColor,
         hintStyle: TextStyle(color: Colors.grey[400]),
@@ -50,7 +60,41 @@ class SearchScreen extends SearchDelegate<User> {
                 query = '';
               }),
         ),
-      )
+      ),
+      StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+        return PopupMenuButton<String>(
+          icon: Icon(
+            Icons.sort,
+            color: Colors.black,
+          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          color: Colors.white,
+          onSelected: (type) {
+            setState(() {
+              searchType = type.toLowerCase();
+            });
+          },
+          itemBuilder: (BuildContext context) {
+            return Constants.searchTypes.map((String type) {
+              return PopupMenuItem<String>(
+                value: type,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      type,
+                    ),
+                    searchType == type.toLowerCase()
+                        ? Icon(Icons.check)
+                        : SizedBox(width: 0.0)
+                  ],
+                ),
+              );
+            }).toList();
+          },
+        );
+      }),
     ];
   }
 
@@ -72,8 +116,22 @@ class SearchScreen extends SearchDelegate<User> {
       bloc: userSearchBloc,
       builder: (BuildContext context, UserSearchState state) {
         if (state.isLoading) {
-          return Center(
-            child: LoadingIndicator(),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  searchType == 'user'
+                      ? 'Searching users...'
+                      : 'Searching tweets..',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ),
+              Center(
+                child: LoadingIndicator(),
+              ),
+            ],
           );
         }
         if (state.hasError) {
@@ -86,17 +144,14 @@ class SearchScreen extends SearchDelegate<User> {
         return state.users.length > 0
             ? Padding(
                 padding: EdgeInsets.all(12.0),
-                child: Container(
-                  height: double.infinity,
-                  color: Colors.transparent,
-                  child: ListView.separated(
-                    separatorBuilder: (context, counter) {
-                      return SizedBox(height: 0.0);
-                    },
-                    itemBuilder: (context, index) =>
-                        UserCard(user: state.users[index]),
-                    itemCount: state.users.length,
-                  ),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  separatorBuilder: (context, counter) {
+                    return SizedBox(height: 0.0);
+                  },
+                  itemBuilder: (context, index) =>
+                      UserCard(user: state.users[index]),
+                  itemCount: state.users.length,
                 ),
               )
             : Center(
