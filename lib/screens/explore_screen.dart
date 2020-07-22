@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/explore/explore_bloc.dart';
+import 'package:tweety_mobile/blocs/user_search/user_search_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
+import 'package:tweety_mobile/screens/search_screen.dart';
 import 'package:tweety_mobile/widgets/avatar_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
@@ -75,28 +77,38 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 leading: AvatarButton(
                   scaffoldKey: widget.scaffoldKey,
                 ),
-                title: Container(
-                  width: 400.0,
-                  height: 40.0,
-                  padding: EdgeInsets.symmetric(horizontal: 15.0),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFCBD5E0),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Search',
-                        style: TextStyle(
-                          color: Colors.grey[500],
-                        ),
+                title: InkWell(
+                  onTap: () async {
+                    User selected = await showSearch<User>(
+                      context: context,
+                      delegate: SearchScreen(
+                          BlocProvider.of<UserSearchBloc>(context)),
+                    );
+                    print(selected);
+                  },
+                  child: Container(
+                    width: 400.0,
+                    height: 36.0,
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFCBD5E0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.0),
                       ),
-                      Icon(Icons.search)
-                    ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Search',
+                          style: TextStyle(
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                        Icon(Icons.search)
+                      ],
+                    ),
                   ),
                 ),
               ),

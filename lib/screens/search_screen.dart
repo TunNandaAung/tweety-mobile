@@ -1,0 +1,307 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/user_search/user_search_bloc.dart';
+import 'package:tweety_mobile/models/user.dart';
+import 'package:tweety_mobile/preferences/preferences.dart';
+import 'package:tweety_mobile/widgets/loading_indicator.dart';
+import 'package:tweety_mobile/widgets/user_card.dart';
+
+class SearchScreen extends SearchDelegate<User> {
+  final Bloc<UserSearchEvent, UserSearchState> userSearchBloc;
+
+  SearchScreen(this.userSearchBloc);
+
+  List<String> recentSearches =
+      Prefer.prefs.getStringList("recent_searches") ?? [];
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return theme.copyWith(
+      primaryColor: Color(0xFFf3f6fb),
+      primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.black),
+      primaryColorBrightness: Brightness.light,
+      inputDecorationTheme: InputDecorationTheme(
+        fillColor: Theme.of(context).cursorColor,
+        hintStyle: TextStyle(color: Colors.grey[400]),
+        suffixStyle: TextStyle(fontSize: 18.0),
+      ),
+    );
+  }
+
+  @override
+  String get searchFieldLabel => 'Search tweety...';
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    // action for app bar
+    return [
+      Padding(
+        padding: EdgeInsets.only(right: 10.0),
+        child: SizedBox(
+          width: 25.0,
+          child: RawMaterialButton(
+              shape: CircleBorder(),
+              elevation: 1.0,
+              fillColor: Color(0xFF4A5568),
+              child: Icon(Icons.clear, color: Colors.white, size: 20.0),
+              onPressed: () {
+                query = '';
+              }),
+        ),
+      )
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: BackButtonIcon(),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    userSearchBloc.add(UserSearchEvent(query));
+
+    return BlocBuilder(
+      bloc: userSearchBloc,
+      builder: (BuildContext context, UserSearchState state) {
+        if (state.isLoading) {
+          return Center(
+            child: LoadingIndicator(),
+          );
+        }
+        if (state.hasError) {
+          return Center(
+            child: Container(
+              child: Text('Error', style: TextStyle(color: Colors.red)),
+            ),
+          );
+        }
+        return state.users.length > 0
+            ? Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Container(
+                  height: double.infinity,
+                  color: Colors.transparent,
+                  child: ListView.separated(
+                    separatorBuilder: (context, counter) {
+                      return SizedBox(height: 0.0);
+                    },
+                    itemBuilder: (context, index) =>
+                        UserCard(user: state.users[index]),
+                    itemCount: state.users.length,
+                  ),
+                ),
+              )
+            : Center(
+                child: Container(
+                  child: Text(
+                    'No result match your search.',
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              );
+      },
+    );
+  }
+
+  // @override
+  // Widget buildSuggestions(BuildContext context) => Container();
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    if (query.isNotEmpty) {
+      userSearchBloc.add(UserSearchEvent(query));
+    }
+
+    return BlocBuilder(
+      bloc: userSearchBloc,
+      builder: (BuildContext context, UserSearchState state) {
+        if (state.isLoading) {
+          return Center(
+            child: LoadingIndicator(),
+          );
+        }
+        if (state.hasError) {
+          return Center(
+            child: Container(
+              child: Text(
+                'Error',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          );
+        }
+
+        if (recentSearches.length > 0 && query.isEmpty) {
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Container(
+                  height: double.infinity,
+                  color: Colors.transparent,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Recent Searches',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 21.0,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              await Prefer.prefs
+                                  .setStringList('recent_product_searches', []);
+                              setState(() {
+                                print("CALLED");
+                                recentSearches = [];
+                              });
+                              print(recentSearches.length);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(5.0),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF4A5568),
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              child: Text(
+                                'Clear',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: ListView.separated(
+                          separatorBuilder: (context, counter) {
+                            return SizedBox(
+                              height: 0.0,
+                            );
+                          },
+                          itemBuilder: (context, index) => ListTile(
+                            onTap: () {
+                              query = recentSearches[index];
+                              userSearchBloc
+                                  .add(UserSearchEvent(recentSearches[index]));
+                            },
+                            title: RichText(
+                              text: TextSpan(
+                                  text: recentSearches[index],
+                                  style: Theme.of(context).textTheme.bodyText2),
+                            ),
+                          ),
+                          itemCount: recentSearches?.length,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        }
+        var suggestionList = state.users
+            .where((p) =>
+                p.name.toLowerCase().startsWith(query.toLowerCase()) ||
+                p.username.toLowerCase().startsWith(query.toLowerCase()))
+            .toList();
+
+        return Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Container(
+            height: double.infinity,
+            color: Colors.transparent,
+            child: ListView.separated(
+              separatorBuilder: (context, counter) {
+                return SizedBox(height: 10.0);
+              },
+              itemBuilder: (context, index) => Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(0, 10),
+                          blurRadius: 10.0),
+                    ]),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/profile',
+                        arguments: suggestionList[index]);
+                  },
+                  title: RichText(
+                    text: TextSpan(
+                        text: suggestionList[index]
+                            .name
+                            .substring(0, query.length),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).cursorColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: suggestionList[index]
+                                .name
+                                .substring(query.length),
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black26,
+                            ),
+                          )
+                        ]),
+                  ),
+                  subtitle: RichText(
+                    text: TextSpan(
+                        text: '@' +
+                            suggestionList[index]
+                                .username
+                                .substring(0, query.length),
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Theme.of(context).cursorColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: suggestionList[index]
+                                .username
+                                .substring(query.length),
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black26,
+                            ),
+                          )
+                        ]),
+                  ),
+                ),
+              ),
+              itemCount: suggestionList.length,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
