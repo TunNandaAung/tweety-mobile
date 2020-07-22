@@ -75,11 +75,42 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 leading: AvatarButton(
                   scaffoldKey: widget.scaffoldKey,
                 ),
-                title: Text(
-                  'Explore',
-                  style: TextStyle(letterSpacing: 1.0, color: Colors.black),
+                title: Container(
+                  width: 400.0,
+                  height: 40.0,
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFCBD5E0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Search',
+                        style: TextStyle(
+                          color: Colors.grey[500],
+                        ),
+                      ),
+                      Icon(Icons.search)
+                    ],
+                  ),
                 ),
-                centerTitle: true,
+              ),
+              SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    'Explore Tweety',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
               BlocBuilder<ExploreBloc, ExploreState>(
                 builder: (context, state) {
