@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/screens/photo_view_screen.dart';
+import 'package:tweety_mobile/utils/helpers.dart';
 import 'package:tweety_mobile/widgets/add_reply_button.dart';
 import 'package:tweety_mobile/widgets/like_dislike_buttons.dart';
 import 'package:tweety_mobile/widgets/tweet_actions_modal.dart';
@@ -48,7 +50,7 @@ class TweetCard extends StatelessWidget {
                   onTap: () => Navigator.of(context)
                       .pushNamed('/profile', arguments: tweet.user.username),
                   child: Container(
-                    width: size.width / 1.9,
+                    width: size.width / 1.93,
                     child: RichText(
                       overflow: TextOverflow.ellipsis,
                       text: TextSpan(
@@ -80,9 +82,13 @@ class TweetCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    tweet.body,
-                    style: Theme.of(context).textTheme.bodyText1,
+                  RichText(
+                    text: TextSpan(
+                      style: Theme.of(context).textTheme.bodyText1,
+                      children: parseBody(tweet.body)
+                          .map((body) => bodyTextSpan(body, context))
+                          .toList(),
+                    ),
                   ),
                   tweet.image != null
                       ? Padding(

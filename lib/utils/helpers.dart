@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 Icon mapNotificationTypeToIcon(String type) {
@@ -25,4 +26,38 @@ Icon mapNotificationTypeToIcon(String type) {
   }
 
   return icon;
+}
+
+List<String> parseBody(String body) {
+  final RegExp exp = RegExp(
+    r'<a[^>]*>([^<]+)<\/a>',
+  );
+
+  var matches = exp.allMatches(body);
+
+  for (var match in matches) {
+    body = body.replaceAll(match.group(0), match.group(1));
+  }
+
+  List<String> stringList = body.split(" ");
+
+  return stringList;
+}
+
+TextSpan bodyTextSpan(String body, BuildContext context) {
+  return TextSpan(
+      text: body + " ",
+      style: body.trim().startsWith('@')
+          ? Theme.of(context)
+              .textTheme
+              .bodyText1
+              .copyWith(color: Theme.of(context).primaryColor)
+          : Theme.of(context).textTheme.bodyText1,
+      recognizer: TapGestureRecognizer()
+        ..onTap = () {
+          if (body.trim().startsWith('@')) {
+            Navigator.of(context).pushNamed('/profile',
+                arguments: body.trim().replaceFirst('@', ''));
+          }
+        });
 }
