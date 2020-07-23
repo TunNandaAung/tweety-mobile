@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
 import 'package:tweety_mobile/blocs/explore/explore_bloc.dart';
 import 'package:tweety_mobile/blocs/follow/follow_bloc.dart';
+import 'package:tweety_mobile/blocs/mention/mention_bloc.dart';
 import 'package:tweety_mobile/blocs/notification/notification_bloc.dart';
 import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
@@ -124,6 +125,9 @@ class _TweetyState extends State<Tweety> {
         BlocProvider<TweetSearchBloc>(
           create: (context) =>
               TweetSearchBloc(searchRepository: searchRepository),
+        ),
+        BlocProvider<MentionBloc>(
+          create: (context) => MentionBloc(),
         ),
       ],
       child: _buildWithTheme(context),
