@@ -492,7 +492,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
               return InkWell(
                 onTap: () {
                   _bodyController.text = _bodyController.text
-                      .replaceFirst('@' + state.query, listitem);
+                      .replaceFirst('@' + state.query, '@' + listitem);
                   _bodyController.selection = TextSelection.fromPosition(
                       TextPosition(offset: _bodyController.text.length));
                 },

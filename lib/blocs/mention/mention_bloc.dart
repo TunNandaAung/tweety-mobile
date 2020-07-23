@@ -4,12 +4,16 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:meta/meta.dart';
+import 'package:tweety_mobile/repositories/user_repository.dart';
 
 part 'mention_event.dart';
 part 'mention_state.dart';
 
 class MentionBloc extends Bloc<MentionEvent, MentionState> {
-  MentionBloc() : super(MentionInitial());
+  final UserRepository userRepository;
+  MentionBloc({@required this.userRepository})
+      : assert(userRepository != null),
+        super(MentionInitial());
 
   @override
   Stream<Transition<MentionEvent, MentionState>> transformEvents(
@@ -35,10 +39,8 @@ class MentionBloc extends Bloc<MentionEvent, MentionState> {
       FindMentionedUser event) async* {
     yield MentionUserLoading();
     try {
-      await Future.delayed(Duration(milliseconds: 500));
-      yield MentionUserLoaded(
-          query: event.query,
-          usernames: ['jane', 'john', 'saz', 'vader', 'jeffrey']);
+      final usernames = await userRepository.findMentionedUsers(event.query);
+      yield MentionUserLoaded(query: event.query, usernames: usernames);
     } catch (e) {
       yield MentionUserError();
     }

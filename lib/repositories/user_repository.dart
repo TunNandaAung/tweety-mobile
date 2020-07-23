@@ -109,4 +109,8 @@ class UserRepository {
   Future<List<User>> explore() async {
     return userApiClient.explore();
   }
+
+  Future<List<String>> findMentionedUsers(String query) async {
+    return userApiClient.findMentionedUser(query);
+  }
 }

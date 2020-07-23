@@ -127,7 +127,7 @@ class _TweetyState extends State<Tweety> {
               TweetSearchBloc(searchRepository: searchRepository),
         ),
         BlocProvider<MentionBloc>(
-          create: (context) => MentionBloc(),
+          create: (context) => MentionBloc(userRepository: userRepository),
         ),
       ],
       child: _buildWithTheme(context),

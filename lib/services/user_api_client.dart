@@ -358,4 +358,22 @@ class UserApiClient {
 
     return request;
   }
+
+  Future<List<String>> findMentionedUser(String query) async {
+    final url = '$baseUrl/mention?q=$query';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response =
+        await this.httpClient.get(url, headers: requestHeaders(token));
+
+    if (response.statusCode != 200) {
+      print(response.body);
+      throw Exception('Error getting users');
+    }
+
+    final usersJson = jsonDecode(response.body) as List;
+
+    return usersJson.map((user) => user as String).toList();
+  }
 }
