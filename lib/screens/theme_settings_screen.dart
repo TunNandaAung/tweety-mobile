@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/preferences/preferences.dart';
+import 'package:tweety_mobile/theme/app_theme.dart';
+import 'package:tweety_mobile/theme/bloc/theme_bloc.dart';
 
 class ThemeSettingsScreen extends StatefulWidget {
   ThemeSettingsScreen({Key key}) : super(key: key);
@@ -8,7 +12,7 @@ class ThemeSettingsScreen extends StatefulWidget {
 }
 
 class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
-  bool toggleValue = false;
+  bool isCurrentThemeDark = Prefer.prefs.getInt('theme') == 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,54 +36,81 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
           ),
         ),
       ),
-      body: Center(
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          height: 30.0,
-          width: 60.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0),
-            color: toggleValue
-                ? Colors.greenAccent[100]
-                : Colors.redAccent[100].withOpacity(0.5),
-          ),
-          child: Stack(
-            children: <Widget>[
-              AnimatedPositioned(
+      body: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    offset: Offset(0, 10),
+                    blurRadius: 10,
+                  )
+                ]),
+            child: ListTile(
+              title: Text('Dark Theme',
+                  style: Theme.of(context).textTheme.caption),
+              trailing: AnimatedContainer(
                 duration: Duration(milliseconds: 300),
-                curve: Curves.easeIn,
-                top: 3.0,
-                left: toggleValue ? 30.0 : 0.0,
-                right: toggleValue ? 0.0 : 30.0,
-                child: InkWell(
-                  onTap: _toggleButton,
-                  child: AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                      return ScaleTransition(
-                        child: child,
-                        scale: animation,
-                      );
-                    },
-                    child: toggleValue
-                        ? Icon(Icons.check_circle,
-                            color: Colors.green, size: 25.0, key: UniqueKey())
-                        : Icon(Icons.remove_circle_outline,
-                            color: Colors.red, size: 25.0, key: UniqueKey()),
-                  ),
+                height: 30.0,
+                width: 60.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: isCurrentThemeDark
+                      ? Colors.greenAccent[100]
+                      : Colors.redAccent[100].withOpacity(0.5),
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    AnimatedPositioned(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      top: 3.0,
+                      left: isCurrentThemeDark ? 30.0 : 0.0,
+                      right: isCurrentThemeDark ? 0.0 : 30.0,
+                      child: InkWell(
+                        onTap: _toggleButton,
+                        child: AnimatedSwitcher(
+                          duration: Duration(milliseconds: 300),
+                          transitionBuilder:
+                              (Widget child, Animation<double> animation) {
+                            return ScaleTransition(
+                              child: child,
+                              scale: animation,
+                            );
+                          },
+                          child: isCurrentThemeDark
+                              ? Icon(Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 25.0,
+                                  key: UniqueKey())
+                              : Icon(Icons.remove_circle_outline,
+                                  color: Colors.red,
+                                  size: 25.0,
+                                  key: UniqueKey()),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 
   void _toggleButton() {
     setState(() {
-      toggleValue = !toggleValue;
+      isCurrentThemeDark = !isCurrentThemeDark;
     });
+
+    isCurrentThemeDark
+        ? BlocProvider.of<ThemeBloc>(context).add(ThemeChanged(AppTheme.Dark))
+        : BlocProvider.of<ThemeBloc>(context).add(ThemeChanged(AppTheme.Light));
   }
 }

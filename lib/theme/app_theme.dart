@@ -1,12 +1,75 @@
 import 'package:flutter/material.dart';
 
-enum AppTheme { Light }
+enum AppTheme { Light, Dark }
 
 final appThemeData = {
   AppTheme.Light: ThemeData(
     brightness: Brightness.light,
     primaryColor: Color(0xFF4299E1),
     cardColor: Colors.white,
+    hintColor: Color(0xFF718096),
+    cursorColor: Colors.black,
+    scaffoldBackgroundColor: Color(0xFFf3f6fb),
+    appBarTheme: AppBarTheme(
+      textTheme: TextTheme(
+        caption: TextStyle(color: Colors.black),
+      ),
+      iconTheme: IconThemeData(color: Colors.black),
+    ),
+    dividerColor: Colors.grey[500],
+    tabBarTheme: TabBarTheme(
+      labelStyle: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
+      unselectedLabelStyle: TextStyle(
+        color: Color(0xFF718096),
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
+      unselectedLabelColor: Colors.grey,
+      labelColor: Colors.black,
+    ),
+    textTheme: TextTheme(
+      headline5: TextStyle(
+        color: Colors.black,
+        fontSize: 20.0,
+        fontWeight: FontWeight.w500,
+      ),
+      caption: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+      ),
+      button: TextStyle(
+        color: Colors.white,
+        fontSize: 14.0,
+      ),
+      bodyText1: TextStyle(
+        color: Colors.black,
+        fontSize: 14.0,
+      ),
+      bodyText2: TextStyle(
+        color: Color(0xFF718096),
+        fontSize: 14,
+      ),
+      headline6: TextStyle(
+        color: Color(0xFF4299E1),
+        fontSize: 18,
+        fontWeight: FontWeight.w400,
+      ),
+      subtitle1: TextStyle(
+        color: Colors.black,
+        fontSize: 18,
+        fontWeight: FontWeight.w400,
+      ),
+    ),
+  ),
+  AppTheme.Dark: ThemeData(
+    brightness: Brightness.dark,
+    primaryColor: Color(0xFF4299E1),
+    cardColor: Colors.grey,
     hintColor: Color(0xFF718096),
     cursorColor: Colors.black,
     scaffoldBackgroundColor: Color(0xFFf3f6fb),
