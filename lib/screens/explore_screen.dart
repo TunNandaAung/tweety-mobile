@@ -73,7 +73,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 elevation: 20.0,
                 floating: true,
                 iconTheme: IconThemeData(
-                  color: Colors.black,
+                  color: Theme.of(context).appBarTheme.iconTheme.color,
                 ),
                 leading: AvatarButton(
                   scaffoldKey: widget.scaffoldKey,

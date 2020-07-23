@@ -277,7 +277,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black12,
+                                color: Theme.of(context).canvasColor,
                                 offset: Offset(0, 10),
                                 blurRadius: 10.0,
                               )
@@ -292,7 +292,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                             color: Theme.of(context).scaffoldBackgroundColor,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black12,
+                                color: Theme.of(context).canvasColor,
                                 offset: Offset(-10, -10),
                                 blurRadius: 10.0,
                               )

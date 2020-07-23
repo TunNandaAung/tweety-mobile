@@ -63,7 +63,7 @@ class _TweetScreenState extends State<TweetScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(
-          color: Colors.black,
+          color: Theme.of(context).cursorColor,
         ),
         title: Text(
           'Tweet',
@@ -323,12 +323,12 @@ class _TweetScreenState extends State<TweetScreen> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black12,
+                        color: Theme.of(context).canvasColor,
                         offset: Offset(0, 10),
                         blurRadius: (10.0),
                       )
                     ],
-                    color: Colors.white,
+                    color: Theme.of(context).cardColor,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

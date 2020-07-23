@@ -171,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _currentIndex,
         onTap: changePage,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color(0xFFEDF2F7),
+        backgroundColor: Theme.of(context).bottomAppBarTheme.color,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         selectedItemColor: Colors.white,

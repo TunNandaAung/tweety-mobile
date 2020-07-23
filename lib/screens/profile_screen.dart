@@ -319,7 +319,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
           color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.black12,
+              color: Theme.of(context).canvasColor,
               offset: Offset(1, 10),
               blurRadius: 10.0,
             )
@@ -330,6 +330,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
         unselectedLabelStyle:
             Theme.of(context).tabBarTheme.unselectedLabelStyle,
         labelStyle: Theme.of(context).tabBarTheme.labelStyle,
+        indicatorColor: Theme.of(context).primaryColor,
         tabs: <Widget>[
           Tab(
             text: "Tweets",

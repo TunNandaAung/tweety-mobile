@@ -7,6 +7,7 @@ final appThemeData = {
     brightness: Brightness.light,
     primaryColor: Color(0xFF4299E1),
     cardColor: Colors.white,
+    canvasColor: Colors.black12,
     hintColor: Color(0xFF718096),
     cursorColor: Colors.black,
     scaffoldBackgroundColor: Color(0xFFf3f6fb),
@@ -16,7 +17,10 @@ final appThemeData = {
       ),
       iconTheme: IconThemeData(color: Colors.black),
     ),
+    splashColor: Color(0xFFEDF2F7),
     dividerColor: Colors.grey[500],
+    bottomAppBarTheme: BottomAppBarTheme(color: Color(0xFFEDF2F7)),
+    popupMenuTheme: PopupMenuThemeData(color: Color(0xFFEDF0F6)),
     tabBarTheme: TabBarTheme(
       labelStyle: TextStyle(
         color: Colors.black,
@@ -67,22 +71,26 @@ final appThemeData = {
     ),
   ),
   AppTheme.Dark: ThemeData(
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
     primaryColor: Color(0xFF4299E1),
-    cardColor: Colors.grey,
+    cardColor: Color(0xFF2d3447),
+    canvasColor: Colors.transparent,
     hintColor: Color(0xFF718096),
-    cursorColor: Colors.black,
-    scaffoldBackgroundColor: Color(0xFFf3f6fb),
+    cursorColor: Colors.white,
+    scaffoldBackgroundColor: Color(0xFF1A202C),
     appBarTheme: AppBarTheme(
       textTheme: TextTheme(
-        caption: TextStyle(color: Colors.black),
+        caption: TextStyle(color: Colors.white),
       ),
-      iconTheme: IconThemeData(color: Colors.black),
+      iconTheme: IconThemeData(color: Colors.white),
     ),
+    splashColor: Color(0xFF718096),
     dividerColor: Colors.grey[500],
+    bottomAppBarTheme: BottomAppBarTheme(color: Color(0xFF4A5568)),
+    popupMenuTheme: PopupMenuThemeData(color: Color(0xFF2d3447)),
     tabBarTheme: TabBarTheme(
       labelStyle: TextStyle(
-        color: Colors.black,
+        color: Colors.white,
         fontWeight: FontWeight.bold,
         fontSize: 16,
       ),
@@ -92,16 +100,16 @@ final appThemeData = {
         fontSize: 16,
       ),
       unselectedLabelColor: Colors.grey,
-      labelColor: Colors.black,
+      labelColor: Colors.white,
     ),
     textTheme: TextTheme(
       headline5: TextStyle(
-        color: Colors.black,
+        color: Colors.white,
         fontSize: 20.0,
         fontWeight: FontWeight.w500,
       ),
       caption: TextStyle(
-        color: Colors.black,
+        color: Colors.white,
         fontWeight: FontWeight.w600,
         fontSize: 16,
       ),
@@ -110,7 +118,7 @@ final appThemeData = {
         fontSize: 14.0,
       ),
       bodyText1: TextStyle(
-        color: Colors.black,
+        color: Colors.white,
         fontSize: 14.0,
       ),
       bodyText2: TextStyle(
@@ -123,7 +131,7 @@ final appThemeData = {
         fontWeight: FontWeight.w400,
       ),
       subtitle1: TextStyle(
-        color: Colors.black,
+        color: Colors.white,
         fontSize: 18,
         fontWeight: FontWeight.w400,
       ),

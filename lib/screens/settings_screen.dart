@@ -20,7 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leading: BackButton(
-            color: Colors.black,
+            color: Theme.of(context).appBarTheme.iconTheme.color,
           ),
           title: Text(
             'Settings',

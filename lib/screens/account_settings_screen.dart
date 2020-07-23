@@ -24,7 +24,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(
-          color: Colors.black,
+          color: Theme.of(context).appBarTheme.iconTheme.color,
         ),
         title: Hero(
           tag: 'settings__account',

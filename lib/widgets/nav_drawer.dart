@@ -46,17 +46,17 @@ class _NavDrawerState extends State<NavDrawer> {
                     width: double.infinity,
                     height: size.height * 0.24,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                             color:
-                                Theme.of(context).primaryColor.withOpacity(.2),
+                                Theme.of(context).primaryColor.withOpacity(.1),
                             offset: Offset(10, 10),
                             blurRadius: 12),
                         BoxShadow(
                             color:
-                                Theme.of(context).primaryColor.withOpacity(.2),
+                                Theme.of(context).primaryColor.withOpacity(.1),
                             offset: Offset(-10, -10),
                             blurRadius: 12),
                       ],
@@ -143,7 +143,7 @@ class _NavDrawerState extends State<NavDrawer> {
                     borderRadius: BorderRadius.circular(20.0),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black12,
+                        color: Theme.of(context).canvasColor,
                         offset: Offset(10, 15),
                         blurRadius: 20.0,
                       ),
@@ -192,7 +192,7 @@ class _NavDrawerState extends State<NavDrawer> {
                     context,
                     title: 'Log out',
                     icon: Icons.exit_to_app,
-                    boxColor: Colors.white,
+                    boxColor: Theme.of(context).hintColor.withOpacity(.05),
                     iconColor: Theme.of(context).hintColor,
                     textStyle: navItemStyle,
                     onTap: () {},

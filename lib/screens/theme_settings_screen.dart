@@ -19,7 +19,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(
-          color: Colors.black,
+          color: Theme.of(context).appBarTheme.iconTheme.color,
         ),
         title: Hero(
           tag: 'settings__theme',
@@ -45,7 +45,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                 borderRadius: BorderRadius.circular(10.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
+                    color: Theme.of(context).canvasColor,
                     offset: Offset(0, 10),
                     blurRadius: 10,
                   )

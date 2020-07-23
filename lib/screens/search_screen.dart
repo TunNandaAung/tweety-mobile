@@ -25,8 +25,8 @@ class SearchScreen extends SearchDelegate<User> {
     final ThemeData theme = Theme.of(context);
 
     return theme.copyWith(
-      primaryColor: Color(0xFFf3f6fb),
-      primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.black),
+      primaryColor: Theme.of(context).cardColor,
+      primaryIconTheme: Theme.of(context).appBarTheme.iconTheme,
       primaryColorBrightness: Brightness.light,
       textTheme: TextTheme(
         headline6: TextStyle(
@@ -68,11 +68,11 @@ class SearchScreen extends SearchDelegate<User> {
         return PopupMenuButton<String>(
           icon: Icon(
             Icons.sort,
-            color: Colors.black,
+            color: Theme.of(context).appBarTheme.iconTheme.color,
           ),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-          color: Colors.white,
+          color: Theme.of(context).popupMenuTheme.color,
           onSelected: (type) {
             setState(() {
               searchType = type.toLowerCase();
@@ -372,7 +372,7 @@ class SearchScreen extends SearchDelegate<User> {
                           borderRadius: BorderRadius.circular(10.0),
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.black12,
+                                color: Theme.of(context).canvasColor,
                                 offset: Offset(0, 10),
                                 blurRadius: 10.0),
                           ]),

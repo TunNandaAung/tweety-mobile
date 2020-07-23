@@ -76,7 +76,7 @@ class _FollowListScreenState extends State<FollowListScreen>
               SliverAppBar(
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 leading: BackButton(
-                  color: Colors.black,
+                  color: Theme.of(context).appBarTheme.iconTheme.color,
                 ),
                 title: Text(
                   widget.profileUser.name,
@@ -279,6 +279,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
         controller: controller,
         unselectedLabelStyle:
             Theme.of(context).tabBarTheme.unselectedLabelStyle,
+        indicatorColor: Theme.of(context).primaryColor,
         tabs: <Widget>[
           Tab(
             text: "Following",

@@ -22,7 +22,7 @@ class TweetCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
+            color: Theme.of(context).canvasColor,
             offset: Offset(10, 10),
             blurRadius: 10.0,
           ),
@@ -72,6 +72,7 @@ class TweetCard extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Icons.keyboard_arrow_down),
+                  color: Theme.of(context).cursorColor,
                   onPressed: () =>
                       TweetActionsModal().mainBottomSheet(context, tweet),
                 ),
@@ -113,7 +114,7 @@ class TweetCard extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20.0),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black12,
+                                    color: Theme.of(context).canvasColor,
                                     offset: Offset(0, 5),
                                     blurRadius: 10.0,
                                   )

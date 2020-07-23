@@ -51,7 +51,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         compressFormat: ImageCompressFormat.png,
         androidUiSettings: AndroidUiSettings(
           toolbarTitle: 'Edit Photo',
-          toolbarColor: Colors.white,
+          toolbarColor: Theme.of(context).cardColor,
           activeControlsWidgetColor: Colors.blue,
         ),
       );
@@ -156,11 +156,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0.0,
           iconTheme: IconThemeData(
-            color: Colors.black,
+            color: Theme.of(context).appBarTheme.iconTheme.color,
           ),
           title: Text(
             'Edit Profile',
-            style: TextStyle(letterSpacing: 1.0, color: Colors.black),
+            style: Theme.of(context).appBarTheme.textTheme.caption,
           ),
           centerTitle: true,
           actions: <Widget>[
@@ -300,11 +300,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.0),
                       TextFormField(
                         style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w500),
+                            color: Theme.of(context).cursorColor,
+                            fontWeight: FontWeight.w500),
                         initialValue: widget.user.name,
                         decoration: InputDecoration(
                           filled: true,
-                          focusColor: Colors.white,
+                          focusColor: Theme.of(context).primaryColor,
                           enabledBorder: UnderlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide.none,
@@ -336,7 +337,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.0),
                       TextFormField(
                         style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w500),
+                            color: Theme.of(context).cursorColor,
+                            fontWeight: FontWeight.w500),
                         initialValue: widget.user.username,
                         decoration: InputDecoration(
                           filled: true,
@@ -373,7 +375,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       TextFormField(
                         maxLines: 5,
                         style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w500),
+                            color: Theme.of(context).cursorColor,
+                            fontWeight: FontWeight.w500),
                         initialValue: widget.user.description,
                         decoration: InputDecoration(
                           filled: true,

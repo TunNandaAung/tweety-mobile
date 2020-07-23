@@ -43,7 +43,7 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leading: BackButton(
-            color: Colors.black,
+            color: Theme.of(context).appBarTheme.iconTheme.color,
           ),
           title: Text(
             'Update Email',
@@ -122,7 +122,7 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                   SizedBox(height: 10.0),
                                   TextFormField(
                                     style: TextStyle(
-                                        color: Colors.black,
+                                        color: Theme.of(context).cursorColor,
                                         fontWeight: FontWeight.w500),
                                     decoration: InputDecoration(
                                         filled: true,
@@ -133,6 +133,12 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                               BorderRadius.circular(10.0),
                                           borderSide: BorderSide.none,
                                         ),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 2.0,
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                        ),
                                         errorBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
@@ -141,8 +147,12 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                             color: Colors.red,
                                           ),
                                         ),
-                                        prefixIcon: Icon(Icons.lock_outline),
+                                        prefixIcon: Icon(
+                                          Icons.lock_outline,
+                                          color: Colors.grey,
+                                        ),
                                         suffixIcon: IconButton(
+                                            color: Colors.grey,
                                             icon: _isPasswordHidden
                                                 ? Icon(Icons.visibility_off)
                                                 : Icon(Icons.visibility),
@@ -167,7 +177,7 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                   SizedBox(height: 10.0),
                                   TextFormField(
                                     style: TextStyle(
-                                        color: Colors.black,
+                                        color: Theme.of(context).cursorColor,
                                         fontWeight: FontWeight.w500),
                                     decoration: InputDecoration(
                                         filled: true,
@@ -185,7 +195,10 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                             color: Colors.red,
                                           ),
                                         ),
-                                        prefixIcon: Icon(Icons.mail),
+                                        prefixIcon: Icon(
+                                          Icons.mail,
+                                          color: Colors.grey,
+                                        ),
                                         hintText: 'Email'),
                                     validator: (val) {
                                       return !Validators.isValidEmail(val)

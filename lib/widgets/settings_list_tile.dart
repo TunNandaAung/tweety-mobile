@@ -11,7 +11,7 @@ Widget settingsListTile(context, String name,
           borderRadius: BorderRadius.circular(10.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.black12,
+              color: Theme.of(context).canvasColor,
               offset: Offset(0, 10),
               blurRadius: 10,
             )
@@ -30,7 +30,7 @@ Widget settingsListTile(context, String name,
             user != null ? Text(user.email) : Text(''),
             Icon(
               Icons.chevron_right,
-              color: Colors.black,
+              color: Theme.of(context).cursorColor,
             ),
           ],
         ),

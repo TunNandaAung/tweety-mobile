@@ -37,7 +37,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(
-          color: Colors.black,
+          color: Theme.of(context).appBarTheme.iconTheme.color,
         ),
         title: Text(
           'Update Password',
@@ -106,7 +106,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                 SizedBox(height: 10.0),
                                 TextFormField(
                                   style: TextStyle(
-                                      color: Colors.black,
+                                      color: Theme.of(context).cursorColor,
                                       fontWeight: FontWeight.w500),
                                   decoration: InputDecoration(
                                       filled: true,
@@ -125,8 +125,10 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                           color: Colors.red,
                                         ),
                                       ),
-                                      prefixIcon: Icon(Icons.lock_outline),
+                                      prefixIcon: Icon(Icons.lock_outline,
+                                          color: Colors.grey),
                                       suffixIcon: IconButton(
+                                        color: Colors.grey,
                                         icon: _isCurrentPasswordHidden
                                             ? Icon(Icons.visibility_off)
                                             : Icon(Icons.visibility),
@@ -155,7 +157,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                 TextFormField(
                                   key: passKey,
                                   style: TextStyle(
-                                      color: Colors.black,
+                                      color: Theme.of(context).cursorColor,
                                       fontWeight: FontWeight.w500),
                                   decoration: InputDecoration(
                                       filled: true,
@@ -174,10 +176,14 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                           color: Colors.red,
                                         ),
                                       ),
-                                      prefixIcon: Icon(Icons.lock_outline),
+                                      prefixIcon: Icon(Icons.lock_outline,
+                                          color: Colors.grey),
                                       suffixIcon: IconButton(
+                                        color: Colors.grey,
                                         icon: _isPasswordHidden
-                                            ? Icon(Icons.visibility_off)
+                                            ? Icon(
+                                                Icons.visibility_off,
+                                              )
                                             : Icon(Icons.visibility),
                                         onPressed: () {
                                           setState(() {
@@ -203,7 +209,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                 SizedBox(height: 10.0),
                                 TextFormField(
                                   style: TextStyle(
-                                      color: Colors.black,
+                                      color: Theme.of(context).cursorColor,
                                       fontWeight: FontWeight.w500),
                                   decoration: InputDecoration(
                                       filled: true,
@@ -222,8 +228,10 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                           color: Colors.red,
                                         ),
                                       ),
-                                      prefixIcon: Icon(Icons.lock_outline),
+                                      prefixIcon:
+                                          Icon(Icons.lock, color: Colors.grey),
                                       suffixIcon: IconButton(
+                                        color: Colors.grey,
                                         icon: _isConfirmPasswordHidden
                                             ? Icon(Icons.visibility_off)
                                             : Icon(Icons.visibility),

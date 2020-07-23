@@ -58,14 +58,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0.0,
           iconTheme: IconThemeData(
-            color: Colors.black,
+            color: Theme.of(context).cursorColor,
           ),
           leading: AvatarButton(
             scaffoldKey: widget.scaffoldKey,
           ),
           title: Text(
             'Tweety',
-            style: TextStyle(letterSpacing: 1.0, color: Colors.black),
+            style: Theme.of(context).appBarTheme.textTheme.caption,
           ),
           centerTitle: true,
         ),
@@ -97,12 +97,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: notification.readAt == null
-                                      ? Color(0xFFEDF2F7)
-                                      : Colors.white,
+                                      ? Theme.of(context).splashColor
+                                      : Theme.of(context).cardColor,
                                   borderRadius: BorderRadius.circular(20.0),
                                   boxShadow: [
                                     BoxShadow(
-                                        color: Colors.black12,
+                                        color: Theme.of(context).canvasColor,
                                         offset: Offset(0, 10),
                                         blurRadius: 10.0)
                                   ],
