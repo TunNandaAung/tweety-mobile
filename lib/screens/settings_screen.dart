@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/screens/account_settings_screen.dart';
+import 'package:tweety_mobile/screens/theme_settings_screen.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/settings_list_tile.dart';
 
@@ -56,6 +57,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       MaterialPageRoute(
                         builder: (context) =>
                             AccountSettingsScreen(user: state.user),
+                      ),
+                    );
+                  }),
+                  SizedBox(height: 15.0),
+                  settingsListTile(context, 'Theme', onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ThemeSettingsScreen(),
                       ),
                     );
                   })
