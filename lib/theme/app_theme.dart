@@ -86,7 +86,7 @@ final appThemeData = {
     ),
     splashColor: Color(0xFF718096),
     dividerColor: Colors.grey[500],
-    bottomAppBarTheme: BottomAppBarTheme(color: Color(0xFF2d3447)),
+    bottomAppBarTheme: BottomAppBarTheme(color: Color(0xFF2D3748)),
     popupMenuTheme: PopupMenuThemeData(color: Color(0xFF2d3447)),
     tabBarTheme: TabBarTheme(
       labelStyle: TextStyle(

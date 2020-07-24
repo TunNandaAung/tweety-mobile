@@ -28,7 +28,7 @@ class _ChildrenReplyState extends State<ChildrenReply> {
               onTap: () => Navigator.of(context).pushNamed('/profile',
                   arguments: widget.reply.owner.username),
               child: CircleAvatar(
-                radius: 25.0,
+                radius: 20.0,
                 backgroundImage: NetworkImage(
                   widget.reply.owner.avatar,
                 ),
@@ -45,8 +45,11 @@ class _ChildrenReplyState extends State<ChildrenReply> {
                     width: size.width / 2.2,
                     child: RichText(
                       text: TextSpan(
-                        text: widget.reply.owner.name,
-                        style: Theme.of(context).textTheme.caption,
+                        text: widget.reply.owner.name + "\n",
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption
+                            .copyWith(fontSize: 14.0),
                         children: [
                           TextSpan(
                             text: "@${widget.reply.owner.username}",

@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/notification/notification_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/models/bottom_nav.dart';
@@ -60,9 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
       _currentIndex = index;
       _pageController.jumpToPage(index);
     });
-    // if (index == 2) {
-    //   BlocProvider.of<NotificationBloc>(context).add(ResetNotificationCounts());
-    // }
+    if (index == 2) {
+      BlocProvider.of<NotificationBloc>(context).add(ResetNotificationCounts());
+    }
   }
 
   List<Tweet> tweets = [];

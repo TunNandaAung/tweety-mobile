@@ -187,7 +187,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                                         Theme.of(context).textTheme.bodyText1),
                                 InkWell(
                                   onTap: () {
-                                    Navigator.of(context).push(
+                                    Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) => TweetWrapper(
                                           tweet: reply.tweet,

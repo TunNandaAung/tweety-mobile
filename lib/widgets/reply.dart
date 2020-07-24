@@ -130,7 +130,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                     child: RichText(
                       overflow: TextOverflow.ellipsis,
                       text: TextSpan(
-                        text: widget.reply.owner.name,
+                        text: widget.reply.owner.name + "\n",
                         style: Theme.of(context).textTheme.caption,
                         children: [
                           TextSpan(

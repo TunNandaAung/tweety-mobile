@@ -64,7 +64,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             scaffoldKey: widget.scaffoldKey,
           ),
           title: Text(
-            'Tweety',
+            'Notifications',
             style: Theme.of(context).appBarTheme.textTheme.caption,
           ),
           centerTitle: true,
