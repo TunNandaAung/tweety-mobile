@@ -87,7 +87,8 @@ class TweetCard extends StatelessWidget {
                     text: TextSpan(
                       style: Theme.of(context).textTheme.bodyText1,
                       children: parseBody(tweet.body)
-                          .map((body) => bodyTextSpan(body, context))
+                          .map((body) => bodyTextSpan(body, context,
+                              Theme.of(context).textTheme.bodyText1))
                           .toList(),
                     ),
                   ),

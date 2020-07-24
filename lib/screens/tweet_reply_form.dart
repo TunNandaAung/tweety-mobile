@@ -289,7 +289,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                       : Container(
                           height: 50.0,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                            color: Theme.of(context).cardColor,
                             boxShadow: [
                               BoxShadow(
                                 color: Theme.of(context).canvasColor,

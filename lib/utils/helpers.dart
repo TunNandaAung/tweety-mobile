@@ -44,15 +44,12 @@ List<String> parseBody(String body) {
   return stringList;
 }
 
-TextSpan bodyTextSpan(String body, BuildContext context) {
+TextSpan bodyTextSpan(String body, BuildContext context, TextStyle style) {
   return TextSpan(
       text: body + " ",
       style: body.trim().startsWith('@')
-          ? Theme.of(context)
-              .textTheme
-              .bodyText1
-              .copyWith(color: Theme.of(context).primaryColor)
-          : Theme.of(context).textTheme.bodyText1,
+          ? style.copyWith(color: Theme.of(context).primaryColor)
+          : style,
       recognizer: TapGestureRecognizer()
         ..onTap = () {
           if (body.trim().startsWith('@')) {

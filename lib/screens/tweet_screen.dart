@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/blocs/children_reply/children_reply_bloc.dart';
 import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
@@ -7,11 +8,15 @@ import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
 import 'package:tweety_mobile/screens/add_reply_screen.dart';
+import 'package:tweety_mobile/screens/photo_view_screen.dart';
+import 'package:tweety_mobile/utils/helpers.dart';
 import 'package:tweety_mobile/widgets/add_reply_button.dart';
+import 'package:tweety_mobile/widgets/like_dislike_buttons.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/reply.dart';
-import 'package:tweety_mobile/widgets/tweet_card.dart';
+import 'package:tweety_mobile/widgets/tweet_actions_modal.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class TweetScreen extends StatefulWidget {
   final Tweet tweet;
@@ -150,9 +155,7 @@ class _TweetScreenState extends State<TweetScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 5.0),
-                    child: TweetCard(
-                      tweet: widget.tweet,
-                    ),
+                    child: _tweetCard(widget.tweet),
                   ),
                 ),
               ),
@@ -346,6 +349,177 @@ class _TweetScreenState extends State<TweetScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _tweetCard(Tweet tweet) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(20.0),
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).canvasColor,
+            offset: Offset(10, 10),
+            blurRadius: 10.0,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.all(8.0),
+            leading: InkWell(
+              onTap: () => Navigator.of(context)
+                  .pushNamed('/profile', arguments: tweet.user.username),
+              child: CircleAvatar(
+                radius: 25.0,
+                backgroundImage: NetworkImage(
+                  tweet.user.avatar,
+                ),
+                backgroundColor: Theme.of(context).cardColor,
+              ),
+            ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                InkWell(
+                  onTap: () => Navigator.of(context)
+                      .pushNamed('/profile', arguments: tweet.user.username),
+                  child: Container(
+                    width: size.width / 1.93,
+                    child: RichText(
+                      overflow: TextOverflow.ellipsis,
+                      text: TextSpan(
+                        text: tweet.user.name + "\n",
+                        style: Theme.of(context).textTheme.caption,
+                        children: [
+                          TextSpan(
+                            text: "@${tweet.user.username}",
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  color: Theme.of(context).cursorColor,
+                  onPressed: () =>
+                      TweetActionsModal().mainBottomSheet(context, tweet),
+                ),
+              ],
+            ),
+            subtitle: Padding(
+              padding: EdgeInsets.only(top: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          .copyWith(fontSize: 20.0),
+                      children: parseBody(tweet.body)
+                          .map(
+                            (body) => bodyTextSpan(
+                                body,
+                                context,
+                                Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(fontSize: 18.0)),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                  tweet.image != null
+                      ? Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => PhotoViewScreen(
+                                    title: '',
+                                    actionText: '',
+                                    imageProvider: NetworkImage(tweet.image),
+                                    onTap: () {},
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 200.0,
+                              width: 320.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Theme.of(context).canvasColor,
+                                    offset: Offset(0, 5),
+                                    blurRadius: 10.0,
+                                  )
+                                ],
+                                image: DecorationImage(
+                                    image: NetworkImage(tweet.image),
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Divider(color: Colors.grey[300]),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      DateFormat('h:mm a . d MMM, y .')
+                          .format(tweet.createdAt.toLocal()),
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: Colors.grey[300],
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: LikeDislikeButtons(
+                    tweet: tweet,
+                  ),
+                ),
+                AddReplyButton(
+                  child: AddReplyButtonWidget(
+                    tweet: tweet,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

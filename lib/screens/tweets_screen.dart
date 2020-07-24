@@ -119,11 +119,25 @@ class _TweetsScreenState extends State<TweetsScreen> {
                     tweets = state.tweets;
                     if (state.tweets.isEmpty) {
                       return SliverFillRemaining(
-                        child: Text(
-                          'No tweets yet!',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      );
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "No tweets yet!",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                .copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 5.0),
+                          Text(
+                            "When you follows someone, you'll see their tweets here.",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                        ],
+                      ));
                     }
                     return SliverList(
                       delegate: SliverChildBuilderDelegate(
