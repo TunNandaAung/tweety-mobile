@@ -39,6 +39,8 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
       yield* _mapAddReplyToState(event);
     } else if (event is DeleteReply) {
       yield* _mapDeleteReplyToState(event);
+    } else if (event is FetchSingleReply) {
+      yield* _mapFetchSingleReplyToState(event);
     }
   }
 
@@ -137,5 +139,16 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
 
   List<Reply> _removeReply(List<Reply> repies, DeleteReply event) {
     return repies.where((reply) => reply.id != event.reply.id).toList();
+  }
+
+  Stream<ReplyState> _mapFetchSingleReplyToState(
+      FetchSingleReply event) async* {
+    yield SingleReplyLoading();
+    try {
+      final reply = await replyRepository.getReply(replyID: event.replyID);
+      yield SingleReplyLoaded(reply: reply);
+    } catch (e) {
+      yield SingleReplyError();
+    }
   }
 }

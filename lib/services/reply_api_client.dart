@@ -39,6 +39,25 @@ class ReplyApiClient {
     return ReplyPaginator.fromJson(repliesJson);
   }
 
+  Future<Reply> fetchReply(int replyID) async {
+    final url = '$baseUrl/reply/$replyID';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.get(
+          url,
+          headers: requestHeaders(token),
+        );
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      throw Exception('Error getting reply.');
+    }
+
+    final replyJson = jsonDecode(response.body)['data'];
+
+    return Reply.fromJson(replyJson);
+  }
+
   Future<ReplyPaginator> fetchChildrenReplies(
       int parentID, int pageNumber) async {
     final url =

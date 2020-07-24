@@ -126,7 +126,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                   onTap: () => Navigator.of(context).pushNamed('/profile',
                       arguments: widget.reply.owner.username),
                   child: Container(
-                    width: size.width / 1.92,
+                    width: size.width / 2,
                     child: RichText(
                       overflow: TextOverflow.ellipsis,
                       text: TextSpan(
@@ -147,7 +147,8 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 IconButton(
-                  icon: Icon(Icons.keyboard_arrow_down),
+                  icon: Icon(Icons.keyboard_arrow_down,
+                      color: Theme.of(context).cursorColor),
                   onPressed: () => ReplyActionsModal()
                       .mainBottomSheet(context, widget.reply, onTap: () {
                     Navigator.of(context).pop();

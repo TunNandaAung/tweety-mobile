@@ -14,9 +14,7 @@ NotificationData _$NotificationDataFromJson(Map<String, dynamic> json) {
         : User.fromJson(json['notifier'] as Map<String, dynamic>),
     link: json['link'] as String,
     screen: json['screen'] as String,
-    arg: json['arg'] == null
-        ? null
-        : Tweet.fromJson(json['arg'] as Map<String, dynamic>),
+    arg: json['arg'],
   )..type = json['type'] as String;
 }
 

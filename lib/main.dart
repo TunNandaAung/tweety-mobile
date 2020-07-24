@@ -18,11 +18,11 @@ import 'package:tweety_mobile/repositories/notification_repository.dart';
 import 'package:tweety_mobile/repositories/search_repository.dart';
 import 'package:tweety_mobile/repositories/tweet_repository.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
-import 'package:tweety_mobile/screens/follow_list_screen.dart';
 import 'package:tweety_mobile/screens/home_screen.dart';
 import 'package:tweety_mobile/screens/login_screen.dart';
 import 'package:tweety_mobile/screens/profile_wrapper.dart';
 import 'package:tweety_mobile/screens/publish_tweet_screen.dart';
+import 'package:tweety_mobile/screens/reply_wrapper.dart';
 import 'package:tweety_mobile/screens/settings_screen.dart';
 import 'package:tweety_mobile/screens/splash_screen.dart';
 import 'package:tweety_mobile/screens/tweet_wrapper.dart';
@@ -34,6 +34,8 @@ import 'package:tweety_mobile/services/user_api_client.dart';
 import 'package:tweety_mobile/theme/app_theme.dart';
 import 'package:tweety_mobile/theme/bloc/theme_bloc.dart';
 import 'package:http/http.dart' as http;
+
+import 'models/reply.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -157,6 +159,7 @@ class _TweetyState extends State<Tweety> {
             '/profile': (context) => ProfileWrapper(),
             '/publish-tweet': (context) => PublishTweetScreen(),
             '/settings': (context) => SettingsScreen(),
+            '/tweet-reply': (context) => ReplyWrapper(),
             '/tweet': (context) => TweetWrapper(),
           },
         );

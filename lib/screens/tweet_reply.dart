@@ -5,40 +5,36 @@ import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/blocs/children_reply/children_reply_bloc.dart';
 import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
+import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
 import 'package:tweety_mobile/screens/add_reply_screen.dart';
 import 'package:tweety_mobile/screens/photo_view_screen.dart';
+import 'package:tweety_mobile/screens/tweet_wrapper.dart';
 import 'package:tweety_mobile/utils/helpers.dart';
 import 'package:tweety_mobile/widgets/add_reply_button.dart';
 import 'package:tweety_mobile/widgets/like_dislike_buttons.dart';
-import 'package:tweety_mobile/widgets/loading_indicator.dart';
-import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/reply.dart';
 import 'package:tweety_mobile/widgets/tweet_actions_modal.dart';
 
-class TweetScreen extends StatefulWidget {
-  final Tweet tweet;
+class TweetReplyScreen extends StatefulWidget {
+  final Reply reply;
   final ReplyRepository replyRepository;
-  const TweetScreen({Key key, this.tweet, this.replyRepository})
+  const TweetReplyScreen({Key key, @required this.reply, this.replyRepository})
       : super(key: key);
 
   @override
-  _TweetScreenState createState() => _TweetScreenState();
+  _TweetReplyScreenState createState() => _TweetReplyScreenState();
 }
 
-class _TweetScreenState extends State<TweetScreen> {
+class _TweetReplyScreenState extends State<TweetReplyScreen> {
   final _scrollController = ScrollController();
-  final _scrollThreshold = 200.0;
+  Reply reply;
   // ignore: close_sinks
   ReplyBloc _replyBloc;
 
   @override
   void initState() {
-    BlocProvider.of<ReplyBloc>(context).add(
-      FetchReply(tweetID: widget.tweet.id),
-    );
-    _scrollController.addListener(_onScroll);
     _replyBloc = BlocProvider.of<ReplyBloc>(context);
 
     super.initState();
@@ -46,23 +42,13 @@ class _TweetScreenState extends State<TweetScreen> {
 
   @override
   void dispose() {
-    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
   }
 
-  void _onScroll() {
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
-    if (maxScroll - currentScroll <= _scrollThreshold) {
-      BlocProvider.of<ReplyBloc>(context).add(
-        FetchReply(tweetID: widget.tweet.id),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final Reply reply = widget.reply;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -88,8 +74,8 @@ class _TweetScreenState extends State<TweetScreen> {
               if (state is ReplyAdded) {
                 BlocProvider.of<TweetBloc>(context).add(
                   UpdateReplyCount(
-                    count: widget.tweet.repliesCount + 1,
-                    tweetID: widget.tweet.id,
+                    count: reply.tweet.repliesCount + 1,
+                    tweetID: reply.tweet.id,
                   ),
                 );
                 Scaffold.of(context)
@@ -111,8 +97,8 @@ class _TweetScreenState extends State<TweetScreen> {
               } else if (state is ReplyDeleted) {
                 BlocProvider.of<TweetBloc>(context).add(
                   UpdateReplyCount(
-                    count: (widget.tweet.repliesCount - state.count),
-                    tweetID: widget.tweet.id,
+                    count: (reply.tweet.repliesCount - state.count),
+                    tweetID: reply.tweet.id,
                   ),
                 );
                 Scaffold.of(context)
@@ -154,7 +140,7 @@ class _TweetScreenState extends State<TweetScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 5.0),
-                    child: _tweetCard(widget.tweet),
+                    child: _tweetCard(reply.tweet),
                   ),
                 ),
               ),
@@ -183,87 +169,63 @@ class _TweetScreenState extends State<TweetScreen> {
                                 -10,
                               ))
                         ]),
-                    child: CustomScrollView(
-                      key: PageStorageKey<String>(widget.tweet.body),
-                      slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
-                        ),
-                        BlocBuilder<ReplyBloc, ReplyState>(
-                          builder: (context, state) {
-                            if (state is ReplyError) {
-                              return SliverToBoxAdapter(
-                                child: Container(
-                                  child: Refresh(
-                                    title: 'Couldn\'t load replies',
-                                    onPressed: () {
-                                      BlocProvider.of<ReplyBloc>(context).add(
-                                        RefreshReply(tweetID: widget.tweet.id),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              );
-                            }
-                            if (state is ReplyLoaded) {
-                              if (state.replies.isEmpty) {
-                                return SliverFillRemaining(
-                                  child: Center(
-                                    child: Text('No replies yet!',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1),
-                                  ),
-                                );
-                              }
-                              return SliverList(
-                                delegate: SliverChildBuilderDelegate(
-                                  (context, index) => index >=
-                                          state.replies.length
-                                      ? LoadingIndicator()
-                                      : Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 8.0,
-                                            vertical: 5.0,
-                                          ),
-                                          child: Container(
-                                            child: MultiBlocProvider(
-                                              providers: [
-                                                BlocProvider<ChildrenReplyBloc>(
-                                                  create: (context) =>
-                                                      ChildrenReplyBloc(
-                                                    replyRepository:
-                                                        widget.replyRepository,
-                                                  ),
-                                                ),
-                                                BlocProvider.value(
-                                                  value: BlocProvider.of<
-                                                      ReplyBloc>(context),
-                                                ),
-                                              ],
-                                              child: ReplyWidget(
-                                                reply: state.replies[index],
-                                                tweet: widget.tweet,
-                                              ),
-                                            ),
-                                          ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 5.0,
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: 8.0, right: 8.0, left: 8.0, bottom: 0.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text('Only relevant replies are shown',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => TweetWrapper(
+                                          tweet: reply.tweet,
                                         ),
-                                  childCount: state.hasReachedMax
-                                      ? state.replies.length
-                                      : state.replies.length + 1,
+                                      ),
+                                    );
+                                  },
+                                  child: Text('View All',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColor)),
                                 ),
-                              );
-                            }
-                            return SliverFillRemaining(
-                              child: Center(
-                                child: LoadingIndicator(),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: MultiBlocProvider(
+                              providers: [
+                                BlocProvider<ChildrenReplyBloc>(
+                                  create: (context) => ChildrenReplyBloc(
+                                    replyRepository: widget.replyRepository,
+                                  ),
+                                ),
+                                BlocProvider.value(
+                                  value: BlocProvider.of<ReplyBloc>(context),
+                                ),
+                              ],
+                              child: ReplyWidget(
+                                reply: reply,
+                                tweet: reply.tweet,
                               ),
-                            );
-                          },
-                        ),
-                      ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -282,7 +244,7 @@ class _TweetScreenState extends State<TweetScreen> {
                   builder: (context) => BlocProvider.value(
                     value: _replyBloc,
                     child: AddReplyScreen(
-                      tweet: widget.tweet,
+                      tweet: reply.tweet,
                     ),
                   ),
                 ),

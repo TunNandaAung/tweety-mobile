@@ -13,6 +13,15 @@ class FetchReply extends ReplyEvent {
   List<Object> get props => [tweetID];
 }
 
+class FetchSingleReply extends ReplyEvent {
+  final int replyID;
+
+  FetchSingleReply({@required this.replyID});
+
+  @override
+  List<Object> get props => [replyID];
+}
+
 class RefreshReply extends ReplyEvent {
   final int tweetID;
 

@@ -11,7 +11,7 @@ class NotificationData {
   String link;
   String type;
   @JsonKey(nullable: true)
-  Tweet arg;
+  final arg;
 
   @JsonKey(nullable: true)
   String screen;

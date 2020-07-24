@@ -70,3 +70,16 @@ class ReplyDeleted extends ReplyState {
 }
 
 class DeleteReplyError extends ReplyState {}
+
+class SingleReplyLoading extends ReplyState {}
+
+class SingleReplyLoaded extends ReplyState {
+  final Reply reply;
+
+  const SingleReplyLoaded({@required this.reply}) : assert(reply != null);
+
+  @override
+  List<Object> get props => [reply];
+}
+
+class SingleReplyError extends ReplyState {}
