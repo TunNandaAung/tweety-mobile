@@ -6,6 +6,7 @@ import 'package:tweety_mobile/models/like_dislike_repository.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/services/like_dislike_api_client.dart';
+import 'package:tweety_mobile/utils/helpers.dart';
 
 class LikeDislikeButtons extends StatefulWidget {
   final Tweet tweet;
@@ -112,7 +113,7 @@ class _BuildWidgetState extends State<BuildWidget> {
                   ? Padding(
                       padding: EdgeInsets.only(right: 3.0),
                       child: Text(
-                        _likesCount.toString(),
+                        formatCount(_likesCount),
                         style: TextStyle(
                           color:
                               _isLiked ? Color(0xFF68D391) : Color(0xFFA0AEC0),
@@ -146,7 +147,7 @@ class _BuildWidgetState extends State<BuildWidget> {
                   ? Padding(
                       padding: EdgeInsets.only(right: 3.0),
                       child: Text(
-                        _dislikesCount.toString(),
+                        formatCount(_dislikesCount),
                         style: TextStyle(
                           color: _isDisliked
                               ? Color(0xFFE53E3E)

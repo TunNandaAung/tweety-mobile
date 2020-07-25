@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 Icon mapNotificationTypeToIcon(String type) {
   Icon icon;
@@ -57,4 +58,11 @@ TextSpan bodyTextSpan(String body, BuildContext context, TextStyle style) {
                 arguments: body.trim().replaceFirst('@', ''));
           }
         });
+}
+
+String formatCount(int count) {
+  return NumberFormat.compactCurrency(
+    decimalDigits: 0,
+    symbol: '',
+  ).format(count);
 }
