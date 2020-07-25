@@ -23,6 +23,8 @@ import 'package:tweety_mobile/screens/home_screen.dart';
 import 'package:tweety_mobile/screens/login_screen.dart';
 import 'package:tweety_mobile/screens/profile_wrapper.dart';
 import 'package:tweety_mobile/screens/publish_tweet_screen.dart';
+import 'package:tweety_mobile/screens/register_form.dart';
+import 'package:tweety_mobile/screens/register_screen.dart';
 import 'package:tweety_mobile/screens/reply_wrapper.dart';
 import 'package:tweety_mobile/screens/settings_screen.dart';
 import 'package:tweety_mobile/screens/splash_screen.dart';
@@ -155,6 +157,8 @@ class _TweetyState extends State<Tweety> {
                 return SplashScreen();
               });
             },
+            '/register': (context) =>
+                RegisterScreen(userRepository: widget.userRepository),
             '/profile': (context) => ProfileWrapper(),
             '/publish-tweet': (context) => PublishTweetScreen(),
             '/settings': (context) => SettingsScreen(),
