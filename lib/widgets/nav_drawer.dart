@@ -4,6 +4,7 @@ import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/models/navigation.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
+import 'package:tweety_mobile/widgets/logout_dialog.dart';
 import 'package:tweety_mobile/widgets/nav_item.dart';
 
 class NavDrawer extends StatefulWidget {
@@ -195,7 +196,9 @@ class _NavDrawerState extends State<NavDrawer> {
                     boxColor: Theme.of(context).hintColor.withOpacity(.05),
                     iconColor: Theme.of(context).hintColor,
                     textStyle: navItemStyle,
-                    onTap: () {},
+                    onTap: () {
+                      logoutDialog(context, null);
+                    },
                   ),
                 ],
               ),

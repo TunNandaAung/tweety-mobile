@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
 import 'package:tweety_mobile/blocs/notification/notification_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/models/tweet.dart';
@@ -98,15 +97,6 @@ class _TweetsScreenState extends State<TweetsScreen> {
                   style: Theme.of(context).appBarTheme.textTheme.caption,
                 ),
                 centerTitle: true,
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.exit_to_app),
-                    onPressed: () =>
-                        BlocProvider.of<AuthenticationBloc>(context).add(
-                      AuthenticationLoggedOut(),
-                    ),
-                  )
-                ],
               ),
               BlocBuilder<TweetBloc, TweetState>(
                 builder: (context, state) {

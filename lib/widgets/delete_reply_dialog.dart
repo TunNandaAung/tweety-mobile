@@ -7,6 +7,7 @@ Future<void> deleteReplyDialog(context, Reply reply, VoidCallback onPressed) {
     context: context,
     configuration: FadeScaleTransitionConfiguration(),
     builder: (context) => AlertDialog(
+      backgroundColor: Theme.of(context).cardColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
@@ -16,7 +17,8 @@ Future<void> deleteReplyDialog(context, Reply reply, VoidCallback onPressed) {
       ),
       content: Text(
         'Are you sure? This can\'t be undone.',
-        style: TextStyle(fontWeight: FontWeight.w400),
+        style: TextStyle(
+            fontWeight: FontWeight.w400, color: Theme.of(context).cursorColor),
       ),
       actions: <Widget>[
         Row(

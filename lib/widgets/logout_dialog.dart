@@ -1,9 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
+import 'package:tweety_mobile/blocs/authentication/authentication_bloc.dart';
 
-Future<void> deleteTweetDialog(context, int id) {
+Future<void> logoutDialog(context, VoidCallback onPressed) {
   return showModal<void>(
     context: context,
     configuration: FadeScaleTransitionConfiguration(),
@@ -13,11 +13,11 @@ Future<void> deleteTweetDialog(context, int id) {
         borderRadius: BorderRadius.circular(20.0),
       ),
       title: Text(
-        'Delete Tweet?',
+        'Logout of tweety?',
         style: TextStyle(fontSize: 21.0, fontWeight: FontWeight.bold),
       ),
       content: Text(
-        'Are you sure? This can\'t be undone.',
+        'Are you sure?',
         style: TextStyle(
             fontWeight: FontWeight.w400, color: Theme.of(context).cursorColor),
       ),
@@ -28,20 +28,21 @@ Future<void> deleteTweetDialog(context, int id) {
             SizedBox(
               width: 90.0,
               child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0)),
-                  color: Colors.red[600],
-                  child: Text(
-                    'Delete',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50.0)),
+                color: Colors.red[600],
+                child: Text(
+                  'Logout',
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    BlocProvider.of<TweetBloc>(context)
-                        .add(DeleteTweet(tweetID: id));
-                  }),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  BlocProvider.of<AuthenticationBloc>(context)
+                      .add(AuthenticationLoggedOut());
+                },
+              ),
             ),
             SizedBox(width: 15.0),
             SizedBox(
