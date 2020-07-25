@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/models/user.dart';
 
 part 'notification_data.g.dart';

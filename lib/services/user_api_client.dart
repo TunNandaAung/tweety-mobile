@@ -86,11 +86,13 @@ class UserApiClient {
         );
     if (response.statusCode == 422) {
       var errorJson = jsonDecode(response.body)['errors'];
-
+      print(errorJson);
       if (errorJson['email'] != null) {
         throw Exception(errorJson['email'][0]);
       } else if (errorJson['password_confirmation'] != null) {
         throw Exception(errorJson['password_confirmation'][0]);
+      } else if (errorJson['user_name'] != null) {
+        throw Exception(errorJson['user_name'][0]);
       } else
         throw Exception('Error registering account');
     } else if (response.statusCode != 201) {
@@ -356,5 +358,46 @@ class UserApiClient {
     final usersJson = jsonDecode(response.body) as List;
 
     return usersJson.map((user) => user as String).toList();
+  }
+
+  Future<void> uploadImages({File avatar, File banner}) async {
+    final token = Prefer.prefs.getString('token');
+
+    final url = '$baseUrl/profile-images';
+
+    final request = http.MultipartRequest('POST', Uri.parse(url));
+
+    if (avatar != null) {
+      var stream = new http.ByteStream(Stream.castFrom(avatar.openRead()));
+      var length = await avatar.length();
+      var multipartFile = new MultipartFile("avatar", stream, length,
+          filename: basename(avatar.path),
+          contentType: MediaType('multipart', 'form-data'));
+      request.files.add(multipartFile);
+    }
+
+    if (banner != null) {
+      var stream = new http.ByteStream(Stream.castFrom(banner.openRead()));
+      var length = await banner.length();
+      var multipartFile = new MultipartFile("banner", stream, length,
+          filename: basename(banner.path),
+          contentType: MediaType('multipart', 'form-data'));
+      request.files.add(multipartFile);
+    }
+
+    Map<String, String> _headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    request.headers.addAll(_headers);
+    final response = await request.send();
+
+    var _response = await http.Response.fromStream(response);
+    if (response.statusCode != 204) {
+      print(_response.body);
+      throw Exception('Error uploading images!');
+    }
+    return;
   }
 }

@@ -31,3 +31,18 @@ class Submitted extends RegisterEvent {
     return 'Submitted { name:$name, username:$username, email: $email, password: $password, passwordConfirmation: $passwordConfirmation}';
   }
 }
+
+class UploadRegisterImages extends RegisterEvent {
+  final File avatar;
+  final File banner;
+
+  const UploadRegisterImages({@required this.avatar, @required this.banner});
+
+  @override
+  List<Object> get props => [avatar, banner];
+
+  @override
+  String toString() {
+    return 'UploadRegisterImages';
+  }
+}

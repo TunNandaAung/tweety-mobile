@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/register/register_bloc.dart';
+import 'package:tweety_mobile/screens/register_images_form.dart';
+import 'package:tweety_mobile/utils/validators.dart';
 
 class RegisterForm extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  RegisterBloc _registerBloc;
 
   bool isButtonEnabled(RegisterState state) {
     return state is! RegisterLoading;
@@ -25,6 +28,12 @@ class _RegisterFormState extends State<RegisterForm> {
   String _email;
   String _password;
   String _passwordConfirmation;
+
+  @override
+  void initState() {
+    super.initState();
+    _registerBloc = BlocProvider.of<RegisterBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +101,16 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
               );
           }
-          if (state is RegisterSuccess) {}
+          if (state is RegisterSuccess) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => BlocProvider.value(
+                  value: _registerBloc,
+                  child: RegisterImagesForm(),
+                ),
+              ),
+            );
+          }
         }, child: BlocBuilder<RegisterBloc, RegisterState>(
           builder: (context, state) {
             return Padding(
@@ -178,7 +196,43 @@ class _RegisterFormState extends State<RegisterForm> {
                         ),
                         SizedBox(height: 20.0),
                         Text(
-                          'Enter new password',
+                          'Email',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        SizedBox(height: 10.0),
+                        TextFormField(
+                          style: TextStyle(
+                              color: Theme.of(context).cursorColor,
+                              fontWeight: FontWeight.w500),
+                          decoration: InputDecoration(
+                              filled: true,
+                              focusColor: Colors.white,
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  width: 2.0,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              prefixIcon: Icon(
+                                Icons.mail,
+                                color: Colors.grey,
+                              ),
+                              hintText: 'you@example.com'),
+                          validator: (val) {
+                            return !Validators.isValidEmail(val)
+                                ? 'Invalid email.'
+                                : null;
+                          },
+                          onSaved: (value) => _email = value,
+                        ),
+                        SizedBox(height: 20.0),
+                        Text(
+                          'Enter password',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                         SizedBox(height: 10.0),
@@ -311,7 +365,7 @@ class _RegisterFormState extends State<RegisterForm> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      BlocProvider.of<RegisterBloc>(context).add(
+      _registerBloc.add(
         Submitted(
           name: _name,
           username: _username,

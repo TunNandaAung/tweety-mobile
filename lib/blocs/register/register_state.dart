@@ -24,3 +24,7 @@ class RegisterFailureMessage extends RegisterState {
   @override
   List<Object> get props => [errorMessage];
 }
+
+class RegisterImagesUploading extends RegisterState {}
+
+class RegisterImagesSuccess extends RegisterState {}

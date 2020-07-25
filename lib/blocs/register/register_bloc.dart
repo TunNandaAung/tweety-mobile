@@ -25,6 +25,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   ) async* {
     if (event is Submitted) {
       yield* _mapSubmittedToState(event);
+    } else if (event is UploadRegisterImages) {
+      yield* _mapUploadRegisterImagesToState(event);
     }
   }
 
@@ -42,6 +44,19 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       yield RegisterSuccess();
     } catch (e) {
       yield RegisterFailureMessage(errorMessage: e.message);
+    }
+  }
+
+  Stream<RegisterState> _mapUploadRegisterImagesToState(
+      UploadRegisterImages event) async* {
+    print("CALLEd");
+    yield RegisterImagesUploading();
+    try {
+      await userRepository.uploadImages(
+          avatar: event.avatar, banner: event.banner);
+      yield RegisterImagesSuccess();
+    } catch (e) {
+      yield RegisterError();
     }
   }
 

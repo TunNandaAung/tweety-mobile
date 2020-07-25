@@ -41,6 +41,7 @@ class UserRepository {
       username: username,
       email: email,
       password: password,
+      passwordConfirmation: passwordConfirmation,
     );
   }
 
@@ -106,5 +107,9 @@ class UserRepository {
 
   Future<List<String>> findMentionedUsers(String query) async {
     return userApiClient.findMentionedUser(query);
+  }
+
+  Future<void> uploadImages({File avatar, File banner}) async {
+    return userApiClient.uploadImages(avatar: avatar, banner: banner);
   }
 }

@@ -23,7 +23,7 @@ import 'package:tweety_mobile/screens/home_screen.dart';
 import 'package:tweety_mobile/screens/login_screen.dart';
 import 'package:tweety_mobile/screens/profile_wrapper.dart';
 import 'package:tweety_mobile/screens/publish_tweet_screen.dart';
-import 'package:tweety_mobile/screens/register_form.dart';
+
 import 'package:tweety_mobile/screens/register_screen.dart';
 import 'package:tweety_mobile/screens/reply_wrapper.dart';
 import 'package:tweety_mobile/screens/settings_screen.dart';
