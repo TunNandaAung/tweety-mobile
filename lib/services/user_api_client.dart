@@ -60,49 +60,32 @@ class UserApiClient {
     }
   }
 
-  Future<Auth> register({
-    String name,
-    String email,
-    String password,
-    String passwordConfirmation,
-    String phone,
-    String shopName,
-    String address,
-    File image,
-    String fcmToken,
-  }) async {
+  Future<Auth> register(
+      {String name,
+      String username,
+      String email,
+      String password,
+      String passwordConfirmation}) async {
     final url = '$baseUrl/register';
 
-    final request = http.MultipartRequest('POST', Uri.parse(url));
-    request.fields['name'] = name;
-    request.fields['email'] = email;
-    request.fields['password'] = password;
-    request.fields['password_confirmation'] = passwordConfirmation;
-    request.fields['phone'] = phone;
-    request.fields['shop_name'] = shopName;
-    request.fields['address'] = address;
-    request.fields['fcm_token'] = fcmToken;
-
-    if (image != null) {
-      var stream = new http.ByteStream(Stream.castFrom(image.openRead()));
-      var length = await image.length();
-      var multipartFile = new MultipartFile("image", stream, length,
-          filename: basename(image.path),
-          contentType: MediaType('multipart', 'form-data'));
-      request.files.add(multipartFile);
-    }
-
-    Map<String, String> _headers = {
-      'Accept': 'application/json',
-    };
-
-    request.headers.addAll(_headers);
-    final response = await request.send();
-
-    var _response = await http.Response.fromStream(response);
-
+    final response = await this.httpClient.post(
+          url,
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.acceptHeader: 'application/json',
+          },
+          body: jsonEncode(
+            <String, String>{
+              'name': name,
+              'username': username,
+              'email': email,
+              'password': password,
+              'password_confirmation': passwordConfirmation
+            },
+          ),
+        );
     if (response.statusCode == 422) {
-      var errorJson = jsonDecode(_response.body)['errors'];
+      var errorJson = jsonDecode(response.body)['errors'];
 
       if (errorJson['email'] != null) {
         throw Exception(errorJson['email'][0]);
@@ -111,12 +94,10 @@ class UserApiClient {
       } else
         throw Exception('Error registering account');
     } else if (response.statusCode != 201) {
-      var _response = await http.Response.fromStream(response);
-      print(_response.body);
       throw Exception('Error registering account');
     }
 
-    final authJson = jsonDecode(_response.body);
+    final authJson = jsonDecode(response.body);
 
     return Auth.fromJson(authJson);
   }

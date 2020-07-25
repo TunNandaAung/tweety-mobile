@@ -28,25 +28,19 @@ class UserRepository {
   }
 
   Future<Auth> register(
-      String name,
-      String email,
-      String password,
-      String passwordConfirmation,
-      String phone,
-      String shopName,
-      String address,
-      File image) async {
+    String name,
+    String username,
+    String email,
+    String password,
+    String passwordConfirmation,
+  ) async {
     // String fcmToken = await getFcmtoken();
 
     return userApiClient.register(
       name: name,
+      username: username,
       email: email,
       password: password,
-      passwordConfirmation: passwordConfirmation,
-      phone: phone,
-      shopName: shopName,
-      address: address,
-      image: image,
     );
   }
 
