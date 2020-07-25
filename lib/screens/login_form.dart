@@ -52,7 +52,7 @@ class _LoginFormState extends State<LoginForm> {
 
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: Color(0xFFF7F7F7),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: BlocListener<LoginBloc, LoginState>(listener: (context, state) {
           if (state.isFailure) {
             Scaffold.of(context)
@@ -145,7 +145,7 @@ class _LoginFormState extends State<LoginForm> {
                   child: Wave(
                     size: size,
                     yOffset: size.height / 3.0,
-                    color: Color(0xFFF7F7F7),
+                    color: Theme.of(context).scaffoldBackgroundColor,
                   ),
                 ),
                 Padding(
@@ -156,7 +156,7 @@ class _LoginFormState extends State<LoginForm> {
                       Text(
                         'Tweety',
                         style: TextStyle(
-                          color: Color(0xFFF7F7F7),
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           fontSize: 40.0,
                           fontWeight: FontWeight.w900,
                         ),
@@ -179,7 +179,7 @@ class _LoginFormState extends State<LoginForm> {
                                     fontWeight: FontWeight.w500),
                                 decoration: InputDecoration(
                                     filled: true,
-                                    focusColor: Colors.white,
+                                    focusColor: Theme.of(context).primaryColor,
                                     enabledBorder: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: BorderSide.none,
@@ -187,18 +187,12 @@ class _LoginFormState extends State<LoginForm> {
                                     errorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: BorderSide(
-                                        width: 3.0,
+                                        width: 2.0,
                                         color: Colors.red,
                                       ),
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                          width: 3.0,
-                                          color:
-                                              Theme.of(context).primaryColor),
-                                    ),
-                                    prefixIcon: Icon(Icons.mail),
+                                    prefixIcon:
+                                        Icon(Icons.mail, color: Colors.grey),
                                     hintText: 'Email'),
                                 controller: _emailController,
                                 autovalidate: true,
@@ -225,22 +219,18 @@ class _LoginFormState extends State<LoginForm> {
                                     errorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: BorderSide(
-                                        width: 3.0,
+                                        width: 2.0,
                                         color: Colors.red,
                                       ),
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                          width: 3.0,
-                                          color:
-                                              Theme.of(context).primaryColor),
-                                    ),
-                                    prefixIcon: Icon(Icons.lock_outline),
+                                    prefixIcon: Icon(Icons.lock_outline,
+                                        color: Colors.grey),
                                     suffixIcon: IconButton(
                                         icon: _isPasswordHidden
-                                            ? Icon(Icons.visibility_off)
-                                            : Icon(Icons.visibility),
+                                            ? Icon(Icons.visibility_off,
+                                                color: Colors.grey)
+                                            : Icon(Icons.visibility,
+                                                color: Colors.grey),
                                         onPressed: () {
                                           _toggleVisibility();
                                         }),
@@ -290,7 +280,8 @@ class _LoginFormState extends State<LoginForm> {
                           children: <Widget>[
                             Text("Don't have an account ?",
                                 style: TextStyle(
-                                    color: Colors.black87, fontSize: 16.0)),
+                                    color: Theme.of(context).hintColor,
+                                    fontSize: 16.0)),
                             SizedBox(width: 10.0),
                             InkWell(
                               onTap: () {

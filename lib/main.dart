@@ -35,13 +35,11 @@ import 'package:tweety_mobile/theme/app_theme.dart';
 import 'package:tweety_mobile/theme/bloc/theme_bloc.dart';
 import 'package:http/http.dart' as http;
 
-import 'models/reply.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
   Prefer.prefs = await SharedPreferences.getInstance();
-  Prefer.themeIndexPref = Prefer.prefs.getInt('theme') ?? 0;
+  Prefer.themeIndexPref = Prefer.prefs.getInt('theme') ?? 1;
 
   final UserRepository userRepository =
       UserRepository(userApiClient: UserApiClient(httpClient: http.Client()));
