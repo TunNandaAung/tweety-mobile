@@ -23,7 +23,6 @@ import 'package:tweety_mobile/screens/home_screen.dart';
 import 'package:tweety_mobile/screens/login_screen.dart';
 import 'package:tweety_mobile/screens/profile_wrapper.dart';
 import 'package:tweety_mobile/screens/publish_tweet_screen.dart';
-
 import 'package:tweety_mobile/screens/register_screen.dart';
 import 'package:tweety_mobile/screens/reply_wrapper.dart';
 import 'package:tweety_mobile/screens/settings_screen.dart';
@@ -41,8 +40,13 @@ import 'package:http/http.dart' as http;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
+  int initialThemeIndex =
+      WidgetsBinding.instance.window.platformBrightness == Brightness.light
+          ? 0
+          : 1;
+
   Prefer.prefs = await SharedPreferences.getInstance();
-  Prefer.themeIndexPref = Prefer.prefs.getInt('theme') ?? 1;
+  Prefer.themeIndexPref = Prefer.prefs.getInt('theme') ?? initialThemeIndex;
 
   final UserRepository userRepository =
       UserRepository(userApiClient: UserApiClient(httpClient: http.Client()));

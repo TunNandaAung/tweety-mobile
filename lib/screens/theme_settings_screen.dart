@@ -13,6 +13,8 @@ class ThemeSettingsScreen extends StatefulWidget {
 
 class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
   bool isCurrentThemeDark = Prefer.prefs.getInt('theme') == 1;
+  bool isUsingSystemTheme = Prefer.prefs.getBool('use_system_theme') ?? false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,6 +101,67 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
               ),
             ),
           ),
+          SizedBox(height: 20.0),
+          Container(
+            decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).canvasColor,
+                    offset: Offset(0, 10),
+                    blurRadius: 10,
+                  )
+                ]),
+            child: ListTile(
+              title: Text('Use device Settings',
+                  style: Theme.of(context).textTheme.caption),
+              trailing: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                height: 30.0,
+                width: 60.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: isUsingSystemTheme
+                      ? Colors.greenAccent[100]
+                      : Colors.redAccent[100].withOpacity(0.5),
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    AnimatedPositioned(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      top: 3.0,
+                      left: isUsingSystemTheme ? 30.0 : 0.0,
+                      right: isUsingSystemTheme ? 0.0 : 30.0,
+                      child: InkWell(
+                        onTap: _toggleSystemThemeButton,
+                        child: AnimatedSwitcher(
+                          duration: Duration(milliseconds: 300),
+                          transitionBuilder:
+                              (Widget child, Animation<double> animation) {
+                            return ScaleTransition(
+                              child: child,
+                              scale: animation,
+                            );
+                          },
+                          child: isUsingSystemTheme
+                              ? Icon(Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 25.0,
+                                  key: UniqueKey())
+                              : Icon(Icons.remove_circle_outline,
+                                  color: Colors.red,
+                                  size: 25.0,
+                                  key: UniqueKey()),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -112,5 +175,18 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
     isCurrentThemeDark
         ? BlocProvider.of<ThemeBloc>(context).add(ThemeChanged(AppTheme.Dark))
         : BlocProvider.of<ThemeBloc>(context).add(ThemeChanged(AppTheme.Light));
+  }
+
+  void _toggleSystemThemeButton() {
+    setState(() {
+      isUsingSystemTheme = !isUsingSystemTheme;
+    });
+    if (WidgetsBinding.instance.window.platformBrightness == Brightness.dark) {
+      BlocProvider.of<ThemeBloc>(context).add(ThemeChanged(AppTheme.Dark));
+      setState(() {
+        isCurrentThemeDark = true;
+      });
+    } else
+      BlocProvider.of<ThemeBloc>(context).add(ThemeChanged(AppTheme.Light));
   }
 }
