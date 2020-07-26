@@ -89,7 +89,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Saving...',
+                        'Registering...',
                       ),
                       CircularProgressIndicator(
                         valueColor: new AlwaysStoppedAnimation<Color>(

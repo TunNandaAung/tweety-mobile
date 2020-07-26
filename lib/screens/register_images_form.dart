@@ -140,109 +140,147 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0.0,
-        leading: Container(),
-        iconTheme: IconThemeData(
-          color: Theme.of(context).appBarTheme.iconTheme.color,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.popUntil(context, ModalRoute.withName('/'));
+        BlocProvider.of<AuthenticationBloc>(context)
+            .add(AuthenticationLoggedIn());
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 0.0,
+          leading: Container(),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).appBarTheme.iconTheme.color,
+          ),
+          title: Text(
+            'Upload Avatar & Banner',
+            style: Theme.of(context).appBarTheme.textTheme.caption,
+          ),
+          centerTitle: true,
+          actions: <Widget>[
+            BlocBuilder<RegisterBloc, RegisterState>(
+              builder: (context, state) {
+                return Padding(
+                  padding: const EdgeInsets.all(13.0),
+                  child: FlatButton(
+                    onPressed: state is! RegisterImagesUploading
+                        ? _onSkipPressed
+                        : null,
+                    color: Theme.of(context).primaryColor,
+                    disabledColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: Text(
+                      'Skip',
+                      style: Theme.of(context).textTheme.button.copyWith(
+                            color: Colors.white,
+                          ),
+                    ),
+                  ),
+                );
+              },
+            )
+          ],
         ),
-        title: Text(
-          'Upload Avatar & Banner',
-          style: Theme.of(context).appBarTheme.textTheme.caption,
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-          BlocBuilder<RegisterBloc, RegisterState>(
+        body: BlocListener<RegisterBloc, RegisterState>(
+          listener: (context, state) {
+            if (state is RegisterError) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    elevation: 6.0,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    backgroundColor: Colors.red,
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Couldn't upload images.",
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+            }
+
+            if (state is RegisterImagesSuccess) {
+              Navigator.popUntil(context, ModalRoute.withName('/'));
+              BlocProvider.of<AuthenticationBloc>(context)
+                  .add(AuthenticationLoggedIn());
+            }
+          },
+          child: BlocBuilder<RegisterBloc, RegisterState>(
             builder: (context, state) {
               return Padding(
-                padding: const EdgeInsets.all(13.0),
-                child: FlatButton(
-                  onPressed:
-                      state is! RegisterImagesUploading ? _onSkipPressed : null,
-                  color: Theme.of(context).primaryColor,
-                  disabledColor: Colors.grey,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  child: Text(
-                    'Skip',
-                    style: Theme.of(context).textTheme.button.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                ),
-              );
-            },
-          )
-        ],
-      ),
-      body: BlocListener<RegisterBloc, RegisterState>(
-        listener: (context, state) {
-          if (state is RegisterError) {
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  elevation: 6.0,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  backgroundColor: Colors.red,
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Couldn't upload images.",
-                      ),
-                    ],
-                  ),
-                ),
-              );
-          }
-
-          if (state is RegisterImagesSuccess) {
-            Navigator.popUntil(context, ModalRoute.withName('/'));
-            BlocProvider.of<AuthenticationBloc>(context)
-                .add(AuthenticationLoggedIn());
-          }
-        },
-        child: BlocBuilder<RegisterBloc, RegisterState>(
-          builder: (context, state) {
-            return Padding(
-              padding: EdgeInsets.all(12.0),
-              child: ListView(
-                children: <Widget>[
-                  Form(
-                    key: _formKey,
-                    autovalidate: _autovalidate,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Profile Avatar',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        SizedBox(width: 20.0),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  selectImageDialog(context, isAvatar: true),
-                              child: _avatar != null
-                                  ? CircleAvatar(
-                                      radius: 50.0,
-                                      backgroundColor:
-                                          Theme.of(context).cardColor,
-                                      backgroundImage: FileImage(_avatar),
+                padding: EdgeInsets.all(12.0),
+                child: ListView(
+                  children: <Widget>[
+                    Form(
+                      key: _formKey,
+                      autovalidate: _autovalidate,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Profile Avatar',
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                          SizedBox(width: 20.0),
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: GestureDetector(
+                                onTap: () =>
+                                    selectImageDialog(context, isAvatar: true),
+                                child: _avatar != null
+                                    ? CircleAvatar(
+                                        radius: 50.0,
+                                        backgroundColor:
+                                            Theme.of(context).cardColor,
+                                        backgroundImage: FileImage(_avatar),
+                                      )
+                                    : Container(
+                                        width: 120.0,
+                                        height: 120.0,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Theme.of(context).cardColor,
+                                        ),
+                                        child: Icon(
+                                          Icons.add_photo_alternate,
+                                          size: 30.0,
+                                          color: Colors.grey,
+                                        )),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20.0),
+                          Text(
+                            'Profile Banner',
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                          SizedBox(height: 10.0),
+                          GestureDetector(
+                            onTap: () =>
+                                selectImageDialog(context, isAvatar: false),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: _banner != null
+                                  ? Image(
+                                      image: FileImage(_banner),
+                                      width: 400.0,
                                     )
                                   : Container(
-                                      width: 120.0,
+                                      width: 400.0,
                                       height: 120.0,
                                       decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
                                         color: Theme.of(context).cardColor,
                                       ),
                                       child: Icon(
@@ -252,72 +290,43 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
                                       )),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 20.0),
-                        Text(
-                          'Profile Banner',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        SizedBox(height: 10.0),
-                        GestureDetector(
-                          onTap: () =>
-                              selectImageDialog(context, isAvatar: false),
-                          child: ClipRRect(
+                          SizedBox(height: 30.0),
+                          ClipRRect(
                             borderRadius: BorderRadius.circular(20.0),
-                            child: _banner != null
-                                ? Image(
-                                    image: FileImage(_banner),
-                                    width: 400.0,
-                                  )
-                                : Container(
-                                    width: 400.0,
-                                    height: 120.0,
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                    ),
-                                    child: Icon(
-                                      Icons.add_photo_alternate,
-                                      size: 30.0,
-                                      color: Colors.grey,
-                                    )),
-                          ),
-                        ),
-                        SizedBox(height: 30.0),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Material(
-                            color: Theme.of(context).primaryColor,
-                            child: InkWell(
-                              onTap: isButtonEnabled(state)
-                                  ? _onFormSubmitted
-                                  : null,
-                              child: SizedBox(
-                                height: 50.0,
-                                width: MediaQuery.of(context).size.width,
-                                child: (state is RegisterImagesUploading)
-                                    ? LoadingIndicator(
-                                        color: Colors.white,
-                                      )
-                                    : Center(
-                                        child: Text(
-                                          'Save',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18.0,
-                                              letterSpacing: 1.0),
+                            child: Material(
+                              color: Theme.of(context).primaryColor,
+                              child: InkWell(
+                                onTap: isButtonEnabled(state)
+                                    ? _onFormSubmitted
+                                    : null,
+                                child: SizedBox(
+                                  height: 50.0,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: (state is RegisterImagesUploading)
+                                      ? LoadingIndicator(
+                                          color: Colors.white,
+                                        )
+                                      : Center(
+                                          child: Text(
+                                            'Save',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18.0,
+                                                letterSpacing: 1.0),
+                                          ),
                                         ),
-                                      ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            );
-          },
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -333,7 +342,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
   }
 
   void _onSkipPressed() {
+    Navigator.popUntil(context, ModalRoute.withName('/'));
     BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationLoggedIn());
-    Navigator.of(context).pop();
   }
 }

@@ -13,7 +13,7 @@ Future<void> logoutDialog(context, VoidCallback onPressed) {
         borderRadius: BorderRadius.circular(20.0),
       ),
       title: Text(
-        'Logout of tweety?',
+        'Logout of Tweety?',
         style: TextStyle(fontSize: 21.0, fontWeight: FontWeight.bold),
       ),
       content: Text(
