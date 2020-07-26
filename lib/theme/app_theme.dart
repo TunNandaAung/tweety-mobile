@@ -5,7 +5,8 @@ enum AppTheme { Light, Dark }
 final appThemeData = {
   AppTheme.Light: ThemeData(
     brightness: Brightness.light,
-    primaryColor: Color(0xFF4299E1),
+    // primaryColor: Color(0xFF4299E1),
+    primaryColor: Color(0xFF47D5FE),
     cardColor: Colors.white,
     canvasColor: Colors.black12,
     hintColor: Color(0xFF718096),
@@ -59,7 +60,7 @@ final appThemeData = {
         fontSize: 14,
       ),
       headline6: TextStyle(
-        color: Color(0xFF4299E1),
+        color: Color(0xFF47D5FE),
         fontSize: 18,
         fontWeight: FontWeight.w400,
       ),
@@ -72,7 +73,7 @@ final appThemeData = {
   ),
   AppTheme.Dark: ThemeData(
     brightness: Brightness.light,
-    primaryColor: Color(0xFF4299E1),
+    primaryColor: Color(0xFF47D5FE),
     cardColor: Color(0xFF2d3447),
     canvasColor: Colors.transparent,
     hintColor: Color(0xFF718096),
@@ -126,7 +127,7 @@ final appThemeData = {
         fontSize: 14,
       ),
       headline6: TextStyle(
-        color: Color(0xFF4299E1),
+        color: Color(0xFF47D5FE),
         fontSize: 18,
         fontWeight: FontWeight.w400,
       ),
