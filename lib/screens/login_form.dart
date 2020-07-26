@@ -207,7 +207,7 @@ class _LoginFormState extends State<LoginForm> {
                               SizedBox(height: 30.0),
                               TextFormField(
                                 style: TextStyle(
-                                    color: Colors.black,
+                                    color: Theme.of(context).cursorColor,
                                     fontWeight: FontWeight.w500),
                                 decoration: InputDecoration(
                                     filled: true,

@@ -29,14 +29,14 @@ class TweetReplyScreen extends StatefulWidget {
 
 class _TweetReplyScreenState extends State<TweetReplyScreen> {
   final _scrollController = ScrollController();
-  Reply reply;
+  List<Reply> replies = [];
   // ignore: close_sinks
   ReplyBloc _replyBloc;
 
   @override
   void initState() {
     _replyBloc = BlocProvider.of<ReplyBloc>(context);
-
+    replies.add(widget.reply);
     super.initState();
   }
 
@@ -48,7 +48,6 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Reply reply = widget.reply;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -74,10 +73,15 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
               if (state is ReplyAdded) {
                 BlocProvider.of<TweetBloc>(context).add(
                   UpdateReplyCount(
-                    count: reply.tweet.repliesCount + 1,
-                    tweetID: reply.tweet.id,
+                    count: replies[0].tweet.repliesCount + 1,
+                    tweetID: replies[0].tweet.id,
                   ),
                 );
+
+                setState(() {
+                  replies.add(state.reply);
+                });
+
                 Scaffold.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
@@ -97,8 +101,8 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
               } else if (state is ReplyDeleted) {
                 BlocProvider.of<TweetBloc>(context).add(
                   UpdateReplyCount(
-                    count: (reply.tweet.repliesCount - state.count),
-                    tweetID: reply.tweet.id,
+                    count: (replies[0].tweet.repliesCount - state.count),
+                    tweetID: replies[0].tweet.id,
                   ),
                 );
                 Scaffold.of(context)
@@ -140,15 +144,13 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 5.0),
-                    child: _tweetCard(reply.tweet),
+                    child: _tweetCard(replies[0].tweet),
                   ),
                 ),
               ),
             ];
           },
           body: SafeArea(
-            top: false,
-            bottom: false,
             child: Builder(
               builder: (BuildContext context) {
                 return Padding(
@@ -190,7 +192,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) => TweetWrapper(
-                                          tweet: reply.tweet,
+                                          tweet: replies[0].tweet,
                                         ),
                                       ),
                                     );
@@ -206,23 +208,31 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                               ],
                             ),
                           ),
-                          Container(
-                            child: MultiBlocProvider(
-                              providers: [
-                                BlocProvider<ChildrenReplyBloc>(
-                                  create: (context) => ChildrenReplyBloc(
-                                    replyRepository: widget.replyRepository,
-                                  ),
-                                ),
-                                BlocProvider.value(
-                                  value: BlocProvider.of<ReplyBloc>(context),
-                                ),
-                              ],
-                              child: ReplyWidget(
-                                reply: reply,
-                                tweet: reply.tweet,
-                              ),
-                            ),
+                          Expanded(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) => Container(
+                                      child: MultiBlocProvider(
+                                        providers: [
+                                          BlocProvider<ChildrenReplyBloc>(
+                                            create: (context) =>
+                                                ChildrenReplyBloc(
+                                              replyRepository:
+                                                  widget.replyRepository,
+                                            ),
+                                          ),
+                                          BlocProvider.value(
+                                            value: BlocProvider.of<ReplyBloc>(
+                                                context),
+                                          ),
+                                        ],
+                                        child: ReplyWidget(
+                                          reply: replies[index],
+                                          tweet: replies[0].tweet,
+                                        ),
+                                      ),
+                                    ),
+                                itemCount: replies.length),
                           ),
                         ],
                       ),
@@ -244,7 +254,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                   builder: (context) => BlocProvider.value(
                     value: _replyBloc,
                     child: AddReplyScreen(
-                      tweet: reply.tweet,
+                      tweet: replies[0].tweet,
                     ),
                   ),
                 ),

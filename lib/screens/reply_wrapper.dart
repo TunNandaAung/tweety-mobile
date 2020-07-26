@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
-import 'package:tweety_mobile/screens/tweet_reply.dart';
+import 'package:tweety_mobile/screens/tweet_reply_screen.dart';
 import 'package:tweety_mobile/services/reply_api_client.dart';
 
 class ReplyWrapper extends StatelessWidget {
