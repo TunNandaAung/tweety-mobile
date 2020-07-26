@@ -15,8 +15,10 @@ import 'add_children_reply_button.dart';
 class ReplyWidget extends StatefulWidget {
   final Reply reply;
   final Tweet tweet;
+  final String replyingTo;
 
-  const ReplyWidget({Key key, @required this.reply, this.tweet})
+  const ReplyWidget(
+      {Key key, @required this.reply, this.tweet, this.replyingTo})
       : super(key: key);
 
   @override
@@ -105,7 +107,15 @@ class _ReplyWidgetState extends State<ReplyWidget> {
         }
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          widget.replyingTo != null
+              ? Text('Replying to @' + widget.replyingTo,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      .copyWith(color: Theme.of(context).primaryColor))
+              : Container(),
           ListTile(
             contentPadding: EdgeInsets.all(8.0),
             leading: InkWell(
@@ -211,6 +221,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                   : Container();
             },
           ),
+          widget.replyingTo != null ? Divider() : Container(),
         ],
       ),
     );

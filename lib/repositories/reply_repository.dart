@@ -37,4 +37,9 @@ class ReplyRepository {
   Future<void> deleteReply(int replyID) async {
     return replyApiClient.deleteReply(replyID);
   }
+
+  Future<ReplyPaginator> getUserReplies(
+      {String username, int pageNumber}) async {
+    return replyApiClient.fetchUserReplies(username, pageNumber);
+  }
 }

@@ -1,27 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/children_reply/children_reply_bloc.dart';
 import 'package:tweety_mobile/blocs/profile/profile_bloc.dart';
+import 'package:tweety_mobile/blocs/profile_reply/profile_reply_bloc.dart';
 import 'package:tweety_mobile/blocs/profile_tweet/profile_tweet_bloc.dart';
+import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
+import 'package:tweety_mobile/repositories/reply_repository.dart';
 import 'package:tweety_mobile/screens/edit_profile_screen.dart';
 import 'package:tweety_mobile/screens/follow_list_wrapper.dart';
 import 'package:tweety_mobile/screens/photo_view_screen.dart';
+import 'package:tweety_mobile/screens/reply_wrapper.dart';
 import 'package:tweety_mobile/screens/tweet_wrapper.dart';
 import 'package:tweety_mobile/widgets/follow_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
+import 'package:tweety_mobile/widgets/reply.dart';
 import 'package:tweety_mobile/widgets/tweet_card.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String username;
-
-  const ProfileScreen({Key key, this.username}) : super(key: key);
+  final ReplyRepository replyRepository;
+  const ProfileScreen({Key key, this.username, this.replyRepository})
+      : super(key: key);
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
   static double avatarMaximumRadius = 40.0;
   static double avatarMinimumRadius = 15.0;
   double avatarRadius = avatarMaximumRadius;
@@ -32,6 +42,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
+    _tabController = TabController(initialIndex: 0, length: 2, vsync: this);
+    _tabController.addListener(_handleTabSelection);
     BlocProvider.of<ProfileBloc>(context)
         .add(FetchProfile(username: widget.username));
 
@@ -40,265 +52,341 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
+  void _handleTabSelection() {
+    if (_tabController.indexIsChanging) {
+      switch (_tabController.index) {
+        case 1:
+          BlocProvider.of<ProfileReplyBloc>(context).add(
+            FetchProfileReply(username: widget.username),
+          );
+          break;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: DefaultTabController(
-          length: 2,
-          child: NotificationListener<ScrollUpdateNotification>(
-            onNotification: (scrollNotification) {
-              final pixels = scrollNotification.metrics.pixels;
+        body: NotificationListener<ScrollUpdateNotification>(
+          onNotification: (scrollNotification) {
+            final pixels = scrollNotification.metrics.pixels;
 
-              // check if scroll is vertical ( left to right OR right to left)
-              final scrollTabs = (scrollNotification.metrics.axisDirection ==
-                      AxisDirection.right ||
-                  scrollNotification.metrics.axisDirection ==
-                      AxisDirection.left);
+            // check if scroll is vertical ( left to right OR right to left)
+            final scrollTabs = (scrollNotification.metrics.axisDirection ==
+                    AxisDirection.right ||
+                scrollNotification.metrics.axisDirection == AxisDirection.left);
 
-              if (!scrollTabs) {
-                // and here prevents animation of avatar when you scroll tabs
-                if (expandedHeader - pixels <= kToolbarHeight) {
-                  if (isExpanded) {
-                    translate = 0.0;
-                    setState(() {
-                      isExpanded = false;
-                    });
-                  }
-                } else {
-                  translate = -avatarMaximumRadius + pixels;
-                  if (translate > 0) {
-                    translate = 0.0;
-                  }
-                  if (!isExpanded) {
-                    setState(() {
-                      isExpanded = true;
-                    });
-                  }
+            if (!scrollTabs) {
+              // and here prevents animation of avatar when you scroll tabs
+              if (expandedHeader - pixels <= kToolbarHeight) {
+                if (isExpanded) {
+                  translate = 0.0;
+                  setState(() {
+                    isExpanded = false;
+                  });
                 }
-
-                offset = pixels * 0.4;
-
-                final newSize = (avatarMaximumRadius - offset);
-
-                setState(() {
-                  if (newSize < avatarMinimumRadius) {
-                    avatarRadius = avatarMinimumRadius;
-                  } else if (newSize > avatarMaximumRadius) {
-                    avatarRadius = avatarMaximumRadius;
-                  } else {
-                    avatarRadius = newSize;
-                  }
-                });
+              } else {
+                translate = -avatarMaximumRadius + pixels;
+                if (translate > 0) {
+                  translate = 0.0;
+                }
+                if (!isExpanded) {
+                  setState(() {
+                    isExpanded = true;
+                  });
+                }
               }
-              return false;
-            },
-            child: NestedScrollView(
-              physics: ClampingScrollPhysics(),
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverAppBar(
-                      expandedHeight: expandedHeader,
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      iconTheme: Theme.of(context).appBarTheme.iconTheme,
-                      leading: isExpanded
-                          ? Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: isExpanded
-                                      ? Colors.black.withOpacity(.2)
-                                      : Colors.black.withOpacity(.7),
-                                ),
-                                child: BackButton(
-                                  color: Theme.of(context).cardColor,
-                                ),
+
+              offset = pixels * 0.4;
+
+              final newSize = (avatarMaximumRadius - offset);
+
+              setState(() {
+                if (newSize < avatarMinimumRadius) {
+                  avatarRadius = avatarMinimumRadius;
+                } else if (newSize > avatarMaximumRadius) {
+                  avatarRadius = avatarMaximumRadius;
+                } else {
+                  avatarRadius = newSize;
+                }
+              });
+            }
+            return false;
+          },
+          child: NestedScrollView(
+            physics: ClampingScrollPhysics(),
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                    expandedHeight: expandedHeader,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    iconTheme: Theme.of(context).appBarTheme.iconTheme,
+                    leading: isExpanded
+                        ? Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: isExpanded
+                                    ? Colors.black.withOpacity(.2)
+                                    : Colors.black.withOpacity(.7),
                               ),
-                            )
-                          : BackButton(),
-                      pinned: true,
-                      elevation: 0.0,
-                      forceElevated: true,
-                      flexibleSpace: BlocBuilder<ProfileBloc, ProfileState>(
-                        builder: (context, state) {
-                          if (state is ProfileError) {
-                            return Center(
-                              child: Text(
-                                'Couldn\'t load prodfile.',
-                                style: Theme.of(context).textTheme.bodyText1,
+                              child: BackButton(
+                                color: Colors.white,
                               ),
-                            );
-                          }
-                          if (state is ProfileLoading) {
-                            return LoadingIndicator(
-                              size: 21.0,
-                            );
-                          }
-                          if (state is ProfileLoaded) {
-                            return GestureDetector(
-                              onTap: () => isExpanded
-                                  ? Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => PhotoViewScreen(
-                                          title: '',
-                                          imageProvider:
-                                              NetworkImage(state.user.banner),
-                                        ),
-                                      ),
-                                    )
-                                  : null,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: isExpanded
-                                        ? Colors.transparent
-                                        : Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                    image: isExpanded
-                                        ? DecorationImage(
-                                            fit: BoxFit.cover,
-                                            alignment: Alignment.center,
-                                            image:
-                                                NetworkImage(state.user.banner),
-                                          )
-                                        : null),
-                                child: Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: isExpanded
-                                      ? Transform(
-                                          transform: Matrix4.identity()
-                                            ..translate(
-                                                0.0, avatarMaximumRadius),
-                                          child: TweetyAvatar(
-                                            size: avatarRadius,
-                                            avatar: state.user.avatar,
-                                          ),
-                                        )
-                                      : SizedBox.shrink(),
-                                ),
-                              ),
-                            );
-                          }
-                          return Container();
-                        },
-                      )),
-                  BlocBuilder<ProfileBloc, ProfileState>(
-                    builder: (context, state) {
-                      if (state is ProfileLoaded) {
-                        return SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    isExpanded
-                                        ? SizedBox(
-                                            height: avatarMinimumRadius * 2,
-                                          )
-                                        : TweetyAvatar(
-                                            size: avatarMinimumRadius,
-                                            avatar: state.user.avatar,
-                                          ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 10.0),
-                                      child: widget.username !=
-                                              Prefer.prefs.getString('userName')
-                                          ? FollowButton(user: state.user)
-                                          : EditProfileButton(user: state.user),
-                                    )
-                                  ],
-                                ),
-                                TweetyHeader(user: state.user),
-                              ],
                             ),
-                          ),
-                        );
-                      }
-                      return SliverToBoxAdapter(
-                        child: Container(),
-                      );
-                    },
-                  ),
-                  SliverPersistentHeader(
+                          )
+                        : BackButton(),
                     pinned: true,
-                    delegate: TweetyTabs(50.0),
-                  ),
-                ];
-              },
-              body: TabBarView(children: <Widget>[
-                BlocBuilder<ProfileTweetBloc, ProfileTweetState>(
-                  builder: (context, state) {
-                    if (state is ProfileTweetLoading) {
-                      return LoadingIndicator();
-                    }
-
-                    if (state is ProfileTweetError) {
-                      return Refresh(
-                        title: "Couldn't load tweets!",
-                        onPressed: () {
-                          BlocProvider.of<ProfileTweetBloc>(context).add(
-                              FetchProfileTweet(username: widget.username));
-                        },
-                      );
-                    }
-
-                    if (state is ProfileTweetLoaded) {
-                      var tweets = state.tweets;
-                      if (tweets.isEmpty) {
-                        return Text(
-                          'No tweets yet!',
-                          style: Theme.of(context).textTheme.caption,
-                        );
-                      }
-
-                      return ListView.builder(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          itemBuilder: (context, index) =>
-                              index >= tweets.length
-                                  ? LoadingIndicator()
-                                  : Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 8.0,
-                                        vertical: 5.0,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  TweetWrapper(
-                                                      tweet: tweets[index]),
-                                            ),
-                                          );
-                                        },
-                                        child: TweetCard(
-                                          tweet: tweets[index],
-                                        ),
+                    elevation: 0.0,
+                    forceElevated: true,
+                    flexibleSpace: BlocBuilder<ProfileBloc, ProfileState>(
+                      builder: (context, state) {
+                        if (state is ProfileError) {
+                          return Center(
+                            child: Text(
+                              'Couldn\'t load prodfile.',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          );
+                        }
+                        if (state is ProfileLoading) {
+                          return LoadingIndicator(
+                            size: 21.0,
+                          );
+                        }
+                        if (state is ProfileLoaded) {
+                          return GestureDetector(
+                            onTap: () => isExpanded
+                                ? Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => PhotoViewScreen(
+                                        title: '',
+                                        imageProvider:
+                                            NetworkImage(state.user.banner),
                                       ),
                                     ),
-                          itemCount: state.hasReachedMax
-                              ? state.tweets.length
-                              : state.tweets.length + 1);
+                                  )
+                                : null,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: isExpanded
+                                      ? Colors.transparent
+                                      : Theme.of(context)
+                                          .scaffoldBackgroundColor,
+                                  image: isExpanded
+                                      ? DecorationImage(
+                                          fit: BoxFit.cover,
+                                          alignment: Alignment.center,
+                                          image:
+                                              NetworkImage(state.user.banner),
+                                        )
+                                      : null),
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: isExpanded
+                                    ? Transform(
+                                        transform: Matrix4.identity()
+                                          ..translate(0.0, avatarMaximumRadius),
+                                        child: TweetyAvatar(
+                                          size: avatarRadius,
+                                          avatar: state.user.avatar,
+                                        ),
+                                      )
+                                    : SizedBox.shrink(),
+                              ),
+                            ),
+                          );
+                        }
+                        return Container();
+                      },
+                    )),
+                BlocBuilder<ProfileBloc, ProfileState>(
+                  builder: (context, state) {
+                    if (state is ProfileLoaded) {
+                      return SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  isExpanded
+                                      ? SizedBox(
+                                          height: avatarMinimumRadius * 2,
+                                        )
+                                      : TweetyAvatar(
+                                          size: avatarMinimumRadius,
+                                          avatar: state.user.avatar,
+                                        ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10.0),
+                                    child: widget.username !=
+                                            Prefer.prefs.getString('userName')
+                                        ? FollowButton(user: state.user)
+                                        : EditProfileButton(user: state.user),
+                                  )
+                                ],
+                              ),
+                              TweetyHeader(user: state.user),
+                            ],
+                          ),
+                        ),
+                      );
                     }
-
-                    return LoadingIndicator();
+                    return SliverToBoxAdapter(
+                      child: Container(),
+                    );
                   },
                 ),
-                ListView.builder(
-                  itemBuilder: ((context, index) {
-                    return Tweet();
-                  }),
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: TweetyTabs(50.0, controller: _tabController),
                 ),
-              ]),
-            ),
+              ];
+            },
+            body: TabBarView(controller: _tabController, children: <Widget>[
+              BlocBuilder<ProfileTweetBloc, ProfileTweetState>(
+                builder: (context, state) {
+                  if (state is ProfileTweetLoading) {
+                    return LoadingIndicator();
+                  }
+
+                  if (state is ProfileTweetError) {
+                    return Refresh(
+                      title: "Couldn't load tweets!",
+                      onPressed: () {
+                        BlocProvider.of<ProfileTweetBloc>(context)
+                            .add(FetchProfileTweet(username: widget.username));
+                      },
+                    );
+                  }
+
+                  if (state is ProfileTweetLoaded) {
+                    var tweets = state.tweets;
+                    if (tweets.isEmpty) {
+                      return Text(
+                        'No tweets yet!',
+                        style: Theme.of(context).textTheme.caption,
+                      );
+                    }
+
+                    return ListView.builder(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        itemBuilder: (context, index) => index >= tweets.length
+                            ? LoadingIndicator()
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 5.0,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            TweetWrapper(tweet: tweets[index]),
+                                      ),
+                                    );
+                                  },
+                                  child: TweetCard(
+                                    tweet: tweets[index],
+                                  ),
+                                ),
+                              ),
+                        itemCount: state.hasReachedMax
+                            ? state.tweets.length
+                            : state.tweets.length + 1);
+                  }
+
+                  return LoadingIndicator();
+                },
+              ),
+              // ListView.builder(
+              //   itemBuilder: ((context, index) {
+              //     return Tweet();
+              //   }),
+              // ),
+              BlocBuilder<ProfileReplyBloc, ProfileReplyState>(
+                builder: (context, state) {
+                  if (state is ProfileReplyLoading) {
+                    return LoadingIndicator();
+                  }
+
+                  if (state is ProfileReplyError) {
+                    return Refresh(
+                      title: "Couldn't load replies!",
+                      onPressed: () {
+                        BlocProvider.of<ProfileReplyBloc>(context)
+                            .add(FetchProfileReply(username: widget.username));
+                      },
+                    );
+                  }
+
+                  if (state is ProfileReplyLoaded) {
+                    var replies = state.replies;
+                    if (replies.isEmpty) {
+                      return Text(
+                        'No replies yet!',
+                        style: Theme.of(context).textTheme.caption,
+                      );
+                    }
+
+                    return ListView.builder(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        itemBuilder: (context, index) => index >= replies.length
+                            ? LoadingIndicator()
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 5.0,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ReplyWrapper(reply: replies[index]),
+                                      ),
+                                    );
+                                  },
+                                  child: MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider<ChildrenReplyBloc>(
+                                        create: (context) => ChildrenReplyBloc(
+                                          replyRepository:
+                                              widget.replyRepository,
+                                        ),
+                                      ),
+                                      BlocProvider.value(
+                                        value:
+                                            BlocProvider.of<ReplyBloc>(context),
+                                      ),
+                                    ],
+                                    child: ReplyWidget(
+                                      reply: replies[index],
+                                      tweet: replies[index].tweet,
+                                      replyingTo:
+                                          replies[index].tweet.user.username,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                        itemCount: state.hasReachedMax
+                            ? state.replies.length
+                            : state.replies.length + 1);
+                  }
+
+                  return LoadingIndicator();
+                },
+              ),
+            ]),
           ),
         ),
       ),
@@ -308,8 +396,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 class TweetyTabs extends SliverPersistentHeaderDelegate {
   final double size;
+  final TabController controller;
 
-  TweetyTabs(this.size);
+  TweetyTabs(this.size, {@required this.controller});
 
   @override
   Widget build(
@@ -326,6 +415,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
           ]),
       height: size,
       child: TabBar(
+        controller: controller,
         isScrollable: true,
         unselectedLabelStyle:
             Theme.of(context).tabBarTheme.unselectedLabelStyle,
@@ -336,7 +426,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
             text: "Tweets",
           ),
           Tab(
-            text: "Tweets & replies",
+            text: "Replies",
           ),
         ],
       ),

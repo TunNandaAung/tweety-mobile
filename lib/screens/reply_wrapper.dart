@@ -8,9 +8,13 @@ import 'package:tweety_mobile/screens/tweet_reply_screen.dart';
 import 'package:tweety_mobile/services/reply_api_client.dart';
 
 class ReplyWrapper extends StatelessWidget {
+  final Reply reply;
+
+  const ReplyWrapper({Key key, this.reply}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final reply = Reply.fromJson(ModalRoute.of(context).settings.arguments);
+    final replyJson = ModalRoute.of(context).settings.arguments;
+    final reply = replyJson != null ? Reply.fromJson(replyJson) : this.reply;
     final ReplyRepository replyRepository = ReplyRepository(
       replyApiClient: ReplyApiClient(httpClient: http.Client()),
     );

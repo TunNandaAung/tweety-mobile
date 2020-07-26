@@ -58,6 +58,27 @@ class ReplyApiClient {
     return Reply.fromJson(replyJson);
   }
 
+  Future<ReplyPaginator> fetchUserReplies(
+      String username, int pageNumber) async {
+    final url =
+        '$baseUrl/profiles/$username/replies?page=$pageNumber&page[number]=$pageNumber';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.get(
+          url,
+          headers: requestHeaders(token),
+        );
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      throw Exception('Error getting replies.');
+    }
+
+    final repliesJson = jsonDecode(response.body)['data'];
+
+    return ReplyPaginator.fromJson(repliesJson);
+  }
+
   Future<ReplyPaginator> fetchChildrenReplies(
       int parentID, int pageNumber) async {
     final url =
