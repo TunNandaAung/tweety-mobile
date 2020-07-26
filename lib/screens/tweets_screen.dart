@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tweety_mobile/blocs/notification/notification_bloc.dart';
 import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/models/tweet.dart';
@@ -92,9 +93,8 @@ class _TweetsScreenState extends State<TweetsScreen> {
                 leading: AvatarButton(
                   scaffoldKey: widget.scaffoldKey,
                 ),
-                title: Text(
-                  'Tweety',
-                  style: Theme.of(context).appBarTheme.textTheme.caption,
+                title: SvgPicture.asset(
+                  'assets/images/tweety-logo.svg',
                 ),
                 centerTitle: true,
               ),

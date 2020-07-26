@@ -51,8 +51,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         .copyWith(fontStyle: FontStyle.italic),
                   ),
                   SizedBox(height: 15.0),
-                  settingsListTile(context, 'Account',
-                      heroTag: 'settings__account', onTap: () {
+                  settingsListTile(context, 'Account', onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) =>
