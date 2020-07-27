@@ -40,16 +40,26 @@ class _ProfileScreenState extends State<ProfileScreen>
   bool isExpanded = true;
   double offset = 0.0;
 
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+
   @override
   void initState() {
     _tabController = TabController(initialIndex: 0, length: 2, vsync: this);
     _tabController.addListener(_handleTabSelection);
+    _scrollController.addListener(_onScroll);
     BlocProvider.of<ProfileBloc>(context)
         .add(FetchProfile(username: widget.username));
 
     BlocProvider.of<ProfileTweetBloc>(context)
         .add(FetchProfileTweet(username: widget.username));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _handleTabSelection() {
@@ -61,6 +71,18 @@ class _ProfileScreenState extends State<ProfileScreen>
           );
           break;
       }
+    }
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      _tabController.index == 0
+          ? BlocProvider.of<ProfileTweetBloc>(context)
+              .add(FetchProfileTweet(username: widget.username))
+          : BlocProvider.of<ProfileReplyBloc>(context)
+              .add(FetchProfileReply(username: widget.username));
     }
   }
 
@@ -115,6 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             return false;
           },
           child: NestedScrollView(
+            controller: _scrollController,
             physics: ClampingScrollPhysics(),
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return <Widget>[
@@ -271,10 +294,15 @@ class _ProfileScreenState extends State<ProfileScreen>
                   if (state is ProfileTweetLoaded) {
                     var tweets = state.tweets;
                     if (tweets.isEmpty) {
-                      return Text(
-                        'No tweets yet!',
-                        style: Theme.of(context).textTheme.caption,
-                      );
+                      return Center(
+                          child: Text(
+                        "No tweets yet!",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline5
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ));
                     }
 
                     return ListView.builder(
@@ -332,10 +360,15 @@ class _ProfileScreenState extends State<ProfileScreen>
                   if (state is ProfileReplyLoaded) {
                     var replies = state.replies;
                     if (replies.isEmpty) {
-                      return Text(
-                        'No replies yet!',
-                        style: Theme.of(context).textTheme.caption,
-                      );
+                      return Center(
+                          child: Text(
+                        "No replies yet!",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline5
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ));
                     }
 
                     return ListView.builder(
@@ -351,8 +384,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            ReplyWrapper(reply: replies[index]),
+                                        builder: (context) => TweetWrapper(
+                                            tweet: replies[index].tweet),
                                       ),
                                     );
                                   },
@@ -372,8 +405,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     child: ReplyWidget(
                                       reply: replies[index],
                                       tweet: replies[index].tweet,
-                                      replyingTo:
-                                          replies[index].tweet.user.username,
+                                      replyingTo: replies[index].parent ?? null,
+                                      isProfileReply: true,
                                     ),
                                   ),
                                 ),

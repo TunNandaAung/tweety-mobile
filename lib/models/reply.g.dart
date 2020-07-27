@@ -25,7 +25,9 @@ Reply _$ReplyFromJson(Map<String, dynamic> json) {
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
-  );
+  )..parent = json['parent'] == null
+      ? null
+      : Reply.fromJson(json['parent'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$ReplyToJson(Reply instance) => <String, dynamic>{
@@ -39,5 +41,6 @@ Map<String, dynamic> _$ReplyToJson(Reply instance) => <String, dynamic>{
       'dislikes_count': instance.dislikesCount,
       'owner': instance.owner,
       'tweet': instance.tweet,
+      'parent': instance.parent,
       'created_at': instance.createdAt?.toIso8601String(),
     };

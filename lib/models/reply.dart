@@ -31,6 +31,9 @@ class Reply {
 
   Tweet tweet;
 
+  @JsonKey(nullable: true)
+  Reply parent;
+
   @JsonKey(name: 'created_at')
   DateTime createdAt;
 

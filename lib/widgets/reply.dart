@@ -15,10 +15,15 @@ import 'add_children_reply_button.dart';
 class ReplyWidget extends StatefulWidget {
   final Reply reply;
   final Tweet tweet;
-  final String replyingTo;
+  final Reply replyingTo;
+  final bool isProfileReply;
 
   const ReplyWidget(
-      {Key key, @required this.reply, this.tweet, this.replyingTo})
+      {Key key,
+      @required this.reply,
+      this.tweet,
+      this.replyingTo,
+      this.isProfileReply = false})
       : super(key: key);
 
   @override
@@ -109,12 +114,20 @@ class _ReplyWidgetState extends State<ReplyWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          widget.replyingTo != null
-              ? Text('Replying to @' + widget.replyingTo,
+          widget.isProfileReply
+              ? Text(
+                  widget.replyingTo != null
+                      ? 'Replying to @' +
+                          widget.replyingTo.owner.username +
+                          "reply"
+                      : 'Replying to @' + widget.tweet.user.username + " tweet",
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2
                       .copyWith(color: Theme.of(context).primaryColor))
+              : Container(),
+          widget.replyingTo != null && widget.isProfileReply
+              ? _parentReply(reply: widget.replyingTo)
               : Container(),
           ListTile(
             contentPadding: EdgeInsets.all(8.0),
@@ -221,7 +234,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                   : Container();
             },
           ),
-          widget.replyingTo != null ? Divider() : Container(),
+          widget.isProfileReply ? Divider() : Container(),
         ],
       ),
     );
@@ -252,6 +265,94 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 ),
               )
             : Container(),
+      ],
+    );
+  }
+
+  Widget _parentReply({Reply reply}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ListTile(
+          contentPadding: EdgeInsets.all(8.0),
+          leading: InkWell(
+            child: CircleAvatar(
+              radius: 25.0,
+              backgroundImage: NetworkImage(
+                reply.owner.avatar,
+              ),
+              backgroundColor: Theme.of(context).cardColor,
+            ),
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              InkWell(
+                onTap: () => Navigator.of(context)
+                    .pushNamed('/profile', arguments: reply.owner.username),
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                      text: reply.owner.name + "\n",
+                      style: Theme.of(context).textTheme.caption,
+                      children: [
+                        TextSpan(
+                          text: "@${reply.owner.username}",
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                timeago.format(reply.createdAt, locale: 'en_short'),
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+              IconButton(
+                icon: Icon(Icons.keyboard_arrow_down,
+                    color: Theme.of(context).cursorColor),
+                onPressed: () => ReplyActionsModal()
+                    .mainBottomSheet(context, reply, onTap: () {
+                  Navigator.of(context).pop();
+                  BlocProvider.of<ReplyBloc>(context).add(
+                    DeleteReply(reply: reply),
+                  );
+                }),
+              ),
+            ],
+          ),
+          subtitle: Padding(
+            padding: EdgeInsets.only(top: 10.0),
+            child: Text(
+              widget.reply.body,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width / 3,
+                child: LikeDislikeButtons(
+                  reply: widget.reply,
+                ),
+              ),
+              BlocProvider.value(
+                value: BlocProvider.of<ChildrenReplyBloc>(context),
+                child: AddChildrenReplyButton(
+                  tweet: widget.tweet,
+                  parent: widget.reply,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
