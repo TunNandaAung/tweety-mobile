@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tweety_mobile/blocs/tweet_search/tweet_search_bloc.dart';
-import 'package:tweety_mobile/blocs/user_search/user_search_bloc.dart';
+import 'package:tweety_mobile/blocs/search/tweet_search/tweet_search_bloc.dart';
+import 'package:tweety_mobile/blocs/search/user_search/user_search_bloc.dart';
 import 'package:tweety_mobile/constants/constants.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
-import 'package:tweety_mobile/widgets/tweet_card.dart';
-import 'package:tweety_mobile/widgets/user_card.dart';
+import 'package:tweety_mobile/widgets/cards/tweet_card.dart';
+import 'package:tweety_mobile/widgets/cards/user_card.dart';
 
 class SearchScreen extends SearchDelegate<User> {
   final Bloc<UserSearchEvent, UserSearchState> userSearchBloc;
