@@ -14,10 +14,10 @@ class MentionUserError extends MentionState {}
 
 class MentionUserLoaded extends MentionState {
   final String query;
-  final List<String> usernames;
+  final List<User> users;
 
-  const MentionUserLoaded({@required this.usernames, this.query});
+  const MentionUserLoaded({@required this.users, this.query});
 
   @override
-  List<Object> get props => [usernames];
+  List<Object> get props => [users];
 }

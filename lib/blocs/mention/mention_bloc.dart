@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:meta/meta.dart';
+import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
 
 part 'mention_event.dart';
@@ -39,8 +40,8 @@ class MentionBloc extends Bloc<MentionEvent, MentionState> {
       FindMentionedUser event) async* {
     yield MentionUserLoading();
     try {
-      final usernames = await userRepository.findMentionedUsers(event.query);
-      yield MentionUserLoaded(query: event.query, usernames: usernames);
+      final users = await userRepository.findMentionedUsers(event.query);
+      yield MentionUserLoaded(query: event.query, users: users);
     } catch (e) {
       yield MentionUserError();
     }

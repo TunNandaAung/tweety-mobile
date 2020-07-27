@@ -342,7 +342,7 @@ class UserApiClient {
     return request;
   }
 
-  Future<List<String>> findMentionedUser(String query) async {
+  Future<List<User>> findMentionedUser(String query) async {
     final url = '$baseUrl/mention?q=$query';
 
     final token = Prefer.prefs.getString('token');
@@ -357,7 +357,7 @@ class UserApiClient {
 
     final usersJson = jsonDecode(response.body) as List;
 
-    return usersJson.map((user) => user as String).toList();
+    return usersJson.map((user) => User.fromJson(user)).toList();
   }
 
   Future<void> uploadImages({File avatar, File banner}) async {

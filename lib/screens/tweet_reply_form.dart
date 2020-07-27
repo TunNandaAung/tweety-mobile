@@ -272,8 +272,6 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                   child: _showUserList
                       ? Container(
                           height: MediaQuery.of(context).size.height / 2.9,
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          margin: EdgeInsets.symmetric(horizontal: 8.0),
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
@@ -468,7 +466,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
         size: 15.0,
       );
     } else if (state is MentionUserLoaded) {
-      if (state.usernames.isEmpty) {
+      if (state.users.isEmpty) {
         return Center(
           child: Text(
             'Cannot find user!',
@@ -486,18 +484,20 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                 height: 1.0,
               );
             },
-            itemCount: state.usernames.length,
+            itemCount: state.users.length,
             itemBuilder: (context, index) {
-              var listitem = state.usernames[index];
+              var user = state.users[index];
               return InkWell(
                 onTap: () {
                   _bodyController.text = _bodyController.text
-                      .replaceFirst('@' + state.query, '@' + listitem);
+                      .replaceFirst('@' + state.query, '@' + user.username);
                   _bodyController.selection = TextSelection.fromPosition(
                       TextPosition(offset: _bodyController.text.length));
                 },
                 child: ListTile(
-                  title: Text(listitem,
+                  title: Text(user.name,
+                      style: Theme.of(context).textTheme.bodyText1),
+                  subtitle: Text("@" + user.username,
                       style: Theme.of(context).textTheme.bodyText1),
                 ),
               );
