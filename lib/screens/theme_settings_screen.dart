@@ -178,9 +178,11 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
   }
 
   void _toggleSystemThemeButton() {
+    Prefer.prefs.setBool('use_system_theme', !isUsingSystemTheme);
     setState(() {
       isUsingSystemTheme = !isUsingSystemTheme;
     });
+
     if (WidgetsBinding.instance.window.platformBrightness == Brightness.dark) {
       BlocProvider.of<ThemeBloc>(context).add(ThemeChanged(AppTheme.Dark));
       setState(() {
