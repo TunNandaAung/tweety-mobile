@@ -122,7 +122,7 @@ class SearchScreen extends SearchDelegate<User> {
 
   Widget userResults() {
     return BlocBuilder(
-      bloc: userSearchBloc,
+      cubit: userSearchBloc,
       builder: (BuildContext context, UserSearchState state) {
         if (state.isLoading) {
           return Column(
@@ -179,7 +179,7 @@ class SearchScreen extends SearchDelegate<User> {
 
   Widget tweetResults() {
     return BlocBuilder(
-      bloc: tweetSearchBloc,
+      cubit: tweetSearchBloc,
       builder: (BuildContext context, TweetSearchState state) {
         if (state.isLoading) {
           return Column(
@@ -249,7 +249,7 @@ class SearchScreen extends SearchDelegate<User> {
     }
 
     return BlocBuilder(
-      bloc: userSearchBloc,
+      cubit: userSearchBloc,
       builder: (BuildContext context, UserSearchState state) {
         if (state.isLoading) {
           return Center(
