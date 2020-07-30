@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/children_reply/children_reply_bloc.dart';
-import 'package:tweety_mobile/blocs//profile/profile/profile_bloc.dart';
-import 'package:tweety_mobile/blocs//profile/profile_reply/profile_reply_bloc.dart';
-import 'package:tweety_mobile/blocs//profile/profile_tweet/profile_tweet_bloc.dart';
+import 'package:tweety_mobile/blocs/profile/profile/profile_bloc.dart';
+import 'package:tweety_mobile/blocs/profile/profile_reply/profile_reply_bloc.dart';
+import 'package:tweety_mobile/blocs/profile/profile_tweet/profile_tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/reply/reply_bloc.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';

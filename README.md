@@ -4,6 +4,16 @@
 
 Mobile app for [Tweety](https://github.com/TunNandaAung/tweety) written in Flutter.
 
+## Screenshots (in dark mode)
+
+|                                                Login Screen                                                 |                                                 Register Screen                                                  |                                                Tweets Screen                                                 |                                                  Explore Screen                                                  |                                                  Profile Screen                                                  |
+| :---------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: |
+| ![Login Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/tweety-login_kWIthjPzKFI.png) | ![Register Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/tweety-register_44xfatrLBZ.png) | ![Tweets Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/tweety-tweets_8pVRKv2dVm.png) | ![Explore Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/tweety-explore_6QUuoWsQ9TL6.png) | ![Explore Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/tweety-explore_6QUuoWsQ9TL6.png) | ![Profile Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/tweety-profile_ki1kqpn3Po.png) |
+
+|                                                   Publish Tweet/Reply Form                                                    |                                                    Mention Users                                                     |                                                  Nav Drawer                                                  |                                                      Account Settings Screen                                                      |                                                    Theme Settings Screen                                                     |
+| :---------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------: |
+| ![Publish Tweet/Reply Form](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/tweety-publish-tweet_pAHg0lOIv.png) | ![Mention Users](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/tweety-menton-users_1HVtsEmhsgNK.png) | ![Nav Drawer](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/tweety-nav-drawer_QtafIf5Y8.png) | ![Account Settings Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/tweet-account-settings_-NLiBymxRVal.png) | ![Theme Settings Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/tweety-theme-settings_Bnq6UXUhqJ.png) |
+
 ## Installation
 
 ### Prerequisites
@@ -25,7 +35,7 @@ flutter pub get
 - Next, boot up a server and reference you localhost url in `lib/constants/api_constants.dart` file as below. For this, you can also user services like [Laravel Valet](https://laravel.com/docs/7.x/valet) or [Expose](https://beyondco.de/docs/expose) to get a shareable sites.
 
 ```properties
-static const BASE_URL = 'YOUR_LOCALHOST_URL_OR_SHARED_SITES_URL';
+static const BASE_URL = 'YOUR_LOCALHOST_URL_OR_SHARED_SITES_URL/api';
 ```
 
 ## Features
