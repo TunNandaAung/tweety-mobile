@@ -131,11 +131,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                                 decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: Colors.white,
-                                                  // image: DecorationImage(
-                                                  //   image: NetworkImage(notification
-                                                  //       .data.notifier.avatar),
-                                                  //   fit: BoxFit.contain,
-                                                  // ),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        notification.data
+                                                            .notifier.avatar),
+                                                    fit: BoxFit.contain,
+                                                  ),
                                                   border: Border.all(
                                                     color: Colors.white,
                                                     width: 2.0,
