@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,9 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
 
@@ -37,12 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
       GetAvatar(),
     );
     _scrollController.addListener(_onScroll);
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
   }
 
   @override
   void dispose() {
     _pageController.dispose();
     _scrollController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -57,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void changePage(int index) {
+    _animationController.forward(from: 0);
     setState(() {
       _currentIndex = index;
       _pageController.jumpToPage(index);
@@ -260,10 +267,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: RawMaterialButton(
                 shape: CircleBorder(),
-                child: Icon(
-                  Icons.add,
-                  size: 35.0,
-                  color: Colors.white,
+                child: AnimatedBuilder(
+                  animation: _animationController,
+                  builder: (_, child) {
+                    return Transform.rotate(
+                      angle: _animationController.value * math.pi,
+                      child: child,
+                    );
+                  },
+                  child: Icon(
+                    Icons.add,
+                    size: 35.0,
+                    color: Colors.white,
+                  ),
                 ),
                 onPressed: openContainer,
               ),
