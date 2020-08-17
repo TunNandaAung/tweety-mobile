@@ -25,7 +25,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^6.0.1
   equatable: ^1.2.3
-  flutter_svg: ^0.17.4
+  flutter_svg: ^0.18.0
   shared_preferences: ^0.5.7+3
   http: ^0.12.1
   json_annotation: ^3.0.1
@@ -59,7 +59,6 @@ flutter_icons:
   adaptive_icon_foreground: "assets/images/app_icon/ic_launcher.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
   # The following line ensures that the Material Icons font is
