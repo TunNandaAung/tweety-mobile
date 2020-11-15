@@ -20,9 +20,9 @@ class _NavDrawerState extends State<NavDrawer> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<AuthProfileBloc>(context).add(
-      FetchAuthProfile(),
-    );
+    context.read<AuthProfileBloc>().add(
+          FetchAuthProfile(),
+        );
   }
 
   @override

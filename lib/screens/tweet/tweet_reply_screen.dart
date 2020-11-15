@@ -35,7 +35,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
 
   @override
   void initState() {
-    _replyBloc = BlocProvider.of<ReplyBloc>(context);
+    _replyBloc = context.read<ReplyBloc>();
     replies.add(widget.reply);
     super.initState();
   }
@@ -71,12 +71,12 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
           BlocListener<ReplyBloc, ReplyState>(
             listener: (context, state) {
               if (state is ReplyAdded) {
-                BlocProvider.of<TweetBloc>(context).add(
-                  UpdateReplyCount(
-                    count: replies[0].tweet.repliesCount + 1,
-                    tweetID: replies[0].tweet.id,
-                  ),
-                );
+                context.read<TweetBloc>().add(
+                      UpdateReplyCount(
+                        count: replies[0].tweet.repliesCount + 1,
+                        tweetID: replies[0].tweet.id,
+                      ),
+                    );
 
                 setState(() {
                   replies.add(state.reply);
@@ -99,12 +99,12 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                     ),
                   );
               } else if (state is ReplyDeleted) {
-                BlocProvider.of<TweetBloc>(context).add(
-                  UpdateReplyCount(
-                    count: (replies[0].tweet.repliesCount - state.count),
-                    tweetID: replies[0].tweet.id,
-                  ),
-                );
+                context.read<TweetBloc>().add(
+                      UpdateReplyCount(
+                        count: (replies[0].tweet.repliesCount - state.count),
+                        tweetID: replies[0].tweet.id,
+                      ),
+                    );
                 Scaffold.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
@@ -222,8 +222,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                                             ),
                                           ),
                                           BlocProvider.value(
-                                            value: BlocProvider.of<ReplyBloc>(
-                                                context),
+                                            value: context.read<ReplyBloc>(),
                                           ),
                                         ],
                                         child: ReplyWidget(

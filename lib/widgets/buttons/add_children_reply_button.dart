@@ -21,7 +21,7 @@ class AddChildrenReplyButton extends StatelessWidget {
     //   replyApiClient: ReplyApiClient(httpClient: http.Client()),
     // );
     return BlocProvider.value(
-      value: BlocProvider.of<ChildrenReplyBloc>(context),
+      value: context.read<ChildrenReplyBloc>(),
       child: AddChildrenReplyButtonWidget(
         tweet: tweet,
         parent: parent,
@@ -55,7 +55,7 @@ class _AddChildrenReplyButtonWidgetState
   @override
   void initState() {
     super.initState();
-    _childrenReplyBloc = BlocProvider.of<ChildrenReplyBloc>(context);
+    _childrenReplyBloc = context.read<ChildrenReplyBloc>();
   }
 
   @override
@@ -66,21 +66,22 @@ class _AddChildrenReplyButtonWidgetState
           setState(() {
             childrenCount++;
           });
-          BlocProvider.of<TweetBloc>(context).add(
-            UpdateReplyCount(
-                count: widget.tweet.repliesCount + 1, tweetID: widget.tweet.id),
-          );
+          context.read<TweetBloc>().add(
+                UpdateReplyCount(
+                    count: widget.tweet.repliesCount + 1,
+                    tweetID: widget.tweet.id),
+              );
         }
 
         if (state is ChildrenReplyDeleted) {
           setState(() {
             childrenCount--;
           });
-          BlocProvider.of<TweetBloc>(context).add(
-            UpdateReplyCount(
-                count: widget.tweet.repliesCount - state.count,
-                tweetID: widget.tweet.id),
-          );
+          context.read<TweetBloc>().add(
+                UpdateReplyCount(
+                    count: widget.tweet.repliesCount - state.count,
+                    tweetID: widget.tweet.id),
+              );
         }
       },
       child: InkWell(

@@ -124,12 +124,12 @@ class _BuildWidgetState extends State<BuildWidget> {
               InkWell(
                 onTap: () {
                   isTweet
-                      ? BlocProvider.of<LikeDislikeBloc>(context).add(
-                          Like(tweetID: subject.id, subject: 'tweets'),
-                        )
-                      : BlocProvider.of<LikeDislikeBloc>(context).add(
-                          Like(tweetID: subject.id, subject: 'replies'),
-                        );
+                      ? context.read<LikeDislikeBloc>().add(
+                            Like(tweetID: subject.id, subject: 'tweets'),
+                          )
+                      : context.read<LikeDislikeBloc>().add(
+                            Like(tweetID: subject.id, subject: 'replies'),
+                          );
                   updateLikes();
                 },
                 child: Icon(
@@ -159,12 +159,12 @@ class _BuildWidgetState extends State<BuildWidget> {
               InkWell(
                 onTap: () {
                   isTweet
-                      ? BlocProvider.of<LikeDislikeBloc>(context).add(
-                          Dislike(tweetID: subject.id, subject: 'tweets'),
-                        )
-                      : BlocProvider.of<LikeDislikeBloc>(context).add(
-                          Dislike(tweetID: subject.id, subject: 'replies'),
-                        );
+                      ? context.read<LikeDislikeBloc>().add(
+                            Dislike(tweetID: subject.id, subject: 'tweets'),
+                          )
+                      : context.read<LikeDislikeBloc>().add(
+                            Dislike(tweetID: subject.id, subject: 'replies'),
+                          );
                   updateDislikes();
                 },
                 child: Icon(

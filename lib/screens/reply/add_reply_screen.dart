@@ -22,13 +22,13 @@ class _AddReplyScreenState extends State<AddReplyScreen> {
       shouldDisplayTweet: widget.shouldDisplayTweet ?? false,
       owner: widget.tweet.user,
       onSave: (body, image) {
-        BlocProvider.of<ReplyBloc>(context).add(
-          AddReply(
-            tweetID: widget.tweet.id,
-            body: body,
-            image: image,
-          ),
-        );
+        context.read<ReplyBloc>().add(
+              AddReply(
+                tweetID: widget.tweet.id,
+                body: body,
+                image: image,
+              ),
+            );
       },
     );
   }

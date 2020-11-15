@@ -23,7 +23,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   void initState() {
-    BlocProvider.of<NotificationBloc>(context).add(FetchNotifications());
+    context.read<NotificationBloc>().add(FetchNotifications());
 
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
@@ -180,9 +180,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   return Refresh(
                     title: 'Error fetching notifications!',
                     onPressed: () {
-                      BlocProvider.of<NotificationBloc>(context).add(
-                        FetchNotifications(),
-                      );
+                      context.read<NotificationBloc>().add(
+                            FetchNotifications(),
+                          );
                     },
                   );
                 }

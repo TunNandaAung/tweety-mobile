@@ -54,7 +54,7 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
   @override
   void initState() {
     super.initState();
-    _replyBloc = BlocProvider.of<ReplyBloc>(context);
+    _replyBloc = context.read<ReplyBloc>();
   }
 
   @override
@@ -64,12 +64,12 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
         BlocListener<ReplyBloc, ReplyState>(
           listener: (context, state) {
             if (state is ReplyAdded) {
-              BlocProvider.of<TweetBloc>(context).add(
-                UpdateReplyCount(
-                  count: widget.tweet.repliesCount + 1,
-                  tweetID: widget.tweet.id,
-                ),
-              );
+              context.read<TweetBloc>().add(
+                    UpdateReplyCount(
+                      count: widget.tweet.repliesCount + 1,
+                      tweetID: widget.tweet.id,
+                    ),
+                  );
 
               var currentState = widget.scaffoldKey == null
                   ? Scaffold.of(context)

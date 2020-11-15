@@ -173,8 +173,8 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
     });
 
     isCurrentThemeDark
-        ? BlocProvider.of<ThemeBloc>(context).add(ThemeChanged(AppTheme.Dark))
-        : BlocProvider.of<ThemeBloc>(context).add(ThemeChanged(AppTheme.Light));
+        ? context.read<ThemeBloc>().add(ThemeChanged(AppTheme.Dark))
+        : context.read<ThemeBloc>().add(ThemeChanged(AppTheme.Light));
   }
 
   void _toggleSystemThemeButton() {
@@ -184,11 +184,11 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
     });
 
     if (WidgetsBinding.instance.window.platformBrightness == Brightness.dark) {
-      BlocProvider.of<ThemeBloc>(context).add(ThemeChanged(AppTheme.Dark));
+      context.read<ThemeBloc>().add(ThemeChanged(AppTheme.Dark));
       setState(() {
         isCurrentThemeDark = true;
       });
     } else
-      BlocProvider.of<ThemeBloc>(context).add(ThemeChanged(AppTheme.Light));
+      context.read<ThemeBloc>().add(ThemeChanged(AppTheme.Light));
   }
 }

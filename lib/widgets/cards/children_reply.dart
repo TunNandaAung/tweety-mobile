@@ -69,9 +69,9 @@ class _ChildrenReplyState extends State<ChildrenReply> {
                   onPressed: () => ReplyActionsModal()
                       .mainBottomSheet(context, widget.reply, onTap: () {
                     Navigator.of(context).pop();
-                    BlocProvider.of<ChildrenReplyBloc>(context).add(
-                      DeleteChildrenReply(reply: widget.reply),
-                    );
+                    context.read<ChildrenReplyBloc>().add(
+                          DeleteChildrenReply(reply: widget.reply),
+                        );
                   }),
                 ),
               ],

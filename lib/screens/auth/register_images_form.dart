@@ -147,8 +147,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
     return WillPopScope(
       onWillPop: () async {
         Navigator.popUntil(context, ModalRoute.withName('/'));
-        BlocProvider.of<AuthenticationBloc>(context)
-            .add(AuthenticationLoggedIn());
+        context.read<AuthenticationBloc>().add(AuthenticationLoggedIn());
         return false;
       },
       child: Scaffold(
@@ -216,8 +215,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
 
             if (state is RegisterImagesSuccess) {
               Navigator.popUntil(context, ModalRoute.withName('/'));
-              BlocProvider.of<AuthenticationBloc>(context)
-                  .add(AuthenticationLoggedIn());
+              context.read<AuthenticationBloc>().add(AuthenticationLoggedIn());
             }
           },
           child: BlocBuilder<RegisterBloc, RegisterState>(
@@ -339,16 +337,16 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
   }
 
   void _onFormSubmitted() {
-    BlocProvider.of<RegisterBloc>(context).add(
-      UploadRegisterImages(
-        avatar: _avatar,
-        banner: _banner,
-      ),
-    );
+    context.read<RegisterBloc>().add(
+          UploadRegisterImages(
+            avatar: _avatar,
+            banner: _banner,
+          ),
+        );
   }
 
   void _onSkipPressed() {
     Navigator.popUntil(context, ModalRoute.withName('/'));
-    BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationLoggedIn());
+    context.read<AuthenticationBloc>().add(AuthenticationLoggedIn());
   }
 }

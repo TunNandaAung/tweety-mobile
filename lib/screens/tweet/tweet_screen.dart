@@ -35,11 +35,11 @@ class _TweetScreenState extends State<TweetScreen> {
 
   @override
   void initState() {
-    BlocProvider.of<ReplyBloc>(context).add(
-      FetchReply(tweetID: widget.tweet.id),
-    );
+    context.read<ReplyBloc>().add(
+          FetchReply(tweetID: widget.tweet.id),
+        );
     _scrollController.addListener(_onScroll);
-    _replyBloc = BlocProvider.of<ReplyBloc>(context);
+    _replyBloc = context.read<ReplyBloc>();
 
     super.initState();
   }
@@ -55,9 +55,9 @@ class _TweetScreenState extends State<TweetScreen> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      BlocProvider.of<ReplyBloc>(context).add(
-        FetchReply(tweetID: widget.tweet.id),
-      );
+      context.read<ReplyBloc>().add(
+            FetchReply(tweetID: widget.tweet.id),
+          );
     }
   }
 
@@ -86,12 +86,12 @@ class _TweetScreenState extends State<TweetScreen> {
           BlocListener<ReplyBloc, ReplyState>(
             listener: (context, state) {
               if (state is ReplyAdded) {
-                BlocProvider.of<TweetBloc>(context).add(
-                  UpdateReplyCount(
-                    count: widget.tweet.repliesCount + 1,
-                    tweetID: widget.tweet.id,
-                  ),
-                );
+                context.read<TweetBloc>().add(
+                      UpdateReplyCount(
+                        count: widget.tweet.repliesCount + 1,
+                        tweetID: widget.tweet.id,
+                      ),
+                    );
                 Scaffold.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
@@ -109,12 +109,12 @@ class _TweetScreenState extends State<TweetScreen> {
                     ),
                   );
               } else if (state is ReplyDeleted) {
-                BlocProvider.of<TweetBloc>(context).add(
-                  UpdateReplyCount(
-                    count: (widget.tweet.repliesCount - state.count),
-                    tweetID: widget.tweet.id,
-                  ),
-                );
+                context.read<TweetBloc>().add(
+                      UpdateReplyCount(
+                        count: (widget.tweet.repliesCount - state.count),
+                        tweetID: widget.tweet.id,
+                      ),
+                    );
                 Scaffold.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
@@ -199,9 +199,10 @@ class _TweetScreenState extends State<TweetScreen> {
                                   child: Refresh(
                                     title: 'Couldn\'t load replies',
                                     onPressed: () {
-                                      BlocProvider.of<ReplyBloc>(context).add(
-                                        RefreshReply(tweetID: widget.tweet.id),
-                                      );
+                                      context.read<ReplyBloc>().add(
+                                            RefreshReply(
+                                                tweetID: widget.tweet.id),
+                                          );
                                     },
                                   ),
                                 ),
@@ -239,8 +240,8 @@ class _TweetScreenState extends State<TweetScreen> {
                                                   ),
                                                 ),
                                                 BlocProvider.value(
-                                                  value: BlocProvider.of<
-                                                      ReplyBloc>(context),
+                                                  value:
+                                                      context.read<ReplyBloc>(),
                                                 ),
                                               ],
                                               child: ReplyWidget(

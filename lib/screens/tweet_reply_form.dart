@@ -70,7 +70,8 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
       var match = tagRegex.firstMatch(withAt);
 
       if (match != null) {
-        BlocProvider.of<MentionBloc>(context)
+        context
+            .read<MentionBloc>()
             .add(FindMentionedUser(query: match.group(1)));
         setState(() {
           _showUserList = true;

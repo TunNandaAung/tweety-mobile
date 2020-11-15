@@ -238,9 +238,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 );
             }
             if (state is AuthProfileInfoUpdateSuccess) {
-              BlocProvider.of<ProfileBloc>(context)
-                  .add(RefreshProfile(user: state.user));
-              BlocProvider.of<AuthProfileBloc>(context)
+              context.read<ProfileBloc>().add(RefreshProfile(user: state.user));
+              context
+                  .read<AuthProfileBloc>()
                   .add(ReloadAuthProfile(user: state.user));
 
               Navigator.of(context).pop();
@@ -423,16 +423,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _onFormSubmitted() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      print("CALLED");
-      BlocProvider.of<AuthProfileBloc>(context).add(
-        UpdateAuthProfileInfo(
-          name: _name,
-          username: _username,
-          description: _description,
-          avatar: _avatar,
-          banner: _banner,
-        ),
-      );
+
+      context.read<AuthProfileBloc>().add(
+            UpdateAuthProfileInfo(
+              name: _name,
+              username: _username,
+              description: _description,
+              avatar: _avatar,
+              banner: _banner,
+            ),
+          );
     } else {
       setState(() {
         _autovalidate = true;

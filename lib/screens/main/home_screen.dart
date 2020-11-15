@@ -36,9 +36,9 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _pageController = PageController();
-    BlocProvider.of<AuthProfileBloc>(context).add(
-      GetAvatar(),
-    );
+    context.read<AuthProfileBloc>().add(
+          GetAvatar(),
+        );
     _scrollController.addListener(_onScroll);
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
@@ -56,9 +56,9 @@ class _HomeScreenState extends State<HomeScreen>
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      BlocProvider.of<TweetBloc>(context).add(
-        FetchTweet(),
-      );
+      context.read<TweetBloc>().add(
+            FetchTweet(),
+          );
     }
   }
 
@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen>
       _pageController.jumpToPage(index);
     });
     if (index == 2) {
-      BlocProvider.of<NotificationBloc>(context).add(ResetNotificationCounts());
+      context.read<NotificationBloc>().add(ResetNotificationCounts());
     }
   }
 

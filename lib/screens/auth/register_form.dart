@@ -32,7 +32,7 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   void initState() {
     super.initState();
-    _registerBloc = BlocProvider.of<RegisterBloc>(context);
+    _registerBloc = context.read<RegisterBloc>();
   }
 
   @override

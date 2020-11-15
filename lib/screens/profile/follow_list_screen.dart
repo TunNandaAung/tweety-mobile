@@ -28,9 +28,9 @@ class _FollowListScreenState extends State<FollowListScreen>
     super.initState();
     _tabController = TabController(initialIndex: 0, length: 2, vsync: this);
     _tabController.addListener(_handleTabSelection);
-    BlocProvider.of<FollowingListBloc>(context).add(
-      FetchFollowingList(user: widget.profileUser),
-    );
+    context.read<FollowingListBloc>().add(
+          FetchFollowingList(user: widget.profileUser),
+        );
     _scrollController.addListener(_scrollListener);
   }
 
@@ -46,9 +46,9 @@ class _FollowListScreenState extends State<FollowListScreen>
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      BlocProvider.of<FollowingListBloc>(context).add(
-        FetchFollowingList(user: widget.profileUser),
-      );
+      context.read<FollowingListBloc>().add(
+            FetchFollowingList(user: widget.profileUser),
+          );
     }
   }
 
@@ -56,9 +56,9 @@ class _FollowListScreenState extends State<FollowListScreen>
     if (_tabController.indexIsChanging) {
       switch (_tabController.index) {
         case 1:
-          BlocProvider.of<FollowersListBloc>(context).add(
-            FetchFollowersList(user: widget.profileUser),
-          );
+          context.read<FollowersListBloc>().add(
+                FetchFollowersList(user: widget.profileUser),
+              );
           break;
       }
     }
@@ -129,9 +129,9 @@ class _FollowListScreenState extends State<FollowListScreen>
                   return Refresh(
                     title: 'Couldn\'t load feed',
                     onPressed: () {
-                      BlocProvider.of<FollowingListBloc>(context).add(
-                        RefreshFollowingList(user: widget.profileUser),
-                      );
+                      context.read<FollowingListBloc>().add(
+                            RefreshFollowingList(user: widget.profileUser),
+                          );
                     },
                   );
                 }
@@ -173,9 +173,9 @@ class _FollowListScreenState extends State<FollowListScreen>
                   return Refresh(
                     title: 'Couldn\'t load feed',
                     onPressed: () {
-                      BlocProvider.of<FollowersListBloc>(context).add(
-                        RefreshFollowersList(user: widget.profileUser),
-                      );
+                      context.read<FollowersListBloc>().add(
+                            RefreshFollowersList(user: widget.profileUser),
+                          );
                     },
                   );
                 }

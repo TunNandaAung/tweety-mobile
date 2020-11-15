@@ -47,10 +47,10 @@ class _ProfileScreenState extends State<ProfileScreen>
     _tabController = TabController(initialIndex: 0, length: 2, vsync: this);
     _tabController.addListener(_handleTabSelection);
     _scrollController.addListener(_onScroll);
-    BlocProvider.of<ProfileBloc>(context)
-        .add(FetchProfile(username: widget.username));
+    context.read<ProfileBloc>().add(FetchProfile(username: widget.username));
 
-    BlocProvider.of<ProfileTweetBloc>(context)
+    context
+        .read<ProfileTweetBloc>()
         .add(FetchProfileTweet(username: widget.username));
     super.initState();
   }
@@ -65,9 +65,9 @@ class _ProfileScreenState extends State<ProfileScreen>
     if (_tabController.indexIsChanging) {
       switch (_tabController.index) {
         case 1:
-          BlocProvider.of<ProfileReplyBloc>(context).add(
-            FetchProfileReply(username: widget.username),
-          );
+          context.read<ProfileReplyBloc>().add(
+                FetchProfileReply(username: widget.username),
+              );
           break;
       }
     }
@@ -78,9 +78,11 @@ class _ProfileScreenState extends State<ProfileScreen>
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
       _tabController.index == 0
-          ? BlocProvider.of<ProfileTweetBloc>(context)
+          ? context
+              .read<ProfileTweetBloc>()
               .add(FetchProfileTweet(username: widget.username))
-          : BlocProvider.of<ProfileReplyBloc>(context)
+          : context
+              .read<ProfileReplyBloc>()
               .add(FetchProfileReply(username: widget.username));
     }
   }
@@ -284,7 +286,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                     return Refresh(
                       title: "Couldn't load tweets!",
                       onPressed: () {
-                        BlocProvider.of<ProfileTweetBloc>(context)
+                        context
+                            .read<ProfileTweetBloc>()
                             .add(FetchProfileTweet(username: widget.username));
                       },
                     );
@@ -350,7 +353,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                     return Refresh(
                       title: "Couldn't load replies!",
                       onPressed: () {
-                        BlocProvider.of<ProfileReplyBloc>(context)
+                        context
+                            .read<ProfileReplyBloc>()
                             .add(FetchProfileReply(username: widget.username));
                       },
                     );
@@ -397,8 +401,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         ),
                                       ),
                                       BlocProvider.value(
-                                        value:
-                                            BlocProvider.of<ReplyBloc>(context),
+                                        value: context.read<ReplyBloc>(),
                                       ),
                                     ],
                                     child: ReplyWidget(
@@ -633,7 +636,7 @@ class EditProfileButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: BlocProvider.of<ProfileBloc>(context),
+      value: context.read<ProfileBloc>(),
       child: FlatButton(
         onPressed: () {
           Navigator.of(context).push(

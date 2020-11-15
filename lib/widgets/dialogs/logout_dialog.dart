@@ -40,7 +40,8 @@ Future<void> logoutDialog(context, VoidCallback onPressed) {
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  BlocProvider.of<AuthenticationBloc>(context)
+                  context
+                      .read<AuthenticationBloc>()
                       .add(AuthenticationLoggedOut());
                 },
               ),

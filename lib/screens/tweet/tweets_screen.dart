@@ -29,12 +29,12 @@ class _TweetsScreenState extends State<TweetsScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<TweetBloc>(context).add(
-      FetchTweet(),
-    );
-    BlocProvider.of<NotificationBloc>(context).add(
-      FetchNotificationCounts(),
-    );
+    context.read<TweetBloc>().add(
+          FetchTweet(),
+        );
+    context.read<NotificationBloc>().add(
+          FetchNotificationCounts(),
+        );
     _scrollController.addListener(_onScroll);
     _tweetRefreshCompleter = Completer<void>();
   }
@@ -49,9 +49,9 @@ class _TweetsScreenState extends State<TweetsScreen> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      BlocProvider.of<TweetBloc>(context).add(
-        FetchTweet(),
-      );
+      context.read<TweetBloc>().add(
+            FetchTweet(),
+          );
     }
   }
 
@@ -73,9 +73,9 @@ class _TweetsScreenState extends State<TweetsScreen> {
           color: Theme.of(context).primaryColor,
           strokeWidth: 1.0,
           onRefresh: () {
-            BlocProvider.of<TweetBloc>(context).add(
-              RefreshTweet(),
-            );
+            context.read<TweetBloc>().add(
+                  RefreshTweet(),
+                );
             return _tweetRefreshCompleter.future;
           },
           child: CustomScrollView(
@@ -166,9 +166,9 @@ class _TweetsScreenState extends State<TweetsScreen> {
                         child: Refresh(
                           title: 'Couldn\'t load feed',
                           onPressed: () {
-                            BlocProvider.of<TweetBloc>(context).add(
-                              RefreshTweet(),
-                            );
+                            context.read<TweetBloc>().add(
+                                  RefreshTweet(),
+                                );
                           },
                         ),
                       ),

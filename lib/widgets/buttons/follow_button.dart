@@ -22,11 +22,13 @@ class _FollowButtonState extends State<FollowButton> {
     return BlocListener<FollowBloc, FollowState>(
       listener: (context, state) {
         if (state is Followed) {
-          BlocProvider.of<AuthProfileBloc>(context)
+          context
+              .read<AuthProfileBloc>()
               .add(ReloadAuthProfile(user: state.user));
         }
         if (state is Unfollowed) {
-          BlocProvider.of<AuthProfileBloc>(context)
+          context
+              .read<AuthProfileBloc>()
               .add(ReloadAuthProfile(user: state.user));
         }
       },
@@ -80,7 +82,7 @@ class _FollowButtonState extends State<FollowButton> {
 
   void _follow() async {
     HapticFeedback.mediumImpact();
-    BlocProvider.of<FollowBloc>(context).add(FollowUser(user: widget.user));
+    context.read<FollowBloc>().add(FollowUser(user: widget.user));
     setState(() {
       _isFollowed = true;
     });
@@ -88,7 +90,7 @@ class _FollowButtonState extends State<FollowButton> {
 
   void _unfollow() async {
     HapticFeedback.mediumImpact();
-    BlocProvider.of<FollowBloc>(context).add(UnfollowUser(user: widget.user));
+    context.read<FollowBloc>().add(UnfollowUser(user: widget.user));
     setState(() {
       _isFollowed = false;
     });

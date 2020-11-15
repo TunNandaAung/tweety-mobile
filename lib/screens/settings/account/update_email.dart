@@ -82,7 +82,8 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
             }
 
             if (state is AuthProfileInfoUpdateSuccess) {
-              BlocProvider.of<AuthProfileBloc>(context)
+              context
+                  .read<AuthProfileBloc>()
                   .add(ReloadAuthProfile(user: state.user));
               Navigator.of(context).pop();
             }
@@ -275,9 +276,9 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
   void _onFormSubmitted() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      BlocProvider.of<AuthProfileBloc>(context).add(
-        UpdateAuthProfileEmail(password: _password, email: _email),
-      );
+      context.read<AuthProfileBloc>().add(
+            UpdateAuthProfileEmail(password: _password, email: _email),
+          );
     } else {
       setState(() {
         _autovalidate = true;

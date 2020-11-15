@@ -174,9 +174,9 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                   onPressed: () => ReplyActionsModal()
                       .mainBottomSheet(context, widget.reply, onTap: () {
                     Navigator.of(context).pop();
-                    BlocProvider.of<ReplyBloc>(context).add(
-                      DeleteReply(reply: widget.reply),
-                    );
+                    context.read<ReplyBloc>().add(
+                          DeleteReply(reply: widget.reply),
+                        );
                   }),
                 ),
               ],
@@ -201,7 +201,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                   ),
                 ),
                 BlocProvider.value(
-                  value: BlocProvider.of<ChildrenReplyBloc>(context),
+                  value: context.read<ChildrenReplyBloc>(),
                   child: AddChildrenReplyButton(
                     tweet: widget.tweet,
                     parent: widget.reply,
@@ -250,11 +250,11 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                     setState(() {
                       isLoading = true;
                     });
-                    BlocProvider.of<ChildrenReplyBloc>(context).add(
-                      FetchChildrenReply(
-                          parentID: widget.reply.id,
-                          childrenCount: repliesLeft),
-                    );
+                    context.read<ChildrenReplyBloc>().add(
+                          FetchChildrenReply(
+                              parentID: widget.reply.id,
+                              childrenCount: repliesLeft),
+                        );
                   }
                 },
                 child: Text(
@@ -316,9 +316,9 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 onPressed: () => ReplyActionsModal()
                     .mainBottomSheet(context, reply, onTap: () {
                   Navigator.of(context).pop();
-                  BlocProvider.of<ReplyBloc>(context).add(
-                    DeleteReply(reply: reply),
-                  );
+                  context.read<ReplyBloc>().add(
+                        DeleteReply(reply: reply),
+                      );
                 }),
               ),
             ],
@@ -343,7 +343,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 ),
               ),
               BlocProvider.value(
-                value: BlocProvider.of<ChildrenReplyBloc>(context),
+                value: context.read<ChildrenReplyBloc>(),
                 child: AddChildrenReplyButton(
                   tweet: widget.tweet,
                   parent: widget.reply,

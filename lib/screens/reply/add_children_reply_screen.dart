@@ -21,14 +21,14 @@ class _AddChildrenReplyScreenState extends State<AddChildrenReplyScreen> {
       isReply: true,
       owner: widget.parent.owner,
       onSave: (body, image) {
-        BlocProvider.of<ChildrenReplyBloc>(context).add(
-          AddChildrenReply(
-            tweetID: widget.tweetID,
-            body: body,
-            image: image,
-            parentID: widget.parent.id,
-          ),
-        );
+        context.read<ChildrenReplyBloc>().add(
+              AddChildrenReply(
+                tweetID: widget.tweetID,
+                body: body,
+                image: image,
+                parentID: widget.parent.id,
+              ),
+            );
       },
     );
   }

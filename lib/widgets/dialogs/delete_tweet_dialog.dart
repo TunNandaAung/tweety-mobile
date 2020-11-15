@@ -40,8 +40,7 @@ Future<void> deleteTweetDialog(context, int id) {
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    BlocProvider.of<TweetBloc>(context)
-                        .add(DeleteTweet(tweetID: id));
+                    context.read<TweetBloc>().add(DeleteTweet(tweetID: id));
                   }),
             ),
             SizedBox(width: 15.0),

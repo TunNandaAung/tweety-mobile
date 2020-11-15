@@ -16,9 +16,9 @@ class _PublishTweetScreenState extends State<PublishTweetScreen> {
     return TweetReplyForm(
       isReply: false,
       onSave: (body, image) {
-        BlocProvider.of<TweetBloc>(context).add(
-          PublishTweet(body: body, image: image),
-        );
+        context.read<TweetBloc>().add(
+              PublishTweet(body: body, image: image),
+            );
       },
     );
   }

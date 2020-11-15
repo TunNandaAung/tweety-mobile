@@ -28,9 +28,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ExploreBloc>(context).add(
-      ExploreUser(),
-    );
+    context.read<ExploreBloc>().add(
+          ExploreUser(),
+        );
     _exploreRefreshCompleter = Completer<void>();
   }
 
@@ -58,9 +58,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
           color: Theme.of(context).primaryColor,
           strokeWidth: 1.0,
           onRefresh: () {
-            BlocProvider.of<ExploreBloc>(context).add(
-              RefreshExplore(),
-            );
+            context.read<ExploreBloc>().add(
+                  RefreshExplore(),
+                );
             return _exploreRefreshCompleter.future;
           },
           child: CustomScrollView(
@@ -82,9 +82,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   onTap: () async {
                     User selected = await showSearch<User>(
                       context: context,
-                      delegate: SearchScreen(
-                          BlocProvider.of<UserSearchBloc>(context),
-                          BlocProvider.of<TweetSearchBloc>(context)),
+                      delegate: SearchScreen(context.read<UserSearchBloc>(),
+                          context.read<TweetSearchBloc>()),
                     );
                     print(selected);
                   },
@@ -158,9 +157,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         child: Refresh(
                           title: 'Couldn\'t load feed',
                           onPressed: () {
-                            BlocProvider.of<ExploreBloc>(context).add(
-                              RefreshExplore(),
-                            );
+                            context.read<ExploreBloc>().add(
+                                  RefreshExplore(),
+                                );
                           },
                         ),
                       ),

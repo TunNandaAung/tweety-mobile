@@ -189,9 +189,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   void _onFormSubmitted() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      BlocProvider.of<AuthProfileBloc>(context).add(
-        RequestPasswordResetInfo(email: _email),
-      );
+      context.read<AuthProfileBloc>().add(
+            RequestPasswordResetInfo(email: _email),
+          );
     } else {
       setState(() {
         _autovalidate = true;

@@ -76,9 +76,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
           }
 
           if (state is AuthProfilePasswordUpdateSuccess) {
-            BlocProvider.of<AuthProfileBloc>(context).add(
-              FetchAuthProfile(),
-            );
+            context.read<AuthProfileBloc>().add(
+                  FetchAuthProfile(),
+                );
             Navigator.of(context).pop();
           }
         },
@@ -326,12 +326,12 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   void _onFormSubmitted() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      BlocProvider.of<AuthProfileBloc>(context).add(
-        UpdateAuthProfilePassword(
-            oldPassword: _oldPassword,
-            newPassword: _password,
-            newPasswordConfirmation: _confirmPassword),
-      );
+      context.read<AuthProfileBloc>().add(
+            UpdateAuthProfilePassword(
+                oldPassword: _oldPassword,
+                newPassword: _password,
+                newPasswordConfirmation: _confirmPassword),
+          );
     } else {
       setState(() {
         _autovalidate = true;
