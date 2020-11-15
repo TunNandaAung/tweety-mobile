@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
-import 'package:meta/meta.dart';
 
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/tweet.dart';
@@ -17,7 +16,8 @@ class TweetApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  TweetApiClient({@required this.httpClient}) : assert(httpClient != null);
+  TweetApiClient({http.Client httpClient})
+      : httpClient = httpClient ?? http.Client();
 
   Future<TweetPaginator> fetchTweets(int pageNumber) async {
     final url = '$baseUrl/tweets?page=$pageNumber&page[number]=$pageNumber';

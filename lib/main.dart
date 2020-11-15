@@ -28,14 +28,8 @@ import 'package:tweety_mobile/screens/reply/reply_wrapper.dart';
 import 'package:tweety_mobile/screens/settings/settings_screen.dart';
 import 'package:tweety_mobile/screens/splash_screen.dart';
 import 'package:tweety_mobile/screens/tweet/tweet_wrapper.dart';
-import 'package:tweety_mobile/services/follow_api_client.dart';
-import 'package:tweety_mobile/services/notification_api_client.dart';
-import 'package:tweety_mobile/services/search_api_client.dart';
-import 'package:tweety_mobile/services/tweet_api_client.dart';
-import 'package:tweety_mobile/services/user_api_client.dart';
 import 'package:tweety_mobile/theme/app_theme.dart';
 import 'package:tweety_mobile/theme/bloc/theme_bloc.dart';
-import 'package:http/http.dart' as http;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -80,24 +74,6 @@ class _TweetyState extends State<Tweety> {
 
   @override
   Widget build(BuildContext context) {
-    final client = http.Client();
-    final TweetRepository tweetRepository = TweetRepository(
-      tweetApiClient: TweetApiClient(httpClient: client),
-    );
-    final UserRepository userRepository = UserRepository(
-      userApiClient: UserApiClient(httpClient: client),
-    );
-    final FollowRepository followRepository = FollowRepository(
-      followApiClient: FollowApiClient(httpClient: client),
-    );
-    final NotificationRepository notificationRepository =
-        NotificationRepository(
-      notificationApiClient: NotificationApiClient(httpClient: client),
-    );
-    final SearchRepository searchRepository = SearchRepository(
-      searchApiClient: SearchApiClient(httpClient: client),
-    );
-
     return MultiBlocProvider(
       providers: [
         BlocProvider<ThemeBloc>(
@@ -105,35 +81,39 @@ class _TweetyState extends State<Tweety> {
         ),
         BlocProvider<TweetBloc>(
           create: (context) => TweetBloc(
-            tweetRepository: tweetRepository,
+            tweetRepository: TweetRepository(),
           ),
         ),
         BlocProvider<AuthProfileBloc>(
-          create: (context) => AuthProfileBloc(userRepository: userRepository),
+          create: (context) =>
+              AuthProfileBloc(userRepository: widget.userRepository),
         ),
         BlocProvider<ExploreBloc>(
-          create: (context) => ExploreBloc(userRepository: userRepository),
+          create: (context) =>
+              ExploreBloc(userRepository: widget.userRepository),
         ),
         BlocProvider<FollowBloc>(
-          create: (context) => FollowBloc(followRepository: followRepository),
+          create: (context) => FollowBloc(followRepository: FollowRepository()),
         ),
         BlocProvider<ProfileBloc>(
-          create: (context) => ProfileBloc(userRepository: userRepository),
+          create: (context) =>
+              ProfileBloc(userRepository: widget.userRepository),
         ),
         BlocProvider<NotificationBloc>(
-          create: (context) =>
-              NotificationBloc(notificationRepository: notificationRepository),
+          create: (context) => NotificationBloc(
+              notificationRepository: NotificationRepository()),
         ),
         BlocProvider<UserSearchBloc>(
           create: (context) =>
-              UserSearchBloc(searchRepository: searchRepository),
+              UserSearchBloc(searchRepository: SearchRepository()),
         ),
         BlocProvider<TweetSearchBloc>(
           create: (context) =>
-              TweetSearchBloc(searchRepository: searchRepository),
+              TweetSearchBloc(searchRepository: SearchRepository()),
         ),
         BlocProvider<MentionBloc>(
-          create: (context) => MentionBloc(userRepository: userRepository),
+          create: (context) =>
+              MentionBloc(userRepository: widget.userRepository),
         ),
       ],
       child: _buildWithTheme(context),

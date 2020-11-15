@@ -1,7 +1,7 @@
 import 'dart:io';
 
 class ApiConstants {
-  static const BASE_URL = 'https://tweety.sharedwithexpose.com/api';
+  static const BASE_URL = 'https://ed29035404f4.ngrok.io/api';
 }
 
 Map<String, String> requestHeaders(String token) {

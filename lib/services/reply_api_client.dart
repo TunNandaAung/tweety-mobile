@@ -6,8 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
-import 'package:meta/meta.dart';
-
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/models/reply_paginator.dart';
@@ -17,7 +15,8 @@ class ReplyApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  ReplyApiClient({@required this.httpClient}) : assert(httpClient != null);
+  ReplyApiClient({http.Client httpClient})
+      : httpClient = httpClient ?? http.Client();
 
   Future<ReplyPaginator> fetchReplies(int tweetID, int pageNumber) async {
     final url =

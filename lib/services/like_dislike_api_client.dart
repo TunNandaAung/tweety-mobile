@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
-
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/like_dislike.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
@@ -11,8 +9,8 @@ class LikeDislikeApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  LikeDislikeApiClient({@required this.httpClient})
-      : assert(httpClient != null);
+  LikeDislikeApiClient({http.Client httpClient})
+      : httpClient = httpClient ?? http.Client();
 
   Future<LikeDislike> like(int id, String subject) async {
     final url = '$baseUrl/$subject/$id/like';

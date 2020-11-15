@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/models/tweet_paginator.dart';
 import 'package:tweety_mobile/services/tweet_api_client.dart';
@@ -8,8 +7,8 @@ import 'package:tweety_mobile/services/tweet_api_client.dart';
 class TweetRepository {
   final TweetApiClient tweetApiClient;
 
-  TweetRepository({@required this.tweetApiClient})
-      : assert(tweetApiClient != null);
+  TweetRepository({TweetApiClient tweetApiClient})
+      : tweetApiClient = tweetApiClient ?? TweetApiClient();
 
   Future<TweetPaginator> getTweets(int pageNumber) async {
     return tweetApiClient.fetchTweets(pageNumber);

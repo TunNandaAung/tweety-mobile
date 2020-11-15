@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/api_notification.dart';
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
@@ -12,8 +11,8 @@ class NotificationApiClient {
 
   final http.Client httpClient;
 
-  NotificationApiClient({@required this.httpClient})
-      : assert(httpClient != null);
+  NotificationApiClient({http.Client httpClient})
+      : httpClient = httpClient ?? http.Client();
 
   Future<int> fetchNotificationCounts() async {
     final url = '$baseUrl/notification-counts';

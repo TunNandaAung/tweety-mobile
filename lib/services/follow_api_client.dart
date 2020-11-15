@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/models/user_paginator.dart';
@@ -13,7 +11,8 @@ class FollowApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  FollowApiClient({@required this.httpClient}) : assert(httpClient != null);
+  FollowApiClient({http.Client httpClient})
+      : httpClient = httpClient ?? http.Client();
 
   Future<User> toggleFollow(String username) async {
     final url = '$baseUrl/profiles/$username/follow';

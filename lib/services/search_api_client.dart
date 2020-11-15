@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
-
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
@@ -15,7 +12,8 @@ class SearchApiClient {
       ApiConstants.BASE_URL; //url generated with `valet share command`
   final http.Client httpClient;
 
-  SearchApiClient({@required this.httpClient}) : assert(httpClient != null);
+  SearchApiClient({http.Client httpClient})
+      : httpClient = httpClient ?? http.Client();
 
   Future<List<User>> searchUsers(String query) async {
     final url = '$baseUrl/search?type=user&q=$query';
