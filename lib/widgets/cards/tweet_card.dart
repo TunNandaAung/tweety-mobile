@@ -72,7 +72,7 @@ class TweetCard extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Icons.keyboard_arrow_down),
-                  color: Theme.of(context).cursorColor,
+                  color: Theme.of(context).textSelectionTheme.cursorColor,
                   onPressed: () =>
                       TweetActionsModal().mainBottomSheet(context, tweet),
                 ),

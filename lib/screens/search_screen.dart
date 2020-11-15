@@ -30,13 +30,13 @@ class SearchScreen extends SearchDelegate<User> {
       primaryColorBrightness: Brightness.light,
       textTheme: TextTheme(
         headline6: TextStyle(
-          color: Theme.of(context).cursorColor,
+          color: Theme.of(context).textSelectionTheme.cursorColor,
           fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        fillColor: Theme.of(context).cursorColor,
+        fillColor: Theme.of(context).textSelectionTheme.cursorColor,
         hintStyle: TextStyle(color: Colors.grey[400]),
         suffixStyle: TextStyle(fontSize: 18.0),
       ),
@@ -388,7 +388,9 @@ class SearchScreen extends SearchDelegate<User> {
                                   .substring(0, query.length),
                               style: TextStyle(
                                 fontSize: 18,
-                                color: Theme.of(context).cursorColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .cursorColor,
                                 fontWeight: FontWeight.bold,
                               ),
                               children: [
@@ -411,7 +413,9 @@ class SearchScreen extends SearchDelegate<User> {
                                       .substring(0, query.length),
                               style: TextStyle(
                                 fontSize: 15,
-                                color: Theme.of(context).cursorColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .cursorColor,
                                 fontWeight: FontWeight.bold,
                               ),
                               children: [

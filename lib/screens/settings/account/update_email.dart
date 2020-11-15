@@ -100,7 +100,9 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                           children: <Widget>[
                             Form(
                               key: _formKey,
-                              autovalidate: _autovalidate,
+                              autovalidateMode: _autovalidate
+                                  ? AutovalidateMode.onUserInteraction
+                                  : AutovalidateMode.disabled,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
@@ -122,7 +124,9 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                   SizedBox(height: 10.0),
                                   TextFormField(
                                     style: TextStyle(
-                                        color: Theme.of(context).cursorColor,
+                                        color: Theme.of(context)
+                                            .textSelectionTheme
+                                            .cursorColor,
                                         fontWeight: FontWeight.w500),
                                     decoration: InputDecoration(
                                         filled: true,
@@ -177,7 +181,9 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                   SizedBox(height: 10.0),
                                   TextFormField(
                                     style: TextStyle(
-                                        color: Theme.of(context).cursorColor,
+                                        color: Theme.of(context)
+                                            .textSelectionTheme
+                                            .cursorColor,
                                         fontWeight: FontWeight.w500),
                                     decoration: InputDecoration(
                                         filled: true,

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/auth.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
@@ -9,8 +8,8 @@ import 'package:tweety_mobile/services/user_api_client.dart';
 class UserRepository {
   final UserApiClient userApiClient;
 
-  UserRepository({@required this.userApiClient})
-      : assert(userApiClient != null);
+  UserRepository({UserApiClient userApiClient})
+      : userApiClient = userApiClient ?? UserApiClient();
 
   Future<Auth> loginWithCredentials(String email, String password) async {
     return userApiClient.login(email: email, password: password);

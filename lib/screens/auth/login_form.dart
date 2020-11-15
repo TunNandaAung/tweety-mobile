@@ -175,7 +175,9 @@ class _LoginFormState extends State<LoginForm> {
                             children: <Widget>[
                               TextFormField(
                                 style: TextStyle(
-                                    color: Theme.of(context).cursorColor,
+                                    color: Theme.of(context)
+                                        .textSelectionTheme
+                                        .cursorColor,
                                     fontWeight: FontWeight.w500),
                                 decoration: InputDecoration(
                                     filled: true,
@@ -195,7 +197,8 @@ class _LoginFormState extends State<LoginForm> {
                                         Icon(Icons.mail, color: Colors.grey),
                                     hintText: 'Email'),
                                 controller: _emailController,
-                                autovalidate: true,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 autocorrect: false,
                                 validator: (_) {
                                   if (!state.isEmailValid) {
@@ -207,7 +210,9 @@ class _LoginFormState extends State<LoginForm> {
                               SizedBox(height: 30.0),
                               TextFormField(
                                 style: TextStyle(
-                                    color: Theme.of(context).cursorColor,
+                                    color: Theme.of(context)
+                                        .textSelectionTheme
+                                        .cursorColor,
                                     fontWeight: FontWeight.w500),
                                 decoration: InputDecoration(
                                     filled: true,
@@ -237,7 +242,8 @@ class _LoginFormState extends State<LoginForm> {
                                     hintText: 'Password'),
                                 obscureText: _isPasswordHidden,
                                 controller: _passwordController,
-                                autovalidate: true,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 autocorrect: false,
                                 validator: (_) {
                                   if (!state.isPasswordValid) {

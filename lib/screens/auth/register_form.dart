@@ -119,7 +119,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 children: <Widget>[
                   Form(
                     key: _formKey,
-                    autovalidate: _autovalidate,
+                    autovalidateMode: _autovalidate
+                        ? AutovalidateMode.onUserInteraction
+                        : AutovalidateMode.disabled,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -130,7 +132,9 @@ class _RegisterFormState extends State<RegisterForm> {
                         SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
-                              color: Theme.of(context).cursorColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .cursorColor,
                               fontWeight: FontWeight.w500),
                           decoration: InputDecoration(
                             filled: true,
@@ -166,7 +170,9 @@ class _RegisterFormState extends State<RegisterForm> {
                         SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
-                              color: Theme.of(context).cursorColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .cursorColor,
                               fontWeight: FontWeight.w500),
                           decoration: InputDecoration(
                             filled: true,
@@ -202,7 +208,9 @@ class _RegisterFormState extends State<RegisterForm> {
                         SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
-                              color: Theme.of(context).cursorColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .cursorColor,
                               fontWeight: FontWeight.w500),
                           decoration: InputDecoration(
                               filled: true,
@@ -239,7 +247,9 @@ class _RegisterFormState extends State<RegisterForm> {
                         TextFormField(
                           key: passKey,
                           style: TextStyle(
-                              color: Theme.of(context).cursorColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .cursorColor,
                               fontWeight: FontWeight.w500),
                           decoration: InputDecoration(
                               filled: true,
@@ -287,7 +297,9 @@ class _RegisterFormState extends State<RegisterForm> {
                         SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
-                              color: Theme.of(context).cursorColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .cursorColor,
                               fontWeight: FontWeight.w500),
                           decoration: InputDecoration(
                               filled: true,

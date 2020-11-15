@@ -170,7 +170,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 ),
                 IconButton(
                   icon: Icon(Icons.keyboard_arrow_down,
-                      color: Theme.of(context).cursorColor),
+                      color: Theme.of(context).textSelectionTheme.cursorColor),
                   onPressed: () => ReplyActionsModal()
                       .mainBottomSheet(context, widget.reply, onTap: () {
                     Navigator.of(context).pop();
@@ -312,7 +312,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
               ),
               IconButton(
                 icon: Icon(Icons.keyboard_arrow_down,
-                    color: Theme.of(context).cursorColor),
+                    color: Theme.of(context).textSelectionTheme.cursorColor),
                 onPressed: () => ReplyActionsModal()
                     .mainBottomSheet(context, reply, onTap: () {
                   Navigator.of(context).pop();

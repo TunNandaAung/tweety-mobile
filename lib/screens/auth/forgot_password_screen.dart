@@ -29,7 +29,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0.0,
         iconTheme: IconThemeData(
-          color: Theme.of(context).cursorColor,
+          color: Theme.of(context).textSelectionTheme.cursorColor,
         ),
         leading: BackButton(),
         title: Text(
@@ -94,7 +94,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   right: size.width * .08),
               child: Form(
                 key: _formKey,
-                autovalidate: _autovalidate,
+                autovalidateMode: _autovalidate
+                    ? AutovalidateMode.onUserInteraction
+                    : AutovalidateMode.disabled,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -105,7 +107,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     SizedBox(height: 10.0),
                     TextFormField(
                       style: TextStyle(
-                          color: Theme.of(context).cursorColor,
+                          color:
+                              Theme.of(context).textSelectionTheme.cursorColor,
                           fontWeight: FontWeight.w500),
                       decoration: InputDecoration(
                         filled: true,

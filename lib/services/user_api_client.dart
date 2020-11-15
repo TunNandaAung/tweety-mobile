@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
-import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:tweety_mobile/constants/api_constants.dart';
@@ -16,7 +15,8 @@ class UserApiClient {
   static final userName = Prefer.prefs.getString('userName');
   final http.Client httpClient;
 
-  UserApiClient({@required this.httpClient}) : assert(httpClient != null);
+  UserApiClient({http.Client httpClient})
+      : httpClient = httpClient ?? http.Client();
 
   Future<Auth> login({String email, String password}) async {
     final loginUrl = '$baseUrl/login';

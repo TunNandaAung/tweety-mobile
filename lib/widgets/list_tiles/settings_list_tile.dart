@@ -30,7 +30,7 @@ Widget settingsListTile(context, String name,
             user != null ? Text(user.email) : Text(''),
             Icon(
               Icons.chevron_right,
-              color: Theme.of(context).cursorColor,
+              color: Theme.of(context).textSelectionTheme.cursorColor,
             ),
           ],
         ),

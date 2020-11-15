@@ -212,21 +212,21 @@ class _HomeScreenState extends State<HomeScreen>
         //     .toList(),
         items: [
           BottomNavigationBarItem(
-            title: Text(''),
+            label: '',
             icon: _currentIndex == 0
                 ? Icon(bottomNavItems[0].activeIcon,
                     color: Theme.of(context).primaryColor)
                 : Icon(bottomNavItems[0].defaultIcon),
           ),
           BottomNavigationBarItem(
-            title: Text(''),
+            label: '',
             icon: _currentIndex == 1
                 ? Icon(bottomNavItems[1].activeIcon,
                     color: Theme.of(context).primaryColor)
                 : Icon(bottomNavItems[1].defaultIcon),
           ),
           BottomNavigationBarItem(
-            title: Text(''),
+            label: '',
             icon: NotificationButton(
               bubbleColor: Colors.red,
               icon: _currentIndex == 2

@@ -58,7 +58,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0.0,
           iconTheme: IconThemeData(
-            color: Theme.of(context).cursorColor,
+            color: Theme.of(context).textSelectionTheme.cursorColor,
           ),
           leading: AvatarButton(
             scaffoldKey: widget.scaffoldKey,

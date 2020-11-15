@@ -67,7 +67,7 @@ class _TweetScreenState extends State<TweetScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(
-          color: Theme.of(context).cursorColor,
+          color: Theme.of(context).textSelectionTheme.cursorColor,
         ),
         title: Text(
           'Tweet',
@@ -407,7 +407,7 @@ class _TweetScreenState extends State<TweetScreen> {
                 ),
                 IconButton(
                   icon: Icon(Icons.keyboard_arrow_down),
-                  color: Theme.of(context).cursorColor,
+                  color: Theme.of(context).textSelectionTheme.cursorColor,
                   onPressed: () =>
                       TweetActionsModal().mainBottomSheet(context, tweet),
                 ),

@@ -48,8 +48,7 @@ Future<void> main() async {
   Prefer.prefs = await SharedPreferences.getInstance();
   Prefer.themeIndexPref = Prefer.prefs.getInt('theme') ?? initialThemeIndex;
 
-  final UserRepository userRepository =
-      UserRepository(userApiClient: UserApiClient(httpClient: http.Client()));
+  final UserRepository userRepository = UserRepository();
 
   runApp(
     BlocProvider(

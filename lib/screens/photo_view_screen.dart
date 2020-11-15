@@ -31,12 +31,13 @@ class _PhotoViewScreenState extends State<PhotoViewScreen> {
           style: TextStyle(
             fontSize: 25.0,
             letterSpacing: 1.0,
-            color: Theme.of(context).cursorColor,
+            color: Theme.of(context).textSelectionTheme.cursorColor,
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
-        iconTheme: IconThemeData(color: Theme.of(context).cursorColor),
+        iconTheme: IconThemeData(
+            color: Theme.of(context).textSelectionTheme.cursorColor),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.of(context).pop(),
@@ -48,7 +49,7 @@ class _PhotoViewScreenState extends State<PhotoViewScreen> {
               widget.actionText,
               style: TextStyle(
                 fontWeight: FontWeight.w400,
-                color: Theme.of(context).cursorColor,
+                color: Theme.of(context).textSelectionTheme.cursorColor,
               ),
             ),
           ),

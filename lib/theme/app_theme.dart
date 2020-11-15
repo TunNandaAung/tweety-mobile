@@ -10,7 +10,6 @@ final appThemeData = {
     cardColor: Colors.white,
     canvasColor: Colors.black12,
     hintColor: Color(0xFF718096),
-    cursorColor: Colors.black,
     scaffoldBackgroundColor: Color(0xFFf3f6fb),
     appBarTheme: AppBarTheme(
       textTheme: TextTheme(
@@ -18,6 +17,7 @@ final appThemeData = {
       ),
       iconTheme: IconThemeData(color: Colors.black),
     ),
+    textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white),
     splashColor: Color(0xFFEDF2F7),
     dividerColor: Colors.grey[500],
     bottomAppBarTheme: BottomAppBarTheme(color: Color(0xFFEDF2F7)),
@@ -77,7 +77,6 @@ final appThemeData = {
     cardColor: Color(0xFF2d3447),
     canvasColor: Colors.transparent,
     hintColor: Color(0xFF718096),
-    cursorColor: Colors.white,
     scaffoldBackgroundColor: Color(0xFF1A202C),
     appBarTheme: AppBarTheme(
       textTheme: TextTheme(
@@ -85,6 +84,7 @@ final appThemeData = {
       ),
       iconTheme: IconThemeData(color: Colors.white),
     ),
+    textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white),
     splashColor: Color(0xFF718096),
     dividerColor: Colors.grey[500],
     bottomAppBarTheme: BottomAppBarTheme(color: Color(0xFF2D3748)),

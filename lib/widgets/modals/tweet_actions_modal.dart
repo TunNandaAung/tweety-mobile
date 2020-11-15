@@ -57,7 +57,9 @@ class TweetActionsModal {
                         children: [
                           Icon(
                             Icons.person_add,
-                            color: Theme.of(context).cursorColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .cursorColor,
                           ),
                           SizedBox(width: 10.0),
                           Text('Unfollow ${tweet.user.name}',

@@ -88,7 +88,7 @@ class _TweetsScreenState extends State<TweetsScreen> {
                 elevation: 20.0,
                 floating: true,
                 iconTheme: IconThemeData(
-                  color: Theme.of(context).cursorColor,
+                  color: Theme.of(context).textSelectionTheme.cursorColor,
                 ),
                 leading: AvatarButton(
                   scaffoldKey: widget.scaffoldKey,

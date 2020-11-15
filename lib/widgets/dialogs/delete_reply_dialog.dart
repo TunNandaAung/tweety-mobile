@@ -18,7 +18,8 @@ Future<void> deleteReplyDialog(context, Reply reply, VoidCallback onPressed) {
       content: Text(
         'Are you sure? This can\'t be undone.',
         style: TextStyle(
-            fontWeight: FontWeight.w400, color: Theme.of(context).cursorColor),
+            fontWeight: FontWeight.w400,
+            color: Theme.of(context).textSelectionTheme.cursorColor),
       ),
       actions: <Widget>[
         Row(

@@ -111,7 +111,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           'Camera',
                           style: TextStyle(
                             fontSize: 20.0,
-                            color: Theme.of(context).cursorColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .cursorColor,
                           ),
                         )
                       ],
@@ -134,7 +136,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           'Gallery',
                           style: TextStyle(
                             fontSize: 20.0,
-                            color: Theme.of(context).cursorColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .cursorColor,
                           ),
                         )
                       ],
@@ -248,7 +252,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               children: <Widget>[
                 Form(
                   key: _formKey,
-                  autovalidate: _autovalidate,
+                  autovalidateMode: _autovalidate
+                      ? AutovalidateMode.onUserInteraction
+                      : AutovalidateMode.disabled,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -300,7 +306,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.0),
                       TextFormField(
                         style: TextStyle(
-                            color: Theme.of(context).cursorColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .cursorColor,
                             fontWeight: FontWeight.w500),
                         initialValue: widget.user.name,
                         decoration: InputDecoration(
@@ -337,7 +345,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.0),
                       TextFormField(
                         style: TextStyle(
-                            color: Theme.of(context).cursorColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .cursorColor,
                             fontWeight: FontWeight.w500),
                         initialValue: widget.user.username,
                         decoration: InputDecoration(
@@ -375,7 +385,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       TextFormField(
                         maxLines: 5,
                         style: TextStyle(
-                            color: Theme.of(context).cursorColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .cursorColor,
                             fontWeight: FontWeight.w500),
                         initialValue: widget.user.description,
                         decoration: InputDecoration(

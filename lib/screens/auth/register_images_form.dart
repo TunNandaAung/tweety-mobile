@@ -100,7 +100,9 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
                           'Camera',
                           style: TextStyle(
                             fontSize: 20.0,
-                            color: Theme.of(context).cursorColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .cursorColor,
                           ),
                         )
                       ],
@@ -123,7 +125,9 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
                           'Gallery',
                           style: TextStyle(
                             fontSize: 20.0,
-                            color: Theme.of(context).cursorColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .cursorColor,
                           ),
                         )
                       ],
@@ -224,7 +228,9 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
                   children: <Widget>[
                     Form(
                       key: _formKey,
-                      autovalidate: _autovalidate,
+                      autovalidateMode: _autovalidate
+                          ? AutovalidateMode.onUserInteraction
+                          : AutovalidateMode.disabled,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
