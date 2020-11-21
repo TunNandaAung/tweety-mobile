@@ -20,6 +20,11 @@ List<BottomNav> bottomNavItems = [
     activeIcon: Icons.search,
   ),
   BottomNav(
+    name: 'Messages',
+    defaultIcon: Icons.messenger_outline_rounded,
+    activeIcon: Icons.messenger_rounded,
+  ),
+  BottomNav(
     name: 'Notificaitons',
     defaultIcon: Icons.notifications_none,
     activeIcon: Icons.notifications,

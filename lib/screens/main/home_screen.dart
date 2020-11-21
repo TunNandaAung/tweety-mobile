@@ -7,6 +7,7 @@ import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/models/bottom_nav.dart';
 import 'package:tweety_mobile/models/tweet.dart';
+import 'package:tweety_mobile/screens/MessagesScreen.dart';
 import 'package:tweety_mobile/screens/main/explore_screen.dart';
 import 'package:tweety_mobile/screens/main/notifications_screen.dart';
 import 'package:tweety_mobile/screens/publish_tweet_screen.dart';
@@ -169,6 +170,7 @@ class _HomeScreenState extends State<HomeScreen>
             children: <Widget>[
               TweetsScreen(scaffoldKey: _scaffoldKey),
               ExploreScreen(scaffoldKey: _scaffoldKey),
+              MessagesScreen(scaffoldKey: _scaffoldKey),
               NotificationsScreen(scaffoldKey: _scaffoldKey),
             ],
           ),
@@ -227,12 +229,19 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           BottomNavigationBarItem(
             label: '',
+            icon: _currentIndex == 2
+                ? Icon(bottomNavItems[2].activeIcon,
+                    color: Theme.of(context).primaryColor)
+                : Icon(bottomNavItems[2].defaultIcon),
+          ),
+          BottomNavigationBarItem(
+            label: '',
             icon: NotificationButton(
               bubbleColor: Colors.red,
-              icon: _currentIndex == 2
-                  ? Icon(bottomNavItems[2].activeIcon,
+              icon: _currentIndex == 3
+                  ? Icon(bottomNavItems[3].activeIcon,
                       color: Theme.of(context).primaryColor)
-                  : Icon(bottomNavItems[2].defaultIcon),
+                  : Icon(bottomNavItems[3].defaultIcon),
             ),
           ),
         ],
