@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/chat_paginator.dart';
+import 'package:tweety_mobile/models/message_paginator.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 
 class ChatApiClient {
@@ -21,13 +22,31 @@ class ChatApiClient {
           url,
           headers: requestHeaders(token),
         );
+    if (response.statusCode != 200) {
+      throw Exception('Error getting chat list.');
+    }
+
+    final chatListJson = jsonDecode(response.body)['data'];
+
+    return ChatPaginator.fromJson(chatListJson);
+  }
+
+  Future<MessagePaginator> fetchMessages(String chatId, int pageNumber) async {
+    final url = '$baseUrl/chat/$chatId/messages?page=$pageNumber';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.get(
+          url,
+          headers: requestHeaders(token),
+        );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting chat list.');
     }
 
-    final repliesJson = jsonDecode(response.body)['data'];
+    final messagesJson = jsonDecode(response.body)['data'];
 
-    return ChatPaginator.fromJson(repliesJson);
+    return MessagePaginator.fromJson(messagesJson);
   }
 }

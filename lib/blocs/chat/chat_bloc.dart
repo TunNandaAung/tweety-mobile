@@ -40,7 +40,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (state.hasReachedMax) return state;
     try {
       if (state.status == ChatStatus.initial) {
-        final chatPaginator = await chatRepository.fetchChatList(pageNumber: 1);
+        final chatPaginator = await chatRepository.getChatList(pageNumber: 1);
         return state.copyWith(
           status: ChatStatus.success,
           chatList: chatPaginator.chats,
@@ -48,7 +48,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         );
       }
       final chatPaginator =
-          await chatRepository.fetchChatList(pageNumber: state.pageNumber + 1);
+          await chatRepository.getChatList(pageNumber: state.pageNumber + 1);
 
       return chatPaginator.chats.isEmpty
           ? state.copyWith(hasReachedMax: true)

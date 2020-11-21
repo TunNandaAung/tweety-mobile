@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tweety_mobile/blocs/bloc/chat_bloc.dart';
+import 'package:tweety_mobile/blocs/chat/chat_bloc.dart';
+import 'package:tweety_mobile/blocs/message/message_bloc.dart';
 import 'package:tweety_mobile/models/chat.dart';
 import 'package:tweety_mobile/models/message.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:tweety_mobile/repositories/chat_repository.dart';
+import 'package:tweety_mobile/screens/chat_screen.dart';
 import 'package:tweety_mobile/utils/helpers.dart';
 import 'package:tweety_mobile/widgets/buttons/avatar_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
@@ -134,7 +137,21 @@ class _MessagesScreenState extends State<MessagesScreen> {
         chat.participants.where((user) => user.id != authId()).first;
 
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => BlocProvider<MessageBloc>(
+              create: (context) => MessageBloc(
+                chatRepository: ChatRepository(),
+              ),
+              child: ChatScreen(
+                chatUser: messageTo,
+                chatId: chat.id,
+              ),
+            ),
+          ),
+        );
+      },
       child: Container(
         margin: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 20.0),
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
