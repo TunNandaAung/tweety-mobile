@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tweety_mobile/blocs/bloc/chat_bloc.dart';
+import 'package:tweety_mobile/repositories/chat_repository.dart';
 import 'package:tweety_mobile/screens/screens.dart';
 import 'package:tweety_mobile/theme/app_theme.dart';
 import 'package:tweety_mobile/theme/bloc/theme_bloc.dart';
@@ -69,6 +71,9 @@ class _TweetyState extends State<Tweety> {
           create: (context) =>
               MentionBloc(userRepository: widget.userRepository),
         ),
+        BlocProvider<ChatBloc>(
+          create: (context) => ChatBloc(chatRepository: ChatRepository()),
+        )
       ],
       child: _buildWithTheme(context),
     );

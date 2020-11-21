@@ -7,7 +7,7 @@ import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/models/bottom_nav.dart';
 import 'package:tweety_mobile/models/tweet.dart';
-import 'package:tweety_mobile/screens/MessagesScreen.dart';
+import 'package:tweety_mobile/screens/messages_screen.dart';
 import 'package:tweety_mobile/screens/main/explore_screen.dart';
 import 'package:tweety_mobile/screens/main/notifications_screen.dart';
 import 'package:tweety_mobile/screens/publish_tweet_screen.dart';

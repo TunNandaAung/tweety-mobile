@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tweety_mobile/preferences/preferences.dart';
 
 Icon mapNotificationTypeToIcon(String type) {
   Icon icon;
@@ -65,4 +66,9 @@ String formatCount(int count) {
     decimalDigits: 0,
     symbol: '',
   ).format(count);
+}
+
+bool isCurrentUser(int userId) {
+  int currentUserId = Prefer.prefs.getInt('userID');
+  return currentUserId == userId;
 }
