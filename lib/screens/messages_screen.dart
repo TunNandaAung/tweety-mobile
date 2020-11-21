@@ -4,6 +4,7 @@ import 'package:tweety_mobile/blocs/bloc/chat_bloc.dart';
 import 'package:tweety_mobile/models/chat.dart';
 import 'package:tweety_mobile/models/message.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:tweety_mobile/utils/helpers.dart';
 import 'package:tweety_mobile/widgets/buttons/avatar_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
@@ -109,128 +110,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                   : state.chatList.length + 1,
                               controller: _scrollController,
                               itemBuilder: (BuildContext context, int index) {
-                                final Chat chat = state.chatList[index];
-                                final Message message = chat.messages.first;
                                 return index >= state.chatList.length
-                                    ? LoadingIndicator
-                                    : InkWell(
-                                        onTap: () {},
-                                        child: Container(
-                                          margin: EdgeInsets.only(
-                                              top: 5.0,
-                                              bottom: 5.0,
-                                              right: 20.0),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20.0, vertical: 10.0),
-                                          decoration: BoxDecoration(
-                                            color: message.readAt != null
-                                                ? Theme.of(context)
-                                                    .primaryColor
-                                                    .withOpacity(0.5)
-                                                : Theme.of(context).cardColor,
-                                            borderRadius: BorderRadius.only(
-                                              bottomRight:
-                                                  Radius.circular(20.0),
-                                              topRight: Radius.circular(20.0),
-                                            ),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Row(
-                                                children: <Widget>[
-                                                  CircleAvatar(
-                                                    radius: 30.0,
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .canvasColor,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10.0,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        message.sender.name,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .caption,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 5.0,
-                                                      ),
-                                                      Container(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.45,
-                                                        child: Text(
-                                                          message.message,
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .bodyText2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              Column(
-                                                children: <Widget>[
-                                                  Text(
-                                                    timeago.format(
-                                                        message.createdAt,
-                                                        locale: 'en_short'),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText2
-                                                        .copyWith(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5.0,
-                                                  ),
-                                                  message.readAt == null
-                                                      ? Container(
-                                                          width: 40.0,
-                                                          height: 20.0,
-                                                          decoration: BoxDecoration(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          30.0)),
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Text(
-                                                            'NEW',
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    'OpenSans-Bold',
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 12.0),
-                                                          ),
-                                                        )
-                                                      : Text('')
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      );
+                                    ? LoadingIndicator()
+                                    : _chatListItem(state.chatList[index]);
                               },
                             );
                           default:
@@ -240,6 +122,96 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     )),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _chatListItem(Chat chat) {
+    final Message message = chat.messages.first;
+    final messageTo =
+        chat.participants.where((user) => user.id != authId()).first;
+
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        margin: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 20.0),
+        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        decoration: BoxDecoration(
+          color: message.readAt != null
+              ? Theme.of(context).primaryColor.withOpacity(0.3)
+              : Theme.of(context).cardColor,
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 30.0,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  backgroundImage: NetworkImage(messageTo.avatar),
+                ),
+                SizedBox(
+                  width: 10.0,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      messageTo.name,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: Text(
+                        message.message,
+                        style: Theme.of(context).textTheme.bodyText2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  timeago.format(message.createdAt, locale: 'en_short'),
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                // message.readAt != null
+                //     ? Container(
+                //         width: 40.0,
+                //         height: 20.0,
+                //         decoration: BoxDecoration(
+                //             color: Theme.of(context).primaryColor,
+                //             borderRadius: BorderRadius.circular(30.0)),
+                //         alignment: Alignment.center,
+                //         child: Text(
+                //           'NEW',
+                //           style: TextStyle(
+                //               fontFamily: 'OpenSans-Bold',
+                //               color: Colors.white,
+                //               fontSize: 12.0),
+                //         ),
+                //       )
+                //     : Text('')
+              ],
+            )
           ],
         ),
       ),

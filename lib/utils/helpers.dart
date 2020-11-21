@@ -72,3 +72,7 @@ bool isCurrentUser(int userId) {
   int currentUserId = Prefer.prefs.getInt('userID');
   return currentUserId == userId;
 }
+
+int authId() {
+  return Prefer.prefs.getInt('userID');
+}

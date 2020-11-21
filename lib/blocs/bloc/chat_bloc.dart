@@ -44,7 +44,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         return state.copyWith(
           status: ChatStatus.success,
           chatList: chatPaginator.chats,
-          hasReachedMax: false,
+          hasReachedMax: chatPaginator.lastPage == 1 ? true : false,
         );
       }
       final chatPaginator =
