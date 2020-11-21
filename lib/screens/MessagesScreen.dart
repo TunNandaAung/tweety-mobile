@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tweety_mobile/models/messages.dart';
+import 'package:tweety_mobile/screens/ChatScreen.dart';
 import 'package:tweety_mobile/widgets/buttons/avatar_button.dart';
 
 class MessagesScreen extends StatefulWidget {
@@ -51,8 +52,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     itemCount: chats.length,
                     itemBuilder: (BuildContext context, int index) {
                       final Message chat = chats[index];
-                      return GestureDetector(
-                        onTap: () {},
+                      return InkWell(
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => ChatScreen(user: chat.sender))),
                         child: Container(
                           margin: EdgeInsets.only(
                               top: 5.0, bottom: 5.0, right: 20.0),
