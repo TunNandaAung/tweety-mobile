@@ -29,7 +29,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   bool _sameProfile(ProfileState state, username) =>
       state is ProfileLoaded && state.user.username == username;
-
+  
   Stream<ProfileState> _mapFetchProfileToState(FetchProfile event) async* {
     final currentState = state;
 

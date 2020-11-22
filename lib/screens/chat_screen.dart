@@ -22,7 +22,11 @@ class _ChatScreenState extends State<ChatScreen> {
   final _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
 
-  bool get isPopulated => _messageController.text.isNotEmpty;
+  bool isPopulated = false;
+
+  bool isButtonEnabled() {
+    return isPopulated;
+  }
 
   MessageBloc _messageBloc;
 
@@ -31,11 +35,11 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     _messageBloc = context.read<MessageBloc>();
 
+    _messageController.addListener(_onMessageChanged);
     _messageBloc.add(
       FetchMessages(chatId: widget.chatId),
     );
     _scrollController.addListener(_onScroll);
-    _messageController.addListener(_onMessageChanged);
   }
 
   void _onScroll() {
@@ -57,7 +61,15 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _onMessageChanged() {
-    print(isPopulated);
+    if (_messageController.text.trim().length > 0) {
+      setState(() {
+        isPopulated = true;
+      });
+    } else {
+      setState(() {
+        isPopulated = false;
+      });
+    }
   }
 
   _buildMessage(Message message) {

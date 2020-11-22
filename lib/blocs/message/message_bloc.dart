@@ -66,12 +66,16 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       } catch (_) {
         yield MessageError();
       }
-    }
+    } else
+      yield currentState;
   }
 
   bool _hasReachedMax(MessageState state, FetchMessages event) {
     return state is MessageLoaded && state.hasReachedMax;
   }
+
+  // bool _sameChat(MessageState state, chatId) =>
+  //     state is MessageLoaded && state.messages.first.chatId == chatId;
 
   Stream<MessageState> _mapSendMessageToState(SendMessage event) async* {
     final currentState = state;
