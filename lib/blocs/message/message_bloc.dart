@@ -32,6 +32,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   Stream<MessageState> mapEventToState(MessageEvent event) async* {
     if (event is FetchMessages) {
       yield* _mapFetchMessagesToState(event);
+    } else if (event is SendMessage) {
+      yield* _mapSendMessageToState(event);
     }
   }
 
@@ -41,7 +43,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       try {
         if (currentState is MessageInitial) {
           final messagePaginator = await chatRepository.getMessages(
-              chatID: event.chatID, pageNumber: 1);
+              chatId: event.chatId, pageNumber: 1);
           yield MessageLoaded(
               messages: messagePaginator.messages,
               hasReachedMax: messagePaginator.lastPage == 1 ? true : false);
@@ -51,7 +53,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         if (currentState is MessageLoaded) {
           var pageNumber = currentState.pageNumber + 1;
           final messagePaginator = await chatRepository.getMessages(
-              chatID: event.chatID, pageNumber: pageNumber);
+              chatId: event.chatId, pageNumber: pageNumber);
 
           yield messagePaginator.messages.isEmpty
               ? currentState.copyWith(hasReachedMax: true)
@@ -69,5 +71,26 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   bool _hasReachedMax(MessageState state, FetchMessages event) {
     return state is MessageLoaded && state.hasReachedMax;
+  }
+
+  Stream<MessageState> _mapSendMessageToState(SendMessage event) async* {
+    final currentState = state;
+
+    try {
+      final message = await chatRepository.sendMessage(
+          chatId: event.chatId, message: event.message);
+
+      if (currentState is MessageLoaded) {
+        final List<Message> updatedMessages = List.from(currentState.messages)
+          ..insert(0, message);
+        yield MessageSent(message: message);
+
+        yield currentState.copyWith(messages: updatedMessages);
+      }
+    } catch (_) {
+      if (currentState is MessageLoaded) {
+        yield MessageSendError();
+      }
+    }
   }
 }

@@ -8,10 +8,21 @@ abstract class MessageEvent extends Equatable {
 }
 
 class FetchMessages extends MessageEvent {
-  final String chatID;
+  final String chatId;
 
-  FetchMessages({@required this.chatID}) : assert(chatID != null);
+  FetchMessages({@required this.chatId}) : assert(chatId != null);
 
   @override
-  List<Object> get props => [chatID];
+  List<Object> get props => [chatId];
+}
+
+class SendMessage extends MessageEvent {
+  final String chatId;
+  final String message;
+
+  const SendMessage({@required this.chatId, @required this.message})
+      : assert(message != null);
+
+  @override
+  List<Object> get props => [chatId, message];
 }

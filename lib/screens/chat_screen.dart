@@ -20,6 +20,10 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final _scrollController = ScrollController();
+  final TextEditingController _messageController = TextEditingController();
+
+  bool get isPopulated => _messageController.text.isNotEmpty;
+
   MessageBloc _messageBloc;
 
   @override
@@ -28,13 +32,14 @@ class _ChatScreenState extends State<ChatScreen> {
     _messageBloc = context.read<MessageBloc>();
 
     _messageBloc.add(
-      FetchMessages(chatID: widget.chatId),
+      FetchMessages(chatId: widget.chatId),
     );
     _scrollController.addListener(_onScroll);
+    _messageController.addListener(_onMessageChanged);
   }
 
   void _onScroll() {
-    if (_isBottom) _messageBloc.add(FetchMessages(chatID: widget.chatId));
+    if (_isBottom) _messageBloc.add(FetchMessages(chatId: widget.chatId));
   }
 
   bool get _isBottom {
@@ -47,7 +52,12 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _messageController.dispose();
     super.dispose();
+  }
+
+  void _onMessageChanged() {
+    print(isPopulated);
   }
 
   _buildMessage(Message message) {
@@ -113,8 +123,8 @@ class _ChatScreenState extends State<ChatScreen> {
               color: Theme.of(context).cardColor,
             ),
             child: TextFormField(
+              controller: _messageController,
               textCapitalization: TextCapitalization.sentences,
-              onChanged: (value) {},
               style: TextStyle(
                 color: Theme.of(context).textSelectionTheme.cursorColor,
                 fontWeight: FontWeight.w500,
@@ -131,48 +141,19 @@ class _ChatScreenState extends State<ChatScreen> {
             icon: Icon(Icons.send),
             iconSize: 25.0,
             color: Theme.of(context).primaryColor,
-            onPressed: () {},
+            disabledColor: Colors.grey,
+            onPressed: isPopulated ? _onFormSubmitted : null,
           )
         ],
       ),
-      // child: Row(
-      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //   children: <Widget>[
-      //     Container(
-      //       width: 340.0,
-      //       height: 40.0,
-      //       padding: EdgeInsets.symmetric(horizontal: 15.0),
-      //       alignment: Alignment.center,
-      //       decoration: BoxDecoration(
-      //         borderRadius: BorderRadius.all(
-      //           Radius.circular(20.0),
-      //         ),
-      //         boxShadow: [
-      //           BoxShadow(
-      //             color: Theme.of(context).canvasColor,
-      //             offset: Offset(0, 10),
-      //             blurRadius: (10.0),
-      //           )
-      //         ],
-      //         color: Theme.of(context).cardColor,
-      //       ),
-      //       child: Row(
-      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //         children: <Widget>[
-      //           TextField(
-      //             textCapitalization: TextCapitalization.sentences,
-      //             onChanged: (value) {},
-      //             decoration: InputDecoration.collapsed(
-      //               hintText: 'Send a message ...',
-      //               hintStyle: Theme.of(context).textTheme.bodyText1,
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ],
-      // ),
     );
+  }
+
+  void _onFormSubmitted() {
+    // _messageBloc.add(
+    //     SendMessage(chatId: widget.chatId, message: _messageController.text));
+    print("PRESSED");
+    _messageController.text = "";
   }
 
   @override
@@ -214,7 +195,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             title: 'Couldn\'t load messages',
                             onPressed: () {
                               _messageBloc.add(
-                                FetchMessages(chatID: widget.chatId),
+                                FetchMessages(chatId: widget.chatId),
                               );
                             },
                           );

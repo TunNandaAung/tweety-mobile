@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/chat_paginator.dart';
+import 'package:tweety_mobile/models/message.dart';
 import 'package:tweety_mobile/models/message_paginator.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 
@@ -48,5 +49,25 @@ class ChatApiClient {
     final messagesJson = jsonDecode(response.body)['data'];
 
     return MessagePaginator.fromJson(messagesJson);
+  }
+
+  Future<Message> sendMessage(String chatId, String message) async {
+    final url = '$baseUrl/chat/$chatId/messages';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.post(
+          url,
+          headers: requestHeaders(token),
+          body: jsonEncode(
+            <String, String>{'message': message},
+          ),
+        );
+
+    if (response.statusCode != 201) {
+      throw Exception('Error sending message');
+    }
+
+    return Message.fromJson(jsonDecode(response.body)['data']);
   }
 }

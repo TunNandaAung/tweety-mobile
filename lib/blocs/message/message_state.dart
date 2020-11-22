@@ -41,3 +41,16 @@ class MessageLoaded extends MessageState {
 }
 
 class MessageError extends MessageState {}
+
+class MessageSending extends MessageState {}
+
+class MessageSent extends MessageState {
+  final Message message;
+
+  const MessageSent({@required this.message}) : assert(message != null);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class MessageSendError extends MessageState {}
