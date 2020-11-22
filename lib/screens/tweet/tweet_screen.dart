@@ -240,8 +240,8 @@ class _TweetScreenState extends State<TweetScreen> {
                                                   ),
                                                 ),
                                                 BlocProvider.value(
-                                                  value:
-                                                      context.read<ReplyBloc>(),
+                                                  value: context
+                                                      .watch<ReplyBloc>(),
                                                 ),
                                               ],
                                               child: ReplyWidget(

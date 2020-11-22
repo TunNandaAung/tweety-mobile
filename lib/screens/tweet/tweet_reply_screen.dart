@@ -222,7 +222,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                                             ),
                                           ),
                                           BlocProvider.value(
-                                            value: context.read<ReplyBloc>(),
+                                            value: context.watch<ReplyBloc>(),
                                           ),
                                         ],
                                         child: ReplyWidget(

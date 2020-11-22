@@ -201,7 +201,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                   ),
                 ),
                 BlocProvider.value(
-                  value: context.read<ChildrenReplyBloc>(),
+                  value: context.watch<ChildrenReplyBloc>(),
                   child: AddChildrenReplyButton(
                     tweet: widget.tweet,
                     parent: widget.reply,
@@ -343,7 +343,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 ),
               ),
               BlocProvider.value(
-                value: context.read<ChildrenReplyBloc>(),
+                value: context.watch<ChildrenReplyBloc>(),
                 child: AddChildrenReplyButton(
                   tweet: widget.tweet,
                   parent: widget.reply,
