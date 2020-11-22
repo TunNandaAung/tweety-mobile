@@ -34,6 +34,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       yield* _mapFetchMessagesToState(event);
     } else if (event is SendMessage) {
       yield* _mapSendMessageToState(event);
+    } else if (event is ReceiveMessage) {
+      yield* _mapReceiveMessageToState(event);
     }
   }
 
@@ -88,6 +90,24 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         final List<Message> updatedMessages = List.from(currentState.messages)
           ..insert(0, message);
         yield MessageSent(message: message);
+
+        yield currentState.copyWith(messages: updatedMessages);
+      }
+    } catch (_) {
+      if (currentState is MessageLoaded) {
+        yield MessageSendError();
+      }
+    }
+  }
+
+  Stream<MessageState> _mapReceiveMessageToState(ReceiveMessage event) async* {
+    final currentState = state;
+
+    try {
+      if (currentState is MessageLoaded) {
+        final List<Message> updatedMessages = List.from(currentState.messages)
+          ..insert(0, event.message);
+        yield MessageSent(message: event.message);
 
         yield currentState.copyWith(messages: updatedMessages);
       }

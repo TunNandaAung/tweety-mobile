@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:laravel_echo/laravel_echo.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:tweety_mobile/blocs/message/message_bloc.dart';
+import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/message.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/utils/helpers.dart';
@@ -40,6 +42,8 @@ class _ChatScreenState extends State<ChatScreen> {
       FetchMessages(chatId: widget.chatId),
     );
     _scrollController.addListener(_onScroll);
+
+    _setUpEcho();
   }
 
   void _onScroll() {
@@ -51,6 +55,15 @@ class _ChatScreenState extends State<ChatScreen> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
     return currentScroll >= (maxScroll * 0.9);
+  }
+
+  void _setUpEcho() {
+    Echo echo = echoSetup();
+    echo.join("chat." + widget.chatId).listen("MessageSent", (event) {
+      print("EVENT: " + event);
+      _messageBloc
+          .add(ReceiveMessage(chatId: widget.chatId, message: event.message));
+    });
   }
 
   @override
@@ -162,9 +175,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _onFormSubmitted() {
-    // _messageBloc.add(
-    //     SendMessage(chatId: widget.chatId, message: _messageController.text));
-    print("PRESSED");
+    _messageBloc.add(
+        SendMessage(chatId: widget.chatId, message: _messageController.text));
+    // print("PRESSED");
     _messageController.text = "";
   }
 

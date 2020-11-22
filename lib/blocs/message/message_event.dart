@@ -26,3 +26,14 @@ class SendMessage extends MessageEvent {
   @override
   List<Object> get props => [chatId, message];
 }
+
+class ReceiveMessage extends MessageEvent {
+  final String chatId;
+  final Message message;
+
+  const ReceiveMessage({@required this.chatId, @required this.message})
+      : assert(message != null);
+
+  @override
+  List<Object> get props => [chatId, message];
+}

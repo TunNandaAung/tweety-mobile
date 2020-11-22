@@ -5,7 +5,7 @@ import 'package:laravel_echo/laravel_echo.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 
 class ApiConstants {
-  static const BASE_URL = 'https://10.0.3.2/api';
+  static const BASE_URL = 'http://10.0.3.2:8000/api';
 }
 
 Map<String, String> requestHeaders(String token) {
@@ -16,7 +16,7 @@ Map<String, String> requestHeaders(String token) {
   };
 }
 
-echoSetup() {
+Echo echoSetup() {
   FlutterPusher pusherClient = getPusherClient();
 
   final token = Prefer.prefs.getString('token');
