@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pusher_client/flutter_pusher.dart';
@@ -28,6 +31,8 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
 
   bool isPopulated = false;
+  bool isTyping = false;
+  Timer typingTimer;
 
   bool isButtonEnabled() {
     return isPopulated;
@@ -75,6 +80,15 @@ class _ChatScreenState extends State<ChatScreen> {
 
     echo.join("chat." + widget.chatId)
       ..here((users) => print('users'))
+      ..listerForWhisper("typing", (event) {
+        // log(User.fromJson((event)['user']).username);
+        // typingTimer.cancel();
+
+        updateActivePeer(true);
+
+        typingTimer =
+            Timer(Duration(milliseconds: 3000), () => updateActivePeer(false));
+      })
       ..listen("MessageSent", (event) {
         _messageBloc.add(
           ReceiveMessage(
@@ -87,6 +101,16 @@ class _ChatScreenState extends State<ChatScreen> {
         _messageBloc.add(UpdateReadAt());
       });
   }
+
+  void updateActivePeer(isTyping) {
+    setState(() {
+      this.isTyping = isTyping;
+    });
+  }
+
+  // void sendTypingEvent(){
+  //    echo.join("chat." + widget.chatId).wh;
+  // }
 
   void onConnectionStateChange(ConnectionStateChange event) {
     print("STATE:" + event.currentState);
@@ -240,6 +264,11 @@ class _ChatScreenState extends State<ChatScreen> {
                     )),
               ),
             ),
+            isTyping
+                ? Text(widget.chatUser.name + " is typing...")
+                : const SizedBox(
+                    height: 0.0,
+                  ),
             _buildMessageComposer()
           ],
         ),
