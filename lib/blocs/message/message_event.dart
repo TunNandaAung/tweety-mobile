@@ -37,3 +37,14 @@ class ReceiveMessage extends MessageEvent {
   @override
   List<Object> get props => [chatId, message];
 }
+
+class MarkAsRead extends MessageEvent {
+  final String chatId;
+  final String username;
+
+  const MarkAsRead({@required this.chatId, @required this.username})
+      : assert(username != null, chatId != null);
+
+  @override
+  List<Object> get props => [chatId, username];
+}

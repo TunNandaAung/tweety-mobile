@@ -47,9 +47,11 @@ class _ChatScreenState extends State<ChatScreen> {
     _messageBloc = context.read<MessageBloc>();
 
     _messageController.addListener(_onMessageChanged);
+
+    _messageBloc.add(FetchMessages(chatId: widget.chatId));
     _messageBloc.add(
-      FetchMessages(chatId: widget.chatId),
-    );
+        MarkAsRead(chatId: widget.chatId, username: widget.chatUser.username));
+
     _scrollController.addListener(_onScroll);
 
     _setUpEcho();

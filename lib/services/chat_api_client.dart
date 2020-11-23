@@ -70,4 +70,15 @@ class ChatApiClient {
 
     return Message.fromJson(jsonDecode(response.body)['data']);
   }
+
+  Future<void> markAsRead(String chatId, String username) async {
+    final url = '$baseUrl/chat/$chatId/messages/$username/read';
+
+    final token = Prefer.prefs.getString('token');
+
+    await this.httpClient.patch(
+          url,
+          headers: requestHeaders(token),
+        );
+  }
 }

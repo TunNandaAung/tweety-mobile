@@ -17,16 +17,16 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       : assert(chatRepository != null),
         super(MessageInitial());
 
-  @override
-  Stream<Transition<MessageEvent, MessageState>> transformEvents(
-    Stream<MessageEvent> events,
-    TransitionFunction<MessageEvent, MessageState> transitionFn,
-  ) {
-    return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 500)),
-      transitionFn,
-    );
-  }
+  // @override
+  // Stream<Transition<MessageEvent, MessageState>> transformEvents(
+  //   Stream<MessageEvent> events,
+  //   TransitionFunction<MessageEvent, MessageState> transitionFn,
+  // ) {
+  //   return super.transformEvents(
+  //     events.debounceTime(const Duration(milliseconds: 500)),
+  //     transitionFn,
+  //   );
+  // }
 
   @override
   Stream<MessageState> mapEventToState(MessageEvent event) async* {
@@ -36,6 +36,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       yield* _mapSendMessageToState(event);
     } else if (event is ReceiveMessage) {
       yield* _mapReceiveMessageToState(event);
+    } else if (event is MarkAsRead) {
+      yield* _mapMarkAsReadToState(event);
     }
   }
 
@@ -116,5 +118,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         yield MessageSendError();
       }
     }
+  }
+
+  Stream<MessageState> _mapMarkAsReadToState(MarkAsRead event) async* {
+    chatRepository.markAsRead(chatId: event.chatId, username: event.username);
+    yield state;
   }
 }

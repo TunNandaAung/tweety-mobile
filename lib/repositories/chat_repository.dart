@@ -23,4 +23,9 @@ class ChatRepository {
       {@required String chatId, @required String message}) {
     return chatApiClient.sendMessage(chatId, message);
   }
+
+  Future<void> markAsRead(
+      {@required String chatId, @required String username}) {
+    return chatApiClient.markAsRead(chatId, username);
+  }
 }
