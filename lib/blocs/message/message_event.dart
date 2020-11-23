@@ -48,3 +48,5 @@ class MarkAsRead extends MessageEvent {
   @override
   List<Object> get props => [chatId, username];
 }
+
+class UpdateReadAt extends MessageEvent {}

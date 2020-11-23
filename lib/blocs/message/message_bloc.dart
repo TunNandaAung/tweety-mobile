@@ -38,6 +38,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       yield* _mapReceiveMessageToState(event);
     } else if (event is MarkAsRead) {
       yield* _mapMarkAsReadToState(event);
+    } else if (event is UpdateReadAt) {
+      yield* _mapUpdateReadAtToState(event);
     }
   }
 
@@ -124,4 +126,23 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     chatRepository.markAsRead(chatId: event.chatId, username: event.username);
     yield state;
   }
+
+  Stream<MessageState> _mapUpdateReadAtToState(UpdateReadAt event)async*{
+     final currentState = state;
+    
+    try {
+      if (currentState is MessageLoaded) {
+        final List<Message> updatedMessages =  currentState.messages.map((message) {
+          if (message.readAt == null) {
+            message.readAt = DateTime.now();
+          }
+          return message;
+        }).toList();
+
+        yield currentState.copyWith(messages: updatedMessages);
+      }
+    } catch (_) {
+        yield currentState;
+      }
+    }
 }

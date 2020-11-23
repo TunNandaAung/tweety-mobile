@@ -1,12 +1,8 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pusher_client/flutter_pusher.dart';
 import 'package:intl/intl.dart';
 import 'package:laravel_echo/laravel_echo.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:tweety_mobile/blocs/message/message_bloc.dart';
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/message.dart';
@@ -86,6 +82,9 @@ class _ChatScreenState extends State<ChatScreen> {
             message: Message.fromJson((event)['message']),
           ),
         );
+      })
+      ..listen("MessageRead", (event) {
+        _messageBloc.add(UpdateReadAt());
       });
   }
 
@@ -304,11 +303,26 @@ class _MessageCardState extends State<MessageCard> {
           children: [
             Padding(
               padding: EdgeInsets.all(2.0),
-              child: Text(
-                DateFormat('EEE, d MMM hh:mm a').format(
-                  widget.message.createdAt.toLocal(),
-                ),
-                textAlign: TextAlign.end,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    DateFormat('EEE, d MMM hh:mm a').format(
+                      widget.message.createdAt.toLocal(),
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                  widget.message.readAt != null && isMe
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3.0),
+                          child: Icon(
+                            Icons.check_circle,
+                            size: 15.0,
+                            color: Theme.of(context).hintColor,
+                          ),
+                        )
+                      : const SizedBox(height: 0.0)
+                ],
               ),
             ),
           ],

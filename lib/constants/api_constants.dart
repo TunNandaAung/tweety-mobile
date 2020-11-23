@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter_pusher_client/flutter_pusher.dart';
 import 'package:laravel_echo/laravel_echo.dart';
-import 'package:tweety_mobile/preferences/preferences.dart';
 
 class ApiConstants {
   static const BASE_URL = 'http://tweety.sharedwithexpose.com/api';
