@@ -1,11 +1,16 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_pusher_client/flutter_pusher.dart';
 import 'package:laravel_echo/laravel_echo.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:tweety_mobile/blocs/message/message_bloc.dart';
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/message.dart';
 import 'package:tweety_mobile/models/user.dart';
+import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/utils/helpers.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
@@ -31,6 +36,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   MessageBloc _messageBloc;
+  FlutterPusher pusherClient;
+  Echo echo;
 
   @override
   void initState() {
@@ -58,12 +65,33 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _setUpEcho() {
-    Echo echo = echoSetup();
-    echo.join("chat." + widget.chatId).listen("MessageSent", (event) {
-      print("EVENT: " + event);
-      _messageBloc
-          .add(ReceiveMessage(chatId: widget.chatId, message: event.message));
-    });
+    final token = Prefer.prefs.getString('token');
+
+    pusherClient = getPusherClient(token);
+
+    echo = echoSetup(token, pusherClient);
+
+    pusherClient.connect(onConnectionStateChange: onConnectionStateChange);
+
+    echo.join("chat." + widget.chatId)
+      ..here((users) => print('users'))
+      ..listen("MessageSent", (event) {
+        _messageBloc.add(
+          ReceiveMessage(
+            chatId: widget.chatId,
+            message: Message.fromJson((event)['message']),
+          ),
+        );
+      });
+  }
+
+  void onConnectionStateChange(ConnectionStateChange event) {
+    print("STATE:" + event.currentState);
+    if (event.currentState == 'CONNECTED') {
+      print('connected');
+    } else if (event.currentState == 'DISCONNECTED') {
+      print('disconnected');
+    }
   }
 
   @override
@@ -167,7 +195,7 @@ class _ChatScreenState extends State<ChatScreen> {
             iconSize: 25.0,
             color: Theme.of(context).primaryColor,
             disabledColor: Colors.grey,
-            onPressed: isPopulated ? _onFormSubmitted : null,
+            onPressed: isPopulated ? this._onFormSubmitted : null,
           )
         ],
       ),
@@ -177,7 +205,6 @@ class _ChatScreenState extends State<ChatScreen> {
   void _onFormSubmitted() {
     _messageBloc.add(
         SendMessage(chatId: widget.chatId, message: _messageController.text));
-    // print("PRESSED");
     _messageController.text = "";
   }
 

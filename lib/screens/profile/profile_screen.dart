@@ -636,7 +636,7 @@ class EditProfileButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: context.read<ProfileBloc>(),
+      value: context.watch<ProfileBloc>(),
       child: FlatButton(
         onPressed: () {
           Navigator.of(context).push(

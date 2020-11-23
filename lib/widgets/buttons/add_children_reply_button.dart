@@ -21,7 +21,7 @@ class AddChildrenReplyButton extends StatelessWidget {
     //   replyApiClient: ReplyApiClient(httpClient: http.Client()),
     // );
     return BlocProvider.value(
-      value: context.read<ChildrenReplyBloc>(),
+      value: context.watch<ChildrenReplyBloc>(),
       child: AddChildrenReplyButtonWidget(
         tweet: tweet,
         parent: parent,
