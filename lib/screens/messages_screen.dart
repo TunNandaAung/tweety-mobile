@@ -132,7 +132,13 @@ class _MessagesScreenState extends State<MessagesScreen> {
   }
 
   _chatListItem(Chat chat) {
-    final Message message = chat.messages.first;
+    final Message message = chat.messages.length > 0
+        ? chat.messages.first
+        : new Message(
+            chatId: chat.id,
+            message: "Send a message.",
+            readAt: DateTime.now(),
+          );
     final messageTo =
         chat.participants.where((user) => user.id != authId()).first;
 
@@ -156,10 +162,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
         margin: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 20.0),
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
-          color: message.readAt != null
+          color: message.readAt == null
               ? Theme.of(context).primaryColor.withOpacity(0.3)
               : Theme.of(context).cardColor,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             bottomRight: Radius.circular(20.0),
             topRight: Radius.circular(20.0),
           ),
@@ -184,7 +190,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       messageTo.name,
                       style: Theme.of(context).textTheme.caption,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5.0,
                     ),
                     Container(
@@ -199,36 +205,21 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 ),
               ],
             ),
-            Column(
-              children: <Widget>[
-                Text(
-                  timeago.format(message.createdAt, locale: 'en_short'),
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        fontWeight: FontWeight.bold,
+            chat.messages.length > 0
+                ? Column(
+                    children: <Widget>[
+                      Text(
+                        timeago.format(message.createdAt, locale: 'en_short'),
+                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
-                ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                // message.readAt != null
-                //     ? Container(
-                //         width: 40.0,
-                //         height: 20.0,
-                //         decoration: BoxDecoration(
-                //             color: Theme.of(context).primaryColor,
-                //             borderRadius: BorderRadius.circular(30.0)),
-                //         alignment: Alignment.center,
-                //         child: Text(
-                //           'NEW',
-                //           style: TextStyle(
-                //               fontFamily: 'OpenSans-Bold',
-                //               color: Colors.white,
-                //               fontSize: 12.0),
-                //         ),
-                //       )
-                //     : Text('')
-              ],
-            )
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                    ],
+                  )
+                : SizedBox(height: 0.0)
           ],
         ),
       ),

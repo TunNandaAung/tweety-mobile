@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pusher_client/flutter_pusher.dart';
+import 'package:intl/intl.dart';
 import 'package:laravel_echo/laravel_echo.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:tweety_mobile/blocs/message/message_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:tweety_mobile/models/message.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/utils/helpers.dart';
+import 'package:tweety_mobile/widgets/expanded_section.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
 
@@ -111,46 +113,6 @@ class _ChatScreenState extends State<ChatScreen> {
         isPopulated = false;
       });
     }
-  }
-
-  _buildMessage(Message message) {
-    bool isMe = isCurrentUser(message.sender.id);
-    final Container msg = Container(
-      padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
-      margin: isMe
-          ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: 80.0)
-          : EdgeInsets.only(top: 8.0, bottom: 8.0),
-      width: MediaQuery.of(context).size.width * 0.75,
-      decoration: BoxDecoration(
-        color:
-            isMe ? Theme.of(context).primaryColor : Theme.of(context).hintColor,
-        borderRadius: BorderRadius.circular((15.0)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            timeago.format(message.createdAt, locale: 'en_short'),
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
-          SizedBox(height: 5.0),
-          Text(
-            message.message,
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
-        ],
-      ),
-    );
-
-    if (isMe) {
-      return msg;
-    }
-
-    return Row(
-      children: <Widget>[
-        msg,
-      ],
-    );
   }
 
   _buildMessageComposer() {
@@ -264,7 +226,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return index >= state.messages.length
                                   ? LoadingIndicator()
-                                  : _buildMessage(state.messages[index]);
+                                  : MessageCard(message: state.messages[index]);
                               // final Message message = messages[index];
                               // final bool isMe =
                               //     message.sender.id == currentUser.id;
@@ -281,6 +243,85 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class MessageCard extends StatefulWidget {
+  final Message message;
+
+  const MessageCard({Key key, @required this.message}) : super(key: key);
+  @override
+  _MessageCardState createState() => _MessageCardState();
+}
+
+class _MessageCardState extends State<MessageCard> {
+  bool _showInfo = false;
+
+  void _toggleInfo() {
+    setState(() {
+      _showInfo = !_showInfo;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    bool isMe = isCurrentUser(widget.message.sender.id);
+
+    final Column msg = Column(children: <Widget>[
+      InkWell(
+        onTap: _toggleInfo,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
+          margin: isMe
+              ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: 80.0)
+              : EdgeInsets.only(top: 8.0, bottom: 8.0),
+          width: MediaQuery.of(context).size.width * 0.75,
+          decoration: BoxDecoration(
+            color: isMe
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).hintColor,
+            borderRadius: BorderRadius.circular((15.0)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 5.0),
+              Text(
+                widget.message.message,
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ],
+          ),
+        ),
+      ),
+      ExpandedSection(
+        expand: _showInfo,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(2.0),
+              child: Text(
+                DateFormat('EEE, d MMM hh:mm a').format(
+                  widget.message.createdAt.toLocal(),
+                ),
+                textAlign: TextAlign.end,
+              ),
+            ),
+          ],
+        ),
+      )
+    ]);
+
+    if (isMe) {
+      return msg;
+    }
+
+    return Row(
+      children: <Widget>[
+        msg,
+      ],
     );
   }
 }
