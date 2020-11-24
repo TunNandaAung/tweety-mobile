@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:tweety_mobile/models/chat.dart';
 import 'package:tweety_mobile/models/chat_paginator.dart';
 import 'package:tweety_mobile/models/message.dart';
 import 'package:tweety_mobile/models/message_paginator.dart';
@@ -27,5 +28,9 @@ class ChatRepository {
   Future<void> markAsRead(
       {@required String chatId, @required String username}) {
     return chatApiClient.markAsRead(chatId, username);
+  }
+
+  Future<Chat> getChatRoom({@required String username}) {
+    return chatApiClient.getChatRoom(username);
   }
 }

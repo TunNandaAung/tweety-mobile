@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:tweety_mobile/models/message.dart';
 import 'package:tweety_mobile/repositories/chat_repository.dart';
 
@@ -127,12 +126,13 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     yield state;
   }
 
-  Stream<MessageState> _mapUpdateReadAtToState(UpdateReadAt event)async*{
-     final currentState = state;
-    
+  Stream<MessageState> _mapUpdateReadAtToState(UpdateReadAt event) async* {
+    final currentState = state;
+
     try {
       if (currentState is MessageLoaded) {
-        final List<Message> updatedMessages =  currentState.messages.map((message) {
+        final List<Message> updatedMessages =
+            currentState.messages.map((message) {
           if (message.readAt == null) {
             message.readAt = DateTime.now();
           }
@@ -142,7 +142,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         yield currentState.copyWith(messages: updatedMessages);
       }
     } catch (_) {
-        yield currentState;
-      }
+      yield currentState;
     }
+  }
 }

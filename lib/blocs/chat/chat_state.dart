@@ -15,12 +15,11 @@ class ChatState extends Equatable {
   final bool hasReachedMax;
   final int pageNumber;
 
-  ChatState copyWith({
-    ChatStatus status,
-    List<Chat> chatList,
-    bool hasReachedMax,
-    int pageNumber
-  }) {
+  ChatState copyWith(
+      {ChatStatus status,
+      List<Chat> chatList,
+      bool hasReachedMax,
+      int pageNumber}) {
     return ChatState(
       status: status ?? this.status,
       chatList: chatList ?? this.chatList,

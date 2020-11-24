@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tweety_mobile/constants/api_constants.dart';
+import 'package:tweety_mobile/models/chat.dart';
 import 'package:tweety_mobile/models/chat_paginator.dart';
 import 'package:tweety_mobile/models/message.dart';
 import 'package:tweety_mobile/models/message_paginator.dart';
@@ -80,5 +81,23 @@ class ChatApiClient {
           url,
           headers: requestHeaders(token),
         );
+  }
+
+  Future<Chat> getChatRoom(String username) async {
+    final url = '$baseUrl/chat/$username';
+
+    final token = Prefer.prefs.getString('token');
+
+    final response = await this.httpClient.get(
+          url,
+          headers: requestHeaders(token),
+        );
+    print(response);
+    if (response.statusCode != 200) {
+      throw Exception('Error getting chat room!');
+    }
+    print(response.body);
+
+    return Chat.fromJson(jsonDecode(response.body)['data']);
   }
 }

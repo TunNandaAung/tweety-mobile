@@ -13,6 +13,7 @@ import 'package:tweety_mobile/screens/profile/follow_list_wrapper.dart';
 import 'package:tweety_mobile/screens/photo_view_screen.dart';
 import 'package:tweety_mobile/screens/tweet/tweet_wrapper.dart';
 import 'package:tweety_mobile/widgets/buttons/follow_button.dart';
+import 'package:tweety_mobile/widgets/buttons/message_button.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/cards/reply.dart';
@@ -253,7 +254,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     padding: const EdgeInsets.only(right: 10.0),
                                     child: widget.username !=
                                             Prefer.prefs.getString('userName')
-                                        ? FollowButton(user: state.user)
+                                        ? Row(
+                                            children: [
+                                              MessageButton(
+                                                  messageTo: state.user),
+                                              const SizedBox(width: 5.0),
+                                              FollowButton(user: state.user),
+                                            ],
+                                          )
                                         : EditProfileButton(user: state.user),
                                   )
                                 ],
