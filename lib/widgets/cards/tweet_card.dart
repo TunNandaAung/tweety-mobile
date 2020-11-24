@@ -51,18 +51,19 @@ class TweetCard extends StatelessWidget {
                       .pushNamed('/profile', arguments: tweet.user.username),
                   child: Container(
                     width: size.width / 1.93,
-                    child: RichText(
-                      overflow: TextOverflow.ellipsis,
-                      text: TextSpan(
-                        text: tweet.user.name,
-                        style: Theme.of(context).textTheme.caption,
-                        children: [
-                          TextSpan(
-                            text: "@${tweet.user.username}",
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                        ],
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          tweet.user.name,
+                          style: Theme.of(context).textTheme.caption,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          "@${tweet.user.username}",
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
                     ),
                   ),
                 ),

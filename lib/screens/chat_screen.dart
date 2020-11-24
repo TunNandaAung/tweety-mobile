@@ -295,7 +295,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         SizedBox(height: 20.0),
         Text(
-          "${widget.chatUser.name}\n @ ${widget.chatUser.username}",
+          "${widget.chatUser.name}\n @${widget.chatUser.username}",
           textAlign: TextAlign.center,
           style: Theme.of(context)
               .textTheme
