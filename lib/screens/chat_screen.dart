@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -205,9 +204,17 @@ class _ChatScreenState extends State<ChatScreen> {
         iconTheme: IconThemeData(
           color: Theme.of(context).textSelectionTheme.cursorColor,
         ),
-        title: Text(
-          widget.chatUser.name,
-          style: Theme.of(context).appBarTheme.textTheme.caption,
+        title: Column(
+          children: [
+            Text(
+              widget.chatUser.name,
+              style: Theme.of(context).appBarTheme.textTheme.caption,
+            ),
+            Text(
+              "@${widget.chatUser.username}",
+              style: Theme.of(context).textTheme.bodyText2,
+            )
+          ],
         ),
         centerTitle: true,
       ),
@@ -240,24 +247,24 @@ class _ChatScreenState extends State<ChatScreen> {
                           );
                         }
                         if (state is MessageLoaded) {
-                          return ListView.builder(
-                            reverse: true,
-                            padding: EdgeInsets.only(
-                                top: 15.0, left: 4.0, right: 4.0),
-                            itemCount: state.hasReachedMax
-                                ? state.messages.length
-                                : state.messages.length + 1,
-                            controller: _scrollController,
-                            itemBuilder: (BuildContext context, int index) {
-                              return index >= state.messages.length
-                                  ? LoadingIndicator()
-                                  : MessageCard(message: state.messages[index]);
-                              // final Message message = messages[index];
-                              // final bool isMe =
-                              //     message.sender.id == currentUser.id;
-                              // return _buildMessage(message, isMe);
-                            },
-                          );
+                          return state.messages.length > 0
+                              ? ListView.builder(
+                                  reverse: true,
+                                  padding: EdgeInsets.only(
+                                      top: 15.0, left: 4.0, right: 4.0),
+                                  itemCount: state.hasReachedMax
+                                      ? state.messages.length
+                                      : state.messages.length + 1,
+                                  controller: _scrollController,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return index >= state.messages.length
+                                        ? LoadingIndicator()
+                                        : MessageCard(
+                                            message: state.messages[index]);
+                                  },
+                                )
+                              : _messageEmptyText();
                         }
                         return const Center(child: LoadingIndicator());
                       },
@@ -274,6 +281,35 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  Widget _messageEmptyText() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        CircleAvatar(
+          radius: 30.0,
+          backgroundColor: Theme.of(context).cardColor,
+          backgroundImage: NetworkImage(widget.chatUser.avatar),
+        ),
+        SizedBox(height: 20.0),
+        Text(
+          "${widget.chatUser.name}\n @ ${widget.chatUser.username}",
+          textAlign: TextAlign.center,
+          style: Theme.of(context)
+              .textTheme
+              .headline5
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 5.0),
+        Text(
+          "Send a message to ${widget.chatUser.name}.",
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyText2,
+        ),
+      ],
+    ));
   }
 }
 

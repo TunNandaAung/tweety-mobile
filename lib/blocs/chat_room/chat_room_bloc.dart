@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/chat.dart';
-import 'package:tweety_mobile/models/messages.dart';
 import 'package:tweety_mobile/repositories/chat_repository.dart';
 
 part 'chat_room_event.dart';

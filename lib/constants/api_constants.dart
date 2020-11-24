@@ -15,6 +15,9 @@ Map<String, String> requestHeaders(String token) {
   };
 }
 
+/*Had to use localhost (10.0.3.2 for Genymotion, 10.0.2.2 for official emulator) 
+  because websocket port 6001 cannot be setup on expose or ngrok. 
+*/
 Echo echoSetup(token, pusherClient) {
   return new Echo({
     'broadcaster': 'pusher',
