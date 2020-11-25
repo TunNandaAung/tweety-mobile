@@ -18,6 +18,10 @@ Mobile app for [Tweety](https://github.com/TunNandaAung/tweety) written in Flutt
 | :------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------: |
 | ![Single Tweet Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/single-tweet-screen_PgGXbu7pGnz5.png) | ![User Search Result](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/search-result_3PZWnIGZ-WW.png) | ![Edit Profile](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/edit-profile_LIPNGMkq3g.png) | ![Follow/Follower List Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/follow-follower-list_9OpruswVZg.png) | ![Notifications Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/notifications-screen_RcVW6E0tL.png) |
 
+|                                                 Messages Screen                                                  |                                                 Chat Screen                                                  |                                                Empty Chat Screen                                                |
+| :--------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------: |
+| ![Messages Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/mesages-screen_oUt2zuGR8co.png) | ![Chat Screen](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/mesages-screen_oUt2zuGR8co.png) | ![Empty Chat](https://ik.imagekit.io/tunnandaaung/tweety-mobile-screenshots/empty-chat-screen_hhNPjdfXn1LV.png) |
+
 ## Installation
 
 ### Prerequisites
@@ -41,6 +45,10 @@ flutter pub get
 ```properties
 static const BASE_URL = 'YOUR_LOCALHOST_URL_OR_SHARED_SITES_URL/api';
 ```
+
+### Realtime chat
+
+For realtime chat, to use **_localhost url_** generated with `php artisan serve` (10.0.3.2 for Genymotion, 10.0.2.2 for official android emulator) because websocket port `6001` cannot be set up on **_Expose_** or **_Ngrok_**.
 
 ## Features
 
