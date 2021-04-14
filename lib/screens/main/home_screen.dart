@@ -76,6 +76,8 @@ class _HomeScreenState extends State<HomeScreen>
 
   List<Tweet> tweets = [];
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen>
           BlocListener<TweetBloc, TweetState>(
             listener: (context, state) {
               if (state is TweetPublished) {
-                Scaffold.of(context)
+                ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(
@@ -118,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen>
               }
 
               if (state is TweetDeleted) {
-                Scaffold.of(context)
+                ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(
@@ -138,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen>
               }
 
               if (state is PublishTweetError) {
-                Scaffold.of(context)
+                ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(
@@ -168,7 +170,10 @@ class _HomeScreenState extends State<HomeScreen>
               setState(() => _currentIndex = index);
             },
             children: <Widget>[
-              TweetsScreen(scaffoldKey: _scaffoldKey),
+              TweetsScreen(
+                scaffoldKey: _scaffoldKey,
+                scaffoldMessengerKey: _scaffoldMessengerKey,
+              ),
               ExploreScreen(scaffoldKey: _scaffoldKey),
               MessagesScreen(scaffoldKey: _scaffoldKey),
               NotificationsScreen(scaffoldKey: _scaffoldKey),
@@ -269,9 +274,15 @@ class _HomeScreenState extends State<HomeScreen>
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                      color: Color(0xFF2F80ED).withOpacity(.3),
-                      offset: Offset(0.0, 8.0),
-                      blurRadius: 8.0)
+                    color: Color(0xFF2F80ED).withOpacity(.8),
+                    offset: Offset(0.0, 8.0),
+                    blurRadius: 8.0,
+                  ),
+                  BoxShadow(
+                    color: Color(0xFF2F80ED).withOpacity(.8),
+                    offset: Offset(8.0, 0.0),
+                    blurRadius: 8.0,
+                  )
                 ],
               ),
               child: RawMaterialButton(

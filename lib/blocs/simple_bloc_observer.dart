@@ -3,19 +3,19 @@ import 'package:bloc/bloc.dart';
 class SimpleBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object event) {
-    super.onEvent(bloc, event);
     print('onEvent $event');
+    super.onEvent(bloc, event);
   }
 
   @override
   onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
     print('onTransition $transition');
+    super.onTransition(bloc, transition);
   }
 
   @override
-  void onError(Cubit cubit, Object error, StackTrace stackTrace) {
-    super.onError(cubit, error, stackTrace);
+  void onError(BlocBase cubit, Object error, StackTrace stackTrace) {
     print('onErroe $error');
+    super.onError(cubit, error, stackTrace);
   }
 }

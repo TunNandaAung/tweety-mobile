@@ -47,7 +47,7 @@ class _MessageButtonBuilderState extends State<MessageButtonBuilder> {
             setState(() {
               isLoading = false;
             });
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(

@@ -27,10 +27,12 @@ Future<void> deleteReplyDialog(context, Reply reply, VoidCallback onPressed) {
           children: <Widget>[
             SizedBox(
               width: 90.0,
-              child: FlatButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0)),
-                color: Colors.red[600],
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0)),
+                  backgroundColor: Colors.red[600],
+                ),
                 child: Text(
                   'Delete',
                   style: TextStyle(
@@ -43,10 +45,12 @@ Future<void> deleteReplyDialog(context, Reply reply, VoidCallback onPressed) {
             SizedBox(width: 15.0),
             SizedBox(
               width: 90.0,
-              child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0)),
-                  color: Color(0xFF4A5568),
+              child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0)),
+                    backgroundColor: Color(0xFF4A5568),
+                  ),
                   child: Text(
                     'Cancel',
                     style: TextStyle(

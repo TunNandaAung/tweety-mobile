@@ -53,7 +53,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
           //     ? Scaffold.of(context)
           //     : widget.scaffoldKey.currentState;
           // childrenReplies.add(state.reply);
-          Scaffold.of(context)
+          ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
@@ -72,7 +72,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
             );
         }
         if (state is ChildrenReplyDeleted) {
-          Scaffold.of(context)
+          ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
@@ -91,7 +91,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
             );
         }
         if (state is AddChildrenReplyError) {
-          Scaffold.of(context)
+          ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(

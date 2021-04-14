@@ -17,7 +17,7 @@ class LikeDislikeApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.post(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
         );
 
@@ -35,7 +35,7 @@ class LikeDislikeApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.delete(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
         );
 

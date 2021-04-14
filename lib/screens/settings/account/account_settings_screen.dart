@@ -44,7 +44,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       body: BlocListener<AuthProfileBloc, AuthProfileState>(
         listener: (context, state) {
           if (state is AuthProfileInfoUpdateSuccess) {
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
@@ -62,7 +62,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
               );
           }
           if (state is AuthProfilePasswordUpdateSuccess) {
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(

@@ -170,13 +170,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.all(13.0),
-              child: FlatButton(
+              child: TextButton(
                 // onPressed: isButtonEnabled() ? _onFormSubmitted : null,
                 onPressed: _onFormSubmitted,
-                color: Theme.of(context).primaryColor,
-                disabledColor: Colors.grey,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+                style: TextButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  onSurface: Colors.grey,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
                 ),
                 child: Text(
                   'Save',
@@ -191,7 +193,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         body: BlocListener<AuthProfileBloc, AuthProfileState>(
           listener: (context, state) {
             if (state is AuthProfileErrorMessage) {
-              Scaffold.of(context)
+              ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(
@@ -212,7 +214,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 );
             }
             if (state is AuthProfileInfoUpdating) {
-              Scaffold.of(context)
+              ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(

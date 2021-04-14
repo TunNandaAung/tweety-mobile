@@ -82,7 +82,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                   replies.add(state.reply);
                 });
 
-                Scaffold.of(context)
+                ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(
@@ -105,7 +105,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                         tweetID: replies[0].tweet.id,
                       ),
                     );
-                Scaffold.of(context)
+                ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(

@@ -13,9 +13,14 @@ import 'package:tweety_mobile/widgets/refresh.dart';
 import 'package:tweety_mobile/widgets/cards/tweet_card.dart';
 
 class TweetsScreen extends StatefulWidget {
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  TweetsScreen({Key key, @required this.scaffoldKey}) : super(key: key);
+  TweetsScreen(
+      {Key key,
+      @required this.scaffoldMessengerKey,
+      @required this.scaffoldKey})
+      : super(key: key);
 
   @override
   _TweetsScreenState createState() => _TweetsScreenState();
@@ -150,7 +155,8 @@ class _TweetsScreenState extends State<TweetsScreen> {
                                   },
                                   child: TweetCard(
                                     tweet: tweets[index],
-                                    scaffoldKey: widget.scaffoldKey,
+                                    scaffoldMessengerKey:
+                                        widget.scaffoldMessengerKey,
                                   ),
                                 ),
                               ),

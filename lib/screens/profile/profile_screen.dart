@@ -645,7 +645,7 @@ class EditProfileButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: context.watch<ProfileBloc>(),
-      child: FlatButton(
+      child: TextButton(
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -655,17 +655,18 @@ class EditProfileButton extends StatelessWidget {
             ),
           );
         },
-        color: Colors.transparent,
-        disabledColor: Colors.grey,
-        padding: EdgeInsets.all(0.0),
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-              color: Theme.of(context).primaryColor,
-              width: 1,
-              style: BorderStyle.solid),
-          borderRadius: BorderRadius.circular(30.0),
+        style: TextButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          onSurface: Colors.grey,
+          padding: EdgeInsets.all(8.0),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+                color: Theme.of(context).primaryColor,
+                width: 1,
+                style: BorderStyle.solid),
+            borderRadius: BorderRadius.circular(30.0),
+          ),
         ),
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         child: Text(
           'Edit Profile',
           style: Theme.of(context).textTheme.button.copyWith(

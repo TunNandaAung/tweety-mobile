@@ -179,12 +179,14 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                           style: Theme.of(context).textTheme.headline6,
                         ),
                       ),
-                      FlatButton(
+                      TextButton(
                         onPressed: isButtonEnabled() ? _onFormSubmitted : null,
-                        color: Theme.of(context).primaryColor,
-                        disabledColor: Colors.grey,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+                        style: TextButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          onSurface: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
                         ),
                         child: Text(
                           'Publish',

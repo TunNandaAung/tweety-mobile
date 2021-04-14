@@ -20,7 +20,7 @@ class NotificationApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.get(
-      url,
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.acceptHeader: 'application/json',
@@ -44,7 +44,7 @@ class NotificationApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.get(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
         );
     if (response.statusCode != 200) {

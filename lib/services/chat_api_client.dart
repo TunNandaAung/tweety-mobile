@@ -21,7 +21,7 @@ class ChatApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.get(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
         );
     if (response.statusCode != 200) {
@@ -39,7 +39,7 @@ class ChatApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.get(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
         );
     print(response.statusCode);
@@ -58,7 +58,7 @@ class ChatApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.post(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
           body: jsonEncode(
             <String, String>{'message': message},
@@ -78,7 +78,7 @@ class ChatApiClient {
     final token = Prefer.prefs.getString('token');
 
     await this.httpClient.patch(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
         );
   }
@@ -89,7 +89,7 @@ class ChatApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.get(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
         );
     print(response);

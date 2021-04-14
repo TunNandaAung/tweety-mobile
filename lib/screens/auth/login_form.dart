@@ -55,7 +55,7 @@ class _LoginFormState extends State<LoginForm> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: BlocListener<LoginBloc, LoginState>(listener: (context, state) {
           if (state.isFailure) {
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
@@ -73,7 +73,7 @@ class _LoginFormState extends State<LoginForm> {
               );
           }
           if (state.isPasswordResetFailure) {
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
@@ -93,7 +93,7 @@ class _LoginFormState extends State<LoginForm> {
               );
           }
           if (state.isPasswordResetMailSent) {
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(
                   elevation: 6.0,
@@ -111,7 +111,7 @@ class _LoginFormState extends State<LoginForm> {
                   backgroundColor: Colors.red));
           }
           if (state.isSubmitting) {
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(
                   elevation: 6.0,

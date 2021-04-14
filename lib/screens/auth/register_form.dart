@@ -39,7 +39,6 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        resizeToAvoidBottomPadding: true,
         appBar: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0.0,
@@ -55,7 +54,7 @@ class _RegisterFormState extends State<RegisterForm> {
         body: BlocListener<RegisterBloc, RegisterState>(
             listener: (context, state) {
           if (state is RegisterFailureMessage) {
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
@@ -76,7 +75,7 @@ class _RegisterFormState extends State<RegisterForm> {
               );
           }
           if (state is RegisterLoading) {
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(

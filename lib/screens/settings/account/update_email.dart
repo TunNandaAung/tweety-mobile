@@ -60,7 +60,7 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
         body: BlocListener<AuthProfileBloc, AuthProfileState>(
           listener: (context, state) {
             if (state is AuthProfileErrorMessage) {
-              Scaffold.of(context)
+              ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(

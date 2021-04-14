@@ -92,7 +92,7 @@ class _TweetScreenState extends State<TweetScreen> {
                         tweetID: widget.tweet.id,
                       ),
                     );
-                Scaffold.of(context)
+                ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(
@@ -115,7 +115,7 @@ class _TweetScreenState extends State<TweetScreen> {
                         tweetID: widget.tweet.id,
                       ),
                     );
-                Scaffold.of(context)
+                ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(

@@ -122,7 +122,7 @@ class SearchScreen extends SearchDelegate<User> {
 
   Widget userResults() {
     return BlocBuilder(
-      cubit: userSearchBloc,
+      bloc: userSearchBloc,
       builder: (BuildContext context, UserSearchState state) {
         if (state.isLoading) {
           return Column(
@@ -179,7 +179,7 @@ class SearchScreen extends SearchDelegate<User> {
 
   Widget tweetResults() {
     return BlocBuilder(
-      cubit: tweetSearchBloc,
+      bloc: tweetSearchBloc,
       builder: (BuildContext context, TweetSearchState state) {
         if (state.isLoading) {
           return Column(
@@ -249,7 +249,7 @@ class SearchScreen extends SearchDelegate<User> {
     }
 
     return BlocBuilder(
-      cubit: userSearchBloc,
+      bloc: userSearchBloc,
       builder: (BuildContext context, UserSearchState state) {
         if (state.isLoading) {
           return Center(
@@ -368,7 +368,7 @@ class SearchScreen extends SearchDelegate<User> {
                     },
                     itemBuilder: (context, index) => Container(
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(10.0),
                           boxShadow: [
                             BoxShadow(

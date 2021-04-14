@@ -37,8 +37,9 @@ class AddReplyButton extends StatelessWidget {
 
 class AddReplyButtonWidget extends StatefulWidget {
   final Tweet tweet;
-  final GlobalKey<ScaffoldState> scaffoldKey;
-  const AddReplyButtonWidget({Key key, @required this.tweet, this.scaffoldKey})
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
+  const AddReplyButtonWidget(
+      {Key key, @required this.tweet, this.scaffoldMessengerKey})
       : super(key: key);
 
   @override
@@ -71,9 +72,9 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
                     ),
                   );
 
-              var currentState = widget.scaffoldKey == null
-                  ? Scaffold.of(context)
-                  : widget.scaffoldKey.currentState;
+              var currentState = widget.scaffoldMessengerKey == null
+                  ? ScaffoldMessenger.of(context)
+                  : widget.scaffoldMessengerKey.currentState;
 
               currentState
                 ..hideCurrentSnackBar()
@@ -104,7 +105,7 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
                 );
             }
             if (state is AddReplyError) {
-              Scaffold.of(context)
+              ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(

@@ -21,7 +21,7 @@ class UserApiClient {
   Future<Auth> login({String email, String password}) async {
     final loginUrl = '$baseUrl/login';
     final loginResponse = await this.httpClient.post(
-          loginUrl,
+          Uri.parse(loginUrl),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.acceptHeader: 'application/json',
@@ -47,7 +47,7 @@ class UserApiClient {
     final logoutUrl = '$baseUrl/logout';
 
     final logoutResponse = await this.httpClient.post(
-      logoutUrl,
+      Uri.parse(logoutUrl),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.acceptHeader: 'application/json',
@@ -69,7 +69,7 @@ class UserApiClient {
     final url = '$baseUrl/register';
 
     final response = await this.httpClient.post(
-          url,
+          Uri.parse(url),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.acceptHeader: 'application/json',
@@ -110,7 +110,7 @@ class UserApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.get(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
         );
     if (response.statusCode != 200) {
@@ -128,7 +128,7 @@ class UserApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.get(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
         );
     if (response.statusCode != 200) {
@@ -186,7 +186,7 @@ class UserApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.patch(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
           body: jsonEncode(
             <String, String>{
@@ -218,7 +218,7 @@ class UserApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.patch(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
           body: jsonEncode(
             <String, String>{
@@ -249,7 +249,7 @@ class UserApiClient {
     final url = '$baseUrl/password/forgot';
 
     final response = await this.httpClient.post(
-          url,
+          Uri.parse(url),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.acceptHeader: 'application/json',
@@ -275,8 +275,9 @@ class UserApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response =
-        await this.httpClient.get(url, headers: requestHeaders(token));
+    final response = await this
+        .httpClient
+        .get(Uri.parse(url), headers: requestHeaders(token));
     if (response.statusCode != 200) {
       print(response.body);
       throw Exception('Invalid Credentials');
@@ -291,8 +292,9 @@ class UserApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response =
-        await this.httpClient.get(url, headers: requestHeaders(token));
+    final response = await this
+        .httpClient
+        .get(Uri.parse(url), headers: requestHeaders(token));
 
     if (response.statusCode != 200) {
       print(response.body);
@@ -347,8 +349,9 @@ class UserApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response =
-        await this.httpClient.get(url, headers: requestHeaders(token));
+    final response = await this
+        .httpClient
+        .get(Uri.parse(url), headers: requestHeaders(token));
 
     if (response.statusCode != 200) {
       print(response.body);

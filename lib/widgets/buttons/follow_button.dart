@@ -37,21 +37,22 @@ class _FollowButtonState extends State<FollowButton> {
   }
 
   Widget _followButton() {
-    return FlatButton(
+    return TextButton(
       onPressed: () {
         _follow();
       },
-      color: Colors.transparent,
-      disabledColor: Colors.grey,
-      padding: EdgeInsets.all(0.0),
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-            color: Theme.of(context).primaryColor,
-            width: 1,
-            style: BorderStyle.solid),
-        borderRadius: BorderRadius.circular(30.0),
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        onSurface: Colors.grey,
+        padding: EdgeInsets.all(2.0),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+              color: Theme.of(context).primaryColor,
+              width: 1,
+              style: BorderStyle.solid),
+          borderRadius: BorderRadius.circular(30.0),
+        ),
       ),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       child: Text(
         'Follow',
         style: Theme.of(context).textTheme.button.copyWith(
@@ -62,17 +63,18 @@ class _FollowButtonState extends State<FollowButton> {
   }
 
   Widget _unfollowButton() {
-    return FlatButton(
+    return TextButton(
       onPressed: () {
         _unfollow();
       },
-      color: Theme.of(context).primaryColor,
-      disabledColor: Colors.grey,
-      padding: EdgeInsets.all(8.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
+      style: TextButton.styleFrom(
+        backgroundColor: Theme.of(context).primaryColor,
+        onSurface: Colors.grey,
+        padding: EdgeInsets.all(10.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
       ),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       child: Text(
         'Following',
         style: Theme.of(context).textTheme.button,

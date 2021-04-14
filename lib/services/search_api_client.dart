@@ -21,7 +21,7 @@ class SearchApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.get(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
         );
     print(response.statusCode);
@@ -40,7 +40,7 @@ class SearchApiClient {
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.get(
-          url,
+          Uri.parse(url),
           headers: requestHeaders(token),
         );
     print(response.statusCode);

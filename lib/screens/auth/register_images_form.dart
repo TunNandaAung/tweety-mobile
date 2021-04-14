@@ -168,14 +168,16 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
               builder: (context, state) {
                 return Padding(
                   padding: const EdgeInsets.all(13.0),
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: state is! RegisterImagesUploading
                         ? _onSkipPressed
                         : null,
-                    color: Theme.of(context).primaryColor,
-                    disabledColor: Colors.grey,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      onSurface: Colors.grey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
                     ),
                     child: Text(
                       'Skip',
@@ -192,7 +194,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
         body: BlocListener<RegisterBloc, RegisterState>(
           listener: (context, state) {
             if (state is RegisterError) {
-              Scaffold.of(context)
+              ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(

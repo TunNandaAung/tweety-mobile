@@ -42,7 +42,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         child: BlocListener<AuthProfileBloc, AuthProfileState>(
             listener: (context, state) {
           if (state is AuthProfileErrorMessage) {
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
@@ -63,7 +63,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               );
           }
           if (state is ResetPasswordRequestSuccess) {
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(

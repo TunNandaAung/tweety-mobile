@@ -10,8 +10,9 @@ import 'package:tweety_mobile/widgets/modals/tweet_actions_modal.dart';
 
 class TweetCard extends StatelessWidget {
   final Tweet tweet;
-  final GlobalKey<ScaffoldState> scaffoldKey;
-  const TweetCard({Key key, this.tweet, this.scaffoldKey}) : super(key: key);
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
+  const TweetCard({Key key, this.tweet, this.scaffoldMessengerKey})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +151,7 @@ class TweetCard extends StatelessWidget {
                 AddReplyButton(
                   child: AddReplyButtonWidget(
                     tweet: tweet,
-                    scaffoldKey: scaffoldKey,
+                    scaffoldMessengerKey: scaffoldMessengerKey,
                   ),
                 ),
               ],
