@@ -60,10 +60,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     }
   }
 
-  void storeUserData(String token, int userID, String userName) async {
+  void storeUserData(String token, int userID, String username) async {
     Prefer.prefs = await SharedPreferences.getInstance();
     Prefer.prefs.setString('token', token);
     Prefer.prefs.setInt('userID', userID);
-    Prefer.prefs.setString('userName', userName);
+    Prefer.prefs.setString('username', username);
   }
 }

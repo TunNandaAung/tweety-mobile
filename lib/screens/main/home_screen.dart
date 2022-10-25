@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen>
       _pageController.jumpToPage(index);
     });
     if (index == 2) {
-      context.read<NotificationBloc>().add(ResetNotificationCounts());
+      context.read<NotificationBloc>().add(ResetNotificationsCount());
     }
   }
 

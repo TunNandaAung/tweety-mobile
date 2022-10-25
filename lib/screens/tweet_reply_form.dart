@@ -45,7 +45,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   }
 
   String get replyingTo =>
-      widget.owner.username == Prefer.prefs.getString('userName')
+      widget.owner.username == Prefer.prefs.getString('username')
           ? "Replying to yourself"
           : 'Replying to @' + widget.owner.username;
 

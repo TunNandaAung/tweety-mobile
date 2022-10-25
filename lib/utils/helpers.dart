@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 Icon mapNotificationTypeToIcon(String type) {
   Icon icon;
@@ -75,4 +78,10 @@ bool isCurrentUser(int userId) {
 
 int authId() {
   return Prefer.prefs.getInt('userID');
+}
+
+EventTransformer<E> throttleDroppable<E>(Duration duration) {
+  return (events, mapper) {
+    return droppable<E>().call(events.throttle(duration), mapper);
+  };
 }

@@ -11,41 +11,34 @@ part 'explore_state.dart';
 
 class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
   final UserRepository userRepository;
-  ExploreBloc({@required this.userRepository}) : super(ExploreInitial());
-
-  @override
-  Stream<ExploreState> mapEventToState(
-    ExploreEvent event,
-  ) async* {
-    if (event is ExploreUser) {
-      yield* _mapExploreUserToState(event);
-    }
-    if (event is RefreshExplore) {
-      yield* _mapRefreshExploreToState(event);
-    }
+  ExploreBloc({this.userRepository}) : super(ExploreInitial()) {
+    on<ExploreUser>(_onExploreUser);
+    on<RefreshExplore>(_onRefreshExplore);
   }
 
-  Stream<ExploreState> _mapExploreUserToState(event) async* {
+  Future<void> _onExploreUser(
+      ExploreUser event, Emitter<ExploreState> emit) async {
     final currentState = state;
     if (currentState is ExploreUserLoaded) {
-      yield currentState;
+      emit(currentState);
     } else {
-      yield ExploreUserLoading();
+      emit(ExploreUserLoading());
       try {
         final users = await userRepository.explore();
-        yield ExploreUserLoaded(users: users);
+        emit(ExploreUserLoaded(users: users));
       } catch (e) {
-        yield ExploreError();
+        emit(ExploreError());
       }
     }
   }
 
-  Stream<ExploreState> _mapRefreshExploreToState(event) async* {
+  Future<void> _onRefreshExplore(
+      RefreshExplore event, Emitter<ExploreState> emit) async {
     try {
       final users = await userRepository.explore();
-      yield ExploreUserLoaded(users: users);
+      emit(ExploreUserLoaded(users: users));
     } catch (_) {
-      yield state;
+      emit(state);
     }
   }
 }

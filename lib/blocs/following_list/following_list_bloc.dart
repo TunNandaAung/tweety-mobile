@@ -12,23 +12,13 @@ part 'following_list_state.dart';
 class FollowingListBloc extends Bloc<FollowingListEvent, FollowingListState> {
   final FollowRepository followRepository;
 
-  FollowingListBloc({@required this.followRepository})
-      : assert(followRepository != null),
-        super(FollowingListEmpty());
-
-  @override
-  Stream<FollowingListState> mapEventToState(
-    FollowingListEvent event,
-  ) async* {
-    if (event is FetchFollowingList) {
-      yield* _mapFetchFollowingListToState(event);
-    } else if (event is RefreshFollowingList) {
-      yield* _mapRefreshFollowingListToState(event);
-    }
+  FollowingListBloc({this.followRepository}) : super(FollowingListEmpty()) {
+    on<FetchFollowingList>(_onFetchFollowingList);
+    on<RefreshFollowingList>(_onRefreshFollowingList);
   }
 
-  Stream<FollowingListState> _mapFetchFollowingListToState(
-      FetchFollowingList event) async* {
+  Future<void> _onFetchFollowingList(
+      FetchFollowingList event, Emitter<FollowingListState> emit) async {
     final currentState = state;
 
     if (!_hasReachedMax(currentState)) {
@@ -37,10 +27,9 @@ class FollowingListBloc extends Bloc<FollowingListEvent, FollowingListState> {
           final userPaginator = await followRepository.getFollowing(
               username: event.user.username, pageNumber: 1);
 
-          yield FollowingListLoaded(
+          return emit(FollowingListLoaded(
               users: userPaginator.users,
-              hasReachedMax: userPaginator.lastPage == 1 ? true : false);
-          return;
+              hasReachedMax: userPaginator.lastPage == 1 ? true : false));
         }
 
         if (currentState is FollowingListLoaded) {
@@ -48,16 +37,16 @@ class FollowingListBloc extends Bloc<FollowingListEvent, FollowingListState> {
           final userPaginator = await followRepository.getFollowing(
               username: event.user.username, pageNumber: pageNumber);
 
-          yield userPaginator.users.isEmpty
+          emit(userPaginator.users.isEmpty
               ? currentState.copyWith(hasReachedMax: true)
               : FollowingListLoaded(
                   users: currentState.users + userPaginator.users,
                   hasReachedMax: false,
                   pageNumber: pageNumber,
-                );
+                ));
         }
       } catch (_) {
-        yield FollowingListError();
+        emit(FollowingListError());
       }
     }
   }
@@ -65,17 +54,17 @@ class FollowingListBloc extends Bloc<FollowingListEvent, FollowingListState> {
   bool _hasReachedMax(FollowingListState state) =>
       state is FollowingListLoaded && state.hasReachedMax;
 
-  Stream<FollowingListState> _mapRefreshFollowingListToState(
-      RefreshFollowingList event) async* {
+  Future<void> _onRefreshFollowingList(
+      RefreshFollowingList event, Emitter<FollowingListState> emit) async {
     try {
       final userPaginator = await followRepository.getFollowing(
           username: event.user.username, pageNumber: 1);
-      yield FollowingListLoaded(
-          users: userPaginator.users,
-          hasReachedMax: userPaginator.lastPage == 1 ? true : false);
-      return;
+      return emit(FollowingListLoaded(
+        users: userPaginator.users,
+        hasReachedMax: userPaginator.lastPage == 1 ? true : false,
+      ));
     } catch (_) {
-      yield state;
+      emit(state);
     }
   }
 }

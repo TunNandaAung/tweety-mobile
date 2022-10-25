@@ -341,7 +341,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       SizedBox(height: 20.0),
                       Text(
-                        'Username',
+                        'username',
                         style: Theme.of(context).textTheme.caption,
                       ),
                       SizedBox(height: 10.0),
@@ -366,14 +366,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               color: Colors.red,
                             ),
                           ),
-                          hintText: 'Username',
+                          hintText: 'username',
                           hintStyle: TextStyle(
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                         validator: (val) {
                           return val.trim().isEmpty
-                              ? 'Username cannot be empty'
+                              ? 'username cannot be empty'
                               : null;
                         },
                         onSaved: (value) => _username = value,

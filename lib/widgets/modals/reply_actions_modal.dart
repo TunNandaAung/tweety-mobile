@@ -33,7 +33,7 @@ class ReplyActionsModal {
                   ),
                 ),
                 SizedBox(height: 10.0),
-                reply.owner.username == Prefer.prefs.getString('userName')
+                reply.owner.username == Prefer.prefs.getString('username')
                     ? GestureDetector(
                         onTap: () {
                           Navigator.of(context).pop();

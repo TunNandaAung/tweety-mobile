@@ -12,7 +12,7 @@ import 'package:http_parser/http_parser.dart';
 
 class UserApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
-  static final userName = Prefer.prefs.getString('userName');
+  static final username = Prefer.prefs.getString('username');
   final http.Client httpClient;
 
   UserApiClient({http.Client httpClient})
@@ -146,11 +146,11 @@ class UserApiClient {
       String description,
       File avatar,
       File banner}) async {
-    final authUsername = Prefer.prefs.getString('userName');
+    final authusername = Prefer.prefs.getString('username');
 
     final token = Prefer.prefs.getString('token');
 
-    final url = '$baseUrl/profiles/$authUsername';
+    final url = '$baseUrl/profiles/$authusername';
 
     final request = await prepareResquest(
         name, username, description, avatar, banner, url, 'PATCH');
@@ -169,7 +169,7 @@ class UserApiClient {
       var errorJson = jsonDecode(_response.body)['errors'];
 
       if (errorJson['username'] != null) {
-        throw Exception('Username already taken.');
+        throw Exception('username already taken.');
       }
     } else if (response.statusCode != 201) {
       throw Exception('Error updating profile!');

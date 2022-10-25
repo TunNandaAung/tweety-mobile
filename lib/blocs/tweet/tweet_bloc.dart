@@ -7,61 +7,57 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/repositories/tweet_repository.dart';
+import 'package:tweety_mobile/utils/helpers.dart';
 
 part 'tweet_event.dart';
 part 'tweet_state.dart';
 
+const tweetThrottleDuration = Duration(milliseconds: 500);
+
 class TweetBloc extends Bloc<TweetEvent, TweetState> {
   final TweetRepository tweetRepository;
 
-  TweetBloc({@required this.tweetRepository})
-      : assert(tweetRepository != null),
-        super(TweetEmpty());
-
-  @override
-  Stream<Transition<TweetEvent, TweetState>> transformEvents(
-    Stream<TweetEvent> events,
-    TransitionFunction<TweetEvent, TweetState> transitionFn,
-  ) {
-    return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 500)),
-      transitionFn,
+  TweetBloc({@required this.tweetRepository}) : super(TweetEmpty()) {
+    on<FetchTweet>(
+      _onFetchTweet,
+      transformer: throttleDroppable(tweetThrottleDuration),
+    );
+    on<RefreshTweet>(
+      _onRefreshTweet,
+      transformer: throttleDroppable(tweetThrottleDuration),
+    );
+    on<PublishTweet>(
+      _onPublishTweet,
+      transformer: throttleDroppable(tweetThrottleDuration),
+    );
+    on<UpdateReplyCount>(
+      _onUpdateReplyCount,
+      transformer: throttleDroppable(tweetThrottleDuration),
+    );
+    on<DeleteTweet>(
+      _onDeleteTweet,
+      transformer: throttleDroppable(tweetThrottleDuration),
     );
   }
 
-  @override
-  Stream<TweetState> mapEventToState(TweetEvent event) async* {
-    if (event is FetchTweet) {
-      yield* _mapFetchTweetToState(event);
-    } else if (event is RefreshTweet) {
-      yield* _mapRefreshTweetToState(event);
-    } else if (event is PublishTweet) {
-      yield* _mapPublishTweetToState(event);
-    } else if (event is UpdateReplyCount) {
-      yield* _mapUpdateReplyCountToState(event);
-    } else if (event is DeleteTweet) {
-      yield* _mapDeleteTweetToState(event);
-    }
-  }
-
-  Stream<TweetState> _mapFetchTweetToState(FetchTweet event) async* {
+  Future<void> _onFetchTweet(FetchTweet event, Emitter<TweetState> emit) async {
     final currentState = state;
 
     if (!_hasReachedMax(currentState)) {
       try {
         if (currentState is TweetEmpty) {
           final tweetPaginator = await tweetRepository.getTweets(1);
-          yield TweetLoaded(
-              tweets: tweetPaginator.tweets,
-              hasReachedMax: tweetPaginator.lastPage == 1 ? true : false);
-          return;
+          return emit(TweetLoaded(
+            tweets: tweetPaginator.tweets,
+            hasReachedMax: tweetPaginator.lastPage == 1 ? true : false,
+          ));
         }
 
         if (currentState is TweetLoaded) {
           var pageNumber = currentState.pageNumber + 1;
           final tweetPaginator = await tweetRepository.getTweets(pageNumber);
 
-          yield tweetPaginator.tweets.isEmpty
+          emit(tweetPaginator.tweets.isEmpty
               ? TweetLoaded(
                   tweets: currentState.tweets,
                   hasReachedMax: true,
@@ -71,10 +67,10 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
                   tweets: currentState.tweets + tweetPaginator.tweets,
                   hasReachedMax: false,
                   pageNumber: pageNumber,
-                );
+                ));
         }
       } catch (_) {
-        yield TweetError();
+        emit(TweetError());
       }
     }
   }
@@ -82,19 +78,22 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
   bool _hasReachedMax(TweetState state) =>
       state is TweetLoaded && state.hasReachedMax;
 
-  Stream<TweetState> _mapRefreshTweetToState(RefreshTweet event) async* {
+  Future<void> _onRefreshTweet(
+      RefreshTweet event, Emitter<TweetState> emit) async {
     try {
       final tweetPaginator = await tweetRepository.getTweets(1);
-      yield TweetLoaded(
-          tweets: tweetPaginator.tweets,
-          hasReachedMax: tweetPaginator.lastPage == 1 ? true : false);
+      emit(TweetLoaded(
+        tweets: tweetPaginator.tweets,
+        hasReachedMax: tweetPaginator.lastPage == 1 ? true : false,
+      ));
       return;
     } catch (_) {
-      yield state;
+      emit(state);
     }
   }
 
-  Stream<TweetState> _mapPublishTweetToState(PublishTweet event) async* {
+  Future<void> _onPublishTweet(
+      PublishTweet event, Emitter<TweetState> emit) async {
     final currentState = state;
 
     try {
@@ -104,20 +103,20 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
       if (currentState is TweetLoaded) {
         final List<Tweet> updatedTweet = List.from(currentState.tweets)
           ..insert(0, tweet);
-        yield TweetPublished(tweet: tweet);
+        emit(TweetPublished(tweet: tweet));
 
-        yield currentState.copyWith(tweets: updatedTweet);
+        emit(currentState.copyWith(tweets: updatedTweet));
       }
     } catch (_) {
       if (currentState is TweetLoaded) {
-        yield currentState;
-        yield PublishTweetError();
+        emit(currentState);
+        emit(PublishTweetError());
       }
     }
   }
 
-  Stream<TweetState> _mapUpdateReplyCountToState(
-      UpdateReplyCount event) async* {
+  Future<void> _onUpdateReplyCount(
+      UpdateReplyCount event, Emitter<TweetState> emit) async {
     final currentState = state;
 
     try {
@@ -135,14 +134,15 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
             )
           ]);
 
-        yield currentState.copyWith(tweets: updatedTweet);
+        emit(currentState.copyWith(tweets: updatedTweet));
       }
     } catch (_) {
-      yield state;
+      emit(state);
     }
   }
 
-  Stream<TweetState> _mapDeleteTweetToState(DeleteTweet event) async* {
+  Future<void> _onDeleteTweet(
+      DeleteTweet event, Emitter<TweetState> emit) async {
     final currentState = state;
     if (currentState is TweetLoaded) {
       try {
@@ -150,14 +150,14 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
         final List<Tweet> updatedTweets =
             _removeTweet(currentState.tweets, event);
 
-        // yield TweetLoading();
-        yield TweetDeleted();
-        yield currentState.copyWith(
+        // emit(TweetLoading());
+        emit(TweetDeleted());
+        emit(currentState.copyWith(
           tweets: updatedTweets,
-        );
+        ));
       } catch (e) {
-        yield DeleteTweetError();
-        yield currentState;
+        emit(DeleteTweetError());
+        emit(currentState);
       }
     }
   }

@@ -14,14 +14,14 @@ class NotificationError extends NotificationState {}
 
 class NotificationCountLoading extends NotificationState {}
 
-class NotificationCountsLoaded extends NotificationState {
-  final int notificationCounts;
+class NotificationsCountLoaded extends NotificationState {
+  final int NotificationsCount;
 
-  const NotificationCountsLoaded({@required this.notificationCounts})
-      : assert(notificationCounts != null);
+  const NotificationsCountLoaded({@required this.NotificationsCount})
+      : assert(NotificationsCount != null);
 
   @override
-  List<Object> get props => [notificationCounts];
+  List<Object> get props => [NotificationsCount];
 }
 
 class NotificationLoading extends NotificationState {}

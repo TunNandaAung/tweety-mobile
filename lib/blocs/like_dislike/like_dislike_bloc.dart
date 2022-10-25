@@ -12,39 +12,30 @@ part 'like_dislike_state.dart';
 class LikeDislikeBloc extends Bloc<LikeDislikeEvent, LikeDislikeState> {
   final LikeDislikeRepository likeDislikeRepository;
 
-  LikeDislikeBloc({@required this.likeDislikeRepository})
-      : super(LikeDislikeInitial());
-
-  @override
-  Stream<LikeDislikeState> mapEventToState(
-    LikeDislikeEvent event,
-  ) async* {
-    if (event is Like) {
-      yield* _mapLikeToState(event);
-    } else if (event is Dislike) {
-      yield* _mapDislikeToState(event);
-    }
+  LikeDislikeBloc({this.likeDislikeRepository}) : super(LikeDislikeInitial()) {
+    on<Like>(_onLike);
+    on<Dislike>(_onDislike);
   }
 
-  Stream<LikeDislikeState> _mapLikeToState(Like event) async* {
+  Future<void> _onLike(Like event, Emitter<LikeDislikeState> emit) async {
     try {
       final response = await likeDislikeRepository.like(
           id: event.tweetID, subject: event.subject);
 
-      yield Liked(like: response);
+      emit(Liked(like: response));
     } catch (e) {
-      yield LikeDislikeError();
+      emit(LikeDislikeError());
     }
   }
 
-  Stream<LikeDislikeState> _mapDislikeToState(Dislike event) async* {
+  Future<void> _onDislike(Dislike event, Emitter<LikeDislikeState> emit) async {
     try {
       final response = await likeDislikeRepository.dislike(
           id: event.tweetID, subject: event.subject);
 
-      yield Disliked(dislike: response);
+      emit(Disliked(dislike: response));
     } catch (e) {
-      yield LikeDislikeError();
+      emit(LikeDislikeError());
     }
   }
 }

@@ -15,7 +15,7 @@ class NotificationButton extends StatefulWidget {
 class _NotificationButtonState extends State<NotificationButton> {
   @override
   void initState() {
-    context.read<NotificationBloc>().add(FetchNotificationCounts());
+    context.read<NotificationBloc>().add(FetchNotificationsCount());
     super.initState();
   }
 
@@ -26,8 +26,8 @@ class _NotificationButtonState extends State<NotificationButton> {
         widget.icon,
         BlocBuilder<NotificationBloc, NotificationState>(
           builder: (context, state) {
-            if (state is NotificationCountsLoaded &&
-                state.notificationCounts > 0) {
+            if (state is NotificationsCountLoaded &&
+                state.NotificationsCount > 0) {
               return Positioned(
                 left: 11.0,
                 top: 0.0,
@@ -42,7 +42,7 @@ class _NotificationButtonState extends State<NotificationButton> {
                   ),
                   child: Center(
                     child: Text(
-                      '${state.notificationCounts}',
+                      '${state.NotificationsCount}',
                       style: TextStyle(
                           fontSize: 12.0,
                           color: Colors.white,

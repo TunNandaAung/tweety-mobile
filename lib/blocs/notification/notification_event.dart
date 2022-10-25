@@ -13,12 +13,12 @@ class InitPushNotification extends NotificationEvent {
   List<Object> get props => [context];
 }
 
-class FetchNotificationCounts extends NotificationEvent {
+class FetchNotificationsCount extends NotificationEvent {
   @override
   List<Object> get props => [];
 }
 
-class ResetNotificationCounts extends NotificationEvent {
+class ResetNotificationsCount extends NotificationEvent {
   @override
   List<Object> get props => [];
 }

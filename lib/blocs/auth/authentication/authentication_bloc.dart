@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
 
 part 'authentication_event.dart';
@@ -10,42 +9,35 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final UserRepository _userRepository;
+  final UserRepository userRepository;
 
-  AuthenticationBloc({@required UserRepository userRepository})
-      : assert(userRepository != null),
-        _userRepository = userRepository,
-        super(AuthenticationInitial());
-
-  @override
-  Stream<AuthenticationState> mapEventToState(
-    AuthenticationEvent event,
-  ) async* {
-    if (event is AuthenticationStarted) {
-      yield* _mapAuthenticationStartedToState();
-    } else if (event is AuthenticationLoggedIn) {
-      yield* _mapAuthenticationLoggedInToState();
-    } else if (event is AuthenticationLoggedOut) {
-      yield* _mapAuthenticationLoggedOutToState();
-    }
+  AuthenticationBloc({this.userRepository}) : super(AuthenticationInitial()) {
+    on<AuthenticationStarted>(_onAuthenticationStarted);
+    on<AuthenticationLoggedIn>(_onAuthenticationLoggedIn);
+    on<AuthenticationLoggedOut>(_onAuthenticationLoggedOut);
   }
 
-  Stream<AuthenticationState> _mapAuthenticationStartedToState() async* {
-    final isSignedIn = await _userRepository.isSignedIn();
+  Future<void> _onAuthenticationStarted(
+      AuthenticationStarted event, Emitter<AuthenticationState> emit) async {
+    final isSignedIn = await userRepository.isSignedIn();
     if (isSignedIn) {
-      final name = 'Logged in';
-      yield AuthenticationSuccess(name);
+      // final name = await userRepository.getUser();
+      const name = 'Logged in';
+      emit(const AuthenticationSuccess(name));
     } else {
-      yield AuthenticationFailure();
+      emit(AuthenticationFailure());
     }
   }
 
-  Stream<AuthenticationState> _mapAuthenticationLoggedInToState() async* {
-    yield AuthenticationSuccess("name");
+  Future<void> _onAuthenticationLoggedIn(
+      AuthenticationLoggedIn event, Emitter<AuthenticationState> emit) async {
+    // yield AuthenticationSuccess(await userRepository.getUser());
+    emit(const AuthenticationSuccess("name"));
   }
 
-  Stream<AuthenticationState> _mapAuthenticationLoggedOutToState() async* {
-    yield AuthenticationFailure();
-    _userRepository.logOut();
+  Future<void> _onAuthenticationLoggedOut(
+      AuthenticationLoggedOut event, Emitter<AuthenticationState> emit) async {
+    userRepository.logOut();
+    emit(AuthenticationFailure());
   }
 }

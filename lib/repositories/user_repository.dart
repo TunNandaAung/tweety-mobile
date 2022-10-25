@@ -48,8 +48,8 @@ class UserRepository {
     return userApiClient.fetchAuthInfo();
   }
 
-  Future<User> getUserInfo(String userName) async {
-    return userApiClient.fetchUserInfo(userName);
+  Future<User> getUserInfo(String username) async {
+    return userApiClient.fetchUserInfo(username);
   }
 
   Future<String> updatePassword(String oldPassword, String newPassword,

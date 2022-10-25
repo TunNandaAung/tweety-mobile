@@ -253,7 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   Padding(
                                     padding: const EdgeInsets.only(right: 10.0),
                                     child: widget.username !=
-                                            Prefer.prefs.getString('userName')
+                                            Prefer.prefs.getString('username')
                                         ? Row(
                                             children: [
                                               MessageButton(

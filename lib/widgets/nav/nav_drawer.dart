@@ -170,7 +170,7 @@ class _NavDrawerState extends State<NavDrawer> {
                           Navigator.pushNamed(
                             context,
                             '/${navItems[counter].route}',
-                            arguments: Prefer.prefs.getString('userName'),
+                            arguments: Prefer.prefs.getString('username'),
                           );
                         } else
                           Navigator.pushNamed(

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_pusher_client/flutter_pusher.dart';
 import 'package:intl/intl.dart';
 import 'package:laravel_echo/laravel_echo.dart';
+import 'package:pusher_client/pusher_client.dart';
 import 'package:tweety_mobile/blocs/message/message_bloc.dart';
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/message.dart';
@@ -38,7 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   MessageBloc _messageBloc;
-  FlutterPusher pusherClient;
+  PusherClient pusherClient;
   Echo echo;
 
   @override
@@ -75,7 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     echo = echoSetup(token, pusherClient);
 
-    pusherClient.connect(onConnectionStateChange: onConnectionStateChange);
+    echo.connector.pusher.onConnectionStateChange(onConnectionStateChange);
 
     echo.join("chat." + widget.chatId)
       ..here((users) => print('users'))
@@ -111,7 +111,7 @@ class _ChatScreenState extends State<ChatScreen> {
   //    echo.join("chat." + widget.chatId).wh;
   // }
 
-  void onConnectionStateChange(ConnectionStateChange event) {
+  void onConnectionStateChange(event) {
     print("STATE:" + event.currentState);
     if (event.currentState == 'CONNECTED') {
       print('connected');

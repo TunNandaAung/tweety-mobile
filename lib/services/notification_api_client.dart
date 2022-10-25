@@ -14,7 +14,7 @@ class NotificationApiClient {
   NotificationApiClient({http.Client httpClient})
       : httpClient = httpClient ?? http.Client();
 
-  Future<int> fetchNotificationCounts() async {
+  Future<int> FetchNotificationsCount() async {
     final url = '$baseUrl/notification-counts';
 
     final token = Prefer.prefs.getString('token');
@@ -32,10 +32,10 @@ class NotificationApiClient {
       throw Exception('Invalid Credentials');
     }
 
-    final notificationCounts =
+    final NotificationsCount =
         jsonDecode(response.body)['data']['notification_counts'] as int;
-    print(notificationCounts);
-    return notificationCounts;
+    print(NotificationsCount);
+    return NotificationsCount;
   }
 
   Future<List<ApiNotification>> fetchNotifications() async {

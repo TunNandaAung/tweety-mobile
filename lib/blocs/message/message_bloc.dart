@@ -12,47 +12,26 @@ part 'message_state.dart';
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final ChatRepository chatRepository;
 
-  MessageBloc({@required this.chatRepository})
-      : assert(chatRepository != null),
-        super(MessageInitial());
-
-  // @override
-  // Stream<Transition<MessageEvent, MessageState>> transformEvents(
-  //   Stream<MessageEvent> events,
-  //   TransitionFunction<MessageEvent, MessageState> transitionFn,
-  // ) {
-  //   return super.transformEvents(
-  //     events.debounceTime(const Duration(milliseconds: 500)),
-  //     transitionFn,
-  //   );
-  // }
-
-  @override
-  Stream<MessageState> mapEventToState(MessageEvent event) async* {
-    if (event is FetchMessages) {
-      yield* _mapFetchMessagesToState(event);
-    } else if (event is SendMessage) {
-      yield* _mapSendMessageToState(event);
-    } else if (event is ReceiveMessage) {
-      yield* _mapReceiveMessageToState(event);
-    } else if (event is MarkAsRead) {
-      yield* _mapMarkAsReadToState(event);
-    } else if (event is UpdateReadAt) {
-      yield* _mapUpdateReadAtToState(event);
-    }
+  MessageBloc({this.chatRepository}) : super(MessageInitial()) {
+    on<FetchMessages>(_onFetchMessages);
+    on<SendMessage>(_onSendMessage);
+    on<ReceiveMessage>(_onReceiveMessage);
+    on<MarkAsRead>(_onMarkAsRead);
+    on<UpdateReadAt>(_onUpdateReadAt);
   }
 
-  Stream<MessageState> _mapFetchMessagesToState(FetchMessages event) async* {
+  Future<void> _onFetchMessages(
+      FetchMessages event, Emitter<MessageState> emit) async {
     final currentState = state;
     if (!_hasReachedMax(currentState, event)) {
       try {
         if (currentState is MessageInitial) {
           final messagePaginator = await chatRepository.getMessages(
               chatId: event.chatId, pageNumber: 1);
-          yield MessageLoaded(
-              messages: messagePaginator.messages,
-              hasReachedMax: messagePaginator.lastPage == 1 ? true : false);
-          return;
+          return emit(MessageLoaded(
+            messages: messagePaginator.messages,
+            hasReachedMax: messagePaginator.lastPage == 1 ? true : false,
+          ));
         }
 
         if (currentState is MessageLoaded) {
@@ -60,19 +39,19 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
           final messagePaginator = await chatRepository.getMessages(
               chatId: event.chatId, pageNumber: pageNumber);
 
-          yield messagePaginator.messages.isEmpty
+          emit(messagePaginator.messages.isEmpty
               ? currentState.copyWith(hasReachedMax: true)
               : MessageLoaded(
                   messages: currentState.messages + messagePaginator.messages,
                   hasReachedMax: false,
                   pageNumber: pageNumber,
-                );
+                ));
         }
       } catch (_) {
-        yield MessageError();
+        emit(MessageError());
       }
     } else
-      yield currentState;
+      emit(currentState);
   }
 
   bool _hasReachedMax(MessageState state, FetchMessages event) {
@@ -82,7 +61,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   // bool _sameChat(MessageState state, chatId) =>
   //     state is MessageLoaded && state.messages.first.chatId == chatId;
 
-  Stream<MessageState> _mapSendMessageToState(SendMessage event) async* {
+  Future<void> _onSendMessage(
+      SendMessage event, Emitter<MessageState> emit) async {
     final currentState = state;
 
     try {
@@ -92,41 +72,44 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       if (currentState is MessageLoaded) {
         final List<Message> updatedMessages = List.from(currentState.messages)
           ..insert(0, message);
-        yield MessageSent(message: message);
+        emit(MessageSent(message: message));
 
-        yield currentState.copyWith(messages: updatedMessages);
+        emit(currentState.copyWith(messages: updatedMessages));
       }
     } catch (_) {
       if (currentState is MessageLoaded) {
-        yield MessageSendError();
+        emit(MessageSendError());
       }
     }
   }
 
-  Stream<MessageState> _mapReceiveMessageToState(ReceiveMessage event) async* {
+  Future<void> _onReceiveMessage(
+      ReceiveMessage event, Emitter<MessageState> emit) async {
     final currentState = state;
 
     try {
       if (currentState is MessageLoaded) {
         final List<Message> updatedMessages = List.from(currentState.messages)
           ..insert(0, event.message);
-        yield MessageSent(message: event.message);
+        emit(MessageSent(message: event.message));
 
-        yield currentState.copyWith(messages: updatedMessages);
+        emit(currentState.copyWith(messages: updatedMessages));
       }
     } catch (_) {
       if (currentState is MessageLoaded) {
-        yield MessageSendError();
+        emit(MessageSendError());
       }
     }
   }
 
-  Stream<MessageState> _mapMarkAsReadToState(MarkAsRead event) async* {
+  Future<void> _onMarkAsRead(
+      MarkAsRead event, Emitter<MessageState> emit) async {
     chatRepository.markAsRead(chatId: event.chatId, username: event.username);
-    yield state;
+    emit(state);
   }
 
-  Stream<MessageState> _mapUpdateReadAtToState(UpdateReadAt event) async* {
+  Future<void> _onUpdateReadAt(
+      UpdateReadAt event, Emitter<MessageState> emit) async {
     final currentState = state;
 
     try {
@@ -139,10 +122,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
           return message;
         }).toList();
 
-        yield currentState.copyWith(messages: updatedMessages);
+        emit(currentState.copyWith(messages: updatedMessages));
       }
     } catch (_) {
-      yield currentState;
+      emit(currentState);
     }
   }
 }

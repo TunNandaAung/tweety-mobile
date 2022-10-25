@@ -33,7 +33,7 @@ class TweetActionsModal {
                   ),
                 ),
                 SizedBox(height: 10.0),
-                tweet.user.username == Prefer.prefs.getString('userName')
+                tweet.user.username == Prefer.prefs.getString('username')
                     ? GestureDetector(
                         onTap: () {
                           Navigator.of(context).pop();

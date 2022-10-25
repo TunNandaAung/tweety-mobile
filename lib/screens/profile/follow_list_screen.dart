@@ -190,7 +190,7 @@ class _FollowListScreenState extends State<FollowListScreen>
 
   Widget _followingEmptyText() {
     return Center(
-      child: widget.profileUser.username == Prefer.prefs.getString('userName')
+      child: widget.profileUser.username == Prefer.prefs.getString('username')
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -226,7 +226,7 @@ class _FollowListScreenState extends State<FollowListScreen>
 
   Widget _followersEmptyText() {
     return Center(
-      child: widget.profileUser.username == Prefer.prefs.getString('userName')
+      child: widget.profileUser.username == Prefer.prefs.getString('username')
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

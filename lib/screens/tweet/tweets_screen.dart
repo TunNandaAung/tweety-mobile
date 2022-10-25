@@ -38,7 +38,7 @@ class _TweetsScreenState extends State<TweetsScreen> {
           FetchTweet(),
         );
     context.read<NotificationBloc>().add(
-          FetchNotificationCounts(),
+          FetchNotificationsCount(),
         );
     _scrollController.addListener(_onScroll);
     _tweetRefreshCompleter = Completer<void>();
