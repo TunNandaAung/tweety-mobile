@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/theme/app_theme.dart';
-import 'package:tweety_mobile/theme/bloc/theme_bloc.dart';
+import 'package:tweety_mobile/theme/cubit/theme_cubit.dart';
 
 class ThemeSettingsScreen extends StatefulWidget {
   ThemeSettingsScreen({Key key}) : super(key: key);
@@ -173,8 +173,8 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
     });
 
     isCurrentThemeDark
-        ? context.read<ThemeBloc>().add(ThemeChanged(AppTheme.Dark))
-        : context.read<ThemeBloc>().add(ThemeChanged(AppTheme.Light));
+        ? context.read<ThemeCubit>().changeTheme(AppTheme.Dark)
+        : context.read<ThemeCubit>().changeTheme(AppTheme.Light);
   }
 
   void _toggleSystemThemeButton() {
@@ -184,11 +184,11 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
     });
 
     if (WidgetsBinding.instance.window.platformBrightness == Brightness.dark) {
-      context.read<ThemeBloc>().add(ThemeChanged(AppTheme.Dark));
+      context.read<ThemeCubit>().changeTheme(AppTheme.Dark);
       setState(() {
         isCurrentThemeDark = true;
       });
     } else
-      context.read<ThemeBloc>().add(ThemeChanged(AppTheme.Light));
+      context.read<ThemeCubit>().changeTheme(AppTheme.Light);
   }
 }
