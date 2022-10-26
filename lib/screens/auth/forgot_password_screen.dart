@@ -34,7 +34,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         leading: BackButton(),
         title: Text(
           'Tweety',
-          style: Theme.of(context).appBarTheme.textTheme.caption,
+          style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
         centerTitle: true,
       ),

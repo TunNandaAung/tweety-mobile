@@ -27,7 +27,6 @@ class SearchScreen extends SearchDelegate<User> {
     return theme.copyWith(
       primaryColor: Theme.of(context).cardColor,
       primaryIconTheme: Theme.of(context).appBarTheme.iconTheme,
-      primaryColorBrightness: Brightness.light,
       textTheme: TextTheme(
         headline6: TextStyle(
           color: Theme.of(context).textSelectionTheme.cursorColor,

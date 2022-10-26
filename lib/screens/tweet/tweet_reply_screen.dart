@@ -56,7 +56,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
         ),
         title: Text(
           'Tweet',
-          style: Theme.of(context).appBarTheme.textTheme.caption,
+          style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
         centerTitle: true,
         elevation: 0.0,

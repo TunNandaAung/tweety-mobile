@@ -27,7 +27,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
           tag: 'settings__theme',
           child: Text(
             'Theme',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
         ),
         centerTitle: true,

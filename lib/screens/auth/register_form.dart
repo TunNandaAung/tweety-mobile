@@ -47,7 +47,7 @@ class _RegisterFormState extends State<RegisterForm> {
           ),
           title: Text(
             'Register',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
         ),

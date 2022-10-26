@@ -79,7 +79,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     echo.join("chat." + widget.chatId)
       ..here((users) => print('users'))
-      ..listerForWhisper("typing", (event) {
+      ..listenForWhisper("typing", (event) {
         // log(User.fromJson((event)['user']).username);
         // typingTimer.cancel();
 
@@ -208,7 +208,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Text(
               widget.chatUser.name,
-              style: Theme.of(context).appBarTheme.textTheme.caption,
+              style: Theme.of(context).appBarTheme.titleTextStyle,
             ),
             Text(
               "@${widget.chatUser.username}",

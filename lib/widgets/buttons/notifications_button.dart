@@ -27,7 +27,7 @@ class _NotificationButtonState extends State<NotificationButton> {
         BlocBuilder<NotificationBloc, NotificationState>(
           builder: (context, state) {
             if (state is NotificationsCountLoaded &&
-                state.NotificationsCount > 0) {
+                state.notificationsCount > 0) {
               return Positioned(
                 left: 11.0,
                 top: 0.0,
@@ -42,7 +42,7 @@ class _NotificationButtonState extends State<NotificationButton> {
                   ),
                   child: Center(
                     child: Text(
-                      '${state.NotificationsCount}',
+                      '${state.notificationsCount}',
                       style: TextStyle(
                           fontSize: 12.0,
                           color: Colors.white,

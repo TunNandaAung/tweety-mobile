@@ -657,7 +657,7 @@ class EditProfileButton extends StatelessWidget {
         },
         style: TextButton.styleFrom(
           backgroundColor: Colors.transparent,
-          onSurface: Colors.grey,
+          disabledBackgroundColor: Colors.grey.withOpacity(0.38),
           padding: EdgeInsets.all(8.0),
           shape: RoundedRectangleBorder(
             side: BorderSide(

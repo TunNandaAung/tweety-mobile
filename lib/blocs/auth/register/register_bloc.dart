@@ -15,23 +15,14 @@ part 'register_state.dart';
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final UserRepository userRepository;
 
-  RegisterBloc({@required this.userRepository})
-      : assert(userRepository != null),
-        super(RegisterInitial());
-
-  @override
-  Stream<RegisterState> mapEventToState(
-    RegisterEvent event,
-  ) async* {
-    if (event is Submitted) {
-      yield* _mapSubmittedToState(event);
-    } else if (event is UploadRegisterImages) {
-      yield* _mapUploadRegisterImagesToState(event);
-    }
+  RegisterBloc({@required this.userRepository}) : super(RegisterInitial()) {
+    on<Submitted>(_onSubmitted);
+    on<UploadRegisterImages>(_onUploadRegisterImages);
   }
 
-  Stream<RegisterState> _mapSubmittedToState(Submitted event) async* {
-    yield RegisterLoading();
+  Future<void> _onSubmitted(
+      Submitted event, Emitter<RegisterState> emit) async {
+    emit(RegisterLoading());
     try {
       final Auth auth = await userRepository.register(
         event.name,
@@ -41,22 +32,21 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         event.passwordConfirmation,
       );
       storeUserData(auth.token, auth.userID, auth.username);
-      yield RegisterSuccess();
+      emit(RegisterSuccess());
     } catch (e) {
-      yield RegisterFailureMessage(errorMessage: e.message);
+      emit(RegisterFailureMessage(errorMessage: e.message));
     }
   }
 
-  Stream<RegisterState> _mapUploadRegisterImagesToState(
-      UploadRegisterImages event) async* {
-    print("CALLEd");
-    yield RegisterImagesUploading();
+  Future<void> _onUploadRegisterImages(
+      UploadRegisterImages event, Emitter<RegisterState> emit) async {
+    emit(RegisterImagesUploading());
     try {
       await userRepository.uploadImages(
           avatar: event.avatar, banner: event.banner);
-      yield RegisterImagesSuccess();
+      emit(RegisterImagesSuccess());
     } catch (e) {
-      yield RegisterError();
+      emit(RegisterError());
     }
   }
 

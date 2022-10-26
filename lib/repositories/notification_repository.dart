@@ -9,7 +9,7 @@ class NotificationRepository {
             notificationApiClient ?? NotificationApiClient();
 
   Future<int> getNotificationsCount() async {
-    return notificationApiClient.FetchNotificationsCount();
+    return notificationApiClient.fetchNotificationsCount();
   }
 
   Future<List<ApiNotification>> getNotifications() async {

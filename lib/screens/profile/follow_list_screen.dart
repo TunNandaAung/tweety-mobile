@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/followers_list/followers_list_bloc.dart';
 import 'package:tweety_mobile/blocs/following_list/following_list_bloc.dart';
@@ -80,7 +79,7 @@ class _FollowListScreenState extends State<FollowListScreen>
                 ),
                 title: Text(
                   widget.profileUser.name,
-                  style: Theme.of(context).appBarTheme.textTheme.caption,
+                  style: Theme.of(context).appBarTheme.titleTextStyle,
                 ),
                 centerTitle: true,
                 floating: true,

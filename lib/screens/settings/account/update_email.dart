@@ -47,7 +47,7 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
           ),
           title: Text(
             'Update Email',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
           elevation: 0.0,

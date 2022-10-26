@@ -19,6 +19,9 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  final ImagePicker _picker = ImagePicker();
+  final ImageCropper _cropper = ImageCropper();
+
   bool isButtonEnabled(AuthProfileState state) {
     return _formKey.currentState.validate() &&
         state is! AuthProfileInfoUpdating;
@@ -34,30 +37,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String _description;
 
   Future _getImage(ImageSource source, bool isAvatar) async {
-    final picker = ImagePicker();
-
     setState(() {
       _imageInProcess = true;
     });
-    final pickedFile = await picker.getImage(source: source);
+    final XFile pickedFile = await _picker.pickImage(source: source);
 
     File image = File(pickedFile.path);
 
     if (image != null) {
-      File croppedImage = await ImageCropper.cropImage(
-        sourcePath: image.path,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 100,
-        compressFormat: ImageCompressFormat.png,
-        androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Edit Photo',
-          toolbarColor: Theme.of(context).cardColor,
-          activeControlsWidgetColor: Colors.blue,
-        ),
-      );
+      CroppedFile croppedImage = await _cropper.cropImage(
+          sourcePath: image.path,
+          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+          compressQuality: 100,
+          compressFormat: ImageCompressFormat.png,
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Edit Photo',
+              toolbarColor: Theme.of(context).cardColor,
+              activeControlsWidgetColor: Colors.blue,
+            ),
+          ]);
 
       setState(() {
-        isAvatar ? _avatar = croppedImage : _banner = croppedImage;
+        isAvatar
+            ? _avatar = File(croppedImage.path)
+            : _banner = File(croppedImage.path);
         _imageInProcess = false;
       });
     } else {
@@ -164,7 +168,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
           title: Text(
             'Edit Profile',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
           actions: <Widget>[
@@ -175,7 +179,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 onPressed: _onFormSubmitted,
                 style: TextButton.styleFrom(
                   backgroundColor: Theme.of(context).primaryColor,
-                  onSurface: Colors.grey,
+                  disabledBackgroundColor: Colors.grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),

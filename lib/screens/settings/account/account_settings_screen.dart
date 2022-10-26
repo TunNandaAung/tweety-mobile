@@ -30,7 +30,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           tag: 'settings__account',
           child: Text(
             'Account',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
         ),
         centerTitle: true,

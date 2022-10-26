@@ -12,10 +12,13 @@ final appThemeData = {
     hintColor: Color(0xFF718096),
     scaffoldBackgroundColor: Color(0xFFf3f6fb),
     appBarTheme: AppBarTheme(
-      textTheme: TextTheme(
-        caption: TextStyle(color: Colors.black),
-      ),
       iconTheme: IconThemeData(color: Colors.black),
+      toolbarTextStyle: TextTheme(
+        caption: TextStyle(color: Colors.black),
+      ).bodyText2,
+      titleTextStyle: TextTheme(
+        caption: TextStyle(color: Colors.black),
+      ).headline6,
     ),
     textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white),
     splashColor: Color(0xFFEDF2F7),
@@ -79,10 +82,13 @@ final appThemeData = {
     hintColor: Color(0xFF718096),
     scaffoldBackgroundColor: Color(0xFF1A202C),
     appBarTheme: AppBarTheme(
-      textTheme: TextTheme(
-        caption: TextStyle(color: Colors.white),
-      ),
       iconTheme: IconThemeData(color: Colors.white),
+      toolbarTextStyle: TextTheme(
+        caption: TextStyle(color: Colors.white),
+      ).bodyText2,
+      titleTextStyle: TextTheme(
+        caption: TextStyle(color: Colors.white),
+      ).headline6,
     ),
     textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white),
     splashColor: Color(0xFF718096),

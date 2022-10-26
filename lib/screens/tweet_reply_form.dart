@@ -30,6 +30,9 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   final TextEditingController _bodyController = TextEditingController();
   final tagRegex = RegExp(r"@([\w\-\.]+)", caseSensitive: false);
 
+  final ImagePicker _picker = ImagePicker();
+  final ImageCropper _cropper = ImageCropper();
+
   double characterLmitValue = 0;
   double limit = 255;
 
@@ -124,31 +127,30 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   }
 
   Future _getImage(ImageSource source) async {
-    final picker = ImagePicker();
-
     setState(() {
       _imageInProcess = true;
     });
 
-    final pickedFile = await picker.getImage(source: source);
+    final XFile pickedFile = await _picker.pickImage(source: source);
 
     File image = File(pickedFile.path);
 
     if (image != null) {
-      File croppedImage = await ImageCropper.cropImage(
-        sourcePath: image.path,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 100,
-        compressFormat: ImageCompressFormat.png,
-        androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Edit image',
-          toolbarColor: Theme.of(context).scaffoldBackgroundColor,
-          activeControlsWidgetColor: Theme.of(context).primaryColor,
-        ),
-      );
+      CroppedFile croppedImage = await _cropper.cropImage(
+          sourcePath: image.path,
+          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+          compressQuality: 100,
+          compressFormat: ImageCompressFormat.png,
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Edit Photo',
+              toolbarColor: Theme.of(context).cardColor,
+              activeControlsWidgetColor: Colors.blue,
+            ),
+          ]);
 
       setState(() {
-        _image = croppedImage;
+        _image = File(croppedImage.path);
         _imageInProcess = false;
       });
     } else {
@@ -183,7 +185,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                         onPressed: isButtonEnabled() ? _onFormSubmitted : null,
                         style: TextButton.styleFrom(
                           backgroundColor: Theme.of(context).primaryColor,
-                          onSurface: Colors.grey,
+                          disabledBackgroundColor: Colors.grey,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),

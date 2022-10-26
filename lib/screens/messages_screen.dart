@@ -65,7 +65,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
           ),
           title: Text(
             'Messages',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
         ),

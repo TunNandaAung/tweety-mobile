@@ -65,7 +65,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           ),
           title: Text(
             'Notifications',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
         ),

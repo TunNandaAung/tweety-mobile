@@ -27,7 +27,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       final notificationsCount =
           await notificationRepository.getNotificationsCount();
 
-      emit(NotificationsCountLoaded(NotificationsCount: notificationsCount));
+      emit(NotificationsCountLoaded(notificationsCount: notificationsCount));
     } catch (_) {
       emit(NotificationError());
     }
@@ -39,7 +39,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     final currentState = state;
     if (currentState is NotificationsCountLoaded) {
       try {
-        emit(NotificationsCountLoaded(NotificationsCount: 0));
+        emit(NotificationsCountLoaded(notificationsCount: 0));
       } catch (_) {
         emit(NotificationError());
       }

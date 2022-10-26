@@ -24,7 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           title: Text(
             'Settings',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
           elevation: 0.0,

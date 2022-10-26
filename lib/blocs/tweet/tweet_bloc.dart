@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/repositories/tweet_repository.dart';
 import 'package:tweety_mobile/utils/helpers.dart';

@@ -43,7 +43,7 @@ class _FollowButtonState extends State<FollowButton> {
       },
       style: TextButton.styleFrom(
         backgroundColor: Colors.transparent,
-        onSurface: Colors.grey,
+        disabledBackgroundColor: Colors.grey,
         padding: EdgeInsets.all(2.0),
         shape: RoundedRectangleBorder(
           side: BorderSide(
@@ -69,7 +69,7 @@ class _FollowButtonState extends State<FollowButton> {
       },
       style: TextButton.styleFrom(
         backgroundColor: Theme.of(context).primaryColor,
-        onSurface: Colors.grey,
+        disabledBackgroundColor: Colors.grey,
         padding: EdgeInsets.all(10.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),

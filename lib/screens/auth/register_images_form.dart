@@ -18,6 +18,9 @@ class RegisterImagesForm extends StatefulWidget {
 class _RegisterImagesFormState extends State<RegisterImagesForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  final ImagePicker _picker = ImagePicker();
+  final ImageCropper _cropper = ImageCropper();
+
   bool isButtonEnabled(RegisterState state) {
     return _avatar != null &&
         _banner != null &&
@@ -29,27 +32,28 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
   File _banner;
 
   Future _getImage(ImageSource source, bool isAvatar) async {
-    final picker = ImagePicker();
-
-    final pickedFile = await picker.getImage(source: source);
+    final XFile pickedFile = await _picker.pickImage(source: source);
 
     File image = File(pickedFile.path);
 
     if (image != null) {
-      File croppedImage = await ImageCropper.cropImage(
-        sourcePath: image.path,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 100,
-        compressFormat: ImageCompressFormat.png,
-        androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Edit Photo',
-          toolbarColor: Theme.of(context).cardColor,
-          activeControlsWidgetColor: Colors.blue,
-        ),
-      );
+      CroppedFile croppedImage = await _cropper.cropImage(
+          sourcePath: image.path,
+          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+          compressQuality: 100,
+          compressFormat: ImageCompressFormat.png,
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Edit Photo',
+              toolbarColor: Theme.of(context).cardColor,
+              activeControlsWidgetColor: Colors.blue,
+            ),
+          ]);
 
       setState(() {
-        isAvatar ? _avatar = croppedImage : _banner = croppedImage;
+        isAvatar
+            ? _avatar = File(croppedImage.path)
+            : _banner = File(croppedImage.path);
       });
     } else {
       setState(() {});
@@ -160,7 +164,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
           ),
           title: Text(
             'Upload Avatar & Banner',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
           actions: <Widget>[
@@ -174,7 +178,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
                         : null,
                     style: TextButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,
-                      onSurface: Colors.grey,
+                      disabledBackgroundColor: Colors.grey,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),

@@ -5,8 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/repositories/tweet_repository.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:stream_transform/stream_transform.dart';
 import 'package:tweety_mobile/utils/helpers.dart';
 
 part 'profile_tweet_event.dart';
