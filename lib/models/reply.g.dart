@@ -6,29 +6,22 @@ part of 'reply.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Reply _$ReplyFromJson(Map<String, dynamic> json) {
-  return Reply(
-    id: json['id'] as int,
-    image: json['image'] as String,
-    body: json['body'] as String,
-    childrenCount: json['children_count'] as int,
-    isLiked: json['is_liked'] as bool,
-    isDisliked: json['is_disliked'] as bool,
-    likesCount: json['likes_count'] as int,
-    dislikesCount: json['dislikes_count'] as int,
-    owner: json['owner'] == null
-        ? null
-        : User.fromJson(json['owner'] as Map<String, dynamic>),
-    tweet: json['tweet'] == null
-        ? null
-        : Tweet.fromJson(json['tweet'] as Map<String, dynamic>),
-    createdAt: json['created_at'] == null
-        ? null
-        : DateTime.parse(json['created_at'] as String),
-  )..parent = json['parent'] == null
-      ? null
-      : Reply.fromJson(json['parent'] as Map<String, dynamic>);
-}
+Reply _$ReplyFromJson(Map<String, dynamic> json) => Reply(
+      id: json['id'] as int,
+      image: json['image'] as String?,
+      body: json['body'] as String,
+      childrenCount: json['children_count'] as int,
+      isLiked: json['is_liked'] as bool,
+      isDisliked: json['is_disliked'] as bool,
+      likesCount: json['likes_count'] as int,
+      dislikesCount: json['dislikes_count'] as int,
+      owner: User.fromJson(json['owner'] as Map<String, dynamic>),
+      tweet: Tweet.fromJson(json['tweet'] as Map<String, dynamic>),
+      createdAt: DateTime.parse(json['created_at'] as String),
+      parent: json['parent'] == null
+          ? null
+          : Reply.fromJson(json['parent'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$ReplyToJson(Reply instance) => <String, dynamic>{
       'id': instance.id,
@@ -42,5 +35,5 @@ Map<String, dynamic> _$ReplyToJson(Reply instance) => <String, dynamic>{
       'owner': instance.owner,
       'tweet': instance.tweet,
       'parent': instance.parent,
-      'created_at': instance.createdAt?.toIso8601String(),
+      'created_at': instance.createdAt.toIso8601String(),
     };

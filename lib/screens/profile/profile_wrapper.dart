@@ -16,7 +16,8 @@ class ProfileWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final client = http.Client();
-    final username = ModalRoute.of(context).settings.arguments;
+    final String username =
+        ModalRoute.of(context)!.settings.arguments as String;
 
     final ReplyRepository replyRepository = ReplyRepository(
       replyApiClient: ReplyApiClient(httpClient: client),

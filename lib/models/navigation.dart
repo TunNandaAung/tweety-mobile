@@ -4,7 +4,11 @@ class NavigationModel {
   String title;
   IconData icon;
   String route;
-  NavigationModel({this.title, this.icon, this.route});
+  NavigationModel({
+    required this.title,
+    required this.icon,
+    required this.route,
+  });
 }
 
 List<NavigationModel> navItems = [

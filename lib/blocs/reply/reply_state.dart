@@ -63,7 +63,7 @@ class AddReplyError extends ReplyState {}
 class ReplyDeleting extends ReplyState {}
 
 class ReplyDeleted extends ReplyState {
-  final count;
+  final int count;
 
   ReplyDeleted({required this.count});
 

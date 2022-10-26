@@ -333,7 +333,7 @@ class _MessageCardState extends State<MessageCard> {
 
   @override
   Widget build(BuildContext context) {
-    bool isMe = isCurrentUser(widget.message.sender.id);
+    bool isMe = isCurrentUser(widget.message.sender!.id);
 
     final Column msg = Column(children: <Widget>[
       InkWell(
@@ -374,7 +374,7 @@ class _MessageCardState extends State<MessageCard> {
                 children: [
                   Text(
                     DateFormat('EEE, d MMM hh:mm a').format(
-                      widget.message.createdAt.toLocal(),
+                      widget.message.createdAt!.toLocal(),
                     ),
                     textAlign: TextAlign.end,
                   ),

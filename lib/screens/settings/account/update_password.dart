@@ -16,9 +16,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
   bool _autovalidate = false;
 
-  String _oldPassword;
-  String _password;
-  String _confirmPassword;
+  late String _oldPassword;
+  late String _password;
+  late String _confirmPassword;
 
   bool _isCurrentPasswordHidden = true;
   bool _isPasswordHidden = true;
@@ -37,7 +37,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(
-          color: Theme.of(context).appBarTheme.iconTheme.color,
+          color: Theme.of(context).appBarTheme.iconTheme!.color,
         ),
         title: Text(
           'Update Password',
@@ -150,7 +150,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                         ? 'Current password cannot be empty.'
                                         : null;
                                   },
-                                  onSaved: (value) => _oldPassword = value,
+                                  onSaved: (value) => _oldPassword = value!,
                                 ),
                                 SizedBox(height: 30.0),
                                 Text(
@@ -205,7 +205,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                         ? 'Password cannot be empty.'
                                         : null;
                                   },
-                                  onSaved: (value) => _password = value,
+                                  onSaved: (value) => _password = value!,
                                 ),
                                 SizedBox(height: 30.0),
                                 Text(
@@ -256,12 +256,12 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                     if (val!.trim().isEmpty) {
                                       return 'Password confirmation cannot be empty';
                                     } else if (val !=
-                                        passKey.currentState.value) {
+                                        passKey.currentState!.value) {
                                       return 'Password confirmation does not match.';
                                     } else
                                       return null;
                                   },
-                                  onSaved: (value) => _confirmPassword = value,
+                                  onSaved: (value) => _confirmPassword = value!,
                                 ),
                               ],
                             ),

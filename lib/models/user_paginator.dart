@@ -15,9 +15,9 @@ class UserPaginator {
   List<User> users;
 
   UserPaginator({
-    this.currentPage,
-    this.lastPage,
-    this.users,
+    required this.currentPage,
+    required this.lastPage,
+    required this.users,
   });
 
   factory UserPaginator.fromJson(Map<String, dynamic> json) =>

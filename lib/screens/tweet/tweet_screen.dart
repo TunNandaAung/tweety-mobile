@@ -203,7 +203,8 @@ class _TweetScreenState extends State<TweetScreen> {
                                     onPressed: () {
                                       context.read<ReplyBloc>().add(
                                             RefreshReply(
-                                                tweetID: widget.tweet.id),
+                                              tweetID: widget.tweet.id,
+                                            ),
                                           );
                                     },
                                   ),
@@ -425,7 +426,7 @@ class _TweetScreenState extends State<TweetScreen> {
                     text: TextSpan(
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .copyWith(fontSize: 20.0),
                       children: parseBody(tweet.body)
                           .map(
@@ -434,7 +435,7 @@ class _TweetScreenState extends State<TweetScreen> {
                                 context,
                                 Theme.of(context)
                                     .textTheme
-                                    .bodyText1
+                                    .bodyText1!
                                     .copyWith(fontSize: 18.0)),
                           )
                           .toList(),
@@ -450,7 +451,7 @@ class _TweetScreenState extends State<TweetScreen> {
                                   builder: (context) => PhotoViewScreen(
                                     title: '',
                                     actionText: '',
-                                    imageProvider: NetworkImage(tweet.image),
+                                    imageProvider: NetworkImage(tweet.image!),
                                     onTap: () {},
                                   ),
                                 ),
@@ -469,7 +470,7 @@ class _TweetScreenState extends State<TweetScreen> {
                                   )
                                 ],
                                 image: DecorationImage(
-                                    image: NetworkImage(tweet.image),
+                                    image: NetworkImage(tweet.image!),
                                     fit: BoxFit.cover),
                               ),
                             ),

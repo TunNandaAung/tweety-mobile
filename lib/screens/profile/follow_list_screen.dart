@@ -20,7 +20,7 @@ class _FollowListScreenState extends State<FollowListScreen>
     with SingleTickerProviderStateMixin {
   final _scrollThreshold = 200.0;
   ScrollController _scrollController = ScrollController();
-  TabController _tabController;
+  late TabController _tabController;
 
   @override
   void initState() {
@@ -35,8 +35,8 @@ class _FollowListScreenState extends State<FollowListScreen>
 
   @override
   void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     _tabController.dispose();
     super.dispose();
   }
@@ -75,7 +75,7 @@ class _FollowListScreenState extends State<FollowListScreen>
               SliverAppBar(
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 leading: BackButton(
-                  color: Theme.of(context).appBarTheme.iconTheme.color,
+                  color: Theme.of(context).appBarTheme.iconTheme!.color,
                 ),
                 title: Text(
                   widget.profileUser.name,
@@ -198,7 +198,7 @@ class _FollowListScreenState extends State<FollowListScreen>
                   textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
-                      .headline5
+                      .headline5!
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 5.0),
@@ -216,7 +216,7 @@ class _FollowListScreenState extends State<FollowListScreen>
                 textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
-                    .headline5
+                    .headline5!
                     .copyWith(fontWeight: FontWeight.bold),
               ),
             ),
@@ -234,7 +234,7 @@ class _FollowListScreenState extends State<FollowListScreen>
                   textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
-                      .headline5
+                      .headline5!
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 5.0),
@@ -252,7 +252,7 @@ class _FollowListScreenState extends State<FollowListScreen>
                 textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
-                    .headline5
+                    .headline5!
                     .copyWith(fontWeight: FontWeight.bold),
               ),
             ),

@@ -15,9 +15,9 @@ class ReplyPaginator {
   List<Reply> replies;
 
   ReplyPaginator({
-    this.currentPage,
-    this.lastPage,
-    this.replies,
+    required this.currentPage,
+    required this.lastPage,
+    required this.replies,
   });
 
   factory ReplyPaginator.fromJson(Map<String, dynamic> json) =>

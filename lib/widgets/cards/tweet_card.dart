@@ -105,7 +105,7 @@ class TweetCard extends StatelessWidget {
                                   builder: (context) => PhotoViewScreen(
                                     title: '',
                                     actionText: '',
-                                    imageProvider: NetworkImage(tweet.image),
+                                    imageProvider: NetworkImage(tweet.image!),
                                     onTap: () {},
                                   ),
                                 ),
@@ -124,7 +124,7 @@ class TweetCard extends StatelessWidget {
                                   )
                                 ],
                                 image: DecorationImage(
-                                    image: NetworkImage(tweet.image),
+                                    image: NetworkImage(tweet.image!),
                                     fit: BoxFit.cover),
                               ),
                             ),

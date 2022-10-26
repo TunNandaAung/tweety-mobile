@@ -20,8 +20,11 @@ import 'package:tweety_mobile/widgets/modals/tweet_actions_modal.dart';
 class TweetReplyScreen extends StatefulWidget {
   final Reply reply;
   final ReplyRepository replyRepository;
-  const TweetReplyScreen({Key? key, required this.reply, this.replyRepository})
-      : super(key: key);
+  const TweetReplyScreen({
+    Key? key,
+    required this.reply,
+    required this.replyRepository,
+  }) : super(key: key);
 
   @override
   _TweetReplyScreenState createState() => _TweetReplyScreenState();
@@ -31,7 +34,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
   final _scrollController = ScrollController();
   List<Reply> replies = [];
   // ignore: close_sinks
-  ReplyBloc _replyBloc;
+  late ReplyBloc _replyBloc;
 
   @override
   void initState() {
@@ -200,7 +203,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                                   child: Text('View All',
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText2
+                                          .bodyText2!
                                           .copyWith(
                                               color: Theme.of(context)
                                                   .primaryColor)),
@@ -393,17 +396,18 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                     text: TextSpan(
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .copyWith(fontSize: 20.0),
                       children: parseBody(tweet.body)
                           .map(
                             (body) => bodyTextSpan(
-                                body,
-                                context,
-                                Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .copyWith(fontSize: 18.0)),
+                              body,
+                              context,
+                              Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(fontSize: 18.0),
+                            ),
                           )
                           .toList(),
                     ),
@@ -418,7 +422,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                                   builder: (context) => PhotoViewScreen(
                                     title: '',
                                     actionText: '',
-                                    imageProvider: NetworkImage(tweet.image),
+                                    imageProvider: NetworkImage(tweet.image!),
                                     onTap: () {},
                                   ),
                                 ),
@@ -437,7 +441,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                                   )
                                 ],
                                 image: DecorationImage(
-                                    image: NetworkImage(tweet.image),
+                                    image: NetworkImage(tweet.image!),
                                     fit: BoxFit.cover),
                               ),
                             ),

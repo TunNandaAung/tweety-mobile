@@ -23,18 +23,19 @@ class UpdateAuthProfileInfo extends AuthProfileEvent {
   final String name;
   final String username;
   final String description;
-  final File avatar;
-  final File banner;
+  final File? avatar;
+  final File? banner;
 
-  const UpdateAuthProfileInfo(
-      {required this.name,
-      required this.username,
-      required this.description,
-      required this.avatar,
-      required this.banner});
+  const UpdateAuthProfileInfo({
+    required this.name,
+    required this.username,
+    required this.description,
+    this.avatar,
+    this.banner,
+  });
 
   @override
-  List<Object> get props => [name, username, description, avatar, banner];
+  List<Object> get props => [name, username, description];
 
   @override
   String toString() {

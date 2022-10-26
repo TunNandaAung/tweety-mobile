@@ -8,9 +8,7 @@ import 'package:tweety_mobile/widgets/loading_indicator.dart';
 class UpdateEmailScreen extends StatefulWidget {
   final User user;
 
-  UpdateEmailScreen({Key? key, required this.user})
-      : assert(user != null),
-        super(key: key);
+  UpdateEmailScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   _UpdateEmailScreenState createState() => _UpdateEmailScreenState();
@@ -20,8 +18,8 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
 
-  String _email;
-  String _password;
+  late String _email;
+  late String _password;
 
   bool isButtonEnabled(AuthProfileState state) {
     return !(state is AuthProfileEmailUpdating);
@@ -43,7 +41,7 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leading: BackButton(
-            color: Theme.of(context).appBarTheme.iconTheme.color,
+            color: Theme.of(context).appBarTheme.iconTheme!.color,
           ),
           title: Text(
             'Update Email',
@@ -113,7 +111,7 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                   ),
                                   SizedBox(height: 5.0),
                                   Text(
-                                    widget.user.email,
+                                    widget.user.email!,
                                     style: Theme.of(context).textTheme.caption,
                                   ),
                                   SizedBox(height: 20.0),
@@ -171,7 +169,7 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                           ? 'Password cannot be empty.'
                                           : null;
                                     },
-                                    onSaved: (value) => _password = value,
+                                    onSaved: (value) => _password = value!,
                                   ),
                                   SizedBox(height: 30.0),
                                   Text(
@@ -208,11 +206,11 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                         ),
                                         hintText: 'Email'),
                                     validator: (val) {
-                                      return !Validators.isValidEmail(val)
+                                      return !Validators.isValidEmail(val!)
                                           ? 'Invalid email.'
                                           : null;
                                     },
-                                    onSaved: (value) => _email = value,
+                                    onSaved: (value) => _email = value!,
                                   ),
                                 ],
                               ),

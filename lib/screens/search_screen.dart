@@ -67,7 +67,7 @@ class SearchScreen extends SearchDelegate<User?> {
         return PopupMenuButton<String>(
           icon: Icon(
             Icons.sort,
-            color: Theme.of(context).appBarTheme.iconTheme.color,
+            color: Theme.of(context).appBarTheme.iconTheme!.color,
           ),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),

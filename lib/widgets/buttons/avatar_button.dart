@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 
 class AvatarButton extends StatefulWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
   AvatarButton({Key? key, this.scaffoldKey}) : super(key: key);
 
   @override
@@ -16,7 +16,7 @@ class _AvatarButtonState extends State<AvatarButton> {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: GestureDetector(
-        onTap: () => widget.scaffoldKey.currentState.openDrawer(),
+        onTap: () => widget.scaffoldKey?.currentState?.openDrawer(),
         child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
           builder: (context, state) {
             if (state is AvatarLoaded) {

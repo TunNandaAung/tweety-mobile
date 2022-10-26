@@ -37,11 +37,11 @@ class AddChildrenReplyButton extends StatelessWidget {
 class AddChildrenReplyButtonWidget extends StatefulWidget {
   final Tweet tweet;
   final Reply parent;
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
   const AddChildrenReplyButtonWidget({
     Key? key,
     required this.tweet,
-    required this.scaffoldKey,
+    this.scaffoldKey,
     required this.parent,
   }) : super(key: key);
 

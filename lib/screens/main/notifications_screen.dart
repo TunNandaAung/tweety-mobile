@@ -90,7 +90,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                               onTap: notification.data.screen != null
                                   ? () {
                                       Navigator.of(context).pushNamed(
-                                          notification.data.screen,
+                                          notification.data.screen!,
                                           arguments: notification.data.arg);
                                     }
                                   : () {},

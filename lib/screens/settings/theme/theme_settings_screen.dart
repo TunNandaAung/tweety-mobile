@@ -21,7 +21,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(
-          color: Theme.of(context).appBarTheme.iconTheme.color,
+          color: Theme.of(context).appBarTheme.iconTheme!.color,
         ),
         title: Hero(
           tag: 'settings__theme',
@@ -63,7 +63,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                   borderRadius: BorderRadius.circular(20.0),
                   color: isCurrentThemeDark
                       ? Colors.greenAccent[100]
-                      : Colors.redAccent[100].withOpacity(0.5),
+                      : Colors.redAccent[100]!.withOpacity(0.5),
                 ),
                 child: Stack(
                   children: <Widget>[
@@ -124,7 +124,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                   borderRadius: BorderRadius.circular(20.0),
                   color: isUsingSystemTheme
                       ? Colors.greenAccent[100]
-                      : Colors.redAccent[100].withOpacity(0.5),
+                      : Colors.redAccent[100]!.withOpacity(0.5),
                 ),
                 child: Stack(
                   children: <Widget>[

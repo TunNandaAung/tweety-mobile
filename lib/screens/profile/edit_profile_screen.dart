@@ -28,24 +28,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   bool _autovalidate = false;
-  File _avatar;
-  File _banner;
-  bool _imageInProcess = false;
+  File? _avatar;
+  File? _banner;
 
-  String _name;
-  String _username;
-  String _description;
+  late String _name;
+  late String _username;
+  late String _description;
 
   Future _getImage(ImageSource source, bool isAvatar) async {
-    setState(() {
-      _imageInProcess = true;
-    });
-    final XFile pickedFile = await _picker.pickImage(source: source);
-
-    File image = File(pickedFile.path);
+    setState(() {});
+    final XFile? image = await _picker.pickImage(source: source);
 
     if (image != null) {
-      CroppedFile croppedImage = await _cropper.cropImage(
+      CroppedFile? croppedImage = await _cropper.cropImage(
           sourcePath: image.path,
           aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
           compressQuality: 100,
@@ -60,18 +55,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       setState(() {
         isAvatar
-            ? _avatar = File(croppedImage.path)
-            : _banner = File(croppedImage.path);
-        _imageInProcess = false;
+            ? _avatar = File(croppedImage!.path)
+            : _banner = File(croppedImage!.path);
       });
     } else {
-      setState(() {
-        _imageInProcess = false;
-      });
+      setState(() {});
     }
   }
 
-  Future<bool> selectImageDialog(context, {bool isAvatar = true}) {
+  selectImageDialog(context, {bool isAvatar = true}) {
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -95,7 +87,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     'Choose an option',
                     style: Theme.of(context)
                         .textTheme
-                        .caption
+                        .caption!
                         .copyWith(fontSize: 20.0),
                   ),
                 ),
@@ -164,7 +156,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0.0,
           iconTheme: IconThemeData(
-            color: Theme.of(context).appBarTheme.iconTheme.color,
+            color: Theme.of(context).appBarTheme.iconTheme!.color,
           ),
           title: Text(
             'Edit Profile',
@@ -186,7 +178,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 child: Text(
                   'Save',
-                  style: Theme.of(context).textTheme.button.copyWith(
+                  style: Theme.of(context).textTheme.button!.copyWith(
                         color: Colors.white,
                       ),
                 ),
@@ -280,7 +272,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               backgroundColor: Theme.of(context).cardColor,
                               backgroundImage: _avatar == null
                                   ? NetworkImage(widget.user.avatar)
-                                  : FileImage(_avatar),
+                                  : FileImage(_avatar!) as ImageProvider,
                             ),
                           ),
                         ),
@@ -299,7 +291,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: Image(
                             image: _banner == null
                                 ? NetworkImage(widget.user.banner)
-                                : FileImage(_banner),
+                                : FileImage(_banner!) as ImageProvider,
                             width: 400.0,
                           ),
                         ),
@@ -341,7 +333,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ? 'Name cannot be empty'
                               : null;
                         },
-                        onSaved: (value) => _name = value,
+                        onSaved: (value) => _name = value!,
                       ),
                       SizedBox(height: 20.0),
                       Text(
@@ -380,7 +372,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ? 'username cannot be empty'
                               : null;
                         },
-                        onSaved: (value) => _username = value,
+                        onSaved: (value) => _username = value!,
                       ),
                       SizedBox(height: 20.0),
                       Text(
@@ -415,7 +407,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        onSaved: (value) => _description = value,
+                        onSaved: (value) => _description = value!,
                       ),
                     ],
                   ),

@@ -15,9 +15,9 @@ class TweetPaginator {
   List<Tweet> tweets;
 
   TweetPaginator({
-    this.currentPage,
-    this.lastPage,
-    this.tweets,
+    required this.currentPage,
+    required this.lastPage,
+    required this.tweets,
   });
 
   factory TweetPaginator.fromJson(Map<String, dynamic> json) =>

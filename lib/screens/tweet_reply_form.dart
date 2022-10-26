@@ -10,21 +10,21 @@ import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 
-typedef OnSaveCallback = Function(String body, File image);
+typedef OnSaveCallback = Function(String body, File? image);
 
 class TweetReplyForm extends StatefulWidget {
   final OnSaveCallback onSave;
   final bool isReply;
-  final User owner;
+  final User? owner;
   final bool shouldDisplayTweet;
 
-  TweetReplyForm(
-      {Key? key,
-      this.onSave,
-      this.isReply,
-      this.owner,
-      this.shouldDisplayTweet})
-      : super(key: key);
+  TweetReplyForm({
+    Key? key,
+    required this.onSave,
+    required this.isReply,
+    this.owner,
+    this.shouldDisplayTweet = false,
+  }) : super(key: key);
 
   @override
   _TweetReplyFormState createState() => _TweetReplyFormState();
@@ -40,8 +40,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   double characterLmitValue = 0;
   double limit = 255;
 
-  File _image;
-  bool _imageInProcess = false;
+  File? _image;
   bool _showUserList = false;
 
   bool get isPopulated =>
@@ -52,9 +51,9 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   }
 
   String get replyingTo =>
-      widget.owner.username == Prefer.prefs.getString('username')
+      widget.owner!.username == Prefer.prefs.getString('username')
           ? "Replying to yourself"
-          : 'Replying to @' + widget.owner.username;
+          : 'Replying to @' + widget.owner!.username;
 
   @override
   void initState() {
@@ -131,16 +130,12 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   }
 
   Future _getImage(ImageSource source) async {
-    setState(() {
-      _imageInProcess = true;
-    });
+    setState(() {});
 
-    final XFile pickedFile = await _picker.pickImage(source: source);
-
-    File image = File(pickedFile.path);
+    final XFile? image = await _picker.pickImage(source: source);
 
     if (image != null) {
-      CroppedFile croppedImage = await _cropper.cropImage(
+      CroppedFile? croppedImage = await _cropper.cropImage(
           sourcePath: image.path,
           aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
           compressQuality: 100,
@@ -154,13 +149,10 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
           ]);
 
       setState(() {
-        _image = File(croppedImage.path);
-        _imageInProcess = false;
+        _image = File(croppedImage!.path);
       });
     } else {
-      setState(() {
-        _imageInProcess = false;
-      });
+      setState(() {});
     }
   }
 
@@ -196,7 +188,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                         ),
                         child: Text(
                           'Publish',
-                          style: Theme.of(context).textTheme.button.copyWith(
+                          style: Theme.of(context).textTheme.button!.copyWith(
                                 color: Colors.white,
                               ),
                         ),
@@ -228,7 +220,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                             '$replyingTo',
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2
+                                .bodyText2!
                                 .copyWith(
                                     color: Theme.of(context).primaryColor),
                           ),
@@ -365,7 +357,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
         ClipRRect(
           borderRadius: BorderRadius.circular(20.0),
           child: Image(
-            image: FileImage(_image),
+            image: FileImage(_image!),
             width: 320.0,
           ),
         ),
@@ -425,7 +417,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   }
 
   Widget _characterLimitIndicator() {
-    return _bodyController.text != null && reachErrorLimit()
+    return reachErrorLimit()
         ? Padding(
             padding: EdgeInsets.only(right: 10),
             child: Text(
@@ -523,7 +515,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
             'Error',
             style: Theme.of(context)
                 .textTheme
-                .bodyText2
+                .bodyText2!
                 .copyWith(color: Colors.red[500]),
           ),
         ),

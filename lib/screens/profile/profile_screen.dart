@@ -33,7 +33,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
 
   static double avatarMaximumRadius = 40.0;
   static double avatarMinimumRadius = 15.0;
@@ -494,7 +494,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
 class TweetyHeader extends StatelessWidget {
   final User user;
 
-  const TweetyHeader({Key? key, this.user}) : super(key: key);
+  const TweetyHeader({Key? key, required this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -504,7 +504,7 @@ class TweetyHeader extends StatelessWidget {
         children: <Widget>[
           Text(
             user.name,
-            style: Theme.of(context).textTheme.caption.copyWith(
+            style: Theme.of(context).textTheme.caption!.copyWith(
                   fontSize: 22.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -521,7 +521,7 @@ class TweetyHeader extends StatelessWidget {
           ),
           Text(
             user.description ?? '',
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   fontSize: 15.0,
                 ),
           ),
@@ -538,7 +538,7 @@ class TweetyHeader extends StatelessWidget {
                 RichText(
                   text: TextSpan(
                       text: user.followsCount.toString(),
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           fontSize: 15.0, fontWeight: FontWeight.bold),
                       children: [
                         TextSpan(
@@ -553,7 +553,7 @@ class TweetyHeader extends StatelessWidget {
                 RichText(
                   text: TextSpan(
                       text: user.followersCount.toString(),
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           fontSize: 15.0, fontWeight: FontWeight.bold),
                       children: [
                         TextSpan(
@@ -571,32 +571,32 @@ class TweetyHeader extends StatelessWidget {
   }
 }
 
-class Tweet extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: EdgeInsets.all(6.0),
-      leading: CircleAvatar(
-        backgroundImage: AssetImage("assets/images/twitter_flutter_logo.jpg"),
-      ),
-      title: RichText(
-        text: TextSpan(
-            text: "Flutter",
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
-            children: [
-              TextSpan(
-                  text: "  @flutterio  04 Dec 18",
-                  style: TextStyle(color: Colors.grey, fontSize: 14)),
-            ]),
-      ),
-      subtitle: Text(
-        "We just announced the general availability of Flutter 1.0 at #FlutterLive! \n\nThank you to all the amazing engineers who made this possible and to our awesome community for their support.",
-        style: TextStyle(color: Colors.white),
-      ),
-    );
-  }
-}
+// class Tweet extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListTile(
+//       contentPadding: EdgeInsets.all(6.0),
+//       leading: CircleAvatar(
+//         backgroundImage: AssetImage("assets/images/twitter_flutter_logo.jpg"),
+//       ),
+//       title: RichText(
+//         text: TextSpan(
+//             text: "Flutter",
+//             style: TextStyle(
+//                 color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
+//             children: [
+//               TextSpan(
+//                   text: "  @flutterio  04 Dec 18",
+//                   style: TextStyle(color: Colors.grey, fontSize: 14)),
+//             ]),
+//       ),
+//       subtitle: Text(
+//         "We just announced the general availability of Flutter 1.0 at #FlutterLive! \n\nThank you to all the amazing engineers who made this possible and to our awesome community for their support.",
+//         style: TextStyle(color: Colors.white),
+//       ),
+//     );
+//   }
+// }
 
 class TweetyAvatar extends StatelessWidget {
   final double size;
@@ -623,7 +623,7 @@ class TweetyAvatar extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => PhotoViewScreen(
                   title: '',
-                  imageProvider: NetworkImage(avatar),
+                  imageProvider: NetworkImage(avatar!),
                 ),
               ),
             ),
@@ -633,7 +633,7 @@ class TweetyAvatar extends StatelessWidget {
               backgroundImage: avatar == null
                   ? AssetImage("assets/images/twitter_flutter_logo.jpg")
                       as ImageProvider
-                  : NetworkImage(avatar),
+                  : NetworkImage(avatar!),
             ),
           ),
         ),

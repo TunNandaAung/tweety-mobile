@@ -5,7 +5,11 @@ class Auth extends Equatable {
   final int userID;
   final String username;
 
-  const Auth({this.userID, this.username, this.token});
+  const Auth({
+    required this.userID,
+    required this.username,
+    required this.token,
+  });
 
   @override
   List<Object> get props => [

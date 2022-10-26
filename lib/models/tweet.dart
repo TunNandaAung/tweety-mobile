@@ -7,8 +7,8 @@ part 'tweet.g.dart';
 class Tweet {
   int id;
 
-  @JsonKey(nullable: true)
-  String image;
+  String? image;
+
   String body;
 
   @JsonKey(name: 'is_liked')
@@ -32,16 +32,16 @@ class Tweet {
   DateTime createdAt;
 
   Tweet({
-    this.id,
+    required this.id,
     this.image,
-    this.body,
-    this.isLiked,
-    this.isDisliked,
-    this.repliesCount,
-    this.likesCount,
-    this.dislikesCount,
-    this.createdAt,
-    this.user,
+    required this.body,
+    required this.isLiked,
+    required this.isDisliked,
+    required this.repliesCount,
+    required this.likesCount,
+    required this.dislikesCount,
+    required this.createdAt,
+    required this.user,
   });
 
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
@@ -49,16 +49,16 @@ class Tweet {
   Map<String, dynamic> toJson() => _$TweetToJson(this);
 
   Tweet copyWith({
-    int id,
-    String image,
-    String body,
-    bool isLiked,
-    bool isDisliked,
-    int repliesCount,
-    int likesCount,
-    int dislikesCount,
-    DateTime createdAt,
-    User user,
+    int? id,
+    String? image,
+    String? body,
+    bool? isLiked,
+    bool? isDisliked,
+    int? repliesCount,
+    int? likesCount,
+    int? dislikesCount,
+    DateTime? createdAt,
+    User? user,
   }) {
     return Tweet(
       id: id ?? this.id,

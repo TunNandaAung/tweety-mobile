@@ -10,10 +10,9 @@ class User {
   String username;
   String avatar;
   String banner;
-  String description;
+  String? description;
 
-  @JsonKey(nullable: true)
-  String email;
+  String? email;
 
   @JsonKey(name: 'created_at')
   DateTime createdAt;
@@ -28,17 +27,17 @@ class User {
   bool isFollowed;
 
   User({
-    this.id,
-    this.name,
-    this.username,
-    this.banner,
+    required this.id,
+    required this.name,
+    required this.username,
+    required this.banner,
     this.description,
     this.email,
-    this.avatar,
-    this.createdAt,
-    this.followsCount,
-    this.followersCount,
-    this.isFollowed,
+    required this.avatar,
+    required this.createdAt,
+    required this.followsCount,
+    required this.followersCount,
+    required this.isFollowed,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

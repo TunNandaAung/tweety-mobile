@@ -5,9 +5,9 @@ abstract class MentionEvent extends Equatable {
 }
 
 class FindMentionedUser extends MentionEvent {
-  final String query;
+  final String? query;
 
-  FindMentionedUser({required this.query});
+  FindMentionedUser({this.query});
   @override
   List<Object> get props => [];
 }

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/repositories/search_repository.dart';

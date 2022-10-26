@@ -24,8 +24,8 @@ class MentionBloc extends Bloc<MentionEvent, MentionState> {
       FindMentionedUser event, Emitter<MentionState> emit) async {
     emit(MentionUserLoading());
     try {
-      final users = await userRepository.findMentionedUsers(event.query);
-      emit(MentionUserLoaded(query: event.query, users: users));
+      final users = await userRepository.findMentionedUsers(event.query!);
+      emit(MentionUserLoaded(query: event.query!, users: users));
     } catch (e) {
       emit(MentionUserError());
     }

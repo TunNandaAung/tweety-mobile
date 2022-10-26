@@ -4,7 +4,7 @@ import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/widgets/dialogs/delete_reply_dialog.dart';
 
 class ReplyActionsModal {
-  mainBottomSheet(BuildContext context, Reply reply, {VoidCallback onTap}) {
+  mainBottomSheet(BuildContext context, Reply reply, {VoidCallback? onTap}) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,

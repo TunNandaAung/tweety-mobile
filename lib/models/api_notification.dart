@@ -14,8 +14,8 @@ class ApiNotification {
 
   NotificationData data;
 
-  @JsonKey(name: 'read_at', nullable: true)
-  DateTime readAt;
+  @JsonKey(name: 'read_at')
+  DateTime? readAt;
 
   @JsonKey(name: 'created_at')
   DateTime createdAt;

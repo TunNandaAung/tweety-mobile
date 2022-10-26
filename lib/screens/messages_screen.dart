@@ -162,7 +162,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         margin: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 20.0),
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
-          color: message.readAt == null && !isCurrentUser(message.sender.id)
+          color: message.readAt == null && !isCurrentUser(message.sender!.id)
               ? Theme.of(context).primaryColor.withOpacity(0.3)
               : Theme.of(context).cardColor,
           borderRadius: const BorderRadius.only(
@@ -196,7 +196,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: Text(
-                        isCurrentUser(message.sender?.id)
+                        isCurrentUser(message.sender!.id)
                             ? 'You: ' + message.toString()
                             : '' + message.toString(),
                         style: Theme.of(context).textTheme.bodyText2,
@@ -211,7 +211,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 ? Column(
                     children: <Widget>[
                       Text(
-                        timeago.format(message.createdAt),
+                        timeago.format(message.createdAt!),
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),

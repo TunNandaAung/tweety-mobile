@@ -59,7 +59,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
   }
 
   selectImageDialog(context, {bool isAvatar = true}) {
-    showDialog(
+    return showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {

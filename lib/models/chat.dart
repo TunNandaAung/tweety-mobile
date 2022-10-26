@@ -19,11 +19,11 @@ class Chat {
   List<User> participants;
 
   Chat({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.messages,
-    this.participants,
+    required this.id,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.messages,
+    required this.participants,
   });
 
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);

@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:tweety_mobile/models/reply.dart';
 
-Future<void> deleteReplyDialog(context, Reply reply, VoidCallback onPressed) {
+Future<void> deleteReplyDialog(context, Reply reply, VoidCallback? onPressed) {
   return showModal<void>(
     context: context,
     configuration: FadeScaleTransitionConfiguration(),

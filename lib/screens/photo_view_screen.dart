@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class PhotoViewScreen extends StatefulWidget {
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String title;
   final String actionText;
   final ImageProvider imageProvider;
 
-  PhotoViewScreen(
-      {Key? key,
-      this.onTap,
-      this.title = '',
-      this.actionText = '',
-      this.imageProvider})
-      : super(key: key);
+  PhotoViewScreen({
+    Key? key,
+    this.onTap,
+    this.title = '',
+    this.actionText = '',
+    required this.imageProvider,
+  }) : super(key: key);
 
   @override
   _PhotoViewScreenState createState() => _PhotoViewScreenState();

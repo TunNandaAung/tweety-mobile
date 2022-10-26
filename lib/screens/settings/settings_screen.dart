@@ -20,7 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leading: BackButton(
-            color: Theme.of(context).appBarTheme.iconTheme.color,
+            color: Theme.of(context).appBarTheme.iconTheme!.color,
           ),
           title: Text(
             'Settings',
@@ -47,7 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     '@' + state.user.username,
                     style: Theme.of(context)
                         .textTheme
-                        .headline5
+                        .headline5!
                         .copyWith(fontStyle: FontStyle.italic),
                   ),
                   SizedBox(height: 15.0),

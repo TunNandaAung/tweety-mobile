@@ -5,10 +5,10 @@ part 'message.g.dart';
 
 @JsonSerializable()
 class Message {
-  int id;
+  int? id;
 
   @JsonKey(name: 'user_id')
-  int userId;
+  int? userId;
 
   @JsonKey(name: 'chat_id')
   String chatId;
@@ -16,23 +16,24 @@ class Message {
   String message;
 
   @JsonKey(name: 'created_at')
-  DateTime createdAt;
+  DateTime? createdAt;
 
   @JsonKey(name: 'updated_at')
-  DateTime updatedAt;
+  DateTime? updatedAt;
 
-  @JsonKey(name: 'read_at', nullable: true)
-  DateTime readAt;
+  @JsonKey(name: 'read_at')
+  DateTime? readAt;
 
-  User sender;
+  User? sender;
 
   Message({
     this.id,
     this.userId,
-    this.chatId,
-    this.message,
+    required this.chatId,
+    required this.message,
     this.createdAt,
     this.updatedAt,
+    this.sender,
     this.readAt,
   });
 

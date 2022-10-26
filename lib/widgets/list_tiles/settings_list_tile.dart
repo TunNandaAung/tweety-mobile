@@ -32,7 +32,7 @@ Widget settingsListTile(
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            user != null ? Text(user.email) : Text(''),
+            user != null ? Text(user.email!) : Text(''),
             Icon(
               Icons.chevron_right,
               color: Theme.of(context).textSelectionTheme.cursorColor,

@@ -10,7 +10,7 @@ import 'package:tweety_mobile/services/follow_api_client.dart';
 
 class FollowListWrapper extends StatelessWidget {
   final User user;
-  const FollowListWrapper({Key? key, this.user}) : super(key: key);
+  const FollowListWrapper({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -9,9 +9,7 @@ import 'package:tweety_mobile/widgets/list_tiles/settings_list_tile.dart';
 class AccountSettingsScreen extends StatefulWidget {
   final User user;
 
-  AccountSettingsScreen({Key? key, required this.user})
-      : assert(user != null),
-        super(key: key);
+  AccountSettingsScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   _AccountSettingsScreenState createState() => _AccountSettingsScreenState();
@@ -24,7 +22,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(
-          color: Theme.of(context).appBarTheme.iconTheme.color,
+          color: Theme.of(context).appBarTheme.iconTheme!.color,
         ),
         title: Hero(
           tag: 'settings__account',
