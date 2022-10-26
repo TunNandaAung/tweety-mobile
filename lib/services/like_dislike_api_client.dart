@@ -9,7 +9,7 @@ class LikeDislikeApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  LikeDislikeApiClient({http.Client httpClient})
+  LikeDislikeApiClient({http.Client? httpClient})
       : httpClient = httpClient ?? http.Client();
 
   Future<LikeDislike> like(int id, String subject) async {
@@ -18,7 +18,7 @@ class LikeDislikeApiClient {
 
     final response = await this.httpClient.post(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
 
     if (response.statusCode != 200) {
@@ -36,7 +36,7 @@ class LikeDislikeApiClient {
 
     final response = await this.httpClient.delete(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
 
     if (response.statusCode != 200) {

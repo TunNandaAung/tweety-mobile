@@ -19,7 +19,11 @@ class TweetReplyForm extends StatefulWidget {
   final bool shouldDisplayTweet;
 
   TweetReplyForm(
-      {Key key, this.onSave, this.isReply, this.owner, this.shouldDisplayTweet})
+      {Key? key,
+      this.onSave,
+      this.isReply,
+      this.owner,
+      this.shouldDisplayTweet})
       : super(key: key);
 
   @override

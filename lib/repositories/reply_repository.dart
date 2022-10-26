@@ -7,28 +7,29 @@ import 'package:tweety_mobile/services/reply_api_client.dart';
 class ReplyRepository {
   final ReplyApiClient replyApiClient;
 
-  ReplyRepository({ReplyApiClient replyApiClient})
+  ReplyRepository({ReplyApiClient? replyApiClient})
       : replyApiClient = replyApiClient ?? ReplyApiClient();
 
-  Future<ReplyPaginator> getReplies({int tweetID, int pageNumber}) async {
+  Future<ReplyPaginator> getReplies(
+      {required int tweetID, required int pageNumber}) async {
     return replyApiClient.fetchReplies(tweetID, pageNumber);
   }
 
-  Future<Reply> getReply({int replyID}) async {
+  Future<Reply> getReply({required int replyID}) async {
     return replyApiClient.fetchReply(replyID);
   }
 
   Future<ReplyPaginator> getChildrenReplies(
-      {int parentID, int pageNumber}) async {
+      {required int parentID, required int pageNumber}) async {
     return replyApiClient.fetchChildrenReplies(parentID, pageNumber);
   }
 
-  Future<Reply> addReply(int tweetID, String body, {File image}) async {
+  Future<Reply> addReply(int tweetID, String body, {File? image}) async {
     return replyApiClient.addReply(tweetID, body, image: image);
   }
 
   Future<Reply> addChildren(int tweetID, String body,
-      {File image, int parentID}) async {
+      {File? image, int? parentID}) async {
     return replyApiClient.addReply(tweetID, body,
         image: image, parentID: parentID);
   }
@@ -38,7 +39,7 @@ class ReplyRepository {
   }
 
   Future<ReplyPaginator> getUserReplies(
-      {String username, int pageNumber}) async {
+      {required String username, required int pageNumber}) async {
     return replyApiClient.fetchUserReplies(username, pageNumber);
   }
 }

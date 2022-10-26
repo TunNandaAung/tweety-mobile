@@ -30,6 +30,6 @@ Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
       'id': instance.id,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
-      'messages': instance.messages,
+      'messages': instance.toString(),
       'participants': instance.participants,
     };

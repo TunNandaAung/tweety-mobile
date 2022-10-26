@@ -21,5 +21,5 @@ Map<String, dynamic> _$MessagePaginatorToJson(MessagePaginator instance) =>
     <String, dynamic>{
       'current_page': instance.currentPage,
       'last_page': instance.lastPage,
-      'data': instance.messages,
+      'data': instance.toString(),
     };

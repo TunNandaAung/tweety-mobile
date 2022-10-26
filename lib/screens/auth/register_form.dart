@@ -11,7 +11,7 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  RegisterBloc _registerBloc;
+  late RegisterBloc _registerBloc;
 
   bool isButtonEnabled(RegisterState state) {
     return state is! RegisterLoading;
@@ -23,11 +23,11 @@ class _RegisterFormState extends State<RegisterForm> {
   bool _isPasswordHidden = true;
   bool _isConfirmPasswordHidden = true;
 
-  String _name;
-  String _username;
-  String _email;
-  String _password;
-  String _passwordConfirmation;
+  late String _name;
+  late String _username;
+  late String _email;
+  late String _password;
+  late String _passwordConfirmation;
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _RegisterFormState extends State<RegisterForm> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0.0,
           iconTheme: IconThemeData(
-            color: Theme.of(context).appBarTheme.iconTheme.color,
+            color: Theme.of(context).appBarTheme.iconTheme!.color,
           ),
           title: Text(
             'Register',
@@ -155,11 +155,11 @@ class _RegisterFormState extends State<RegisterForm> {
                             ),
                           ),
                           validator: (val) {
-                            return val.trim().isEmpty
+                            return val!.trim().isEmpty
                                 ? 'Name cannot be empty'
                                 : null;
                           },
-                          onSaved: (value) => _name = value,
+                          onSaved: (value) => _name = value!,
                         ),
                         SizedBox(height: 20.0),
                         Text(
@@ -193,11 +193,11 @@ class _RegisterFormState extends State<RegisterForm> {
                             ),
                           ),
                           validator: (val) {
-                            return val.trim().isEmpty
+                            return val!.trim().isEmpty
                                 ? 'username cannot be empty'
                                 : null;
                           },
-                          onSaved: (value) => _username = value,
+                          onSaved: (value) => _username = value!,
                         ),
                         SizedBox(height: 20.0),
                         Text(
@@ -231,11 +231,11 @@ class _RegisterFormState extends State<RegisterForm> {
                               ),
                               hintText: 'you@example.com'),
                           validator: (val) {
-                            return !Validators.isValidEmail(val)
+                            return !Validators.isValidEmail(val!)
                                 ? 'Invalid email.'
                                 : null;
                           },
-                          onSaved: (value) => _email = value,
+                          onSaved: (value) => _email = value!,
                         ),
                         SizedBox(height: 20.0),
                         Text(
@@ -282,11 +282,11 @@ class _RegisterFormState extends State<RegisterForm> {
                               hintText: '********'),
                           obscureText: _isPasswordHidden,
                           validator: (val) {
-                            return val.trim().isEmpty
+                            return val!.trim().isEmpty
                                 ? 'Password cannot be empty.'
                                 : null;
                           },
-                          onSaved: (value) => _password = value,
+                          onSaved: (value) => _password = value!,
                         ),
                         SizedBox(height: 20.0),
                         Text(
@@ -330,14 +330,14 @@ class _RegisterFormState extends State<RegisterForm> {
                               hintText: 'Password Confirmation'),
                           obscureText: _isConfirmPasswordHidden,
                           validator: (val) {
-                            if (val.trim().isEmpty) {
+                            if (val!.trim().isEmpty) {
                               return 'Password confirmation cannot be empty';
-                            } else if (val != passKey.currentState.value) {
+                            } else if (val != passKey.currentState!.value) {
                               return 'Password confirmation does not match.';
                             } else
                               return null;
                           },
-                          onSaved: (value) => _passwordConfirmation = value,
+                          onSaved: (value) => _passwordConfirmation = value!,
                         ),
                       ],
                     ),
@@ -373,8 +373,8 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   void _onFormSubmitted() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
 
       _registerBloc.add(
         Submitted(

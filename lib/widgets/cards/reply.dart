@@ -14,16 +14,16 @@ import 'package:tweety_mobile/widgets/buttons/add_children_reply_button.dart';
 class ReplyWidget extends StatefulWidget {
   final Reply reply;
   final Tweet tweet;
-  final Reply replyingTo;
+  final Reply? replyingTo;
   final bool isProfileReply;
 
-  const ReplyWidget(
-      {Key key,
-      @required this.reply,
-      this.tweet,
-      this.replyingTo,
-      this.isProfileReply = false})
-      : super(key: key);
+  const ReplyWidget({
+    Key? key,
+    required this.reply,
+    required this.tweet,
+    this.replyingTo,
+    this.isProfileReply = false,
+  }) : super(key: key);
 
   @override
   _ReplyWidgetState createState() => _ReplyWidgetState();
@@ -117,16 +117,16 @@ class _ReplyWidgetState extends State<ReplyWidget> {
               ? Text(
                   widget.replyingTo != null
                       ? 'Replying to @' +
-                          widget.replyingTo.owner.username +
+                          widget.replyingTo!.owner.username +
                           "reply"
                       : 'Replying to @' + widget.tweet.user.username + " tweet",
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
+                      .bodyText2!
                       .copyWith(color: Theme.of(context).primaryColor))
               : Container(),
           widget.replyingTo != null && widget.isProfileReply
-              ? _parentReply(reply: widget.replyingTo)
+              ? _parentReply(reply: widget.replyingTo!)
               : Container(),
           ListTile(
             contentPadding: EdgeInsets.all(8.0),
@@ -268,7 +268,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
     );
   }
 
-  Widget _parentReply({Reply reply}) {
+  Widget _parentReply({required Reply reply}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

@@ -18,8 +18,7 @@ class RegisterError extends RegisterState {}
 class RegisterFailureMessage extends RegisterState {
   final String errorMessage;
 
-  const RegisterFailureMessage({@required this.errorMessage})
-      : assert(errorMessage != null);
+  const RegisterFailureMessage({required this.errorMessage});
 
   @override
   List<Object> get props => [errorMessage];

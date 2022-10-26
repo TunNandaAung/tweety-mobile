@@ -10,7 +10,7 @@ abstract class AuthProfileState extends Equatable {
 class AvatarLoaded extends AuthProfileState {
   final String avatar;
 
-  const AvatarLoaded({@required this.avatar});
+  const AvatarLoaded({required this.avatar});
 
   @override
   List<Object> get props => [avatar];
@@ -23,7 +23,7 @@ class AuthProfileLoading extends AuthProfileState {}
 class AuthProfileLoaded extends AuthProfileState {
   final User user;
 
-  const AuthProfileLoaded({@required this.user}) : assert(user != null);
+  const AuthProfileLoaded({required this.user});
 
   @override
   List<Object> get props => [user];
@@ -34,7 +34,7 @@ class AuthProfileError extends AuthProfileState {}
 class AuthProfileInfoUpdateSuccess extends AuthProfileState {
   final User user;
 
-  const AuthProfileInfoUpdateSuccess({this.user}) : assert(user != null);
+  const AuthProfileInfoUpdateSuccess({required this.user});
 
   @override
   List<Object> get props => [user];
@@ -51,8 +51,7 @@ class AuthProfilePasswordUpdateSuccess extends AuthProfileState {}
 class AuthProfileErrorMessage extends AuthProfileState {
   final String errorMessage;
 
-  const AuthProfileErrorMessage({@required this.errorMessage})
-      : assert(errorMessage != null);
+  const AuthProfileErrorMessage({required this.errorMessage});
 
   @override
   List<Object> get props => [errorMessage];

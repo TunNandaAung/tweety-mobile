@@ -8,7 +8,7 @@ class FollowUser extends FollowEvent {
   final User user;
 
   const FollowUser({
-    @required this.user,
+    required this.user,
   });
 
   @override
@@ -24,7 +24,7 @@ class UnfollowUser extends FollowEvent {
   final User user;
 
   const UnfollowUser({
-    @required this.user,
+    required this.user,
   });
 
   @override

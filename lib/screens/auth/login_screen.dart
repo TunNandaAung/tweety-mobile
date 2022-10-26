@@ -7,7 +7,7 @@ import 'package:tweety_mobile/screens/auth/login_form.dart';
 class LoginScreen extends StatelessWidget {
   final UserRepository _userRepository;
 
-  LoginScreen({Key key, @required UserRepository userRepository})
+  LoginScreen({Key? key, required UserRepository userRepository})
       : assert(userRepository != null),
         _userRepository = userRepository,
         super(key: key);

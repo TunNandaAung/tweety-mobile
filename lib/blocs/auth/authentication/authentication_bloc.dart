@@ -11,7 +11,8 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final UserRepository userRepository;
 
-  AuthenticationBloc({this.userRepository}) : super(AuthenticationInitial()) {
+  AuthenticationBloc({required this.userRepository})
+      : super(AuthenticationInitial()) {
     on<AuthenticationStarted>(_onAuthenticationStarted);
     on<AuthenticationLoggedIn>(_onAuthenticationLoggedIn);
     on<AuthenticationLoggedOut>(_onAuthenticationLoggedOut);

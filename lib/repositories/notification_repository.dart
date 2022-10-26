@@ -4,7 +4,7 @@ import 'package:tweety_mobile/services/notification_api_client.dart';
 class NotificationRepository {
   final NotificationApiClient notificationApiClient;
 
-  NotificationRepository({NotificationApiClient notificationApiClient})
+  NotificationRepository({NotificationApiClient? notificationApiClient})
       : notificationApiClient =
             notificationApiClient ?? NotificationApiClient();
 

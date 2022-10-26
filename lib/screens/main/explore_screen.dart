@@ -15,7 +15,7 @@ import 'package:tweety_mobile/widgets/cards/user_card.dart';
 class ExploreScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  ExploreScreen({Key key, this.scaffoldKey}) : super(key: key);
+  ExploreScreen({Key? key, required this.scaffoldKey}) : super(key: key);
 
   @override
   _ExploreScreenState createState() => _ExploreScreenState();
@@ -23,7 +23,7 @@ class ExploreScreen extends StatefulWidget {
 
 class _ExploreScreenState extends State<ExploreScreen> {
   final _scrollController = ScrollController();
-  Completer<void> _exploreRefreshCompleter;
+  late Completer<void> _exploreRefreshCompleter;
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       body: BlocListener<ExploreBloc, ExploreState>(
         listener: (context, state) {
           if (state is ExploreUserLoaded) {
-            _exploreRefreshCompleter?.complete();
+            _exploreRefreshCompleter.complete();
             _exploreRefreshCompleter = Completer();
           }
         },
@@ -73,14 +73,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 elevation: 20.0,
                 floating: true,
                 iconTheme: IconThemeData(
-                  color: Theme.of(context).appBarTheme.iconTheme.color,
+                  color: Theme.of(context).appBarTheme.iconTheme!.color,
                 ),
                 leading: AvatarButton(
                   scaffoldKey: widget.scaffoldKey,
                 ),
                 title: InkWell(
                   onTap: () async {
-                    User selected = await showSearch<User>(
+                    User? selected = await showSearch<User?>(
                       context: context,
                       delegate: SearchScreen(context.read<UserSearchBloc>(),
                           context.read<TweetSearchBloc>()),
@@ -120,7 +120,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     'Explore Tweety',
                     style: Theme.of(context)
                         .textTheme
-                        .headline5
+                        .headline5!
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),

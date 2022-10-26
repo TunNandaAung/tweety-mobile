@@ -22,8 +22,11 @@ import 'package:tweety_mobile/widgets/cards/tweet_card.dart';
 class ProfileScreen extends StatefulWidget {
   final String username;
   final ReplyRepository replyRepository;
-  const ProfileScreen({Key key, this.username, this.replyRepository})
-      : super(key: key);
+  const ProfileScreen({
+    Key? key,
+    required this.username,
+    required this.replyRepository,
+  }) : super(key: key);
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -310,7 +313,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
+                            .headline5!
                             .copyWith(fontWeight: FontWeight.bold),
                       ));
                     }
@@ -377,7 +380,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
+                            .headline5!
                             .copyWith(fontWeight: FontWeight.bold),
                       ));
                     }
@@ -441,7 +444,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
   final double size;
   final TabController controller;
 
-  TweetyTabs(this.size, {@required this.controller});
+  TweetyTabs(this.size, {required this.controller});
 
   @override
   Widget build(
@@ -491,7 +494,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
 class TweetyHeader extends StatelessWidget {
   final User user;
 
-  const TweetyHeader({Key key, this.user}) : super(key: key);
+  const TweetyHeader({Key? key, this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -597,9 +600,10 @@ class Tweet extends StatelessWidget {
 
 class TweetyAvatar extends StatelessWidget {
   final double size;
-  final String avatar;
+  final String? avatar;
 
-  const TweetyAvatar({Key key, this.size, this.avatar}) : super(key: key);
+  const TweetyAvatar({Key? key, required this.size, this.avatar})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -628,6 +632,7 @@ class TweetyAvatar extends StatelessWidget {
               backgroundColor: Theme.of(context).cardColor,
               backgroundImage: avatar == null
                   ? AssetImage("assets/images/twitter_flutter_logo.jpg")
+                      as ImageProvider
                   : NetworkImage(avatar),
             ),
           ),
@@ -639,7 +644,7 @@ class TweetyAvatar extends StatelessWidget {
 
 class EditProfileButton extends StatelessWidget {
   final User user;
-  const EditProfileButton({Key key, @required this.user}) : super(key: key);
+  const EditProfileButton({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -669,7 +674,7 @@ class EditProfileButton extends StatelessWidget {
         ),
         child: Text(
           'Edit Profile',
-          style: Theme.of(context).textTheme.button.copyWith(
+          style: Theme.of(context).textTheme.button!.copyWith(
                 color: Theme.of(context).primaryColor,
               ),
         ),

@@ -12,7 +12,7 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UserRepository userRepository;
 
-  ProfileBloc({this.userRepository}) : super(ProfileInitial()) {
+  ProfileBloc({required this.userRepository}) : super(ProfileInitial()) {
     on<FetchProfile>(_onFetchProfileToState);
     on<RefreshProfile>(_onRefreshProfileToState);
   }

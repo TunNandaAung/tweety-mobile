@@ -12,7 +12,8 @@ part 'children_reply_state.dart';
 class ChildrenReplyBloc extends Bloc<ChildrenReplyEvent, ChildrenReplyState> {
   final ReplyRepository replyRepository;
 
-  ChildrenReplyBloc({this.replyRepository}) : super(ChildrenReplyEmpty()) {
+  ChildrenReplyBloc({required this.replyRepository})
+      : super(ChildrenReplyEmpty()) {
     on<FetchChildrenReply>(_onFetchChildrenReply);
 
     on<AddChildrenReply>(_onAddChildrenReply);
@@ -72,8 +73,12 @@ class ChildrenReplyBloc extends Bloc<ChildrenReplyEvent, ChildrenReplyState> {
       AddChildrenReply event, Emitter<ChildrenReplyState> emit) async {
     final currentState = state;
     try {
-      final reply = await replyRepository.addChildren(event.tweetID, event.body,
-          image: event.image, parentID: event.parentID);
+      final reply = await replyRepository.addChildren(
+        event.tweetID,
+        event.body,
+        image: event.image,
+        parentID: event.parentID,
+      );
       if (currentState is ChildrenReplyLoaded) {
         final List<Reply> updatedReplies =
             List.from(currentState.childrenReplies)..insert(0, reply);

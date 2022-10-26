@@ -19,7 +19,8 @@ class ChatScreen extends StatefulWidget {
   final User chatUser;
   final String chatId;
 
-  ChatScreen({Key key, this.chatUser, this.chatId}) : super(key: key);
+  ChatScreen({Key? key, required this.chatUser, required this.chatId})
+      : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -31,15 +32,15 @@ class _ChatScreenState extends State<ChatScreen> {
 
   bool isPopulated = false;
   bool isTyping = false;
-  Timer typingTimer;
+  late Timer typingTimer;
 
   bool isButtonEnabled() {
     return isPopulated;
   }
 
-  MessageBloc _messageBloc;
-  PusherClient pusherClient;
-  Echo echo;
+  late MessageBloc _messageBloc;
+  late PusherClient pusherClient;
+  late Echo echo;
 
   @override
   void initState() {
@@ -71,7 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _setUpEcho() {
     final token = Prefer.prefs.getString('token');
 
-    pusherClient = getPusherClient(token);
+    pusherClient = getPusherClient(token!);
 
     echo = echoSetup(token, pusherClient);
 
@@ -247,18 +248,18 @@ class _ChatScreenState extends State<ChatScreen> {
                           );
                         }
                         if (state is MessageLoaded) {
-                          return state.messages.length > 0
+                          return state.toString().length > 0
                               ? ListView.builder(
                                   reverse: true,
                                   padding: EdgeInsets.only(
                                       top: 15.0, left: 4.0, right: 4.0),
                                   itemCount: state.hasReachedMax
-                                      ? state.messages.length
-                                      : state.messages.length + 1,
+                                      ? state.toString().length
+                                      : state.toString().length + 1,
                                   controller: _scrollController,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return index >= state.messages.length
+                                    return index >= state.toString().length
                                         ? LoadingIndicator()
                                         : MessageCard(
                                             message: state.messages[index]);
@@ -299,7 +300,7 @@ class _ChatScreenState extends State<ChatScreen> {
           textAlign: TextAlign.center,
           style: Theme.of(context)
               .textTheme
-              .headline5
+              .headline5!
               .copyWith(fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 5.0),
@@ -316,7 +317,7 @@ class _ChatScreenState extends State<ChatScreen> {
 class MessageCard extends StatefulWidget {
   final Message message;
 
-  const MessageCard({Key key, @required this.message}) : super(key: key);
+  const MessageCard({Key? key, required this.message}) : super(key: key);
   @override
   _MessageCardState createState() => _MessageCardState();
 }
@@ -354,7 +355,7 @@ class _MessageCardState extends State<MessageCard> {
             children: <Widget>[
               SizedBox(height: 5.0),
               Text(
-                widget.message.message,
+                widget.message.toString(),
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             ],

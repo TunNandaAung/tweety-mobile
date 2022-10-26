@@ -7,7 +7,7 @@ abstract class FollowersListEvent extends Equatable {
 class FetchFollowersList extends FollowersListEvent {
   final User user;
 
-  FetchFollowersList({@required this.user}) : assert(user != null);
+  FetchFollowersList({required this.user});
 
   @override
   List<Object> get props => [];
@@ -16,7 +16,7 @@ class FetchFollowersList extends FollowersListEvent {
 class RefreshFollowersList extends FollowersListEvent {
   final User user;
 
-  RefreshFollowersList({@required this.user}) : assert(user != null);
+  RefreshFollowersList({required this.user});
 
   @override
   List<Object> get props => [];

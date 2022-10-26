@@ -7,7 +7,7 @@ import 'package:tweety_mobile/screens/tweet_reply_form.dart';
 class AddChildrenReplyScreen extends StatefulWidget {
   final int tweetID;
   final Reply parent;
-  AddChildrenReplyScreen({Key key, @required this.tweetID, this.parent})
+  AddChildrenReplyScreen({Key? key, required this.tweetID, this.parent})
       : super(key: key);
 
   @override

@@ -9,8 +9,8 @@ class Like extends LikeDislikeEvent {
   final String subject;
 
   const Like({
-    @required this.tweetID,
-    @required this.subject,
+    required this.tweetID,
+    required this.subject,
   });
   @override
   List<Object> get props => [tweetID];
@@ -21,8 +21,8 @@ class Dislike extends LikeDislikeEvent {
   final String subject;
 
   const Dislike({
-    @required this.tweetID,
-    @required this.subject,
+    required this.tweetID,
+    required this.subject,
   });
   @override
   List<Object> get props => [tweetID];

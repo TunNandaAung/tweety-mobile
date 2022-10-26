@@ -12,7 +12,7 @@ class ChatApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  ChatApiClient({http.Client httpClient})
+  ChatApiClient({http.Client? httpClient})
       : httpClient = httpClient ?? http.Client();
 
   Future<ChatPaginator> fetchChatList(int pageNumber) async {
@@ -22,7 +22,7 @@ class ChatApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     if (response.statusCode != 200) {
       throw Exception('Error getting chat list.');
@@ -40,7 +40,7 @@ class ChatApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {
@@ -59,7 +59,7 @@ class ChatApiClient {
 
     final response = await this.httpClient.post(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
           body: jsonEncode(
             <String, String>{'message': message},
           ),
@@ -79,7 +79,7 @@ class ChatApiClient {
 
     await this.httpClient.patch(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
   }
 
@@ -90,7 +90,7 @@ class ChatApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response);
     if (response.statusCode != 200) {

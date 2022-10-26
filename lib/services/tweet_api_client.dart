@@ -16,7 +16,7 @@ class TweetApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  TweetApiClient({http.Client httpClient})
+  TweetApiClient({http.Client? httpClient})
       : httpClient = httpClient ?? http.Client();
 
   Future<TweetPaginator> fetchTweets(int pageNumber) async {
@@ -26,7 +26,7 @@ class TweetApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {
@@ -47,7 +47,7 @@ class TweetApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {
@@ -59,7 +59,7 @@ class TweetApiClient {
     return TweetPaginator.fromJson(tweetsJson);
   }
 
-  Future<Tweet> publishTweet(String body, {File image}) async {
+  Future<Tweet> publishTweet(String body, {File? image}) async {
     final url = '$baseUrl/tweets';
 
     final token = Prefer.prefs.getString('token');
@@ -105,7 +105,7 @@ class TweetApiClient {
 
     final response = await this.httpClient.delete(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {

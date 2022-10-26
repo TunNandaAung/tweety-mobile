@@ -17,7 +17,7 @@ import 'package:tweety_mobile/widgets/nav/nav_drawer.dart';
 import 'package:tweety_mobile/widgets/buttons/notifications_button.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -25,13 +25,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
+  late AnimationController _animationController;
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
 
   int _currentIndex = 0;
 
-  PageController _pageController;
+  late PageController _pageController;
 
   @override
   void initState() {

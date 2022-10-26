@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
 import 'package:tweety_mobile/utils/helpers.dart';
@@ -14,7 +13,7 @@ const throttleDuration = Duration(milliseconds: 300);
 
 class MentionBloc extends Bloc<MentionEvent, MentionState> {
   final UserRepository userRepository;
-  MentionBloc({this.userRepository}) : super(MentionInitial()) {
+  MentionBloc({required this.userRepository}) : super(MentionInitial()) {
     on<FindMentionedUser>(
       _onFindMentionedUser,
       transformer: throttleDroppable(throttleDuration),

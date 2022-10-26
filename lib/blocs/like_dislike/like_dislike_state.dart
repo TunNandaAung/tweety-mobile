@@ -11,7 +11,7 @@ class LikeDislikeInitial extends LikeDislikeState {}
 class Liked extends LikeDislikeState {
   final LikeDislike like;
 
-  Liked({@required this.like});
+  Liked({required this.like});
 
   @override
   List<Object> get props => [like];
@@ -20,7 +20,7 @@ class Liked extends LikeDislikeState {
 class Disliked extends LikeDislikeState {
   final LikeDislike dislike;
 
-  Disliked({@required this.dislike});
+  Disliked({required this.dislike});
 
   @override
   List<Object> get props => [dislike];

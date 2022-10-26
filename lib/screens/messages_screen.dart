@@ -15,7 +15,7 @@ import 'package:tweety_mobile/widgets/refresh.dart';
 class MessagesScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  MessagesScreen({Key key, @required this.scaffoldKey}) : super(key: key);
+  MessagesScreen({Key? key, required this.scaffoldKey}) : super(key: key);
 
   @override
   _MessagesScreenState createState() => _MessagesScreenState();
@@ -103,7 +103,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.bold),
                               ));
                             }
@@ -197,8 +197,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: Text(
                         isCurrentUser(message.sender?.id)
-                            ? 'You: ' + message.message
-                            : '' + message.message,
+                            ? 'You: ' + message.toString()
+                            : '' + message.toString(),
                         style: Theme.of(context).textTheme.bodyText2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -212,7 +212,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     children: <Widget>[
                       Text(
                         timeago.format(message.createdAt),
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                       ),

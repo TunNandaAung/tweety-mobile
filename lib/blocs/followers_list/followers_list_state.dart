@@ -17,13 +17,12 @@ class FollowersListLoaded extends FollowersListState {
   final int pageNumber;
 
   const FollowersListLoaded(
-      {@required this.users, this.hasReachedMax, this.pageNumber = 1})
-      : assert(users != null);
+      {required this.users, required this.hasReachedMax, this.pageNumber = 1});
 
   FollowersListLoaded copyWith({
-    List<User> users,
-    bool hasReachedMax,
-    int pageNumber,
+    List<User>? users,
+    bool? hasReachedMax,
+    int? pageNumber,
   }) {
     return FollowersListLoaded(
       users: users ?? this.users,

@@ -13,7 +13,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   // final PushNotificationRepository pushNotificationRepository;
   final NotificationRepository notificationRepository;
 
-  NotificationBloc({this.notificationRepository})
+  NotificationBloc({required this.notificationRepository})
       : super(NotificationInitial()) {
     on<FetchNotificationsCount>(_onFetchNotificationsCount);
     on<ResetNotificationsCount>(_onResetNotificationsCount);

@@ -15,11 +15,11 @@ class Submitted extends RegisterEvent {
   final String passwordConfirmation;
 
   const Submitted({
-    @required this.name,
-    @required this.username,
-    @required this.email,
-    @required this.password,
-    @required this.passwordConfirmation,
+    required this.name,
+    required this.username,
+    required this.email,
+    required this.password,
+    required this.passwordConfirmation,
   });
 
   @override
@@ -36,7 +36,7 @@ class UploadRegisterImages extends RegisterEvent {
   final File avatar;
   final File banner;
 
-  const UploadRegisterImages({@required this.avatar, @required this.banner});
+  const UploadRegisterImages({required this.avatar, required this.banner});
 
   @override
   List<Object> get props => [avatar, banner];

@@ -18,8 +18,8 @@ class ChatRoomState extends Equatable {
   const ChatRoomState.failure() : this._(status: ChatRoomStatus.failure);
 
   final ChatRoomStatus status;
-  final Chat chat;
+  final Chat? chat;
 
   @override
-  List<Object> get props => [status, chat];
+  List<Object> get props => [status, chat!];
 }

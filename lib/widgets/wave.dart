@@ -7,9 +7,9 @@ class Wave extends StatefulWidget {
   final Color color;
 
   Wave({
-    this.size,
-    this.yOffset,
-    this.color,
+    required this.size,
+    required this.yOffset,
+    required this.color,
   });
 
   @override
@@ -17,7 +17,7 @@ class Wave extends StatefulWidget {
 }
 
 class _WaveState extends State<Wave> with TickerProviderStateMixin {
-  AnimationController animationController;
+  late AnimationController animationController;
   List<Offset> wavePoints = [];
 
   @override
@@ -77,7 +77,7 @@ class _WaveState extends State<Wave> with TickerProviderStateMixin {
 
 class ClipperWidget extends CustomClipper<Path> {
   final List<Offset> waveList;
-  ClipperWidget({this.waveList});
+  ClipperWidget({required this.waveList});
 
   @override
   getClip(Size size) {

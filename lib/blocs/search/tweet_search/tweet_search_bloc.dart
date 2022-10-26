@@ -15,7 +15,7 @@ const tweetSearchThrottleDuration = Duration(milliseconds: 300);
 class TweetSearchBloc extends Bloc<TweetSearchEvent, TweetSearchState> {
   final SearchRepository searchRepository;
 
-  TweetSearchBloc({@required this.searchRepository})
+  TweetSearchBloc({required this.searchRepository})
       : super(TweetSearchState.initial()) {
     on<TweetSearchEvent>(
       _onTweetSearch,

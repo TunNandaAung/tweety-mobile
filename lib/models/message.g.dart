@@ -30,7 +30,7 @@ Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'id': instance.id,
       'user_id': instance.userId,
       'chat_id': instance.chatId,
-      'message': instance.message,
+      'message': instance.toString(),
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
       'read_at': instance.readAt?.toIso8601String(),

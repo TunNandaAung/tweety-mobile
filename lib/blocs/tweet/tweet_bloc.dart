@@ -16,7 +16,7 @@ const tweetThrottleDuration = Duration(milliseconds: 500);
 class TweetBloc extends Bloc<TweetEvent, TweetState> {
   final TweetRepository tweetRepository;
 
-  TweetBloc({@required this.tweetRepository}) : super(TweetEmpty()) {
+  TweetBloc({required this.tweetRepository}) : super(TweetEmpty()) {
     on<FetchTweet>(
       _onFetchTweet,
       transformer: throttleDroppable(tweetThrottleDuration),

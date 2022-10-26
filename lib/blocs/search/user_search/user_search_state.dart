@@ -6,9 +6,9 @@ class UserSearchState {
   final bool hasError;
 
   const UserSearchState({
-    this.isLoading,
-    this.users,
-    this.hasError,
+    required this.isLoading,
+    required this.users,
+    required this.hasError,
   });
 
   factory UserSearchState.initial() {

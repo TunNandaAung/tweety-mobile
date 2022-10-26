@@ -20,7 +20,7 @@ import 'package:tweety_mobile/widgets/modals/tweet_actions_modal.dart';
 class TweetReplyScreen extends StatefulWidget {
   final Reply reply;
   final ReplyRepository replyRepository;
-  const TweetReplyScreen({Key key, @required this.reply, this.replyRepository})
+  const TweetReplyScreen({Key? key, required this.reply, this.replyRepository})
       : super(key: key);
 
   @override

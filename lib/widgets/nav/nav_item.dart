@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-Widget navigationItem(context,
-    {Color boxColor,
-    String title,
-    TextStyle textStyle,
-    IconData icon,
-    Color iconColor,
-    VoidCallback onTap}) {
+Widget navigationItem(
+  context, {
+  required Color boxColor,
+  required String title,
+  required TextStyle textStyle,
+  required IconData icon,
+  required Color iconColor,
+  required VoidCallback onTap,
+}) {
   return InkWell(
     onTap: onTap,
     child: Container(
@@ -32,7 +34,7 @@ Widget navigationItem(context,
             Text(
               title,
               style:
-                  Theme.of(context).textTheme.caption.copyWith(fontSize: 18.0),
+                  Theme.of(context).textTheme.caption!.copyWith(fontSize: 18.0),
             )
           ],
         ),

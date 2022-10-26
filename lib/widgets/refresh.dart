@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class Refresh extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
-  const Refresh({Key key, this.title, this.onPressed}) : super(key: key);
+  const Refresh({Key? key, required this.title, required this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -15,10 +15,10 @@ class UserApiClient {
   static final username = Prefer.prefs.getString('username');
   final http.Client httpClient;
 
-  UserApiClient({http.Client httpClient})
+  UserApiClient({http.Client? httpClient})
       : httpClient = httpClient ?? http.Client();
 
-  Future<Auth> login({String email, String password}) async {
+  Future<Auth> login({required String email, required String password}) async {
     final loginUrl = '$baseUrl/login';
     final loginResponse = await this.httpClient.post(
           Uri.parse(loginUrl),
@@ -60,12 +60,13 @@ class UserApiClient {
     }
   }
 
-  Future<Auth> register(
-      {String name,
-      String username,
-      String email,
-      String password,
-      String passwordConfirmation}) async {
+  Future<Auth> register({
+    required String name,
+    required String username,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
     final url = '$baseUrl/register';
 
     final response = await this.httpClient.post(
@@ -111,7 +112,7 @@ class UserApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     if (response.statusCode != 200) {
       throw Exception('Error fetching profile.');
@@ -129,7 +130,7 @@ class UserApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     if (response.statusCode != 200) {
       throw Exception('Error fetching profile.');
@@ -140,12 +141,13 @@ class UserApiClient {
     return User.fromJson(userJson);
   }
 
-  Future<User> editProfile(
-      {String name,
-      String username,
-      String description,
-      File avatar,
-      File banner}) async {
+  Future<User> editProfile({
+    required String name,
+    required String username,
+    required String description,
+    File? avatar,
+    File? banner,
+  }) async {
     final authusername = Prefer.prefs.getString('username');
 
     final token = Prefer.prefs.getString('token');
@@ -177,17 +179,18 @@ class UserApiClient {
     return User.fromJson(jsonDecode(_response.body)['data']);
   }
 
-  Future<String> updatePassword(
-      {String oldPassword,
-      String newPassword,
-      String newPasswordConfirmation}) async {
+  Future<String> updatePassword({
+    required String oldPassword,
+    required String newPassword,
+    required String newPasswordConfirmation,
+  }) async {
     final url = '$baseUrl/auth/password';
 
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.patch(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
           body: jsonEncode(
             <String, String>{
               'old_password': oldPassword,
@@ -212,14 +215,15 @@ class UserApiClient {
     return jsonDecode(response.body)['data'];
   }
 
-  Future<User> updateEmail({String password, String email}) async {
+  Future<User> updateEmail(
+      {required String password, required String email}) async {
     final url = '$baseUrl/auth/email';
 
     final token = Prefer.prefs.getString('token');
 
     final response = await this.httpClient.patch(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
           body: jsonEncode(
             <String, String>{
               'password': password,
@@ -277,7 +281,7 @@ class UserApiClient {
 
     final response = await this
         .httpClient
-        .get(Uri.parse(url), headers: requestHeaders(token));
+        .get(Uri.parse(url), headers: requestHeaders(token!));
     if (response.statusCode != 200) {
       print(response.body);
       throw Exception('Invalid Credentials');
@@ -294,7 +298,7 @@ class UserApiClient {
 
     final response = await this
         .httpClient
-        .get(Uri.parse(url), headers: requestHeaders(token));
+        .get(Uri.parse(url), headers: requestHeaders(token!));
 
     if (response.statusCode != 200) {
       print(response.body);
@@ -310,8 +314,8 @@ class UserApiClient {
       String name,
       String username,
       String description,
-      File avatar,
-      File banner,
+      File? avatar,
+      File? banner,
       String url,
       String method) async {
     final request = http.MultipartRequest('POST', Uri.parse(url));
@@ -351,7 +355,7 @@ class UserApiClient {
 
     final response = await this
         .httpClient
-        .get(Uri.parse(url), headers: requestHeaders(token));
+        .get(Uri.parse(url), headers: requestHeaders(token!));
 
     if (response.statusCode != 200) {
       print(response.body);
@@ -363,7 +367,7 @@ class UserApiClient {
     return usersJson.map((user) => User.fromJson(user)).toList();
   }
 
-  Future<void> uploadImages({File avatar, File banner}) async {
+  Future<void> uploadImages({File? avatar, File? banner}) async {
     final token = Prefer.prefs.getString('token');
 
     final url = '$baseUrl/profile-images';

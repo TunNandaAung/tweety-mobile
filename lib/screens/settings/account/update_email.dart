@@ -8,7 +8,7 @@ import 'package:tweety_mobile/widgets/loading_indicator.dart';
 class UpdateEmailScreen extends StatefulWidget {
   final User user;
 
-  UpdateEmailScreen({Key key, @required this.user})
+  UpdateEmailScreen({Key? key, required this.user})
       : assert(user != null),
         super(key: key);
 
@@ -167,7 +167,7 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                         hintText: 'Password'),
                                     obscureText: _isPasswordHidden,
                                     validator: (val) {
-                                      return val.trim().isEmpty
+                                      return val!.trim().isEmpty
                                           ? 'Password cannot be empty.'
                                           : null;
                                     },
@@ -274,8 +274,8 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
   }
 
   void _onFormSubmitted() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       context.read<AuthProfileBloc>().add(
             UpdateAuthProfileEmail(password: _password, email: _email),
           );

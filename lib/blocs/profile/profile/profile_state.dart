@@ -15,7 +15,7 @@ class ProfileLoading extends ProfileState {}
 class ProfileLoaded extends ProfileState {
   final User user;
 
-  const ProfileLoaded({@required this.user}) : assert(user != null);
+  const ProfileLoaded({required this.user}) : assert(user != null);
 
   @override
   List<Object> get props => [user];

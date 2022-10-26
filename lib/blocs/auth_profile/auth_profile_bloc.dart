@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
-import 'package:meta/meta.dart';
 
 part 'auth_profile_event.dart';
 part 'auth_profile_state.dart';
@@ -14,7 +13,7 @@ part 'auth_profile_state.dart';
 class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
   final UserRepository userRepository;
 
-  AuthProfileBloc({this.userRepository}) : super(AuthProfileEmpty()) {
+  AuthProfileBloc({required this.userRepository}) : super(AuthProfileEmpty()) {
     on<FetchAuthProfile>(_onFetchAuthProfile);
     on<RefreshAuthProfile>(_onRefreshAuthProfile);
     on<UpdateAuthProfileInfo>(_onUpdateAuthProfileInfo);
@@ -85,7 +84,7 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
 
       emit(AuthProfileInfoUpdateSuccess(user: user));
     } catch (e) {
-      emit(AuthProfileErrorMessage(errorMessage: e.message));
+      emit(AuthProfileErrorMessage(errorMessage: e.toString()));
     }
   }
 
@@ -99,7 +98,7 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
       Prefer.prefs.setString('token', token);
       emit(AuthProfilePasswordUpdateSuccess());
     } catch (e) {
-      emit(AuthProfileErrorMessage(errorMessage: e.message));
+      emit(AuthProfileErrorMessage(errorMessage: e.toString()));
     }
   }
 
@@ -111,7 +110,7 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
           await userRepository.updateEmail(event.password, event.email);
       emit(AuthProfileInfoUpdateSuccess(user: user));
     } catch (e) {
-      emit(AuthProfileErrorMessage(errorMessage: e.message));
+      emit(AuthProfileErrorMessage(errorMessage: e.toString()));
     }
   }
 
@@ -122,7 +121,7 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
       await userRepository.requestPasswordResetInfo(event.email);
       emit(ResetPasswordRequestSuccess());
     } catch (e) {
-      emit(AuthProfileErrorMessage(errorMessage: e.message));
+      emit(AuthProfileErrorMessage(errorMessage: e.toString()));
     }
   }
 

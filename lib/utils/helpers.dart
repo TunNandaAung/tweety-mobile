@@ -7,7 +7,8 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 Icon mapNotificationTypeToIcon(String type) {
-  Icon icon;
+  Icon icon = Icon(Icons.notifications, color: Color(0xFF4299E1));
+
   switch (type) {
     case "App\\Notifications\\YouWereFollowed":
       icon = Icon(Icons.person_add, color: Color(0xFF4299E1));
@@ -41,7 +42,7 @@ List<String> parseBody(String body) {
   var matches = exp.allMatches(body);
 
   for (var match in matches) {
-    body = body.replaceAll(match.group(0), match.group(1));
+    body = body.replaceAll(match.group(0)!, match.group(1)!);
   }
 
   List<String> stringList = body.split(" ");
@@ -72,12 +73,12 @@ String formatCount(int count) {
 }
 
 bool isCurrentUser(int userId) {
-  int currentUserId = Prefer.prefs.getInt('userID');
+  int currentUserId = Prefer.prefs.getInt('userID')!;
   return currentUserId == userId;
 }
 
 int authId() {
-  return Prefer.prefs.getInt('userID');
+  return Prefer.prefs.getInt('userID')!;
 }
 
 EventTransformer<E> throttleDroppable<E>(Duration duration) {

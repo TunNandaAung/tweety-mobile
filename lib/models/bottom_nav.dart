@@ -5,7 +5,11 @@ class BottomNav {
   final IconData defaultIcon;
   final IconData activeIcon;
 
-  BottomNav({this.name, this.defaultIcon, this.activeIcon});
+  BottomNav({
+    required this.name,
+    required this.defaultIcon,
+    required this.activeIcon,
+  });
 }
 
 List<BottomNav> bottomNavItems = [

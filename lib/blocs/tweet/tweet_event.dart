@@ -16,9 +16,9 @@ class RefreshTweet extends TweetEvent {
 
 class PublishTweet extends TweetEvent {
   final String body;
-  final File image;
+  final File? image;
 
-  const PublishTweet({@required this.body, this.image}) : assert(body != null);
+  const PublishTweet({required this.body, this.image});
 
   @override
   List<Object> get props => [];
@@ -28,7 +28,7 @@ class UpdateReplyCount extends TweetEvent {
   final int tweetID;
   final int count;
 
-  UpdateReplyCount({this.tweetID, this.count});
+  UpdateReplyCount({required this.tweetID, required this.count});
 
   @override
   List<Object> get props => [];
@@ -37,7 +37,7 @@ class UpdateReplyCount extends TweetEvent {
 class DeleteTweet extends TweetEvent {
   final int tweetID;
 
-  DeleteTweet({this.tweetID});
+  DeleteTweet({required this.tweetID});
 
   @override
   List<Object> get props => [];

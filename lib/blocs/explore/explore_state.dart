@@ -15,7 +15,7 @@ class ExploreError extends ExploreState {}
 class ExploreUserLoaded extends ExploreState {
   final List<User> users;
 
-  const ExploreUserLoaded({@required this.users});
+  const ExploreUserLoaded({required this.users});
 
   @override
   List<Object> get props => [users];

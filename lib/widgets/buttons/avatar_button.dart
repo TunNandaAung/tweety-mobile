@@ -4,7 +4,7 @@ import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 
 class AvatarButton extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
-  AvatarButton({Key key, this.scaffoldKey}) : super(key: key);
+  AvatarButton({Key? key, this.scaffoldKey}) : super(key: key);
 
   @override
   _AvatarButtonState createState() => _AvatarButtonState();

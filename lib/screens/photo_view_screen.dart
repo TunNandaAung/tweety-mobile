@@ -8,7 +8,7 @@ class PhotoViewScreen extends StatefulWidget {
   final ImageProvider imageProvider;
 
   PhotoViewScreen(
-      {Key key,
+      {Key? key,
       this.onTap,
       this.title = '',
       this.actionText = '',

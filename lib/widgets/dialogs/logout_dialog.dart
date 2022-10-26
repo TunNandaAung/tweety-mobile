@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/auth/authentication/authentication_bloc.dart';
 
-Future<void> logoutDialog(context, VoidCallback onPressed) {
+Future<void> logoutDialog(context, VoidCallback? onPressed) {
   return showModal<void>(
     context: context,
     configuration: FadeScaleTransitionConfiguration(),

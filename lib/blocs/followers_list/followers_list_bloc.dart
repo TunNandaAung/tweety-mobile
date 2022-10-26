@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/repositories/follow_repository.dart';
 
@@ -12,7 +11,8 @@ part 'followers_list_state.dart';
 class FollowersListBloc extends Bloc<FollowersListEvent, FollowersListState> {
   final FollowRepository followRepository;
 
-  FollowersListBloc({this.followRepository}) : super(FollowersListEmpty()) {
+  FollowersListBloc({required this.followRepository})
+      : super(FollowersListEmpty()) {
     on<FetchFollowersList>(_onFetchFollowersList);
     on<RefreshFollowersList>(_onRefreshFollowersList);
   }

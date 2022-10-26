@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
 import 'package:tweety_mobile/utils/helpers.dart';
@@ -15,7 +14,8 @@ const throttleDuration = Duration(milliseconds: 500);
 class ProfileReplyBloc extends Bloc<ProfileReplyEvent, ProfileReplyState> {
   final ReplyRepository replyRepository;
 
-  ProfileReplyBloc({this.replyRepository}) : super(ProfileReplyInitial()) {
+  ProfileReplyBloc({required this.replyRepository})
+      : super(ProfileReplyInitial()) {
     on<FetchProfileReply>(
       _onFetchProfileReply,
       transformer: throttleDroppable(throttleDuration),

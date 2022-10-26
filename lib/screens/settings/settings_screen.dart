@@ -7,7 +7,7 @@ import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/list_tiles/settings_list_tile.dart';
 
 class SettingsScreen extends StatefulWidget {
-  SettingsScreen({Key key}) : super(key: key);
+  SettingsScreen({Key? key}) : super(key: key);
 
   @override
   _SettingsScreenState createState() => _SettingsScreenState();

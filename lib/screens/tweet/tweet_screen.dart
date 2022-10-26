@@ -20,7 +20,9 @@ import 'package:tweety_mobile/widgets/modals/tweet_actions_modal.dart';
 class TweetScreen extends StatefulWidget {
   final Tweet tweet;
   final ReplyRepository replyRepository;
-  const TweetScreen({Key key, this.tweet, this.replyRepository})
+
+  const TweetScreen(
+      {Key? key, required this.tweet, required this.replyRepository})
       : super(key: key);
 
   @override
@@ -31,7 +33,7 @@ class _TweetScreenState extends State<TweetScreen> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   // ignore: close_sinks
-  ReplyBloc _replyBloc;
+  late ReplyBloc _replyBloc;
 
   @override
   void initState() {

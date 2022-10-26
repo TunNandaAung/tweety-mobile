@@ -7,7 +7,7 @@ abstract class ProfileTweetEvent extends Equatable {
 class FetchProfileTweet extends ProfileTweetEvent {
   final String username;
 
-  const FetchProfileTweet({@required this.username});
+  const FetchProfileTweet({required this.username});
 
   @override
   List<Object> get props => [];
@@ -16,7 +16,7 @@ class FetchProfileTweet extends ProfileTweetEvent {
 class RefreshProfileTweet extends ProfileTweetEvent {
   final String username;
 
-  const RefreshProfileTweet({@required this.username});
+  const RefreshProfileTweet({required this.username});
   @override
   List<Object> get props => [];
 }

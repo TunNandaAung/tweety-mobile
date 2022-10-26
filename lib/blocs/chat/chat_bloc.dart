@@ -13,7 +13,7 @@ const throttleDuration = Duration(milliseconds: 500);
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChatRepository chatRepository;
 
-  ChatBloc({this.chatRepository}) : super(const ChatState()) {
+  ChatBloc({required this.chatRepository}) : super(const ChatState()) {
     on<FetchChatList>(
       _onFetchChatList,
       transformer: throttleDroppable(throttleDuration),

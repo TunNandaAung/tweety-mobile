@@ -9,7 +9,7 @@ import 'package:tweety_mobile/services/reply_api_client.dart';
 
 class TweetWrapper extends StatelessWidget {
   final Tweet tweet;
-  const TweetWrapper({Key key, this.tweet}) : super(key: key);
+  const TweetWrapper({Key? key, this.tweet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

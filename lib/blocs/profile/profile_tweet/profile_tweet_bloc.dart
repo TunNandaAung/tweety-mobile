@@ -15,7 +15,7 @@ const throttleDuration = Duration(milliseconds: 500);
 class ProfileTweetBloc extends Bloc<ProfileTweetEvent, ProfileTweetState> {
   final TweetRepository tweetRepository;
 
-  ProfileTweetBloc({@required this.tweetRepository})
+  ProfileTweetBloc({required this.tweetRepository})
       : super(ProfileTweetInitial()) {
     on<FetchProfileTweet>(
       _onFetchProfileTweet,

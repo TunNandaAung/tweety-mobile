@@ -47,7 +47,7 @@ class ReplyActionsModal {
                               'Delete Reply',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption
+                                  .caption!
                                   .copyWith(color: Colors.red),
                             )
                           ],

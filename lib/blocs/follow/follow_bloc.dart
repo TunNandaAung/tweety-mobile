@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/repositories/follow_repository.dart';
 
@@ -12,7 +11,7 @@ part 'follow_state.dart';
 class FollowBloc extends Bloc<FollowEvent, FollowState> {
   final FollowRepository followRepository;
 
-  FollowBloc({this.followRepository}) : super(FollowInitial()) {
+  FollowBloc({required this.followRepository}) : super(FollowInitial()) {
     on<FollowUser>(_onFollowUser);
     on<UnfollowUser>(_onUnfollowUser);
   }

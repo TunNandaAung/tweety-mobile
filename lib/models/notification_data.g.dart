@@ -20,7 +20,7 @@ NotificationData _$NotificationDataFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$NotificationDataToJson(NotificationData instance) =>
     <String, dynamic>{
-      'message': instance.message,
+      'message': instance.toString(),
       'notifier': instance.notifier,
       'link': instance.link,
       'type': instance.type,

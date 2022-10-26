@@ -10,7 +10,7 @@ import 'package:tweety_mobile/services/reply_api_client.dart';
 class ReplyWrapper extends StatelessWidget {
   final Reply reply;
 
-  const ReplyWrapper({Key key, this.reply}) : super(key: key);
+  const ReplyWrapper({Key? key, this.reply}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final replyJson = ModalRoute.of(context).settings.arguments;

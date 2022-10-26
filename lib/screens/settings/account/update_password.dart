@@ -4,7 +4,7 @@ import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 
 class UpdatePasswordScreen extends StatefulWidget {
-  UpdatePasswordScreen({Key key}) : super(key: key);
+  UpdatePasswordScreen({Key? key}) : super(key: key);
 
   @override
   _UpdatePasswordScreenState createState() => _UpdatePasswordScreenState();
@@ -146,7 +146,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                       hintText: 'Current Password'),
                                   obscureText: _isCurrentPasswordHidden,
                                   validator: (val) {
-                                    return val.trim().isEmpty
+                                    return val!.trim().isEmpty
                                         ? 'Current password cannot be empty.'
                                         : null;
                                   },
@@ -201,7 +201,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                       hintText: 'New Password'),
                                   obscureText: _isPasswordHidden,
                                   validator: (val) {
-                                    return val.trim().isEmpty
+                                    return val!.trim().isEmpty
                                         ? 'Password cannot be empty.'
                                         : null;
                                   },
@@ -253,7 +253,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                       hintText: 'Password Confirmation'),
                                   obscureText: _isConfirmPasswordHidden,
                                   validator: (val) {
-                                    if (val.trim().isEmpty) {
+                                    if (val!.trim().isEmpty) {
                                       return 'Password confirmation cannot be empty';
                                     } else if (val !=
                                         passKey.currentState.value) {
@@ -324,8 +324,8 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   }
 
   void _onFormSubmitted() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       context.read<AuthProfileBloc>().add(
             UpdateAuthProfilePassword(
                 oldPassword: _oldPassword,

@@ -10,7 +10,7 @@ import 'package:tweety_mobile/models/user.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final User user;
-  EditProfileScreen({Key key, @required this.user}) : super(key: key);
+  EditProfileScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -23,7 +23,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final ImageCropper _cropper = ImageCropper();
 
   bool isButtonEnabled(AuthProfileState state) {
-    return _formKey.currentState.validate() &&
+    return _formKey.currentState!.validate() &&
         state is! AuthProfileInfoUpdating;
   }
 
@@ -337,7 +337,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ),
                         validator: (val) {
-                          return val.trim().isEmpty
+                          return val!.trim().isEmpty
                               ? 'Name cannot be empty'
                               : null;
                         },
@@ -376,7 +376,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ),
                         validator: (val) {
-                          return val.trim().isEmpty
+                          return val!.trim().isEmpty
                               ? 'username cannot be empty'
                               : null;
                         },
@@ -427,8 +427,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   void _onFormSubmitted() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
 
       context.read<AuthProfileBloc>().add(
             UpdateAuthProfileInfo(

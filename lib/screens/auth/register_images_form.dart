@@ -9,7 +9,7 @@ import 'package:tweety_mobile/blocs/auth/register/register_bloc.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 
 class RegisterImagesForm extends StatefulWidget {
-  RegisterImagesForm({Key key}) : super(key: key);
+  RegisterImagesForm({Key? key}) : super(key: key);
 
   @override
   _RegisterImagesFormState createState() => _RegisterImagesFormState();
@@ -28,16 +28,14 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
   }
 
   bool _autovalidate = false;
-  File _avatar;
-  File _banner;
+  File? _avatar;
+  File? _banner;
 
   Future _getImage(ImageSource source, bool isAvatar) async {
-    final XFile pickedFile = await _picker.pickImage(source: source);
-
-    File image = File(pickedFile.path);
+    XFile? image = await _picker.pickImage(source: source);
 
     if (image != null) {
-      CroppedFile croppedImage = await _cropper.cropImage(
+      CroppedFile? croppedImage = await _cropper.cropImage(
           sourcePath: image.path,
           aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
           compressQuality: 100,
@@ -52,16 +50,16 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
 
       setState(() {
         isAvatar
-            ? _avatar = File(croppedImage.path)
-            : _banner = File(croppedImage.path);
+            ? _avatar = File(croppedImage!.path)
+            : _banner = File(croppedImage!.path);
       });
     } else {
       setState(() {});
     }
   }
 
-  Future<bool> selectImageDialog(context, {bool isAvatar = true}) {
-    return showDialog(
+  selectImageDialog(context, {bool isAvatar = true}) {
+    showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
@@ -84,7 +82,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
                     'Choose an option',
                     style: Theme.of(context)
                         .textTheme
-                        .caption
+                        .caption!
                         .copyWith(fontSize: 20.0),
                   ),
                 ),
@@ -160,7 +158,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
           elevation: 0.0,
           leading: Container(),
           iconTheme: IconThemeData(
-            color: Theme.of(context).appBarTheme.iconTheme.color,
+            color: Theme.of(context).appBarTheme.iconTheme!.color,
           ),
           title: Text(
             'Upload Avatar & Banner',
@@ -185,7 +183,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
                     ),
                     child: Text(
                       'Skip',
-                      style: Theme.of(context).textTheme.button.copyWith(
+                      style: Theme.of(context).textTheme.button!.copyWith(
                             color: Colors.white,
                           ),
                     ),
@@ -254,7 +252,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
                                         radius: 50.0,
                                         backgroundColor:
                                             Theme.of(context).cardColor,
-                                        backgroundImage: FileImage(_avatar),
+                                        backgroundImage: FileImage(_avatar!),
                                       )
                                     : Container(
                                         width: 120.0,
@@ -284,7 +282,7 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
                               borderRadius: BorderRadius.circular(20.0),
                               child: _banner != null
                                   ? Image(
-                                      image: FileImage(_banner),
+                                      image: FileImage(_banner!),
                                       width: 400.0,
                                     )
                                   : Container(
@@ -345,8 +343,8 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
   void _onFormSubmitted() {
     context.read<RegisterBloc>().add(
           UploadRegisterImages(
-            avatar: _avatar,
-            banner: _banner,
+            avatar: _avatar!,
+            banner: _banner!,
           ),
         );
   }

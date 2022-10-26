@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class LoadingIndicator extends StatelessWidget {
   final size;
   final strokeWidth;
-  final Color color;
+  final Color? color;
 
   const LoadingIndicator(
-      {Key key, this.size = 30.0, this.strokeWidth = 1.5, this.color})
+      {Key? key, this.size = 30.0, this.strokeWidth = 1.5, this.color})
       : super(key: key);
 
   @override

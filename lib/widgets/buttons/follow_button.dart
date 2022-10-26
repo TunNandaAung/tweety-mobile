@@ -7,7 +7,7 @@ import 'package:tweety_mobile/models/user.dart';
 
 class FollowButton extends StatefulWidget {
   final User user;
-  FollowButton({Key key, @required this.user}) : super(key: key);
+  FollowButton({Key? key, required this.user}) : super(key: key);
 
   @override
   _FollowButtonState createState() => _FollowButtonState();
@@ -55,7 +55,7 @@ class _FollowButtonState extends State<FollowButton> {
       ),
       child: Text(
         'Follow',
-        style: Theme.of(context).textTheme.button.copyWith(
+        style: Theme.of(context).textTheme.button!.copyWith(
               color: Theme.of(context).primaryColor,
             ),
       ),

@@ -19,7 +19,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
 
   LoginBloc({
-    this.userRepository,
+    required this.userRepository,
   }) : super(LoginState.empty()) {
     on<EmailChanged>(
       _onEmailChanged,

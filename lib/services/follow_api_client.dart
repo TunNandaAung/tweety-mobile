@@ -11,7 +11,7 @@ class FollowApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  FollowApiClient({http.Client httpClient})
+  FollowApiClient({http.Client? httpClient})
       : httpClient = httpClient ?? http.Client();
 
   Future<User> toggleFollow(String username) async {
@@ -21,7 +21,7 @@ class FollowApiClient {
 
     final response = await this.httpClient.post(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {
@@ -40,7 +40,7 @@ class FollowApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {
@@ -60,7 +60,7 @@ class FollowApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {

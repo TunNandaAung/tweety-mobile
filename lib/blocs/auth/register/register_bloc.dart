@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:tweety_mobile/models/auth.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'register_event.dart';
@@ -15,7 +14,7 @@ part 'register_state.dart';
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final UserRepository userRepository;
 
-  RegisterBloc({@required this.userRepository}) : super(RegisterInitial()) {
+  RegisterBloc({required this.userRepository}) : super(RegisterInitial()) {
     on<Submitted>(_onSubmitted);
     on<UploadRegisterImages>(_onUploadRegisterImages);
   }
@@ -34,7 +33,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       storeUserData(auth.token, auth.userID, auth.username);
       emit(RegisterSuccess());
     } catch (e) {
-      emit(RegisterFailureMessage(errorMessage: e.message));
+      emit(RegisterFailureMessage(errorMessage: e.toString()));
     }
   }
 

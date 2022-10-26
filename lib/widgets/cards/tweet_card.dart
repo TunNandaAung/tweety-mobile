@@ -9,8 +9,8 @@ import 'package:tweety_mobile/widgets/modals/tweet_actions_modal.dart';
 
 class TweetCard extends StatelessWidget {
   final Tweet tweet;
-  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
-  const TweetCard({Key key, this.tweet, this.scaffoldMessengerKey})
+  final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
+  const TweetCard({Key? key, required this.tweet, this.scaffoldMessengerKey})
       : super(key: key);
 
   @override
@@ -88,8 +88,10 @@ class TweetCard extends StatelessWidget {
                     text: TextSpan(
                       style: Theme.of(context).textTheme.bodyText1,
                       children: parseBody(tweet.body)
-                          .map((body) => bodyTextSpan(body, context,
-                              Theme.of(context).textTheme.bodyText1))
+                          .map(
+                            (body) => bodyTextSpan(body, context,
+                                Theme.of(context).textTheme.bodyText1!),
+                          )
                           .toList(),
                     ),
                   ),

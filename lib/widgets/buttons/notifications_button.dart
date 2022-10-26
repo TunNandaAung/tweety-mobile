@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/notification/notification_bloc.dart';
 
 class NotificationButton extends StatefulWidget {
-  final Color bubbleColor;
+  final Color? bubbleColor;
   final Icon icon;
 
-  NotificationButton({Key key, this.bubbleColor, this.icon}) : super(key: key);
+  NotificationButton({Key? key, this.bubbleColor, required this.icon})
+      : super(key: key);
 
   @override
   _NotificationButtonState createState() => _NotificationButtonState();

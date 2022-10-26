@@ -76,10 +76,11 @@ class _NavDrawerState extends State<NavDrawer> {
                           SizedBox(height: size.height * 0.01),
                           Text(
                             state.user.name,
-                            style: Theme.of(context).textTheme.caption.copyWith(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style:
+                                Theme.of(context).textTheme.caption!.copyWith(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                           ),
                           Text(
                             '@' + state.user.username,
@@ -94,7 +95,7 @@ class _NavDrawerState extends State<NavDrawer> {
                                     state.user.followsCount.toString(),
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
+                                        .bodyText1!
                                         .copyWith(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16.0,
@@ -115,7 +116,7 @@ class _NavDrawerState extends State<NavDrawer> {
                                     state.user.followersCount.toString(),
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
+                                        .bodyText1!
                                         .copyWith(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16.0,

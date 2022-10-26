@@ -6,9 +6,9 @@ class TweetSearchState {
   final bool hasError;
 
   const TweetSearchState({
-    this.isLoading,
-    this.tweets,
-    this.hasError,
+    required this.isLoading,
+    required this.tweets,
+    required this.hasError,
   });
 
   factory TweetSearchState.initial() {

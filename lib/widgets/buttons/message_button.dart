@@ -10,8 +10,7 @@ import 'package:tweety_mobile/widgets/loading_indicator.dart';
 class MessageButton extends StatelessWidget {
   final User messageTo;
 
-  const MessageButton({Key key, @required this.messageTo})
-      : assert(messageTo != null);
+  const MessageButton({Key? key, required this.messageTo});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +26,7 @@ class MessageButton extends StatelessWidget {
 class MessageButtonBuilder extends StatefulWidget {
   final User messageTo;
 
-  const MessageButtonBuilder({Key key, @required this.messageTo})
-      : assert(messageTo != null);
+  const MessageButtonBuilder({Key? key, required this.messageTo});
   @override
   _MessageButtonBuilderState createState() => _MessageButtonBuilderState();
 }
@@ -76,7 +74,7 @@ class _MessageButtonBuilderState extends State<MessageButtonBuilder> {
                   ),
                   child: ChatScreen(
                     chatUser: widget.messageTo,
-                    chatId: state.chat.id,
+                    chatId: state.chat!.id,
                   ),
                 ),
               ),

@@ -5,7 +5,7 @@ import 'package:tweety_mobile/utils/validators.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  ForgotPasswordScreen({Key key}) : super(key: key);
+  ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
@@ -19,7 +19,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return !(state is ResetPasswordRequestLoading);
   }
 
-  String _email;
+  late String _email;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                 ),
               );
-            _formKey.currentState.reset();
+            _formKey.currentState!.reset();
             setState(() {
               _autovalidate = false;
             });
@@ -134,11 +134,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ),
                       ),
                       validator: (val) {
-                        return !Validators.isValidEmail(val)
+                        return !Validators.isValidEmail(val!)
                             ? 'Invalid email.'
                             : null;
                       },
-                      onSaved: (value) => _email = value,
+                      onSaved: (value) => _email = value!,
                     ),
                     SizedBox(height: 20.0),
                     Text(
@@ -187,8 +187,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   void _onFormSubmitted() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       context.read<AuthProfileBloc>().add(
             RequestPasswordResetInfo(email: _email),
           );

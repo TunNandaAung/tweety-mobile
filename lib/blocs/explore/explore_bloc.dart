@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
 
@@ -11,7 +9,7 @@ part 'explore_state.dart';
 
 class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
   final UserRepository userRepository;
-  ExploreBloc({this.userRepository}) : super(ExploreInitial()) {
+  ExploreBloc({required this.userRepository}) : super(ExploreInitial()) {
     on<ExploreUser>(_onExploreUser);
     on<RefreshExplore>(_onRefreshExplore);
   }

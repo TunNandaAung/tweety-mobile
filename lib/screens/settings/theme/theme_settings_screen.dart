@@ -5,7 +5,7 @@ import 'package:tweety_mobile/theme/app_theme.dart';
 import 'package:tweety_mobile/theme/cubit/theme_cubit.dart';
 
 class ThemeSettingsScreen extends StatefulWidget {
-  ThemeSettingsScreen({Key key}) : super(key: key);
+  ThemeSettingsScreen({Key? key}) : super(key: key);
 
   @override
   _ThemeSettingsScreenState createState() => _ThemeSettingsScreenState();

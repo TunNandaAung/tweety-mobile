@@ -9,7 +9,7 @@ import 'package:tweety_mobile/widgets/loading_indicator.dart';
 import 'package:tweety_mobile/widgets/cards/tweet_card.dart';
 import 'package:tweety_mobile/widgets/cards/user_card.dart';
 
-class SearchScreen extends SearchDelegate<User> {
+class SearchScreen extends SearchDelegate<User?> {
   final Bloc<UserSearchEvent, UserSearchState> userSearchBloc;
   final Bloc<TweetSearchEvent, TweetSearchState> tweetSearchBloc;
 
@@ -339,7 +339,7 @@ class SearchScreen extends SearchDelegate<User> {
                                   style: Theme.of(context).textTheme.bodyText2),
                             ),
                           ),
-                          itemCount: recentSearches?.length,
+                          itemCount: recentSearches.length,
                         ),
                       ),
                     ],

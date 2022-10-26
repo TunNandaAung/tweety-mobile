@@ -15,7 +15,7 @@ class ReplyApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  ReplyApiClient({http.Client httpClient})
+  ReplyApiClient({http.Client? httpClient})
       : httpClient = httpClient ?? http.Client();
 
   Future<ReplyPaginator> fetchReplies(int tweetID, int pageNumber) async {
@@ -26,7 +26,7 @@ class ReplyApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {
@@ -45,7 +45,7 @@ class ReplyApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {
@@ -66,7 +66,7 @@ class ReplyApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {
@@ -87,7 +87,7 @@ class ReplyApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {
@@ -100,7 +100,7 @@ class ReplyApiClient {
   }
 
   Future<Reply> addReply(int tweetID, String body,
-      {File image, int parentID}) async {
+      {File? image, int? parentID}) async {
     final url = '$baseUrl/tweets/$tweetID/reply';
 
     final request = await prepareRequest(body, image, parentID, url);
@@ -120,7 +120,7 @@ class ReplyApiClient {
   }
 
   Future<MultipartRequest> prepareRequest(
-      String body, File image, int parentID, url) async {
+      String body, File? image, int? parentID, url) async {
     final token = Prefer.prefs.getString('token');
 
     final request = http.MultipartRequest('POST', Uri.parse(url));
@@ -155,7 +155,7 @@ class ReplyApiClient {
 
     final response = await this.httpClient.delete(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     print(response.statusCode);
     if (response.statusCode != 200) {

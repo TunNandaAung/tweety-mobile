@@ -9,11 +9,14 @@ import 'package:tweety_mobile/screens/reply/add_children_reply_screen.dart';
 class AddChildrenReplyButton extends StatelessWidget {
   final Tweet tweet;
   final Reply parent;
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
 
-  const AddChildrenReplyButton(
-      {Key key, @required this.tweet, this.scaffoldKey, this.parent})
-      : super(key: key);
+  const AddChildrenReplyButton({
+    Key? key,
+    required this.tweet,
+    this.scaffoldKey,
+    required this.parent,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +38,12 @@ class AddChildrenReplyButtonWidget extends StatefulWidget {
   final Tweet tweet;
   final Reply parent;
   final GlobalKey<ScaffoldState> scaffoldKey;
-  const AddChildrenReplyButtonWidget(
-      {Key key, @required this.tweet, this.scaffoldKey, this.parent})
-      : super(key: key);
+  const AddChildrenReplyButtonWidget({
+    Key? key,
+    required this.tweet,
+    required this.scaffoldKey,
+    required this.parent,
+  }) : super(key: key);
 
   @override
   _AddChildrenReplyButtonWidgetState createState() =>
@@ -51,7 +57,7 @@ class _AddChildrenReplyButtonWidgetState
       widget.parent.childrenCount = childrenCount;
 
   // ignore: close_sinks
-  ChildrenReplyBloc _childrenReplyBloc;
+  late ChildrenReplyBloc _childrenReplyBloc;
   @override
   void initState() {
     super.initState();

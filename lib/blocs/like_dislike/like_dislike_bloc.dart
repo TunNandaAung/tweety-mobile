@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/like_dislike.dart';
 import 'package:tweety_mobile/models/like_dislike_repository.dart';
 
@@ -12,7 +11,8 @@ part 'like_dislike_state.dart';
 class LikeDislikeBloc extends Bloc<LikeDislikeEvent, LikeDislikeState> {
   final LikeDislikeRepository likeDislikeRepository;
 
-  LikeDislikeBloc({this.likeDislikeRepository}) : super(LikeDislikeInitial()) {
+  LikeDislikeBloc({required this.likeDislikeRepository})
+      : super(LikeDislikeInitial()) {
     on<Like>(_onLike);
     on<Dislike>(_onDislike);
   }

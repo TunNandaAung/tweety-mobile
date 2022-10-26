@@ -17,7 +17,7 @@ class NotificationCountLoading extends NotificationState {}
 class NotificationsCountLoaded extends NotificationState {
   final int notificationsCount;
 
-  const NotificationsCountLoaded({@required this.notificationsCount})
+  const NotificationsCountLoaded({required this.notificationsCount})
       : assert(notificationsCount != null);
 
   @override
@@ -29,7 +29,7 @@ class NotificationLoading extends NotificationState {}
 class NotificationsLoaded extends NotificationState {
   final List<ApiNotification> notifications;
 
-  const NotificationsLoaded({@required this.notifications})
+  const NotificationsLoaded({required this.notifications})
       : assert(notifications != null);
 
   @override

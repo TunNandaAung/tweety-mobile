@@ -4,7 +4,7 @@ import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/screens/tweet_reply_form.dart';
 
 class PublishTweetScreen extends StatefulWidget {
-  PublishTweetScreen({Key key}) : super(key: key);
+  PublishTweetScreen({Key? key}) : super(key: key);
 
   @override
   _PublishTweetScreenState createState() => _PublishTweetScreenState();

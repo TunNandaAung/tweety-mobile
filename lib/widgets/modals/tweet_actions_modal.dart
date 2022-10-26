@@ -47,7 +47,7 @@ class TweetActionsModal {
                               'Delete Tweet',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption
+                                  .caption!
                                   .copyWith(color: Colors.red),
                             )
                           ],

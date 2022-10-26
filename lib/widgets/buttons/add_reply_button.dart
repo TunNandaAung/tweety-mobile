@@ -13,7 +13,7 @@ import 'package:tweety_mobile/screens/reply/add_reply_screen.dart';
 class AddReplyButton extends StatelessWidget {
   final Widget child;
 
-  const AddReplyButton({Key key, @required this.child}) : super(key: key);
+  const AddReplyButton({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +37,9 @@ class AddReplyButton extends StatelessWidget {
 
 class AddReplyButtonWidget extends StatefulWidget {
   final Tweet tweet;
-  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
+  final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
   const AddReplyButtonWidget(
-      {Key key, @required this.tweet, this.scaffoldMessengerKey})
+      {Key? key, required this.tweet, this.scaffoldMessengerKey})
       : super(key: key);
 
   @override
@@ -51,7 +51,7 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
   set repliesCount(int repliesCount) =>
       widget.tweet.repliesCount = repliesCount;
   // ignore: close_sinks
-  ReplyBloc _replyBloc;
+  late ReplyBloc _replyBloc;
   @override
   void initState() {
     super.initState();
@@ -74,9 +74,9 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
 
               var currentState = widget.scaffoldMessengerKey == null
                   ? ScaffoldMessenger.of(context)
-                  : widget.scaffoldMessengerKey.currentState;
+                  : widget.scaffoldMessengerKey!.currentState;
 
-              currentState
+              currentState!
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(

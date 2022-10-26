@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/message.dart';
 import 'package:tweety_mobile/repositories/chat_repository.dart';
 
@@ -12,7 +11,7 @@ part 'message_state.dart';
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final ChatRepository chatRepository;
 
-  MessageBloc({this.chatRepository}) : super(MessageInitial()) {
+  MessageBloc({required this.chatRepository}) : super(MessageInitial()) {
     on<FetchMessages>(_onFetchMessages);
     on<SendMessage>(_onSendMessage);
     on<ReceiveMessage>(_onReceiveMessage);
@@ -59,7 +58,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   }
 
   // bool _sameChat(MessageState state, chatId) =>
-  //     state is MessageLoaded && state.messages.first.chatId == chatId;
+  //     state is MessageLoaded && state.toString().first.chatId == chatId;
 
   Future<void> _onSendMessage(
       SendMessage event, Emitter<MessageState> emit) async {

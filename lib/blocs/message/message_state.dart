@@ -16,14 +16,16 @@ class MessageLoaded extends MessageState {
   final bool hasReachedMax;
   final int pageNumber;
 
-  const MessageLoaded(
-      {@required this.messages, this.hasReachedMax, this.pageNumber = 1})
-      : assert(messages != null);
+  const MessageLoaded({
+    required this.messages,
+    required this.hasReachedMax,
+    this.pageNumber = 1,
+  });
 
   MessageLoaded copyWith({
-    List<Message> messages,
-    bool hasReachedMax,
-    int pageNumber,
+    List<Message>? messages,
+    bool? hasReachedMax,
+    int? pageNumber,
   }) {
     return MessageLoaded(
       messages: messages ?? this.messages,
@@ -47,7 +49,7 @@ class MessageSending extends MessageState {}
 class MessageSent extends MessageState {
   final Message message;
 
-  const MessageSent({@required this.message}) : assert(message != null);
+  const MessageSent({required this.message});
 
   @override
   List<Object> get props => [message];

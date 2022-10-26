@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/chat.dart';
 import 'package:tweety_mobile/repositories/chat_repository.dart';
 
@@ -12,7 +11,8 @@ part 'chat_room_state.dart';
 class ChatRoomBloc extends Bloc<ChatRoomEvent, ChatRoomState> {
   final ChatRepository chatRepository;
 
-  ChatRoomBloc({this.chatRepository}) : super(const ChatRoomState.initial()) {
+  ChatRoomBloc({required this.chatRepository})
+      : super(ChatRoomState.initial()) {
     on<FetchChatRoom>(_onFetchChatRoom);
   }
 

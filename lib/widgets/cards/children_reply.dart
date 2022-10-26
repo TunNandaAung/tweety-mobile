@@ -8,7 +8,7 @@ import 'package:tweety_mobile/widgets/modals/reply_actions_modal.dart';
 
 class ChildrenReply extends StatefulWidget {
   final Reply reply;
-  ChildrenReply({Key key, this.reply}) : super(key: key);
+  ChildrenReply({Key? key, required this.reply}) : super(key: key);
 
   @override
   _ChildrenReplyState createState() => _ChildrenReplyState();
@@ -48,7 +48,7 @@ class _ChildrenReplyState extends State<ChildrenReply> {
                         text: widget.reply.owner.name + "\n",
                         style: Theme.of(context)
                             .textTheme
-                            .caption
+                            .caption!
                             .copyWith(fontSize: 14.0),
                         children: [
                           TextSpan(

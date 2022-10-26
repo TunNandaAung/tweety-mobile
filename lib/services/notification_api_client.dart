@@ -11,7 +11,7 @@ class NotificationApiClient {
 
   final http.Client httpClient;
 
-  NotificationApiClient({http.Client httpClient})
+  NotificationApiClient({http.Client? httpClient})
       : httpClient = httpClient ?? http.Client();
 
   Future<int> fetchNotificationsCount() async {
@@ -45,7 +45,7 @@ class NotificationApiClient {
 
     final response = await this.httpClient.get(
           Uri.parse(url),
-          headers: requestHeaders(token),
+          headers: requestHeaders(token!),
         );
     if (response.statusCode != 200) {
       print(response.body);

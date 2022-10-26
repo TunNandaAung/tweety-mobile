@@ -6,7 +6,9 @@ import 'package:tweety_mobile/screens/auth/register_form.dart';
 
 class RegisterScreen extends StatelessWidget {
   final UserRepository userRepository;
-  const RegisterScreen({this.userRepository, Key key}) : super(key: key);
+
+  const RegisterScreen({required this.userRepository, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

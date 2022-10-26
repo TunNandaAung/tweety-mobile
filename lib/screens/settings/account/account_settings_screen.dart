@@ -9,7 +9,7 @@ import 'package:tweety_mobile/widgets/list_tiles/settings_list_tile.dart';
 class AccountSettingsScreen extends StatefulWidget {
   final User user;
 
-  AccountSettingsScreen({Key key, @required this.user})
+  AccountSettingsScreen({Key? key, required this.user})
       : assert(user != null),
         super(key: key);
 

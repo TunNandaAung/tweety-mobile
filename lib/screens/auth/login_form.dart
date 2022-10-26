@@ -13,7 +13,7 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  LoginBloc _loginBloc;
+  late LoginBloc _loginBloc;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 

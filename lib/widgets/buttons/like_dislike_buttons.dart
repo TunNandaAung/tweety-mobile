@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:tweety_mobile/blocs/like_dislike/like_dislike_bloc.dart';
-import 'package:tweety_mobile/models/like_dislike_repository.dart';
+import 'package:tweety_mobile/repositories/like_dislike_repository.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/services/like_dislike_api_client.dart';
 import 'package:tweety_mobile/utils/helpers.dart';
 
 class LikeDislikeButtons extends StatefulWidget {
-  final Tweet tweet;
-  final Reply reply;
-  LikeDislikeButtons({Key key, this.tweet, this.reply}) : super(key: key);
+  final Tweet? tweet;
+  final Reply? reply;
+  LikeDislikeButtons({Key? key, this.tweet, this.reply}) : super(key: key);
 
   @override
   _LikeDislikeButtonsState createState() => _LikeDislikeButtonsState();
@@ -36,9 +36,9 @@ class _LikeDislikeButtonsState extends State<LikeDislikeButtons> {
 }
 
 class BuildWidget extends StatefulWidget {
-  final Tweet tweet;
-  final Reply reply;
-  BuildWidget({Key key, this.tweet, this.reply}) : super(key: key);
+  final Tweet? tweet;
+  final Reply? reply;
+  BuildWidget({Key? key, this.tweet, this.reply}) : super(key: key);
 
   @override
   _BuildWidgetState createState() => _BuildWidgetState();
@@ -48,16 +48,16 @@ class _BuildWidgetState extends State<BuildWidget> {
   get subject => widget.tweet ?? widget.reply;
   get isTweet => widget.tweet != null;
 
-  get _isLiked => subject.isLiked;
+  bool get _isLiked => subject.isLiked;
   set _isLiked(bool isLiked) => subject.isLiked = isLiked;
 
-  get _isDisliked => subject.isDisliked;
+  bool get _isDisliked => subject.isDisliked;
   set _isDisliked(bool isDisliked) => subject.isDisliked = isDisliked;
 
-  get _likesCount => subject.likesCount;
+  int get _likesCount => subject.likesCount;
   set _likesCount(int likesCount) => subject.likesCount = likesCount;
 
-  get _dislikesCount => subject.dislikesCount;
+  int get _dislikesCount => subject.dislikesCount;
   set _dislikesCount(int dislikesCount) =>
       subject.dislikesCount = dislikesCount;
 

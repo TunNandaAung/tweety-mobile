@@ -11,7 +11,7 @@ import 'package:tweety_mobile/services/reply_api_client.dart';
 import 'package:tweety_mobile/services/tweet_api_client.dart';
 
 class ProfileWrapper extends StatelessWidget {
-  const ProfileWrapper({Key key}) : super(key: key);
+  const ProfileWrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

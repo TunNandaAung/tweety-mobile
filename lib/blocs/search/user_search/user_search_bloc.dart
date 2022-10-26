@@ -15,7 +15,7 @@ const userThrottleDuration = Duration(milliseconds: 300);
 class UserSearchBloc extends Bloc<UserSearchEvent, UserSearchState> {
   final SearchRepository searchRepository;
 
-  UserSearchBloc({@required this.searchRepository})
+  UserSearchBloc({required this.searchRepository})
       : super(UserSearchState.initial()) {
     on<UserSearchEvent>(
       _onUserSearch,

@@ -10,7 +10,7 @@ import 'package:tweety_mobile/widgets/cards/user_card.dart';
 
 class FollowListScreen extends StatefulWidget {
   final User profileUser;
-  FollowListScreen({Key key, @required this.profileUser}) : super(key: key);
+  FollowListScreen({Key? key, required this.profileUser}) : super(key: key);
 
   @override
   _FollowListScreenState createState() => _FollowListScreenState();
@@ -264,7 +264,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
   final double size;
   final TabController controller;
 
-  TweetyTabs(this.size, {@required this.controller});
+  TweetyTabs(this.size, {required this.controller});
 
   @override
   Widget build(

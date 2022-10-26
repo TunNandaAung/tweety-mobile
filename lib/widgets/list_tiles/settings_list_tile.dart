@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tweety_mobile/models/user.dart';
 
-Widget settingsListTile(context, String name,
-    {Function onTap, String heroTag, User user}) {
+Widget settingsListTile(
+  context,
+  String name, {
+  Function()? onTap,
+  String? heroTag,
+  User? user,
+}) {
   return InkWell(
     onTap: onTap,
     child: Container(

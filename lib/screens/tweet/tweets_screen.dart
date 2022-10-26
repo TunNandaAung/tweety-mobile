@@ -17,9 +17,7 @@ class TweetsScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   TweetsScreen(
-      {Key key,
-      @required this.scaffoldMessengerKey,
-      @required this.scaffoldKey})
+      {Key? key, required this.scaffoldMessengerKey, required this.scaffoldKey})
       : super(key: key);
 
   @override
@@ -29,7 +27,7 @@ class TweetsScreen extends StatefulWidget {
 class _TweetsScreenState extends State<TweetsScreen> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  Completer<void> _tweetRefreshCompleter;
+  late Completer<void> _tweetRefreshCompleter;
 
   @override
   void initState() {
@@ -70,7 +68,7 @@ class _TweetsScreenState extends State<TweetsScreen> {
       body: BlocListener<TweetBloc, TweetState>(
         listener: (context, state) {
           if (state is TweetLoaded) {
-            _tweetRefreshCompleter?.complete();
+            _tweetRefreshCompleter.complete();
             _tweetRefreshCompleter = Completer();
           }
         },
@@ -122,7 +120,7 @@ class _TweetsScreenState extends State<TweetsScreen> {
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline5
+                                .headline5!
                                 .copyWith(fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: 5.0),

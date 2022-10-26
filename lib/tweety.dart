@@ -11,14 +11,14 @@ import 'package:tweety_mobile/theme/cubit/theme_cubit.dart';
 class Tweety extends StatefulWidget {
   final UserRepository userRepository;
 
-  const Tweety({Key key, this.userRepository}) : super(key: key);
+  const Tweety({Key? key, required this.userRepository}) : super(key: key);
 
   @override
   _TweetyState createState() => _TweetyState();
 }
 
 class _TweetyState extends State<Tweety> {
-  AuthenticationBloc _authenticationBloc;
+  late AuthenticationBloc _authenticationBloc;
 
   @override
   void initState() {

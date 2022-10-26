@@ -10,7 +10,7 @@ import 'package:timeago/timeago.dart' as timeago;
 class NotificationsScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const NotificationsScreen({Key key, @required this.scaffoldKey})
+  const NotificationsScreen({Key? key, required this.scaffoldKey})
       : super(key: key);
   @override
   _NotificationsScreenState createState() => _NotificationsScreenState();
@@ -19,7 +19,7 @@ class NotificationsScreen extends StatefulWidget {
 class _NotificationsScreenState extends State<NotificationsScreen> {
   final double targetElevation = 20.0;
   double _elevation = 0;
-  ScrollController _scrollController;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
@@ -32,8 +32,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -171,7 +171,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline5
+                                .headline5!
                                 .copyWith(fontWeight: FontWeight.bold),
                           ),
                         );
