@@ -148,33 +148,26 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Row(
         children: <Widget>[
           Expanded(
-              child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(20.0),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).canvasColor,
-                  offset: Offset(0, 10),
-                  blurRadius: (10.0),
-                )
-              ],
-              color: Theme.of(context).cardColor,
+              child: TextFormField(
+            controller: _messageController,
+            textCapitalization: TextCapitalization.sentences,
+            style: TextStyle(
+              color: Theme.of(context).textSelectionTheme.cursorColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 18.0,
             ),
-            child: TextFormField(
-              controller: _messageController,
-              textCapitalization: TextCapitalization.sentences,
-              style: TextStyle(
-                color: Theme.of(context).textSelectionTheme.cursorColor,
-                fontWeight: FontWeight.w500,
-                fontSize: 18.0,
+            decoration: InputDecoration(
+              filled: true,
+              focusColor: Theme.of(context).primaryColor,
+              enabledBorder: UnderlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+                borderSide: BorderSide.none,
               ),
-              decoration: InputDecoration(
-                  filled: true,
-                  focusColor: Colors.white,
-                  border: InputBorder.none,
-                  hintText: 'Send a message...'),
+              focusedBorder: UnderlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+                borderSide: BorderSide.none,
+              ),
+              hintText: 'Send a message...',
             ),
           )),
           IconButton(
@@ -228,13 +221,15 @@ class _ChatScreenState extends State<ChatScreen> {
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(30.0),
-                      topLeft: Radius.circular(30.0)),
+                    topRight: Radius.circular(30.0),
+                    topLeft: Radius.circular(30.0),
+                  ),
                 ),
                 child: ClipRRect(
                     borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(30.0),
-                        topLeft: Radius.circular(30.0)),
+                      topRight: Radius.circular(30.0),
+                      topLeft: Radius.circular(30.0),
+                    ),
                     child: BlocBuilder<MessageBloc, MessageState>(
                       builder: (context, state) {
                         if (state is MessageError) {
@@ -248,18 +243,18 @@ class _ChatScreenState extends State<ChatScreen> {
                           );
                         }
                         if (state is MessageLoaded) {
-                          return state.toString().length > 0
+                          return state.messages.length > 0
                               ? ListView.builder(
                                   reverse: true,
                                   padding: EdgeInsets.only(
                                       top: 15.0, left: 4.0, right: 4.0),
                                   itemCount: state.hasReachedMax
-                                      ? state.toString().length
-                                      : state.toString().length + 1,
+                                      ? state.messages.length
+                                      : state.messages.length + 1,
                                   controller: _scrollController,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return index >= state.toString().length
+                                    return index >= state.messages.length
                                         ? LoadingIndicator()
                                         : MessageCard(
                                             message: state.messages[index]);
@@ -347,7 +342,7 @@ class _MessageCardState extends State<MessageCard> {
           decoration: BoxDecoration(
             color: isMe
                 ? Theme.of(context).primaryColor
-                : Theme.of(context).hintColor,
+                : Theme.of(context).canvasColor,
             borderRadius: BorderRadius.circular((15.0)),
           ),
           child: Column(
@@ -355,7 +350,7 @@ class _MessageCardState extends State<MessageCard> {
             children: <Widget>[
               SizedBox(height: 5.0),
               Text(
-                widget.message.toString(),
+                widget.message.message,
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             ],

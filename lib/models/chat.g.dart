@@ -10,11 +10,11 @@ Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(
       id: json['id'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
-      messages: (json['messages'] as List<dynamic>)
-          .map((e) => Message.fromJson(e as Map<String, dynamic>))
+      messages: (json['messages'] as List<dynamic>?)
+          ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
           .toList(),
-      participants: (json['participants'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
+      participants: (json['participants'] as List<dynamic>?)
+          ?.map((e) => User.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

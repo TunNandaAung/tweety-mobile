@@ -22,7 +22,7 @@ Map<String, String> requestHeaders(String token) {
 Echo echoSetup(token, pusherClient) {
   return new Echo(
     broadcaster: EchoBroadcasterType.Pusher,
-    client: PusherClient,
+    client: getPusherClient(token),
   );
 }
 

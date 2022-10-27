@@ -166,10 +166,11 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                 TextFormField(
                                   key: passKey,
                                   style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textSelectionTheme
-                                          .cursorColor,
-                                      fontWeight: FontWeight.w500),
+                                    color: Theme.of(context)
+                                        .textSelectionTheme
+                                        .cursorColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                   decoration: InputDecoration(
                                       filled: true,
                                       focusColor:

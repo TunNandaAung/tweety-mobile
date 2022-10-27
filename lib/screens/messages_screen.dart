@@ -132,15 +132,15 @@ class _MessagesScreenState extends State<MessagesScreen> {
   }
 
   _chatListItem(Chat chat) {
-    final Message message = chat.messages.length > 0
-        ? chat.messages.first
+    final Message message = chat.messages!.length > 0
+        ? chat.messages!.first
         : new Message(
             chatId: chat.id,
             message: "Send a message.",
             readAt: DateTime.now(),
           );
     final messageTo =
-        chat.participants.where((user) => user.id != authId()).first;
+        chat.participants!.where((user) => user.id != authId()).first;
 
     return InkWell(
       onTap: () {
@@ -197,8 +197,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: Text(
                         isCurrentUser(message.sender!.id)
-                            ? 'You: ' + message.toString()
-                            : '' + message.toString(),
+                            ? 'You: ' + message.message
+                            : '' + message.message,
                         style: Theme.of(context).textTheme.bodyText2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -207,7 +207,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 ),
               ],
             ),
-            chat.messages.length > 0
+            chat.messages != null && chat.messages!.length > 0
                 ? Column(
                     children: <Widget>[
                       Text(

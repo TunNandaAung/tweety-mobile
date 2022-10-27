@@ -14,16 +14,16 @@ class Chat {
   @JsonKey(name: 'updated_at')
   DateTime updatedAt;
 
-  List<Message> messages;
+  List<Message>? messages;
 
-  List<User> participants;
+  List<User>? participants;
 
   Chat({
     required this.id,
     required this.createdAt,
     required this.updatedAt,
-    required this.messages,
-    required this.participants,
+    this.messages,
+    this.participants,
   });
 
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);

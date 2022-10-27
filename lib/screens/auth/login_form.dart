@@ -178,26 +178,27 @@ class _LoginFormState extends State<LoginForm> {
                                         .cursorColor,
                                     fontWeight: FontWeight.w500),
                                 decoration: InputDecoration(
-                                    filled: true,
-                                    focusColor: Theme.of(context).primaryColor,
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      borderSide: BorderSide.none,
+                                  filled: true,
+                                  focusColor: Theme.of(context).primaryColor,
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: BorderSide(
+                                      width: 1.0,
+                                      color: Colors.red,
                                     ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      borderSide: BorderSide(
-                                        width: 1.0,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                    prefixIcon:
-                                        Icon(Icons.mail, color: Colors.grey),
-                                    hintText: 'Email'),
+                                  ),
+                                  prefixIcon:
+                                      Icon(Icons.mail, color: Colors.grey),
+                                  hintText: 'Email',
+                                ),
                                 controller: _emailController,
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
