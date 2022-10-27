@@ -141,6 +141,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
           );
     final messageTo =
         chat.participants!.where((user) => user.id != authId()).first;
+    final bool isUnread = message.readAt == null && message.sender != null;
 
     return InkWell(
       onTap: () {
@@ -162,7 +163,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
         margin: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 20.0),
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
-          color: message.readAt == null && !isCurrentUser(message.sender!.id)
+          color: isUnread &&
+                  !isCurrentUser(
+                    message.sender!.id,
+                  )
               ? Theme.of(context).primaryColor.withOpacity(0.3)
               : Theme.of(context).cardColor,
           borderRadius: const BorderRadius.only(
@@ -193,16 +197,18 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     const SizedBox(
                       height: 5.0,
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: Text(
-                        isCurrentUser(message.sender!.id)
-                            ? 'You: ' + message.message
-                            : '' + message.message,
-                        style: Theme.of(context).textTheme.bodyText2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    )
+                    message.sender == null
+                        ? SizedBox()
+                        : Container(
+                            width: MediaQuery.of(context).size.width * 0.45,
+                            child: Text(
+                              isCurrentUser(message.sender!.id)
+                                  ? 'You: ' + message.message
+                                  : '' + message.message,
+                              style: Theme.of(context).textTheme.bodyText2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
                   ],
                 ),
               ],
@@ -214,6 +220,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         timeago.format(message.createdAt!),
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
                               fontWeight: FontWeight.bold,
+                              fontSize: 12.0,
                             ),
                       ),
                       const SizedBox(
