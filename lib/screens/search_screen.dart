@@ -286,8 +286,7 @@ class SearchScreen extends SearchDelegate<User?> {
                             'Recent Searches',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 21.0,
-                              letterSpacing: 1.0,
+                              fontSize: 15.0,
                             ),
                           ),
                           InkWell(

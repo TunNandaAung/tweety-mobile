@@ -4,7 +4,8 @@ import 'package:laravel_echo/laravel_echo.dart';
 import 'package:pusher_client/pusher_client.dart';
 
 class ApiConstants {
-  static const BASE_URL = 'http://tweety.sharedwithexpose.com/api';
+  static const BASE_URL =
+      'https://ed37-240b-10-9202-9300-ea48-00-1008.ngrok.io/api';
 }
 
 Map<String, String> requestHeaders(String token) {

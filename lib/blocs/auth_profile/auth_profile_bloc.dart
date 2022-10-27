@@ -22,7 +22,6 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
     on<RequestPasswordResetInfo>(_onRequestPasswordResetInfo);
     on<GetAvatar>(_onGetAvatar);
     on<ReloadAuthProfile>(_onReloadAuthProfile);
-    on<UpdateAuthProfileEmail>(_onUpdateAuthProfileEmail);
   }
 
   Future<void> _onFetchAuthProfile(

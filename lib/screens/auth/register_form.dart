@@ -139,13 +139,17 @@ class _RegisterFormState extends State<RegisterForm> {
                             filled: true,
                             focusColor: Theme.of(context).primaryColor,
                             enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
                               borderSide: BorderSide.none,
                             ),
                             errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(20.0),
                               borderSide: BorderSide(
-                                width: 2.0,
+                                width: 1.0,
                                 color: Colors.red,
                               ),
                             ),
@@ -177,13 +181,17 @@ class _RegisterFormState extends State<RegisterForm> {
                             filled: true,
                             focusColor: Colors.white,
                             enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
                               borderSide: BorderSide.none,
                             ),
                             errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(20.0),
                               borderSide: BorderSide(
-                                width: 2.0,
+                                width: 1.0,
                                 color: Colors.red,
                               ),
                             ),
@@ -215,13 +223,17 @@ class _RegisterFormState extends State<RegisterForm> {
                               filled: true,
                               focusColor: Colors.white,
                               enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
                                 borderSide: BorderSide.none,
                               ),
                               errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(20.0),
                                 borderSide: BorderSide(
-                                  width: 2.0,
+                                  width: 1.0,
                                   color: Colors.red,
                                 ),
                               ),
@@ -254,13 +266,17 @@ class _RegisterFormState extends State<RegisterForm> {
                               filled: true,
                               focusColor: Theme.of(context).primaryColor,
                               enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
                                 borderSide: BorderSide.none,
                               ),
                               errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(20.0),
                                 borderSide: BorderSide(
-                                  width: 2.0,
+                                  width: 1.0,
                                   color: Colors.red,
                                 ),
                               ),
@@ -304,13 +320,17 @@ class _RegisterFormState extends State<RegisterForm> {
                               filled: true,
                               focusColor: Theme.of(context).primaryColor,
                               enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
                                 borderSide: BorderSide.none,
                               ),
                               errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(20.0),
                                 borderSide: BorderSide(
-                                  width: 2.0,
+                                  width: 1.0,
                                   color: Colors.red,
                                 ),
                               ),
@@ -356,9 +376,10 @@ class _RegisterFormState extends State<RegisterForm> {
                             child: Text(
                               'Register',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  letterSpacing: 1.0),
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),

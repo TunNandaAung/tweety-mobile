@@ -61,7 +61,7 @@ class _LoginFormState extends State<LoginForm> {
                     elevation: 6.0,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
+                        borderRadius: BorderRadius.circular(20.0)),
                     content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -79,7 +79,7 @@ class _LoginFormState extends State<LoginForm> {
                     elevation: 6.0,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
+                        borderRadius: BorderRadius.circular(20.0)),
                     content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -98,7 +98,7 @@ class _LoginFormState extends State<LoginForm> {
                   elevation: 6.0,
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
+                      borderRadius: BorderRadius.circular(20.0)),
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -116,7 +116,7 @@ class _LoginFormState extends State<LoginForm> {
                   elevation: 6.0,
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
+                      borderRadius: BorderRadius.circular(20.0)),
                   backgroundColor: Color(0xFF5d74e3),
                   content: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,7 +134,7 @@ class _LoginFormState extends State<LoginForm> {
               children: <Widget>[
                 Container(
                   height: size.height - 350,
-                  color: Color(0xff4A64FE),
+                  color: Theme.of(context).primaryColor,
                 ),
                 AnimatedPositioned(
                   duration: Duration(milliseconds: 500),
@@ -181,13 +181,17 @@ class _LoginFormState extends State<LoginForm> {
                                     filled: true,
                                     focusColor: Theme.of(context).primaryColor,
                                     enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
                                       borderSide: BorderSide.none,
                                     ),
                                     errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderRadius: BorderRadius.circular(20.0),
                                       borderSide: BorderSide(
-                                        width: 2.0,
+                                        width: 1.0,
                                         color: Colors.red,
                                       ),
                                     ),
@@ -216,13 +220,17 @@ class _LoginFormState extends State<LoginForm> {
                                     filled: true,
                                     focusColor: Theme.of(context).primaryColor,
                                     enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
                                       borderSide: BorderSide.none,
                                     ),
                                     errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderRadius: BorderRadius.circular(20.0),
                                       borderSide: BorderSide(
-                                        width: 2.0,
+                                        width: 1.0,
                                         color: Colors.red,
                                       ),
                                     ),
@@ -269,9 +277,10 @@ class _LoginFormState extends State<LoginForm> {
                                   child: Text(
                                     'Login',
                                     style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                        letterSpacing: 1.0),
+                                      color: Colors.white,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -286,17 +295,19 @@ class _LoginFormState extends State<LoginForm> {
                                 style: TextStyle(
                                     color: Theme.of(context).hintColor,
                                     fontSize: 16.0)),
-                            SizedBox(width: 10.0),
+                            SizedBox(width: 20.0),
                             InkWell(
                               onTap: () {
                                 Navigator.pushNamed(context, '/register');
                               },
-                              child: Text('Register',
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1.0)),
+                              child: Text(
+                                'Register',
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -307,12 +318,14 @@ class _LoginFormState extends State<LoginForm> {
                             onTap: () {
                               Navigator.pushNamed(context, '/forgot-password');
                             },
-                            child: Text('Forgot your password?',
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.0)),
+                            child: Text(
+                              'Forgot your password?',
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         )
                       ]),

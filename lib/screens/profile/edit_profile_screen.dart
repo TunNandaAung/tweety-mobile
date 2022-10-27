@@ -313,13 +313,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           filled: true,
                           focusColor: Theme.of(context).primaryColor,
                           enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
                             borderSide: BorderSide.none,
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(20.0),
                             borderSide: BorderSide(
-                              width: 2.0,
+                              width: 1.0,
                               color: Colors.red,
                             ),
                           ),
@@ -352,13 +356,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           filled: true,
                           focusColor: Colors.white,
                           enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
                             borderSide: BorderSide.none,
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(20.0),
                             borderSide: BorderSide(
-                              width: 2.0,
+                              width: 1.0,
                               color: Colors.red,
                             ),
                           ),
@@ -392,13 +400,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           filled: true,
                           focusColor: Colors.white,
                           enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
                             borderSide: BorderSide.none,
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(20.0),
                             borderSide: BorderSide(
-                              width: 2.0,
+                              width: 1.0,
                               color: Colors.red,
                             ),
                           ),

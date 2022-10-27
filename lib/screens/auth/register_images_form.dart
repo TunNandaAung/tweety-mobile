@@ -318,9 +318,10 @@ class _RegisterImagesFormState extends State<RegisterImagesForm> {
                                           child: Text(
                                             'Save',
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18.0,
-                                                letterSpacing: 1.0),
+                                              color: Colors.white,
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                 ),

@@ -6,6 +6,9 @@ final appThemeData = {
   AppTheme.Light: ThemeData(
     brightness: Brightness.light,
     // primaryColor: Color(0xFF4299E1),
+    colorScheme: ThemeData().colorScheme.copyWith(
+          primary: Color(0xFF47D5FE),
+        ),
     primaryColor: Color(0xFF47D5FE),
     cardColor: Colors.white,
     canvasColor: Colors.black12,
@@ -13,14 +16,21 @@ final appThemeData = {
     scaffoldBackgroundColor: Color(0xFFf3f6fb),
     appBarTheme: AppBarTheme(
       iconTheme: IconThemeData(color: Colors.black),
-      toolbarTextStyle: TextTheme(
-        caption: TextStyle(color: Colors.black),
-      ).bodyText2,
-      titleTextStyle: TextTheme(
-        caption: TextStyle(color: Colors.black),
-      ).headline6,
+      toolbarTextStyle: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.w600,
+      ),
+      titleTextStyle: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.w600,
+        fontSize: 18.0,
+      ),
     ),
-    textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white),
+    textSelectionTheme: TextSelectionThemeData(
+      selectionHandleColor:
+          const Color(0xFF47D5FE).withOpacity(0.2), // Change bubble to red
+      cursorColor: Colors.black,
+    ),
     splashColor: Color(0xFFEDF2F7),
     dividerColor: Colors.grey[500],
     bottomAppBarTheme: BottomAppBarTheme(color: Color(0xFFEDF2F7)),
@@ -76,6 +86,9 @@ final appThemeData = {
   ),
   AppTheme.Dark: ThemeData(
     brightness: Brightness.light,
+    colorScheme: ThemeData().colorScheme.copyWith(
+          primary: Color(0xFF47D5FE),
+        ),
     primaryColor: Color(0xFF47D5FE),
     cardColor: Color(0xFF2d3447),
     canvasColor: Colors.transparent,
@@ -83,14 +96,21 @@ final appThemeData = {
     scaffoldBackgroundColor: Color(0xFF1A202C),
     appBarTheme: AppBarTheme(
       iconTheme: IconThemeData(color: Colors.white),
-      toolbarTextStyle: TextTheme(
-        caption: TextStyle(color: Colors.white),
-      ).bodyText2,
-      titleTextStyle: TextTheme(
-        caption: TextStyle(color: Colors.white),
-      ).headline6,
+      toolbarTextStyle: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+      ),
+      titleTextStyle: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        fontSize: 18.0,
+      ),
     ),
-    textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white),
+    textSelectionTheme: TextSelectionThemeData(
+      selectionHandleColor:
+          const Color(0xFF47D5FE).withOpacity(0.2), // Change bubble to red
+      cursorColor: Colors.white,
+    ),
     splashColor: Color(0xFF718096),
     dividerColor: Colors.grey[500],
     bottomAppBarTheme: BottomAppBarTheme(color: Color(0xFF2D3748)),

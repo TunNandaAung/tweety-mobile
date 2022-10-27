@@ -114,13 +114,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         filled: true,
                         focusColor: Theme.of(context).primaryColor,
                         enabledBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(20.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
                           borderSide: BorderSide.none,
                         ),
                         errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(20.0),
                           borderSide: BorderSide(
-                            width: 2.0,
+                            width: 1.0,
                             color: Colors.red,
                           ),
                         ),
@@ -165,10 +169,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   : Text(
                                       'Send password reset info',
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.0,
-                                          letterSpacing: 1.0,
-                                          fontWeight: FontWeight.bold),
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                             ],
                           )),

@@ -30,7 +30,6 @@ class _PhotoViewScreenState extends State<PhotoViewScreen> {
           widget.title,
           style: TextStyle(
             fontSize: 25.0,
-            letterSpacing: 1.0,
             color: Theme.of(context).textSelectionTheme.cursorColor,
             fontWeight: FontWeight.bold,
           ),

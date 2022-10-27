@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tweety_mobile/models/like_dislike.dart';
-import 'package:tweety_mobile/models/like_dislike_repository.dart';
+import 'package:tweety_mobile/repositories/like_dislike_repository.dart';
 
 part 'like_dislike_event.dart';
 part 'like_dislike_state.dart';
