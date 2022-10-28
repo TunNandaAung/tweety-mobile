@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:laravel_echo/laravel_echo.dart';
-import 'package:pusher_client/pusher_client.dart';
+import 'package:laravel_flutter_pusher/laravel_flutter_pusher.dart';
 import 'package:tweety_mobile/blocs/message/message_bloc.dart';
 import 'package:tweety_mobile/constants/api_constants.dart';
 import 'package:tweety_mobile/models/message.dart';
@@ -39,12 +40,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   late MessageBloc _messageBloc;
-  late PusherClient pusherClient;
+  late LaravelFlutterPusher pusherClient;
   late Echo echo;
 
   @override
   void initState() {
-    super.initState();
     _messageBloc = context.read<MessageBloc>();
 
     _messageController.addListener(_onMessageChanged);
@@ -56,6 +56,8 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollController.addListener(_onScroll);
 
     _setUpEcho();
+    listenToChannel();
+    super.initState();
   }
 
   void _onScroll() {
@@ -76,30 +78,30 @@ class _ChatScreenState extends State<ChatScreen> {
 
     echo = echoSetup(token, pusherClient);
 
-    echo.connector.pusher.onConnectionStateChange(onConnectionStateChange);
+    // pusherClient.onConnectionStateChange(onConnectionStateChange);
+  }
 
+  void listenToChannel() {
     echo.join("chat." + widget.chatId)
-      ..here((users) => print('users'))
-      ..listenForWhisper("typing", (event) {
-        // log(User.fromJson((event)['user']).username);
-        // typingTimer.cancel();
+        // ..here((users) => log(users.toString()))
+        .listenForWhisper("typing", (event) {
+      // log(User.fromJson((event)['user']).username);
+      // typingTimer.cancel();
 
-        updateActivePeer(true);
+      updateActivePeer(true);
 
-        typingTimer =
-            Timer(Duration(milliseconds: 3000), () => updateActivePeer(false));
-      })
-      ..listen("MessageSent", (event) {
-        _messageBloc.add(
-          ReceiveMessage(
-            chatId: widget.chatId,
-            message: Message.fromJson((event)['message']),
-          ),
-        );
-      })
-      ..listen("MessageRead", (event) {
-        _messageBloc.add(UpdateReadAt());
-      });
+      typingTimer =
+          Timer(Duration(milliseconds: 3000), () => updateActivePeer(false));
+    }).listen("MessageSent", (event) {
+      _messageBloc.add(
+        ReceiveMessage(
+          chatId: widget.chatId,
+          message: Message.fromJson((event)['message']),
+        ),
+      );
+    }).listen("MessageRead", (event) {
+      _messageBloc.add(UpdateReadAt());
+    });
   }
 
   void updateActivePeer(isTyping) {
@@ -125,6 +127,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     _scrollController.dispose();
     _messageController.dispose();
+    echo.disconnect();
     super.dispose();
   }
 

@@ -421,7 +421,14 @@ packages:
       name: laravel_echo
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0-beta.1"
+    version: "0.2.9"
+  laravel_flutter_pusher:
+    dependency: "direct main"
+    description:
+      name: laravel_flutter_pusher
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   logging:
     dependency: transitive
     description:

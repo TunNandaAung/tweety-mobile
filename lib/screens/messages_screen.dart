@@ -160,7 +160,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         );
       },
       child: Container(
-        margin: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 20.0),
+        margin: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 8.0),
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
           color: isUnread &&

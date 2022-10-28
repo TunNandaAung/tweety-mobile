@@ -34,7 +34,8 @@ dependencies:
   image_picker: ^0.8.6
   intl: ^0.17.0
   json_annotation: ^4.7.0
-  laravel_echo: 1.0.0-beta.1
+  laravel_echo: ^0.2.0
+  laravel_flutter_pusher: ^0.0.4
   photo_view: ^0.14.0
   pusher_client: ^2.0.0
   rxdart: ^0.27.5

@@ -1,11 +1,11 @@
 import 'dart:io';
 
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:laravel_echo/laravel_echo.dart';
-import 'package:pusher_client/pusher_client.dart';
+import 'package:laravel_flutter_pusher/laravel_flutter_pusher.dart';
 
 class ApiConstants {
-  static const BASE_URL =
-      'https://ed37-240b-10-9202-9300-ea48-00-1008.ngrok.io/api';
+  static const BASE_URL = 'http://10.0.2.2:8000/api';
 }
 
 Map<String, String> requestHeaders(String token) {
@@ -16,27 +16,39 @@ Map<String, String> requestHeaders(String token) {
   };
 }
 
-/*Had to use localhost (10.0.3.2 for Genymotion, 10.0.2.2 for official emulator)
+/*Had to use localhost (10.0.2.2 for Genymotion, 10.0.2.2 for official emulator)
   because websocket port 6001 cannot be setup on expose or ngrok.
 */
 Echo echoSetup(token, pusherClient) {
-  return new Echo(
-    broadcaster: EchoBroadcasterType.Pusher,
-    client: getPusherClient(token),
-  );
+  return new Echo({
+    'broadcaster': 'pusher',
+    'client': pusherClient,
+    "wsHost": '10.0.2.2',
+    "httpHost": '10.0.2.2',
+    "wsPort": 6001,
+    'auth': {
+      "headers": {'Authorization': 'Bearer $token'}
+    },
+    'authEndpoint': 'http://10.0.2.2:8000/api/broadcasting/auth',
+    "disableStats": true,
+    "forceTLS": false,
+    "enabledTransports": ['ws', 'wss']
+  });
 }
 
-PusherClient getPusherClient(String token) {
-  PusherOptions options = PusherOptions(
+LaravelFlutterPusher getPusherClient(String token) {
+  var options = PusherOptions(
     encrypted: false,
-    host: '10.0.3.2',
+    host: '10.0.2.2',
+    port: 6001,
     cluster: 'ap1',
     auth: PusherAuth(
-      'http://10.0.3.2:8000/api/broadcasting/auth',
+      'http://10.0.2.2:8000/api/broadcasting/auth',
       headers: {'Authorization': 'Bearer $token'},
     ),
   );
-  return PusherClient('d71e6cbc448a4eccfeb2', options, enableLogging: true);
+  return LaravelFlutterPusher('d71e6cbc448a4eccfeb2', options,
+      enableLogging: true);
 }
 
 // void onConnectionStateChange(ConnectionStateChange event) {
