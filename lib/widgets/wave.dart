@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as Math;
+import 'dart:math' as math;
 
 class Wave extends StatefulWidget {
   final Size size;
   final double yOffset;
   final Color color;
 
-  Wave({
+  const Wave({
+    super.key,
     required this.size,
     required this.yOffset,
     required this.color,
   });
 
   @override
-  _WaveState createState() => _WaveState();
+  WaveState createState() => WaveState();
 }
 
-class _WaveState extends State<Wave> with TickerProviderStateMixin {
+class WaveState extends State<Wave> with TickerProviderStateMixin {
   late AnimationController animationController;
   List<Offset> wavePoints = [];
 
@@ -24,27 +25,27 @@ class _WaveState extends State<Wave> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 5000))
-          ..addListener(() {
-            wavePoints.clear();
+    animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 5000))
+      ..addListener(() {
+        wavePoints.clear();
 
-            final double waveSpeed = animationController.value * 1080;
-            final double fullSphere = animationController.value * Math.pi * 2;
-            final double normalizer = Math.cos(fullSphere);
-            final double waveWidth = Math.pi / 270;
-            final double waveHeight = 20.0;
+        final double waveSpeed = animationController.value * 1080;
+        final double fullSphere = animationController.value * math.pi * 2;
+        final double normalizer = math.cos(fullSphere);
+        const double waveWidth = math.pi / 270;
+        const double waveHeight = 20.0;
 
-            for (int i = 0; i <= widget.size.width.toInt(); ++i) {
-              double calc = Math.sin((waveSpeed - i) * waveWidth);
-              wavePoints.add(
-                Offset(
-                  i.toDouble(), //X
-                  calc * waveHeight * normalizer + widget.yOffset, //Y
-                ),
-              );
-            }
-          });
+        for (int i = 0; i <= widget.size.width.toInt(); ++i) {
+          double calc = math.sin((waveSpeed - i) * waveWidth);
+          wavePoints.add(
+            Offset(
+              i.toDouble(), //X
+              calc * waveHeight * normalizer + widget.yOffset, //Y
+            ),
+          );
+        }
+      });
 
     animationController.repeat();
   }

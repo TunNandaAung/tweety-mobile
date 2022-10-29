@@ -105,7 +105,7 @@ class ChildrenReplyBloc extends Bloc<ChildrenReplyEvent, ChildrenReplyState> {
         final List<Reply> updatedReplies =
             _removeReply(currentState.childrenReplies, event);
 
-        emit(ChildrenReplyDeleted(count: 1));
+        emit(const ChildrenReplyDeleted(count: 1));
 
         emit(currentState.copyWith(
           childrenReplies: updatedReplies,

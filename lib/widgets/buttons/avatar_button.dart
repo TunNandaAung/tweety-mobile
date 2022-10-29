@@ -4,13 +4,13 @@ import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 
 class AvatarButton extends StatefulWidget {
   final GlobalKey<ScaffoldState>? scaffoldKey;
-  AvatarButton({Key? key, this.scaffoldKey}) : super(key: key);
+  const AvatarButton({Key? key, this.scaffoldKey}) : super(key: key);
 
   @override
-  _AvatarButtonState createState() => _AvatarButtonState();
+  AvatarButtonState createState() => AvatarButtonState();
 }
 
-class _AvatarButtonState extends State<AvatarButton> {
+class AvatarButtonState extends State<AvatarButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(

@@ -28,7 +28,7 @@ class UpdateReplyCount extends TweetEvent {
   final int tweetID;
   final int count;
 
-  UpdateReplyCount({required this.tweetID, required this.count});
+  const UpdateReplyCount({required this.tweetID, required this.count});
 
   @override
   List<Object> get props => [];
@@ -37,7 +37,7 @@ class UpdateReplyCount extends TweetEvent {
 class DeleteTweet extends TweetEvent {
   final int tweetID;
 
-  DeleteTweet({required this.tweetID});
+  const DeleteTweet({required this.tweetID});
 
   @override
   List<Object> get props => [];

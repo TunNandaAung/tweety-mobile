@@ -10,13 +10,13 @@ import 'package:tweety_mobile/models/user.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final User user;
-  EditProfileScreen({Key? key, required this.user}) : super(key: key);
+  const EditProfileScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  EditProfileScreenState createState() => EditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class EditProfileScreenState extends State<EditProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final ImagePicker _picker = ImagePicker();
@@ -42,7 +42,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (image != null) {
       CroppedFile? croppedImage = await _cropper.cropImage(
           sourcePath: image.path,
-          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
           compressQuality: 100,
           compressFormat: ImageCompressFormat.png,
           uiSettings: [
@@ -74,7 +74,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: Container(
             height: 230.0,
             width: 200.0,
-            padding: EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(30.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               color: Theme.of(context).cardColor,
@@ -91,18 +91,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         .copyWith(fontSize: 20.0),
                   ),
                 ),
-                SizedBox(height: 30.0),
+                const SizedBox(height: 30.0),
                 InkWell(
                   onTap: () {
                     _getImage(ImageSource.camera, isAvatar);
                     Navigator.of(context).pop();
                   },
-                  child: Container(
+                  child: SizedBox(
                     height: 40.0,
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.camera),
-                        SizedBox(width: 20.0),
+                        const Icon(Icons.camera),
+                        const SizedBox(width: 20.0),
                         Text(
                           'Camera',
                           style: TextStyle(
@@ -116,18 +116,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 30.0),
+                const SizedBox(height: 30.0),
                 InkWell(
                   onTap: () {
                     _getImage(ImageSource.gallery, isAvatar);
                     Navigator.of(context).pop();
                   },
-                  child: Container(
+                  child: SizedBox(
                     height: 40.0,
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.image),
-                        SizedBox(width: 20.0),
+                        const Icon(Icons.image),
+                        const SizedBox(width: 20.0),
                         Text(
                           'Gallery',
                           style: TextStyle(
@@ -221,12 +221,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     backgroundColor: Colors.black26,
                     content: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: const [
                         Text(
                           'Saving...',
                         ),
                         CircularProgressIndicator(
-                          valueColor: new AlwaysStoppedAnimation<Color>(
+                          valueColor: AlwaysStoppedAnimation<Color>(
                             Colors.white,
                           ),
                         )
@@ -245,7 +245,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             }
           },
           child: Padding(
-            padding: EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12.0),
             child: ListView(
               children: <Widget>[
                 Form(
@@ -260,7 +260,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         'Profile Avatar',
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      SizedBox(width: 20.0),
+                      const SizedBox(width: 20.0),
                       Center(
                         child: Padding(
                           padding: const EdgeInsets.all(2.0),
@@ -277,12 +277,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       Text(
                         'Profile Banner',
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       GestureDetector(
                         onTap: () =>
                             selectImageDialog(context, isAvatar: false),
@@ -296,12 +296,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       Text(
                         'Name',
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       TextFormField(
                         style: TextStyle(
                             color: Theme.of(context)
@@ -322,13 +322,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                           errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               width: 1.0,
                               color: Colors.red,
                             ),
                           ),
                           hintText: 'Name',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -339,12 +339,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         },
                         onSaved: (value) => _name = value!,
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       Text(
                         'username',
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       TextFormField(
                         style: TextStyle(
                             color: Theme.of(context)
@@ -365,13 +365,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                           errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               width: 1.0,
                               color: Colors.red,
                             ),
                           ),
                           hintText: 'username',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -382,12 +382,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         },
                         onSaved: (value) => _username = value!,
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       Text(
                         'Description',
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       TextFormField(
                         maxLines: 5,
                         style: TextStyle(
@@ -409,13 +409,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                           errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               width: 1.0,
                               color: Colors.red,
                             ),
                           ),
                           hintText: 'A little info about yourself?',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             fontWeight: FontWeight.w400,
                           ),
                         ),

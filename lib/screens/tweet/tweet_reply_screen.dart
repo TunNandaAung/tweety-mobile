@@ -27,10 +27,10 @@ class TweetReplyScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _TweetReplyScreenState createState() => _TweetReplyScreenState();
+  TweetReplyScreenState createState() => TweetReplyScreenState();
 }
 
-class _TweetReplyScreenState extends State<TweetReplyScreen> {
+class TweetReplyScreenState extends State<TweetReplyScreen> {
   final _scrollController = ScrollController();
   List<Reply> replies = [];
   // ignore: close_sinks
@@ -64,7 +64,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
         centerTitle: true,
         elevation: 0.0,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.transparent,
           ),
         ),
@@ -95,7 +95,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                       backgroundColor: Theme.of(context).primaryColor,
                       content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text("Your reply was added!"),
                         ],
                       ),
@@ -118,7 +118,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                       backgroundColor: Theme.of(context).primaryColor,
                       content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text("Your reply was deleted!"),
                         ],
                       ),
@@ -157,11 +157,11 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
             child: Builder(
               builder: (BuildContext context) {
                 return Padding(
-                  padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20.0),
                           topRight: Radius.circular(20.0),
                         ),
@@ -169,20 +169,20 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                           BoxShadow(
                               color: Colors.black.withOpacity(0.3),
                               blurRadius: 10.0,
-                              offset: Offset(
+                              offset: const Offset(
                                 -10,
                                 -10,
                               ))
                         ]),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 8.0,
                         vertical: 5.0,
                       ),
                       child: Column(
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 top: 8.0, right: 8.0, left: 8.0, bottom: 0.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -214,24 +214,23 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                           Expanded(
                             child: ListView.builder(
                                 shrinkWrap: true,
-                                itemBuilder: (context, index) => Container(
-                                      child: MultiBlocProvider(
-                                        providers: [
-                                          BlocProvider<ChildrenReplyBloc>(
-                                            create: (context) =>
-                                                ChildrenReplyBloc(
-                                              replyRepository:
-                                                  widget.replyRepository,
-                                            ),
+                                itemBuilder: (context, index) =>
+                                    MultiBlocProvider(
+                                      providers: [
+                                        BlocProvider<ChildrenReplyBloc>(
+                                          create: (context) =>
+                                              ChildrenReplyBloc(
+                                            replyRepository:
+                                                widget.replyRepository,
                                           ),
-                                          BlocProvider.value(
-                                            value: context.watch<ReplyBloc>(),
-                                          ),
-                                        ],
-                                        child: ReplyWidget(
-                                          reply: replies[index],
-                                          tweet: replies[0].tweet,
                                         ),
+                                        BlocProvider.value(
+                                          value: context.watch<ReplyBloc>(),
+                                        ),
+                                      ],
+                                      child: ReplyWidget(
+                                        reply: replies[index],
+                                        tweet: replies[0].tweet,
                                       ),
                                     ),
                                 itemCount: replies.length),
@@ -282,7 +281,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                         backgroundImage: NetworkImage(state.user.avatar),
                       );
                     }
-                    return CircleAvatar(
+                    return const CircleAvatar(
                       radius: 15.0,
                       backgroundColor: Colors.white,
                     );
@@ -291,16 +290,16 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                 Container(
                   width: 340.0,
                   height: 40.0,
-                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(20.0),
                     ),
                     boxShadow: [
                       BoxShadow(
                         color: Theme.of(context).canvasColor,
-                        offset: Offset(0, 10),
+                        offset: const Offset(0, 10),
                         blurRadius: (10.0),
                       )
                     ],
@@ -335,7 +334,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).canvasColor,
-            offset: Offset(10, 10),
+            offset: const Offset(10, 10),
             blurRadius: 10.0,
           ),
         ],
@@ -344,7 +343,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ListTile(
-            contentPadding: EdgeInsets.all(8.0),
+            contentPadding: const EdgeInsets.all(8.0),
             leading: InkWell(
               onTap: () => Navigator.of(context)
                   .pushNamed('/profile', arguments: tweet.user.username),
@@ -362,12 +361,12 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                 InkWell(
                   onTap: () => Navigator.of(context)
                       .pushNamed('/profile', arguments: tweet.user.username),
-                  child: Container(
+                  child: SizedBox(
                     width: size.width / 1.93,
                     child: RichText(
                       overflow: TextOverflow.ellipsis,
                       text: TextSpan(
-                        text: tweet.user.name + "\n",
+                        text: "${tweet.user.name}\n",
                         style: Theme.of(context).textTheme.caption,
                         children: [
                           TextSpan(
@@ -380,7 +379,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.keyboard_arrow_down),
+                  icon: const Icon(Icons.keyboard_arrow_down),
                   color: Theme.of(context).textSelectionTheme.cursorColor,
                   onPressed: () =>
                       TweetActionsModal().mainBottomSheet(context, tweet),
@@ -388,7 +387,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
               ],
             ),
             subtitle: Padding(
-              padding: EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -414,7 +413,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                   ),
                   tweet.image != null
                       ? Padding(
-                          padding: EdgeInsets.only(top: 12.0),
+                          padding: const EdgeInsets.only(top: 12.0),
                           child: InkWell(
                             onTap: () {
                               Navigator.of(context).push(
@@ -436,7 +435,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
                                 boxShadow: [
                                   BoxShadow(
                                     color: Theme.of(context).canvasColor,
-                                    offset: Offset(0, 5),
+                                    offset: const Offset(0, 5),
                                     blurRadius: 10.0,
                                   )
                                 ],
@@ -453,7 +452,7 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -475,11 +474,11 @@ class _TweetReplyScreenState extends State<TweetReplyScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 8.0),
+            padding: const EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width / 3,
                   child: LikeDislikeButtons(
                     tweet: tweet,

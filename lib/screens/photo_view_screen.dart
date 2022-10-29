@@ -7,7 +7,7 @@ class PhotoViewScreen extends StatefulWidget {
   final String actionText;
   final ImageProvider imageProvider;
 
-  PhotoViewScreen({
+  const PhotoViewScreen({
     Key? key,
     this.onTap,
     this.title = '',
@@ -16,10 +16,10 @@ class PhotoViewScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _PhotoViewScreenState createState() => _PhotoViewScreenState();
+  PhotoViewScreenState createState() => PhotoViewScreenState();
 }
 
-class _PhotoViewScreenState extends State<PhotoViewScreen> {
+class PhotoViewScreenState extends State<PhotoViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +38,7 @@ class _PhotoViewScreenState extends State<PhotoViewScreen> {
         iconTheme: IconThemeData(
             color: Theme.of(context).textSelectionTheme.cursorColor),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: <Widget>[
@@ -54,10 +54,8 @@ class _PhotoViewScreenState extends State<PhotoViewScreen> {
           ),
         ],
       ),
-      body: Container(
-        child: PhotoView(
-          imageProvider: widget.imageProvider,
-        ),
+      body: PhotoView(
+        imageProvider: widget.imageProvider,
       ),
     );
   }

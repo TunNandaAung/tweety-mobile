@@ -19,20 +19,20 @@ class UserApiClient {
       : httpClient = httpClient ?? http.Client();
 
   Future<Auth> login({required String email, required String password}) async {
-    final loginUrl = '$baseUrl/login';
-    final loginResponse = await this.httpClient.post(
-          Uri.parse(loginUrl),
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-            HttpHeaders.acceptHeader: 'application/json',
-          },
-          body: jsonEncode(
-            <String, String>{
-              'email': email,
-              'password': password,
-            },
-          ),
-        );
+    const loginUrl = '$baseUrl/login';
+    final loginResponse = await httpClient.post(
+      Uri.parse(loginUrl),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptHeader: 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          'email': email,
+          'password': password,
+        },
+      ),
+    );
     print(loginResponse.statusCode);
     if (loginResponse.statusCode != 200) {
       throw Exception('Invalid Credentials');
@@ -44,9 +44,9 @@ class UserApiClient {
   }
 
   Future<void> logout(String token) async {
-    final logoutUrl = '$baseUrl/logout';
+    const logoutUrl = '$baseUrl/logout';
 
-    final logoutResponse = await this.httpClient.post(
+    final logoutResponse = await httpClient.post(
       Uri.parse(logoutUrl),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
@@ -67,24 +67,24 @@ class UserApiClient {
     required String password,
     required String passwordConfirmation,
   }) async {
-    final url = '$baseUrl/register';
+    const url = '$baseUrl/register';
 
-    final response = await this.httpClient.post(
-          Uri.parse(url),
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-            HttpHeaders.acceptHeader: 'application/json',
-          },
-          body: jsonEncode(
-            <String, String>{
-              'name': name,
-              'username': username,
-              'email': email,
-              'password': password,
-              'password_confirmation': passwordConfirmation
-            },
-          ),
-        );
+    final response = await httpClient.post(
+      Uri.parse(url),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptHeader: 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          'name': name,
+          'username': username,
+          'email': email,
+          'password': password,
+          'password_confirmation': passwordConfirmation
+        },
+      ),
+    );
     if (response.statusCode == 422) {
       var errorJson = jsonDecode(response.body)['errors'];
       print(errorJson);
@@ -94,8 +94,9 @@ class UserApiClient {
         throw Exception(errorJson['password_confirmation'][0]);
       } else if (errorJson['user_name'] != null) {
         throw Exception(errorJson['user_name'][0]);
-      } else
+      } else {
         throw Exception('Error registering account');
+      }
     } else if (response.statusCode != 201) {
       throw Exception('Error registering account');
     }
@@ -106,14 +107,14 @@ class UserApiClient {
   }
 
   Future<User> fetchAuthInfo() async {
-    final url = '$baseUrl/profile';
+    const url = '$baseUrl/profile';
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token!),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     if (response.statusCode != 200) {
       throw Exception('Error fetching profile.');
     }
@@ -128,10 +129,10 @@ class UserApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token!),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     if (response.statusCode != 200) {
       throw Exception('Error fetching profile.');
     }
@@ -157,26 +158,26 @@ class UserApiClient {
     final request = await prepareResquest(
         name, username, description, avatar, banner, url, 'PATCH');
 
-    Map<String, String> _headers = {
+    Map<String, String> authHeaders = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
 
-    request.headers.addAll(_headers);
-    final response = await request.send();
+    request.headers.addAll(authHeaders);
+    final res = await request.send();
 
-    var _response = await http.Response.fromStream(response);
+    var response = await http.Response.fromStream(res);
 
-    if (response.statusCode == 422) {
-      var errorJson = jsonDecode(_response.body)['errors'];
+    if (res.statusCode == 422) {
+      var errorJson = jsonDecode(response.body)['errors'];
 
       if (errorJson['username'] != null) {
         throw Exception('username already taken.');
       }
-    } else if (response.statusCode != 201) {
+    } else if (res.statusCode != 201) {
       throw Exception('Error updating profile!');
     }
-    return User.fromJson(jsonDecode(_response.body)['data']);
+    return User.fromJson(jsonDecode(response.body)['data']);
   }
 
   Future<String> updatePassword({
@@ -184,21 +185,21 @@ class UserApiClient {
     required String newPassword,
     required String newPasswordConfirmation,
   }) async {
-    final url = '$baseUrl/auth/password';
+    const url = '$baseUrl/auth/password';
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.patch(
-          Uri.parse(url),
-          headers: requestHeaders(token!),
-          body: jsonEncode(
-            <String, String>{
-              'old_password': oldPassword,
-              'new_password': newPassword,
-              'new_password_confirmation': newPasswordConfirmation,
-            },
-          ),
-        );
+    final response = await httpClient.patch(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+      body: jsonEncode(
+        <String, String>{
+          'old_password': oldPassword,
+          'new_password': newPassword,
+          'new_password_confirmation': newPasswordConfirmation,
+        },
+      ),
+    );
     if (response.statusCode == 422) {
       var errorJson = jsonDecode(response.body)['errors'];
 
@@ -217,20 +218,20 @@ class UserApiClient {
 
   Future<User> updateEmail(
       {required String password, required String email}) async {
-    final url = '$baseUrl/auth/email';
+    const url = '$baseUrl/auth/email';
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.patch(
-          Uri.parse(url),
-          headers: requestHeaders(token!),
-          body: jsonEncode(
-            <String, String>{
-              'password': password,
-              'email': email,
-            },
-          ),
-        );
+    final response = await httpClient.patch(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+      body: jsonEncode(
+        <String, String>{
+          'password': password,
+          'email': email,
+        },
+      ),
+    );
     if (response.statusCode == 422) {
       var errorJson = jsonDecode(response.body)['errors'];
 
@@ -250,20 +251,20 @@ class UserApiClient {
   }
 
   Future<void> requestPasswordResetInfo(String email) async {
-    final url = '$baseUrl/password/forgot';
+    const url = '$baseUrl/password/forgot';
 
-    final response = await this.httpClient.post(
-          Uri.parse(url),
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-            HttpHeaders.acceptHeader: 'application/json',
-          },
-          body: jsonEncode(
-            <String, String>{
-              'email': email,
-            },
-          ),
-        );
+    final response = await httpClient.post(
+      Uri.parse(url),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptHeader: 'application/json',
+      },
+      body: jsonEncode(
+        <String, String>{
+          'email': email,
+        },
+      ),
+    );
 
     if (response.statusCode == 422) {
       var errorMessage = jsonDecode(response.body)['message'];
@@ -275,13 +276,12 @@ class UserApiClient {
   }
 
   Future<String> getAvatar() async {
-    final url = '$baseUrl/profile/avatar';
+    const url = '$baseUrl/profile/avatar';
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this
-        .httpClient
-        .get(Uri.parse(url), headers: requestHeaders(token!));
+    final response =
+        await httpClient.get(Uri.parse(url), headers: requestHeaders(token!));
     if (response.statusCode != 200) {
       print(response.body);
       throw Exception('Invalid Credentials');
@@ -292,13 +292,12 @@ class UserApiClient {
   }
 
   Future<List<User>> explore() async {
-    final url = '$baseUrl/explore';
+    const url = '$baseUrl/explore';
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this
-        .httpClient
-        .get(Uri.parse(url), headers: requestHeaders(token!));
+    final response =
+        await httpClient.get(Uri.parse(url), headers: requestHeaders(token!));
 
     if (response.statusCode != 200) {
       print(response.body);
@@ -328,18 +327,18 @@ class UserApiClient {
     request.fields['description'] = description;
 
     if (avatar != null) {
-      var stream = new http.ByteStream(Stream.castFrom(avatar.openRead()));
+      var stream = http.ByteStream(Stream.castFrom(avatar.openRead()));
       var length = await avatar.length();
-      var multipartFile = new MultipartFile("avatar", stream, length,
+      var multipartFile = MultipartFile("avatar", stream, length,
           filename: basename(avatar.path),
           contentType: MediaType('multipart', 'form-data'));
       request.files.add(multipartFile);
     }
 
     if (banner != null) {
-      var stream = new http.ByteStream(Stream.castFrom(banner.openRead()));
+      var stream = http.ByteStream(Stream.castFrom(banner.openRead()));
       var length = await banner.length();
-      var multipartFile = new MultipartFile("banner", stream, length,
+      var multipartFile = MultipartFile("banner", stream, length,
           filename: basename(banner.path),
           contentType: MediaType('multipart', 'form-data'));
       request.files.add(multipartFile);
@@ -353,9 +352,8 @@ class UserApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this
-        .httpClient
-        .get(Uri.parse(url), headers: requestHeaders(token!));
+    final response =
+        await httpClient.get(Uri.parse(url), headers: requestHeaders(token!));
 
     if (response.statusCode != 200) {
       print(response.body);
@@ -370,39 +368,39 @@ class UserApiClient {
   Future<void> uploadImages({File? avatar, File? banner}) async {
     final token = Prefer.prefs.getString('token');
 
-    final url = '$baseUrl/profile-images';
+    const url = '$baseUrl/profile-images';
 
     final request = http.MultipartRequest('POST', Uri.parse(url));
 
     if (avatar != null) {
-      var stream = new http.ByteStream(Stream.castFrom(avatar.openRead()));
+      var stream = http.ByteStream(Stream.castFrom(avatar.openRead()));
       var length = await avatar.length();
-      var multipartFile = new MultipartFile("avatar", stream, length,
+      var multipartFile = MultipartFile("avatar", stream, length,
           filename: basename(avatar.path),
           contentType: MediaType('multipart', 'form-data'));
       request.files.add(multipartFile);
     }
 
     if (banner != null) {
-      var stream = new http.ByteStream(Stream.castFrom(banner.openRead()));
+      var stream = http.ByteStream(Stream.castFrom(banner.openRead()));
       var length = await banner.length();
-      var multipartFile = new MultipartFile("banner", stream, length,
+      var multipartFile = MultipartFile("banner", stream, length,
           filename: basename(banner.path),
           contentType: MediaType('multipart', 'form-data'));
       request.files.add(multipartFile);
     }
 
-    Map<String, String> _headers = {
+    Map<String, String> authHeaders = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
 
-    request.headers.addAll(_headers);
-    final response = await request.send();
+    request.headers.addAll(authHeaders);
+    final res = await request.send();
 
-    var _response = await http.Response.fromStream(response);
-    if (response.statusCode != 204) {
-      print(_response.body);
+    var response = await http.Response.fromStream(res);
+    if (res.statusCode != 204) {
+      print(response.body);
       throw Exception('Error uploading images!');
     }
     return;

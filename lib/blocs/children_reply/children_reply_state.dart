@@ -42,7 +42,7 @@ class ChildrenReplyLoaded extends ChildrenReplyState {
 
   @override
   List<Object> get props =>
-      [childrenReplies, hasReachedMax, pageNumber, this.repliesLeft];
+      [childrenReplies, hasReachedMax, pageNumber, repliesLeft];
 
   @override
   String toString() =>
@@ -72,7 +72,7 @@ class ChildrenReplyDeleting extends ChildrenReplyState {}
 class ChildrenReplyDeleted extends ChildrenReplyState {
   final int count;
 
-  ChildrenReplyDeleted({required this.count});
+  const ChildrenReplyDeleted({required this.count});
 
   @override
   List<Object> get props => [count];

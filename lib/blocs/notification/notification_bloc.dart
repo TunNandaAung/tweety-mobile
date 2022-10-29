@@ -39,7 +39,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     final currentState = state;
     if (currentState is NotificationsCountLoaded) {
       try {
-        emit(NotificationsCountLoaded(notificationsCount: 0));
+        emit(const NotificationsCountLoaded(notificationsCount: 0));
       } catch (_) {
         emit(NotificationError());
       }

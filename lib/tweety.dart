@@ -14,10 +14,10 @@ class Tweety extends StatefulWidget {
   const Tweety({Key? key, required this.userRepository}) : super(key: key);
 
   @override
-  _TweetyState createState() => _TweetyState();
+  TweetyState createState() => TweetyState();
 }
 
-class _TweetyState extends State<Tweety> {
+class TweetyState extends State<Tweety> {
   late AuthenticationBloc _authenticationBloc;
 
   @override
@@ -94,19 +94,19 @@ class _TweetyState extends State<Tweety> {
                   return LoginScreen(userRepository: widget.userRepository);
                 }
                 if (state is AuthenticationSuccess) {
-                  return HomeScreen();
+                  return const HomeScreen();
                 }
-                return SplashScreen();
+                return const SplashScreen();
               });
             },
             '/register': (context) =>
                 RegisterScreen(userRepository: widget.userRepository),
-            '/profile': (context) => ProfileWrapper(),
-            '/publish-tweet': (context) => PublishTweetScreen(),
-            '/settings': (context) => SettingsScreen(),
-            '/tweet-reply': (context) => ReplyWrapper(),
-            '/tweet': (context) => TweetWrapper(),
-            '/forgot-password': (context) => ForgotPasswordScreen(),
+            '/profile': (context) => const ProfileWrapper(),
+            '/publish-tweet': (context) => const PublishTweetScreen(),
+            '/settings': (context) => const SettingsScreen(),
+            '/tweet-reply': (context) => const ReplyWrapper(),
+            '/tweet': (context) => const TweetWrapper(),
+            '/forgot-password': (context) => const ForgotPasswordScreen(),
           },
         );
       },

@@ -7,7 +7,7 @@ abstract class FollowingListEvent extends Equatable {
 class FetchFollowingList extends FollowingListEvent {
   final User user;
 
-  FetchFollowingList({required this.user});
+  const FetchFollowingList({required this.user});
 
   @override
   List<Object> get props => [];
@@ -16,7 +16,7 @@ class FetchFollowingList extends FollowingListEvent {
 class RefreshFollowingList extends FollowingListEvent {
   final User user;
 
-  RefreshFollowingList({required this.user});
+  const RefreshFollowingList({required this.user});
 
   @override
   List<Object> get props => [];

@@ -7,7 +7,7 @@ import 'package:tweety_mobile/screens/auth/login_form.dart';
 class LoginScreen extends StatelessWidget {
   final UserRepository _userRepository;
 
-  LoginScreen({Key? key, required UserRepository userRepository})
+  const LoginScreen({Key? key, required UserRepository userRepository})
       : _userRepository = userRepository,
         super(key: key);
 
@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
       create: (context) => LoginBloc(userRepository: _userRepository),
-      child: LoginForm(),
+      child: const LoginForm(),
     );
   }
 }

@@ -14,7 +14,7 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<RegisterBloc>(
       create: (context) => RegisterBloc(userRepository: userRepository),
-      child: RegisterForm(),
+      child: const RegisterForm(),
     );
   }
 }

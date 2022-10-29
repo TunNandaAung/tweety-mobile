@@ -6,13 +6,13 @@ import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 Future<void> deleteTweetDialog(context, int id) {
   return showModal<void>(
     context: context,
-    configuration: FadeScaleTransitionConfiguration(),
+    configuration: const FadeScaleTransitionConfiguration(),
     builder: (context) => AlertDialog(
       backgroundColor: Theme.of(context).cardColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
-      title: Text(
+      title: const Text(
         'Delete Tweet?',
         style: TextStyle(fontSize: 21.0, fontWeight: FontWeight.bold),
       ),
@@ -34,7 +34,7 @@ Future<void> deleteTweetDialog(context, int id) {
                         borderRadius: BorderRadius.circular(50.0)),
                     backgroundColor: Colors.red[600],
                   ),
-                  child: Text(
+                  child: const Text(
                     'Delete',
                     style: TextStyle(
                       color: Colors.white,
@@ -45,16 +45,16 @@ Future<void> deleteTweetDialog(context, int id) {
                     context.read<TweetBloc>().add(DeleteTweet(tweetID: id));
                   }),
             ),
-            SizedBox(width: 15.0),
+            const SizedBox(width: 15.0),
             SizedBox(
               width: 90.0,
               child: TextButton(
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0)),
-                    backgroundColor: Color(0xFF4A5568),
+                    backgroundColor: const Color(0xFF4A5568),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Cancel',
                     style: TextStyle(
                       color: Colors.white,

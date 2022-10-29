@@ -5,11 +5,13 @@ import 'package:tweety_mobile/blocs/auth/login/login_bloc.dart';
 import 'package:tweety_mobile/widgets/wave.dart';
 
 class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
+
   @override
-  _LoginFormState createState() => _LoginFormState();
+  LoginFormState createState() => LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -64,7 +66,7 @@ class _LoginFormState extends State<LoginForm> {
                         borderRadius: BorderRadius.circular(20.0)),
                     content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text('Invalid Credentials!'),
                           Icon(Icons.error)
                         ]),
@@ -82,7 +84,7 @@ class _LoginFormState extends State<LoginForm> {
                         borderRadius: BorderRadius.circular(20.0)),
                     content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
                             'error',
                           ),
@@ -101,7 +103,7 @@ class _LoginFormState extends State<LoginForm> {
                       borderRadius: BorderRadius.circular(20.0)),
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
                           'Password reset mail has been sent to your email address'),
                       Icon(Icons.check)
@@ -117,10 +119,10 @@ class _LoginFormState extends State<LoginForm> {
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
-                  backgroundColor: Color(0xFF5d74e3),
+                  backgroundColor: const Color(0xFF5d74e3),
                   content: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: const [
                         Text('Logging in...'),
                         CircularProgressIndicator()
                       ])));
@@ -137,7 +139,7 @@ class _LoginFormState extends State<LoginForm> {
                   color: Theme.of(context).primaryColor,
                 ),
                 AnimatedPositioned(
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   curve: Curves.easeOutQuad,
                   top: keyboardOpen ? -size.height / 3.7 : 0.0,
                   child: Wave(
@@ -163,7 +165,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.all(30.0),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -190,13 +192,13 @@ class _LoginFormState extends State<LoginForm> {
                                   ),
                                   errorBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20.0),
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                       width: 1.0,
                                       color: Colors.red,
                                     ),
                                   ),
-                                  prefixIcon:
-                                      Icon(Icons.mail, color: Colors.grey),
+                                  prefixIcon: const Icon(Icons.mail,
+                                      color: Colors.grey),
                                   hintText: 'Email',
                                 ),
                                 controller: _emailController,
@@ -210,7 +212,7 @@ class _LoginFormState extends State<LoginForm> {
                                   return null;
                                 },
                               ),
-                              SizedBox(height: 30.0),
+                              const SizedBox(height: 30.0),
                               TextFormField(
                                 style: TextStyle(
                                     color: Theme.of(context)
@@ -230,18 +232,18 @@ class _LoginFormState extends State<LoginForm> {
                                     ),
                                     errorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20.0),
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                         width: 1.0,
                                         color: Colors.red,
                                       ),
                                     ),
-                                    prefixIcon: Icon(Icons.lock_outline,
+                                    prefixIcon: const Icon(Icons.lock_outline,
                                         color: Colors.grey),
                                     suffixIcon: IconButton(
                                         icon: _isPasswordHidden
-                                            ? Icon(Icons.visibility_off,
+                                            ? const Icon(Icons.visibility_off,
                                                 color: Colors.grey)
-                                            : Icon(Icons.visibility,
+                                            : const Icon(Icons.visibility,
                                                 color: Colors.grey),
                                         onPressed: () {
                                           _toggleVisibility();
@@ -262,7 +264,7 @@ class _LoginFormState extends State<LoginForm> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 50.0),
+                        const SizedBox(height: 50.0),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20.0),
                           child: Material(
@@ -274,7 +276,7 @@ class _LoginFormState extends State<LoginForm> {
                               child: SizedBox(
                                 height: 50.0,
                                 width: size.width,
-                                child: Center(
+                                child: const Center(
                                   child: Text(
                                     'Login',
                                     style: TextStyle(
@@ -288,7 +290,7 @@ class _LoginFormState extends State<LoginForm> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 50.0),
+                        const SizedBox(height: 50.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -296,7 +298,7 @@ class _LoginFormState extends State<LoginForm> {
                                 style: TextStyle(
                                     color: Theme.of(context).hintColor,
                                     fontSize: 16.0)),
-                            SizedBox(width: 20.0),
+                            const SizedBox(width: 20.0),
                             InkWell(
                               onTap: () {
                                 Navigator.pushNamed(context, '/register');
@@ -312,7 +314,7 @@ class _LoginFormState extends State<LoginForm> {
                             )
                           ],
                         ),
-                        SizedBox(height: 30.0),
+                        const SizedBox(height: 30.0),
                         Align(
                           alignment: FractionalOffset.bottomCenter,
                           child: InkWell(

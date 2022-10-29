@@ -13,16 +13,16 @@ class TweetWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _tweetJson =
+    final tweetJson =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    final _tweet = _tweetJson != null ? Tweet.fromJson(_tweetJson) : tweet;
+    final tweetData = tweetJson != null ? Tweet.fromJson(tweetJson) : tweet;
     final ReplyRepository replyRepository = ReplyRepository(
       replyApiClient: ReplyApiClient(httpClient: http.Client()),
     );
     return BlocProvider<ReplyBloc>(
       create: (context) => ReplyBloc(replyRepository: replyRepository),
       child: TweetScreen(
-        tweet: _tweet!,
+        tweet: tweetData!,
         replyRepository: replyRepository,
       ),
     );

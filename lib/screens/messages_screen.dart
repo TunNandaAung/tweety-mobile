@@ -15,14 +15,14 @@ import 'package:tweety_mobile/widgets/refresh.dart';
 class MessagesScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  MessagesScreen({Key? key, required this.scaffoldKey}) : super(key: key);
+  const MessagesScreen({Key? key, required this.scaffoldKey}) : super(key: key);
 
   @override
-  _MessagesScreenState createState() => _MessagesScreenState();
+  MessagesScreenState createState() => MessagesScreenState();
 }
 
-class _MessagesScreenState extends State<MessagesScreen> {
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class MessagesScreenState extends State<MessagesScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scrollController = ScrollController();
 
   @override
@@ -71,59 +71,57 @@ class _MessagesScreenState extends State<MessagesScreen> {
         ),
         body: Column(
           children: [
-            Container(
-              child: Expanded(
-                child: Container(
-                    height: 300.0,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                    ),
-                    child: BlocConsumer<ChatBloc, ChatState>(
-                      listener: (context, state) {
-                        if (!state.hasReachedMax && _isBottom) {
-                          context.read<ChatBloc>().add(FetchChatList());
-                        }
-                      },
-                      builder: (context, state) {
-                        switch (state.status) {
-                          case ChatStatus.failure:
-                            return Refresh(
-                              title: 'Couldn\'t load messages',
-                              onPressed: () {
-                                context.read<ChatBloc>().add(
-                                      FetchChatList(),
-                                    );
-                              },
-                            );
-                          case ChatStatus.success:
-                            if (state.chatList.isEmpty) {
-                              return Center(
-                                  child: Text(
-                                "You have no message yet!",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.bold),
-                              ));
-                            }
-                            return ListView.builder(
-                              itemCount: state.hasReachedMax
-                                  ? state.chatList.length
-                                  : state.chatList.length + 1,
-                              controller: _scrollController,
-                              itemBuilder: (BuildContext context, int index) {
-                                return index >= state.chatList.length
-                                    ? LoadingIndicator()
-                                    : _chatListItem(state.chatList[index]);
-                              },
-                            );
-                          default:
-                            return const Center(child: LoadingIndicator());
-                        }
-                      },
-                    )),
-              ),
+            Expanded(
+              child: Container(
+                  height: 300.0,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                  child: BlocConsumer<ChatBloc, ChatState>(
+                    listener: (context, state) {
+                      if (!state.hasReachedMax && _isBottom) {
+                        context.read<ChatBloc>().add(FetchChatList());
+                      }
+                    },
+                    builder: (context, state) {
+                      switch (state.status) {
+                        case ChatStatus.failure:
+                          return Refresh(
+                            title: 'Couldn\'t load messages',
+                            onPressed: () {
+                              context.read<ChatBloc>().add(
+                                    FetchChatList(),
+                                  );
+                            },
+                          );
+                        case ChatStatus.success:
+                          if (state.chatList.isEmpty) {
+                            return Center(
+                                child: Text(
+                              "You have no message yet!",
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5!
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ));
+                          }
+                          return ListView.builder(
+                            itemCount: state.hasReachedMax
+                                ? state.chatList.length
+                                : state.chatList.length + 1,
+                            controller: _scrollController,
+                            itemBuilder: (BuildContext context, int index) {
+                              return index >= state.chatList.length
+                                  ? const LoadingIndicator()
+                                  : _chatListItem(state.chatList[index]);
+                            },
+                          );
+                        default:
+                          return const Center(child: LoadingIndicator());
+                      }
+                    },
+                  )),
             ),
           ],
         ),
@@ -132,9 +130,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
   }
 
   _chatListItem(Chat chat) {
-    final Message message = chat.messages!.length > 0
+    final Message message = chat.messages!.isNotEmpty
         ? chat.messages!.first
-        : new Message(
+        : Message(
             chatId: chat.id,
             message: "Send a message.",
             readAt: DateTime.now(),
@@ -160,8 +158,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
         );
       },
       child: Container(
-        margin: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 8.0),
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        margin: const EdgeInsets.only(top: 5.0, bottom: 5.0, right: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
           color: isUnread &&
                   !isCurrentUser(
@@ -184,7 +182,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   backgroundImage: NetworkImage(messageTo.avatar),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10.0,
                 ),
                 Column(
@@ -198,13 +196,13 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       height: 5.0,
                     ),
                     message.sender == null
-                        ? SizedBox()
-                        : Container(
+                        ? const SizedBox()
+                        : SizedBox(
                             width: MediaQuery.of(context).size.width * 0.45,
                             child: Text(
                               isCurrentUser(message.sender!.id)
-                                  ? 'You: ' + message.message
-                                  : '' + message.message,
+                                  ? 'You: ${message.message}'
+                                  : message.message,
                               style: Theme.of(context).textTheme.bodyText2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -213,7 +211,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 ),
               ],
             ),
-            chat.messages != null && chat.messages!.length > 0
+            chat.messages != null && chat.messages!.isNotEmpty
                 ? Column(
                     children: <Widget>[
                       Text(
@@ -228,7 +226,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
                     ],
                   )
-                : SizedBox(height: 0.0)
+                : const SizedBox(height: 0.0)
           ],
         ),
       ),

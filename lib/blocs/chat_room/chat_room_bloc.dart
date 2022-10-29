@@ -12,19 +12,19 @@ class ChatRoomBloc extends Bloc<ChatRoomEvent, ChatRoomState> {
   final ChatRepository chatRepository;
 
   ChatRoomBloc({required this.chatRepository})
-      : super(ChatRoomState.initial()) {
+      : super(const ChatRoomState.initial()) {
     on<FetchChatRoom>(_onFetchChatRoom);
   }
 
   Future<void> _onFetchChatRoom(
       FetchChatRoom event, Emitter<ChatRoomState> emit) async {
-    emit(ChatRoomState.loading());
+    emit(const ChatRoomState.loading());
 
     try {
       final chat = await chatRepository.getChatRoom(username: event.username);
       emit(ChatRoomState.success(chat));
     } on Exception {
-      emit(ChatRoomState.failure());
+      emit(const ChatRoomState.failure());
     }
   }
 }

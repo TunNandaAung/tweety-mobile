@@ -9,6 +9,7 @@ class NotificationData {
   User notifier;
   String link;
   String type;
+  // ignore: prefer_typing_uninitialized_variables
   final arg;
   String? screen;
 

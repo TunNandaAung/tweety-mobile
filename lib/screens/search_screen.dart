@@ -37,7 +37,7 @@ class SearchScreen extends SearchDelegate<User?> {
       inputDecorationTheme: InputDecorationTheme(
         fillColor: Theme.of(context).textSelectionTheme.cursorColor,
         hintStyle: TextStyle(color: Colors.grey[400]),
-        suffixStyle: TextStyle(fontSize: 18.0),
+        suffixStyle: const TextStyle(fontSize: 18.0),
       ),
     );
   }
@@ -50,14 +50,14 @@ class SearchScreen extends SearchDelegate<User?> {
     // action for app bar
     return [
       Padding(
-        padding: EdgeInsets.only(right: 10.0),
+        padding: const EdgeInsets.only(right: 10.0),
         child: SizedBox(
           width: 25.0,
           child: RawMaterialButton(
-              shape: CircleBorder(),
+              shape: const CircleBorder(),
               elevation: 1.0,
-              fillColor: Color(0xFF4A5568),
-              child: Icon(Icons.clear, color: Colors.white, size: 20.0),
+              fillColor: const Color(0xFF4A5568),
+              child: const Icon(Icons.clear, color: Colors.white, size: 20.0),
               onPressed: () {
                 query = '';
               }),
@@ -88,8 +88,8 @@ class SearchScreen extends SearchDelegate<User?> {
                       type,
                     ),
                     searchType == type.toLowerCase()
-                        ? Icon(Icons.check)
-                        : SizedBox(width: 0.0)
+                        ? const Icon(Icons.check)
+                        : const SizedBox(width: 0.0)
                   ],
                 ),
               );
@@ -103,7 +103,7 @@ class SearchScreen extends SearchDelegate<User?> {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: BackButtonIcon(),
+      icon: const BackButtonIcon(),
       onPressed: () {
         close(context, null);
       },
@@ -136,39 +136,35 @@ class SearchScreen extends SearchDelegate<User?> {
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
-              Center(
+              const Center(
                 child: LoadingIndicator(),
               ),
             ],
           );
         }
         if (state.hasError) {
-          return Center(
-            child: Container(
-              child: Text('Error', style: TextStyle(color: Colors.red)),
-            ),
+          return const Center(
+            child: Text('Error', style: TextStyle(color: Colors.red)),
           );
         }
-        return state.users.length > 0
+        return state.users.isNotEmpty
             ? Padding(
-                padding: EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12.0),
                 child: ListView.separated(
                   shrinkWrap: true,
                   separatorBuilder: (context, counter) {
-                    return SizedBox(height: 0.0);
+                    return const SizedBox(height: 0.0);
                   },
                   itemBuilder: (context, index) =>
                       UserCard(user: state.users[index]),
                   itemCount: state.users.length,
                 ),
               )
-            : Center(
-                child: Container(
-                  child: Text(
-                    'No result match your search.',
-                    style: TextStyle(
-                      color: Colors.red,
-                    ),
+            : const Center(
+                child: Text(
+                  'No result match your search.',
+                  style: TextStyle(
+                    color: Colors.red,
                   ),
                 ),
               );
@@ -193,45 +189,41 @@ class SearchScreen extends SearchDelegate<User?> {
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
-              Center(
+              const Center(
                 child: LoadingIndicator(),
               ),
             ],
           );
         }
         if (state.hasError) {
-          return Center(
-            child: Container(
-              child: Text('Error', style: TextStyle(color: Colors.red)),
-            ),
+          return const Center(
+            child: Text('Error', style: TextStyle(color: Colors.red)),
           );
         }
-        return state.tweets.length > 0
+        return state.tweets.isNotEmpty
             ? Padding(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   vertical: 5.0,
                 ),
                 child: ListView.separated(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 8.0,
                     vertical: 5.0,
                   ),
                   shrinkWrap: true,
                   separatorBuilder: (context, counter) {
-                    return SizedBox(height: 10.0);
+                    return const SizedBox(height: 10.0);
                   },
                   itemBuilder: (context, index) =>
                       TweetCard(tweet: state.tweets[index]),
                   itemCount: state.tweets.length,
                 ),
               )
-            : Center(
-                child: Container(
-                  child: Text(
-                    'No result match your search.',
-                    style: TextStyle(
-                      color: Colors.red,
-                    ),
+            : const Center(
+                child: Text(
+                  'No result match your search.',
+                  style: TextStyle(
+                    color: Colors.red,
                   ),
                 ),
               );
@@ -251,28 +243,26 @@ class SearchScreen extends SearchDelegate<User?> {
       bloc: userSearchBloc,
       builder: (BuildContext context, UserSearchState state) {
         if (state.isLoading) {
-          return Center(
+          return const Center(
             child: LoadingIndicator(),
           );
         }
         if (state.hasError) {
-          return Center(
-            child: Container(
-              child: Text(
-                'Error',
-                style: TextStyle(
-                  color: Colors.red,
-                ),
+          return const Center(
+            child: Text(
+              'Error',
+              style: TextStyle(
+                color: Colors.red,
               ),
             ),
           );
         }
 
-        if (recentSearches.length > 0 && query.isEmpty) {
+        if (recentSearches.isNotEmpty && query.isEmpty) {
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return Padding(
-                padding: EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Container(
                   height: double.infinity,
                   color: Colors.transparent,
@@ -282,7 +272,7 @@ class SearchScreen extends SearchDelegate<User?> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
+                          const Text(
                             'Recent Searches',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -300,12 +290,12 @@ class SearchScreen extends SearchDelegate<User?> {
                               print(recentSearches.length);
                             },
                             child: Container(
-                              padding: EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.all(5.0),
                               decoration: BoxDecoration(
-                                color: Color(0xFF4A5568),
+                                color: const Color(0xFF4A5568),
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
-                              child: Text(
+                              child: const Text(
                                 'Clear',
                                 style: TextStyle(
                                   color: Colors.white,
@@ -318,7 +308,7 @@ class SearchScreen extends SearchDelegate<User?> {
                       Expanded(
                         child: ListView.separated(
                           separatorBuilder: (context, counter) {
-                            return SizedBox(
+                            return const SizedBox(
                               height: 0.0,
                             );
                           },
@@ -356,13 +346,13 @@ class SearchScreen extends SearchDelegate<User?> {
 
         return searchType == 'user'
             ? Padding(
-                padding: EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Container(
                   height: double.infinity,
                   color: Colors.transparent,
                   child: ListView.separated(
                     separatorBuilder: (context, counter) {
-                      return SizedBox(height: 10.0);
+                      return const SizedBox(height: 10.0);
                     },
                     itemBuilder: (context, index) => Container(
                       decoration: BoxDecoration(
@@ -371,7 +361,7 @@ class SearchScreen extends SearchDelegate<User?> {
                           boxShadow: [
                             BoxShadow(
                                 color: Theme.of(context).canvasColor,
-                                offset: Offset(0, 10),
+                                offset: const Offset(0, 10),
                                 blurRadius: 10.0),
                           ]),
                       child: ListTile(
@@ -396,7 +386,7 @@ class SearchScreen extends SearchDelegate<User?> {
                                   text: suggestionList[index]
                                       .name
                                       .substring(query.length),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     color: Colors.black26,
                                   ),
@@ -405,10 +395,8 @@ class SearchScreen extends SearchDelegate<User?> {
                         ),
                         subtitle: RichText(
                           text: TextSpan(
-                              text: '@' +
-                                  suggestionList[index]
-                                      .username
-                                      .substring(0, query.length),
+                              text:
+                                  '@${suggestionList[index].username.substring(0, query.length)}',
                               style: TextStyle(
                                 fontSize: 15,
                                 color: Theme.of(context)
@@ -421,7 +409,7 @@ class SearchScreen extends SearchDelegate<User?> {
                                   text: suggestionList[index]
                                       .username
                                       .substring(query.length),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 15,
                                     color: Colors.black26,
                                   ),

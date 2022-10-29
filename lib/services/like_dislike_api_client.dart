@@ -16,10 +16,10 @@ class LikeDislikeApiClient {
     final url = '$baseUrl/$subject/$id/like';
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.post(
-          Uri.parse(url),
-          headers: requestHeaders(token!),
-        );
+    final response = await httpClient.post(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
 
     if (response.statusCode != 200) {
       throw Exception('Error liking.');
@@ -34,10 +34,10 @@ class LikeDislikeApiClient {
     final url = '$baseUrl/$subject/$id/dislike';
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.delete(
-          Uri.parse(url),
-          headers: requestHeaders(token!),
-        );
+    final response = await httpClient.delete(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
 
     if (response.statusCode != 200) {
       throw Exception('Error disliking.');

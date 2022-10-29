@@ -4,13 +4,13 @@ class ExpandedSection extends StatefulWidget {
   final Widget child;
   final bool expand;
 
-  ExpandedSection({this.expand = false, required this.child});
+  const ExpandedSection({super.key, this.expand = false, required this.child});
 
   @override
-  _ExpandedSectionState createState() => _ExpandedSectionState();
+  ExpandedSectionState createState() => ExpandedSectionState();
 }
 
-class _ExpandedSectionState extends State<ExpandedSection>
+class ExpandedSectionState extends State<ExpandedSection>
     with SingleTickerProviderStateMixin {
   late AnimationController expandController;
   late Animation<double> animation;
@@ -23,8 +23,8 @@ class _ExpandedSectionState extends State<ExpandedSection>
 
   ///Setting up the animation
   void prepareAnimations() {
-    expandController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    expandController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
     Animation<double> curve = CurvedAnimation(
       parent: expandController,
       curve: Curves.fastOutSlowIn,

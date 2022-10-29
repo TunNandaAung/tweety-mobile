@@ -16,15 +16,15 @@ class TweetsScreen extends StatefulWidget {
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  TweetsScreen(
+  const TweetsScreen(
       {Key? key, required this.scaffoldMessengerKey, required this.scaffoldKey})
       : super(key: key);
 
   @override
-  _TweetsScreenState createState() => _TweetsScreenState();
+  TweetsScreenState createState() => TweetsScreenState();
 }
 
-class _TweetsScreenState extends State<TweetsScreen> {
+class TweetsScreenState extends State<TweetsScreen> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   late Completer<void> _tweetRefreshCompleter;
@@ -59,7 +59,7 @@ class _TweetsScreenState extends State<TweetsScreen> {
   }
 
   List<Tweet> tweets = [];
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +104,7 @@ class _TweetsScreenState extends State<TweetsScreen> {
               BlocBuilder<TweetBloc, TweetState>(
                 builder: (context, state) {
                   if (state is TweetLoading) {
-                    return SliverFillRemaining(
+                    return const SliverFillRemaining(
                       child: LoadingIndicator(),
                     );
                   }
@@ -123,7 +123,7 @@ class _TweetsScreenState extends State<TweetsScreen> {
                                 .headline5!
                                 .copyWith(fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           Text(
                             "When you follows someone, you'll see their tweets here.",
                             textAlign: TextAlign.center,
@@ -135,9 +135,9 @@ class _TweetsScreenState extends State<TweetsScreen> {
                     return SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) => index >= tweets.length
-                            ? LoadingIndicator()
+                            ? const LoadingIndicator()
                             : Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0,
                                   vertical: 5.0,
                                 ),
@@ -166,19 +166,17 @@ class _TweetsScreenState extends State<TweetsScreen> {
                   }
                   if (state is TweetError) {
                     return SliverToBoxAdapter(
-                      child: Container(
-                        child: Refresh(
-                          title: 'Couldn\'t load feed',
-                          onPressed: () {
-                            context.read<TweetBloc>().add(
-                                  RefreshTweet(),
-                                );
-                          },
-                        ),
+                      child: Refresh(
+                        title: 'Couldn\'t load feed',
+                        onPressed: () {
+                          context.read<TweetBloc>().add(
+                                RefreshTweet(),
+                              );
+                        },
                       ),
                     );
                   }
-                  return SliverFillRemaining(
+                  return const SliverFillRemaining(
                     child: LoadingIndicator(size: 21.0),
                   );
                 },

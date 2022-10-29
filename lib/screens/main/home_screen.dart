@@ -17,13 +17,13 @@ import 'package:tweety_mobile/widgets/nav/nav_drawer.dart';
 import 'package:tweety_mobile/widgets/buttons/notifications_button.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
+class HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   final _scrollController = ScrollController();
@@ -41,8 +41,10 @@ class _HomeScreenState extends State<HomeScreen>
           GetAvatar(),
         );
     _scrollController.addListener(_onScroll);
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
   }
 
   @override
@@ -75,15 +77,15 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   List<Tweet> tweets = [];
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: NavDrawer('/'),
+      drawer: const NavDrawer('/'),
       body: MultiBlocListener(
         listeners: [
           BlocListener<TweetBloc, TweetState>(
@@ -100,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen>
                       backgroundColor: Theme.of(context).primaryColor,
                       content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text("Your tweet was published!"),
                         ],
                       ),
@@ -131,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen>
                       backgroundColor: Theme.of(context).primaryColor,
                       content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text("Your tweet was deleted!"),
                         ],
                       ),
@@ -151,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen>
                       backgroundColor: Colors.red,
                       content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text("Couldn't publish tweet"),
                         ],
                       ),
@@ -164,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen>
         child: SizedBox.expand(
           child: PageView(
             physics:
-                NeverScrollableScrollPhysics(), // Disable swipe to change page
+                const NeverScrollableScrollPhysics(), // Disable swipe to change page
             controller: _pageController,
             onPageChanged: (index) {
               setState(() => _currentIndex = index);
@@ -259,8 +261,8 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           closedColor: Theme.of(context).primaryColor,
           closedElevation: 0.0,
-          transitionDuration: Duration(milliseconds: 500),
-          openBuilder: (context, action) => PublishTweetScreen(),
+          transitionDuration: const Duration(milliseconds: 500),
+          openBuilder: (context, action) => const PublishTweetScreen(),
           transitionType: ContainerTransitionType.fade,
           closedBuilder: (BuildContext context, VoidCallback openContainer) {
             return Container(
@@ -274,19 +276,20 @@ class _HomeScreenState extends State<HomeScreen>
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Color(0xFF2F80ED).withOpacity(.8),
-                    offset: Offset(0.0, 8.0),
+                    color: const Color(0xFF2F80ED).withOpacity(.8),
+                    offset: const Offset(0.0, 8.0),
                     blurRadius: 8.0,
                   ),
                   BoxShadow(
-                    color: Color(0xFF2F80ED).withOpacity(.8),
-                    offset: Offset(8.0, 0.0),
+                    color: const Color(0xFF2F80ED).withOpacity(.8),
+                    offset: const Offset(8.0, 0.0),
                     blurRadius: 8.0,
                   )
                 ],
               ),
               child: RawMaterialButton(
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
+                onPressed: openContainer,
                 child: AnimatedBuilder(
                   animation: _animationController,
                   builder: (_, child) {
@@ -295,13 +298,12 @@ class _HomeScreenState extends State<HomeScreen>
                       child: child,
                     );
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.add,
                     size: 35.0,
                     color: Colors.white,
                   ),
                 ),
-                onPressed: openContainer,
               ),
             );
           }),

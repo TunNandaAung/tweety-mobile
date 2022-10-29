@@ -12,7 +12,7 @@ class TweetSearchState {
   });
 
   factory TweetSearchState.initial() {
-    return TweetSearchState(
+    return const TweetSearchState(
       tweets: [],
       isLoading: false,
       hasError: false,
@@ -20,7 +20,7 @@ class TweetSearchState {
   }
 
   factory TweetSearchState.loading() {
-    return TweetSearchState(
+    return const TweetSearchState(
       tweets: [],
       isLoading: true,
       hasError: false,
@@ -36,7 +36,7 @@ class TweetSearchState {
   }
 
   factory TweetSearchState.error() {
-    return TweetSearchState(
+    return const TweetSearchState(
       tweets: [],
       isLoading: false,
       hasError: true,

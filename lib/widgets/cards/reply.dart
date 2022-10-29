@@ -26,10 +26,10 @@ class ReplyWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ReplyWidgetState createState() => _ReplyWidgetState();
+  ReplyWidgetState createState() => ReplyWidgetState();
 }
 
-class _ReplyWidgetState extends State<ReplyWidget> {
+class ReplyWidgetState extends State<ReplyWidget> {
   bool isButtonEnabled(ChildrenReplyState state) =>
       state is! ChildrenReplyLoading;
 
@@ -64,7 +64,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 backgroundColor: Theme.of(context).primaryColor,
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const [
                     Text("Your reply was added!"),
                   ],
                 ),
@@ -83,7 +83,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 backgroundColor: Theme.of(context).primaryColor,
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const [
                     Text("Your reply was deleted!"),
                   ],
                 ),
@@ -102,7 +102,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 backgroundColor: Colors.red,
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const [
                     Text("Couldn't add reply."),
                   ],
                 ),
@@ -116,10 +116,8 @@ class _ReplyWidgetState extends State<ReplyWidget> {
           widget.isProfileReply
               ? Text(
                   widget.replyingTo != null
-                      ? 'Replying to @' +
-                          widget.replyingTo!.owner.username +
-                          "reply"
-                      : 'Replying to @' + widget.tweet.user.username + " tweet",
+                      ? "Replying to @${widget.tweet.user.username} reply"
+                      : "Replying to @${widget.tweet.user.username} tweet",
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2!
@@ -129,7 +127,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
               ? _parentReply(reply: widget.replyingTo!)
               : Container(),
           ListTile(
-            contentPadding: EdgeInsets.all(8.0),
+            contentPadding: const EdgeInsets.all(8.0),
             leading: InkWell(
               onTap: () => Navigator.of(context).pushNamed('/profile',
                   arguments: widget.reply.owner.username),
@@ -147,12 +145,12 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                 InkWell(
                   onTap: () => Navigator.of(context).pushNamed('/profile',
                       arguments: widget.reply.owner.username),
-                  child: Container(
+                  child: SizedBox(
                     width: size.width / 2,
                     child: RichText(
                       overflow: TextOverflow.ellipsis,
                       text: TextSpan(
-                        text: widget.reply.owner.name + "\n",
+                        text: "${widget.reply.owner.name}\n",
                         style: Theme.of(context).textTheme.caption,
                         children: [
                           TextSpan(
@@ -182,7 +180,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
               ],
             ),
             subtitle: Padding(
-              padding: EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 10.0),
               child: Text(
                 widget.reply.body,
                 style: Theme.of(context).textTheme.bodyText1,
@@ -190,11 +188,11 @@ class _ReplyWidgetState extends State<ReplyWidget> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width / 3,
                   child: LikeDislikeButtons(
                     reply: widget.reply,
@@ -211,10 +209,10 @@ class _ReplyWidgetState extends State<ReplyWidget> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 18.0),
+            padding: const EdgeInsets.only(left: 18.0),
             child: Column(
                 children: childrenReplies
-                    .map((reply) => ChildrenReply(
+                    .map((reply) => ChildrenReplyCard(
                           reply: reply,
                         ))
                     .toList()),
@@ -222,7 +220,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
           BlocBuilder<ChildrenReplyBloc, ChildrenReplyState>(
             builder: (context, state) {
               if (state is ChildrenReplyLoading) {
-                return LoadingIndicator(size: 15.0);
+                return const LoadingIndicator(size: 15.0);
               }
               if (state is ChildrenReplyLoaded) {
                 return _fetchMore(state.repliesLeft, state);
@@ -233,7 +231,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                   : Container();
             },
           ),
-          widget.isProfileReply ? Divider() : Container(),
+          widget.isProfileReply ? const Divider() : Container(),
         ],
       ),
     );
@@ -258,8 +256,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
                   }
                 },
                 child: Text(
-                  'View $repliesLeft more ' +
-                      (repliesLeft > 1 ? 'replies' : 'reply'),
+                  'View $repliesLeft more ${repliesLeft > 1 ? 'replies' : 'reply'}',
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
               )
@@ -273,7 +270,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         ListTile(
-          contentPadding: EdgeInsets.all(8.0),
+          contentPadding: const EdgeInsets.all(8.0),
           leading: InkWell(
             child: CircleAvatar(
               radius: 25.0,
@@ -289,12 +286,12 @@ class _ReplyWidgetState extends State<ReplyWidget> {
               InkWell(
                 onTap: () => Navigator.of(context)
                     .pushNamed('/profile', arguments: reply.owner.username),
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width / 2,
                   child: RichText(
                     overflow: TextOverflow.ellipsis,
                     text: TextSpan(
-                      text: reply.owner.name + "\n",
+                      text: "${reply.owner.name}\n",
                       style: Theme.of(context).textTheme.caption,
                       children: [
                         TextSpan(
@@ -324,7 +321,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
             ],
           ),
           subtitle: Padding(
-            padding: EdgeInsets.only(top: 10.0),
+            padding: const EdgeInsets.only(top: 10.0),
             child: Text(
               widget.reply.body,
               style: Theme.of(context).textTheme.bodyText1,
@@ -332,11 +329,11 @@ class _ReplyWidgetState extends State<ReplyWidget> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width / 3,
                 child: LikeDislikeButtons(
                   reply: widget.reply,

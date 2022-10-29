@@ -19,10 +19,10 @@ class FollowApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.post(
-          Uri.parse(url),
-          headers: requestHeaders(token!),
-        );
+    final response = await httpClient.post(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error following user.');
@@ -38,10 +38,10 @@ class FollowApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token!),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting following list.');
@@ -58,10 +58,10 @@ class FollowApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token!),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting followers list.');

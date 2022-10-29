@@ -30,7 +30,7 @@ Widget navigationItem(
         child: Row(
           children: <Widget>[
             Icon(icon, color: iconColor, size: 30.0),
-            SizedBox(width: 20.0),
+            const SizedBox(width: 20.0),
             Text(
               title,
               style:

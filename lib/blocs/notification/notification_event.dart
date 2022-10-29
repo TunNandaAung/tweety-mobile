@@ -7,7 +7,7 @@ abstract class NotificationEvent extends Equatable {
 class InitPushNotification extends NotificationEvent {
   final BuildContext context;
 
-  InitPushNotification(this.context);
+  const InitPushNotification(this.context);
 
   @override
   List<Object> get props => [context];

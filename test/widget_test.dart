@@ -14,7 +14,7 @@ import 'package:tweety_mobile/tweety.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(Tweety(userRepository: new UserRepository()));
+    await tester.pumpWidget(Tweety(userRepository: UserRepository()));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

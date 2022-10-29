@@ -6,13 +6,13 @@ import 'package:tweety_mobile/blocs/auth/authentication/authentication_bloc.dart
 Future<void> logoutDialog(context, VoidCallback? onPressed) {
   return showModal<void>(
     context: context,
-    configuration: FadeScaleTransitionConfiguration(),
+    configuration: const FadeScaleTransitionConfiguration(),
     builder: (context) => AlertDialog(
       backgroundColor: Theme.of(context).cardColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
-      title: Text(
+      title: const Text(
         'Logout of Tweety?',
         style: TextStyle(fontSize: 21.0, fontWeight: FontWeight.bold),
       ),
@@ -34,7 +34,7 @@ Future<void> logoutDialog(context, VoidCallback? onPressed) {
                       borderRadius: BorderRadius.circular(50.0)),
                   backgroundColor: Colors.red[600],
                 ),
-                child: Text(
+                child: const Text(
                   'Logout',
                   style: TextStyle(
                     color: Colors.white,
@@ -48,16 +48,16 @@ Future<void> logoutDialog(context, VoidCallback? onPressed) {
                 },
               ),
             ),
-            SizedBox(width: 15.0),
+            const SizedBox(width: 15.0),
             SizedBox(
               width: 90.0,
               child: TextButton(
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0)),
-                    backgroundColor: Color(0xFF4A5568),
+                    backgroundColor: const Color(0xFF4A5568),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Cancel',
                     style: TextStyle(
                       color: Colors.white,

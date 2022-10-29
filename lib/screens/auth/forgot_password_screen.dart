@@ -5,18 +5,18 @@ import 'package:tweety_mobile/utils/validators.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  ForgotPasswordScreen({Key? key}) : super(key: key);
+  const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
+  ForgotPasswordScreenState createState() => ForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
 
   bool isButtonEnabled(AuthProfileState state) {
-    return !(state is ResetPasswordRequestLoading);
+    return state is! ResetPasswordRequestLoading;
   }
 
   late String _email;
@@ -31,7 +31,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         iconTheme: IconThemeData(
           color: Theme.of(context).textSelectionTheme.cursorColor,
         ),
-        leading: BackButton(),
+        leading: const BackButton(),
         title: Text(
           'Tweety',
           style: Theme.of(context).appBarTheme.titleTextStyle,
@@ -56,7 +56,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         Text(
                           state.errorMessage,
                         ),
-                        Icon(Icons.error)
+                        const Icon(Icons.error)
                       ],
                     ),
                     backgroundColor: Colors.red),
@@ -74,7 +74,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   backgroundColor: Colors.blue,
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text('Password reset info successfully sent!'),
                     ],
                   ),
@@ -104,7 +104,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       'Enter your email adress',
                       style: Theme.of(context).textTheme.caption,
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     TextFormField(
                       style: TextStyle(
                           color:
@@ -123,17 +123,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ),
                         errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             width: 1.0,
                             color: Colors.red,
                           ),
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.email,
                           color: Colors.grey,
                         ),
                         hintText: 'you@example.com',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -144,29 +144,29 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       },
                       onSaved: (value) => _email = value!,
                     ),
-                    SizedBox(height: 20.0),
-                    Text(
+                    const SizedBox(height: 20.0),
+                    const Text(
                         "We'll send an email to this address with password reset instructions."),
-                    SizedBox(height: 30.0),
+                    const SizedBox(height: 30.0),
                     InkWell(
                       onTap: isButtonEnabled(state) ? _onFormSubmitted : null,
                       child: Container(
                           width: size.width,
-                          padding: EdgeInsets.symmetric(vertical: 15.0),
+                          padding: const EdgeInsets.symmetric(vertical: 15.0),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                const BorderRadius.all(Radius.circular(20.0)),
                             color: Theme.of(context).primaryColor,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               (state is ResetPasswordRequestLoading)
-                                  ? LoadingIndicator(
+                                  ? const LoadingIndicator(
                                       color: Colors.white,
                                     )
-                                  : Text(
+                                  : const Text(
                                       'Send password reset info',
                                       style: TextStyle(
                                         color: Colors.white,
@@ -177,7 +177,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             ],
                           )),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                   ],

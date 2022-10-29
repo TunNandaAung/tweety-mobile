@@ -20,7 +20,7 @@ Map<String, String> requestHeaders(String token) {
   because websocket port 6001 cannot be setup on expose or ngrok.
 */
 Echo echoSetup(token, pusherClient) {
-  return new Echo({
+  return Echo({
     'broadcaster': 'pusher',
     'client': pusherClient,
   });
@@ -33,7 +33,7 @@ LaravelFlutterPusher getPusherClient(String token) {
     port: 6001,
     cluster: 'ap1',
     auth: PusherAuth(
-      ApiConstants.BASE_URL + '/broadcasting/auth',
+      '${ApiConstants.BASE_URL}/broadcasting/auth',
       headers: {'Authorization': 'Bearer $token'},
     ),
   );

@@ -5,13 +5,13 @@ import 'package:tweety_mobile/theme/app_theme.dart';
 import 'package:tweety_mobile/theme/cubit/theme_cubit.dart';
 
 class ThemeSettingsScreen extends StatefulWidget {
-  ThemeSettingsScreen({Key? key}) : super(key: key);
+  const ThemeSettingsScreen({Key? key}) : super(key: key);
 
   @override
-  _ThemeSettingsScreenState createState() => _ThemeSettingsScreenState();
+  ThemeSettingsScreenState createState() => ThemeSettingsScreenState();
 }
 
-class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
+class ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
   bool isCurrentThemeDark = Prefer.prefs.getInt('theme') == 1;
   bool isUsingSystemTheme = Prefer.prefs.getBool('use_system_theme') ?? false;
 
@@ -33,13 +33,13 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
         centerTitle: true,
         elevation: 0.0,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.transparent,
           ),
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
@@ -48,7 +48,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                 boxShadow: [
                   BoxShadow(
                     color: Theme.of(context).canvasColor,
-                    offset: Offset(0, 10),
+                    offset: const Offset(0, 10),
                     blurRadius: 10,
                   )
                 ]),
@@ -56,7 +56,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
               title: Text('Dark Theme',
                   style: Theme.of(context).textTheme.caption),
               trailing: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 height: 30.0,
                 width: 60.0,
                 decoration: BoxDecoration(
@@ -68,7 +68,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                 child: Stack(
                   children: <Widget>[
                     AnimatedPositioned(
-                      duration: Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 300),
                       curve: Curves.easeIn,
                       top: 3.0,
                       left: isCurrentThemeDark ? 30.0 : 0.0,
@@ -76,12 +76,12 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                       child: InkWell(
                         onTap: _toggleButton,
                         child: AnimatedSwitcher(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           transitionBuilder:
                               (Widget child, Animation<double> animation) {
                             return ScaleTransition(
-                              child: child,
                               scale: animation,
+                              child: child,
                             );
                           },
                           child: isCurrentThemeDark
@@ -101,7 +101,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
               ),
             ),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           Container(
             decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
@@ -109,7 +109,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                 boxShadow: [
                   BoxShadow(
                     color: Theme.of(context).canvasColor,
-                    offset: Offset(0, 10),
+                    offset: const Offset(0, 10),
                     blurRadius: 10,
                   )
                 ]),
@@ -117,7 +117,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
               title: Text('Use device Settings',
                   style: Theme.of(context).textTheme.caption),
               trailing: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 height: 30.0,
                 width: 60.0,
                 decoration: BoxDecoration(
@@ -129,7 +129,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                 child: Stack(
                   children: <Widget>[
                     AnimatedPositioned(
-                      duration: Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 300),
                       curve: Curves.easeIn,
                       top: 3.0,
                       left: isUsingSystemTheme ? 30.0 : 0.0,
@@ -137,12 +137,12 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                       child: InkWell(
                         onTap: _toggleSystemThemeButton,
                         child: AnimatedSwitcher(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           transitionBuilder:
                               (Widget child, Animation<double> animation) {
                             return ScaleTransition(
-                              child: child,
                               scale: animation,
+                              child: child,
                             );
                           },
                           child: isUsingSystemTheme
@@ -188,7 +188,8 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
       setState(() {
         isCurrentThemeDark = true;
       });
-    } else
+    } else {
       context.read<ThemeCubit>().changeTheme(AppTheme.Light);
+    }
   }
 }

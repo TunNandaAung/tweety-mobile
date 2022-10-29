@@ -28,10 +28,10 @@ class ProfileScreen extends StatefulWidget {
     required this.replyRepository,
   }) : super(key: key);
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  ProfileScreenState createState() => ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
+class ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -143,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           },
           child: NestedScrollView(
             controller: _scrollController,
-            physics: ClampingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
@@ -152,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     iconTheme: Theme.of(context).appBarTheme.iconTheme,
                     leading: isExpanded
                         ? Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
@@ -160,12 +160,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     ? Colors.black.withOpacity(.2)
                                     : Colors.black.withOpacity(.7),
                               ),
-                              child: BackButton(
+                              child: const BackButton(
                                 color: Colors.white,
                               ),
                             ),
                           )
-                        : BackButton(),
+                        : const BackButton(),
                     pinned: true,
                     elevation: 0.0,
                     forceElevated: true,
@@ -180,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           );
                         }
                         if (state is ProfileLoading) {
-                          return LoadingIndicator(
+                          return const LoadingIndicator(
                             size: 21.0,
                           );
                         }
@@ -222,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                           avatar: state.user.avatar,
                                         ),
                                       )
-                                    : SizedBox.shrink(),
+                                    : const SizedBox.shrink(),
                               ),
                             ),
                           );
@@ -290,7 +290,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               BlocBuilder<ProfileTweetBloc, ProfileTweetState>(
                 builder: (context, state) {
                   if (state is ProfileTweetLoading) {
-                    return LoadingIndicator();
+                    return const LoadingIndicator();
                   }
 
                   if (state is ProfileTweetError) {
@@ -319,11 +319,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                     }
 
                     return ListView.builder(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         itemBuilder: (context, index) => index >= tweets.length
-                            ? LoadingIndicator()
+                            ? const LoadingIndicator()
                             : Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0,
                                   vertical: 5.0,
                                 ),
@@ -346,7 +346,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             : state.tweets.length + 1);
                   }
 
-                  return LoadingIndicator();
+                  return const LoadingIndicator();
                 },
               ),
               // ListView.builder(
@@ -357,7 +357,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               BlocBuilder<ProfileReplyBloc, ProfileReplyState>(
                 builder: (context, state) {
                   if (state is ProfileReplyLoading) {
-                    return LoadingIndicator();
+                    return const LoadingIndicator();
                   }
 
                   if (state is ProfileReplyError) {
@@ -386,11 +386,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                     }
 
                     return ListView.builder(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         itemBuilder: (context, index) => index >= replies.length
-                            ? LoadingIndicator()
+                            ? const LoadingIndicator()
                             : Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0,
                                   vertical: 5.0,
                                 ),
@@ -418,7 +418,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     child: ReplyWidget(
                                       reply: replies[index],
                                       tweet: replies[index].tweet,
-                                      replyingTo: replies[index].parent ?? null,
+                                      replyingTo: replies[index].parent,
                                       isProfileReply: true,
                                     ),
                                   ),
@@ -429,7 +429,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             : state.replies.length + 1);
                   }
 
-                  return LoadingIndicator();
+                  return const LoadingIndicator();
                 },
               ),
             ]),
@@ -455,7 +455,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
           boxShadow: [
             BoxShadow(
               color: Theme.of(context).canvasColor,
-              offset: Offset(1, 10),
+              offset: const Offset(1, 10),
               blurRadius: 10.0,
             )
           ]),
@@ -467,7 +467,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
             Theme.of(context).tabBarTheme.unselectedLabelStyle,
         labelStyle: Theme.of(context).tabBarTheme.labelStyle,
         indicatorColor: Theme.of(context).primaryColor,
-        tabs: <Widget>[
+        tabs: const <Widget>[
           Tab(
             text: "Tweets",
           ),
@@ -509,14 +509,14 @@ class TweetyHeader extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5.0,
           ),
           Text(
-            "@" + user.username,
+            "@${user.username}",
             style: Theme.of(context).textTheme.bodyText2,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10.0,
           ),
           Text(
@@ -525,7 +525,7 @@ class TweetyHeader extends StatelessWidget {
                   fontSize: 15.0,
                 ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10.0,
           ),
           GestureDetector(
@@ -547,7 +547,7 @@ class TweetyHeader extends StatelessWidget {
                         ),
                       ]),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5.0,
                 ),
                 RichText(
@@ -610,7 +610,7 @@ class TweetyAvatar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
       child: DecoratedBox(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             // border: Border.all(
             //   color: Colors.grey[800],
             //   width: 2.0,
@@ -631,7 +631,7 @@ class TweetyAvatar extends StatelessWidget {
               radius: size,
               backgroundColor: Theme.of(context).cardColor,
               backgroundImage: avatar == null
-                  ? AssetImage("assets/images/twitter_flutter_logo.jpg")
+                  ? const AssetImage("assets/images/twitter_flutter_logo.jpg")
                       as ImageProvider
                   : NetworkImage(avatar!),
             ),
@@ -663,7 +663,7 @@ class EditProfileButton extends StatelessWidget {
         style: TextButton.styleFrom(
           backgroundColor: Colors.transparent,
           disabledBackgroundColor: Colors.grey.withOpacity(0.38),
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           shape: RoundedRectangleBorder(
             side: BorderSide(
                 color: Theme.of(context).primaryColor,

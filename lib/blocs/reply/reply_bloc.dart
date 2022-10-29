@@ -103,8 +103,9 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
 
         emit(ReplyAdded(reply: reply));
         emit(currentState.copyWith(replies: updatedReplies));
-      } else
+      } else {
         emit(ReplyAdded(reply: reply));
+      }
     } catch (e) {
       emit(AddReplyError());
     }

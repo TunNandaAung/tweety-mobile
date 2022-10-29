@@ -9,7 +9,7 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 8.0,
         vertical: 5.0,
       ),
@@ -23,12 +23,12 @@ class UserCard extends StatelessWidget {
             color: Theme.of(context).cardColor,
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 8.0,
               vertical: 5.0,
             ),
             child: ListTile(
-              contentPadding: EdgeInsets.all(8.0),
+              contentPadding: const EdgeInsets.all(8.0),
               leading: CircleAvatar(
                 radius: 25.0,
                 backgroundImage: NetworkImage(
@@ -49,7 +49,7 @@ class UserCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '@' + user.username,
+                        '@${user.username}',
                         style: Theme.of(context).textTheme.bodyText2,
                       )
                     ],
@@ -58,7 +58,7 @@ class UserCard extends StatelessWidget {
                 ],
               ),
               subtitle: Padding(
-                padding: EdgeInsets.only(top: 10.0),
+                padding: const EdgeInsets.only(top: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[

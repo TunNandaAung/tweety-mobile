@@ -13,7 +13,7 @@ class TweetActionsModal {
           height: 70.0,
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20.0),
               topRight: Radius.circular(20.0),
             ),
@@ -23,7 +23,7 @@ class TweetActionsModal {
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
             child: Column(
               children: <Widget>[
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Container(
                   height: 4.0,
                   width: 50.0,
@@ -32,7 +32,7 @@ class TweetActionsModal {
                     borderRadius: BorderRadius.circular(4.0),
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 tweet.user.username == Prefer.prefs.getString('username')
                     ? GestureDetector(
                         onTap: () {
@@ -41,8 +41,8 @@ class TweetActionsModal {
                         },
                         child: Row(
                           children: [
-                            Icon(Icons.delete, color: Colors.red),
-                            SizedBox(width: 10.0),
+                            const Icon(Icons.delete, color: Colors.red),
+                            const SizedBox(width: 10.0),
                             Text(
                               'Delete Tweet',
                               style: Theme.of(context)
@@ -61,7 +61,7 @@ class TweetActionsModal {
                                 .textSelectionTheme
                                 .cursorColor,
                           ),
-                          SizedBox(width: 10.0),
+                          const SizedBox(width: 10.0),
                           Text('Unfollow ${tweet.user.name}',
                               style: Theme.of(context).textTheme.caption)
                         ],

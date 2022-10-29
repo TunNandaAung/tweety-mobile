@@ -11,13 +11,14 @@ import 'package:tweety_mobile/utils/helpers.dart';
 class LikeDislikeButtons extends StatefulWidget {
   final Tweet? tweet;
   final Reply? reply;
-  LikeDislikeButtons({Key? key, this.tweet, this.reply}) : super(key: key);
+  const LikeDislikeButtons({Key? key, this.tweet, this.reply})
+      : super(key: key);
 
   @override
-  _LikeDislikeButtonsState createState() => _LikeDislikeButtonsState();
+  LikeDislikeButtonsState createState() => LikeDislikeButtonsState();
 }
 
-class _LikeDislikeButtonsState extends State<LikeDislikeButtons> {
+class LikeDislikeButtonsState extends State<LikeDislikeButtons> {
   final LikeDislikeRepository likeDislikeRepository = LikeDislikeRepository(
     likeApiClient: LikeDislikeApiClient(httpClient: http.Client()),
   );
@@ -38,13 +39,13 @@ class _LikeDislikeButtonsState extends State<LikeDislikeButtons> {
 class BuildWidget extends StatefulWidget {
   final Tweet? tweet;
   final Reply? reply;
-  BuildWidget({Key? key, this.tweet, this.reply}) : super(key: key);
+  const BuildWidget({Key? key, this.tweet, this.reply}) : super(key: key);
 
   @override
-  _BuildWidgetState createState() => _BuildWidgetState();
+  BuildWidgetState createState() => BuildWidgetState();
 }
 
-class _BuildWidgetState extends State<BuildWidget> {
+class BuildWidgetState extends State<BuildWidget> {
   get subject => widget.tweet ?? widget.reply;
   get isTweet => widget.tweet != null;
 
@@ -111,12 +112,13 @@ class _BuildWidgetState extends State<BuildWidget> {
             children: <Widget>[
               _likesCount > 0
                   ? Padding(
-                      padding: EdgeInsets.only(right: 3.0),
+                      padding: const EdgeInsets.only(right: 3.0),
                       child: Text(
                         formatCount(_likesCount),
                         style: TextStyle(
-                          color:
-                              _isLiked ? Color(0xFF68D391) : Color(0xFFA0AEC0),
+                          color: _isLiked
+                              ? const Color(0xFF68D391)
+                              : const Color(0xFFA0AEC0),
                         ),
                       ),
                     )
@@ -135,7 +137,9 @@ class _BuildWidgetState extends State<BuildWidget> {
                 child: Icon(
                   Icons.thumb_up,
                   size: 18.0,
-                  color: _isLiked ? Color(0xFF68D391) : Color(0xFFA0AEC0),
+                  color: _isLiked
+                      ? const Color(0xFF68D391)
+                      : const Color(0xFFA0AEC0),
                 ),
               ),
             ],
@@ -145,13 +149,13 @@ class _BuildWidgetState extends State<BuildWidget> {
             children: <Widget>[
               _dislikesCount > 0
                   ? Padding(
-                      padding: EdgeInsets.only(right: 3.0),
+                      padding: const EdgeInsets.only(right: 3.0),
                       child: Text(
                         formatCount(_dislikesCount),
                         style: TextStyle(
                           color: _isDisliked
-                              ? Color(0xFFE53E3E)
-                              : Color(0xFFA0AEC0),
+                              ? const Color(0xFFE53E3E)
+                              : const Color(0xFFA0AEC0),
                         ),
                       ),
                     )
@@ -170,7 +174,9 @@ class _BuildWidgetState extends State<BuildWidget> {
                 child: Icon(
                   Icons.thumb_down,
                   size: 18.0,
-                  color: _isDisliked ? Color(0xFFE53E3E) : Color(0xFFA0AEC0),
+                  color: _isDisliked
+                      ? const Color(0xFFE53E3E)
+                      : const Color(0xFFA0AEC0),
                 ),
               ),
             ],

@@ -15,11 +15,11 @@ class NotificationApiClient {
       : httpClient = httpClient ?? http.Client();
 
   Future<int> fetchNotificationsCount() async {
-    final url = '$baseUrl/notification-counts';
+    const url = '$baseUrl/notification-counts';
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
+    final response = await httpClient.get(
       Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
@@ -39,14 +39,14 @@ class NotificationApiClient {
   }
 
   Future<List<ApiNotification>> fetchNotifications() async {
-    final url = '$baseUrl/notifications';
+    const url = '$baseUrl/notifications';
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token!),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     if (response.statusCode != 200) {
       print(response.body);
       throw Exception('Invalid Credentials');

@@ -6,15 +6,15 @@ import 'package:tweety_mobile/screens/tweet_reply_form.dart';
 
 class AddReplyScreen extends StatefulWidget {
   final Tweet tweet;
-  final shouldDisplayTweet;
-  AddReplyScreen({Key? key, required this.tweet, this.shouldDisplayTweet})
+  final bool? shouldDisplayTweet;
+  const AddReplyScreen({Key? key, required this.tweet, this.shouldDisplayTweet})
       : super(key: key);
 
   @override
-  _AddReplyScreenState createState() => _AddReplyScreenState();
+  AddReplyScreenState createState() => AddReplyScreenState();
 }
 
-class _AddReplyScreenState extends State<AddReplyScreen> {
+class AddReplyScreenState extends State<AddReplyScreen> {
   @override
   Widget build(BuildContext context) {
     return TweetReplyForm(

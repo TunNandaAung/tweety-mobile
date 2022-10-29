@@ -12,7 +12,7 @@ class UserSearchState {
   });
 
   factory UserSearchState.initial() {
-    return UserSearchState(
+    return const UserSearchState(
       users: [],
       isLoading: false,
       hasError: false,
@@ -20,7 +20,7 @@ class UserSearchState {
   }
 
   factory UserSearchState.loading() {
-    return UserSearchState(
+    return const UserSearchState(
       users: [],
       isLoading: true,
       hasError: false,
@@ -36,7 +36,7 @@ class UserSearchState {
   }
 
   factory UserSearchState.error() {
-    return UserSearchState(
+    return const UserSearchState(
       users: [],
       isLoading: false,
       hasError: true,

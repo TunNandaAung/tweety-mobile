@@ -33,7 +33,7 @@ List<NavigationModel> navItems = [
   // ),
 ];
 
-final TextStyle navItemStyle = TextStyle(fontSize: 18, color: Colors.black);
+const TextStyle navItemStyle = TextStyle(fontSize: 18, color: Colors.black);
 
-final TextStyle navItemSelectedStyle =
+const TextStyle navItemSelectedStyle =
     TextStyle(fontSize: 18, color: Colors.white);

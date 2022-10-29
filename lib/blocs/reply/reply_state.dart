@@ -65,7 +65,7 @@ class ReplyDeleting extends ReplyState {}
 class ReplyDeleted extends ReplyState {
   final int count;
 
-  ReplyDeleted({required this.count});
+  const ReplyDeleted({required this.count});
 
   @override
   List<Object> get props => [count];

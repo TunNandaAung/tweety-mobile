@@ -5,11 +5,13 @@ import 'package:tweety_mobile/screens/auth/register_images_form.dart';
 import 'package:tweety_mobile/utils/validators.dart';
 
 class RegisterForm extends StatefulWidget {
+  const RegisterForm({super.key});
+
   @override
-  _RegisterFormState createState() => _RegisterFormState();
+  RegisterFormState createState() => RegisterFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late RegisterBloc _registerBloc;
 
@@ -86,12 +88,12 @@ class _RegisterFormState extends State<RegisterForm> {
                   backgroundColor: Colors.black26,
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
                         'Registering...',
                       ),
                       CircularProgressIndicator(
-                        valueColor: new AlwaysStoppedAnimation<Color>(
+                        valueColor: AlwaysStoppedAnimation<Color>(
                           Colors.white,
                         ),
                       )
@@ -105,7 +107,7 @@ class _RegisterFormState extends State<RegisterForm> {
               MaterialPageRoute(
                 builder: (context) => BlocProvider.value(
                   value: _registerBloc,
-                  child: RegisterImagesForm(),
+                  child: const RegisterImagesForm(),
                 ),
               ),
             );
@@ -113,7 +115,7 @@ class _RegisterFormState extends State<RegisterForm> {
         }, child: BlocBuilder<RegisterBloc, RegisterState>(
           builder: (context, state) {
             return Padding(
-              padding: EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(12.0),
               child: ListView(
                 children: <Widget>[
                   Form(
@@ -128,7 +130,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           'Name',
                           style: Theme.of(context).textTheme.caption,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
                               color: Theme.of(context)
@@ -148,13 +150,13 @@ class _RegisterFormState extends State<RegisterForm> {
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20.0),
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 width: 1.0,
                                 color: Colors.red,
                               ),
                             ),
                             hintText: 'Name',
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -165,12 +167,12 @@ class _RegisterFormState extends State<RegisterForm> {
                           },
                           onSaved: (value) => _name = value!,
                         ),
-                        SizedBox(height: 20.0),
+                        const SizedBox(height: 20.0),
                         Text(
                           'username',
                           style: Theme.of(context).textTheme.caption,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
                               color: Theme.of(context)
@@ -190,13 +192,13 @@ class _RegisterFormState extends State<RegisterForm> {
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20.0),
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 width: 1.0,
                                 color: Colors.red,
                               ),
                             ),
                             hintText: 'username',
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -207,12 +209,12 @@ class _RegisterFormState extends State<RegisterForm> {
                           },
                           onSaved: (value) => _username = value!,
                         ),
-                        SizedBox(height: 20.0),
+                        const SizedBox(height: 20.0),
                         Text(
                           'Email',
                           style: Theme.of(context).textTheme.caption,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
                               color: Theme.of(context)
@@ -232,12 +234,12 @@ class _RegisterFormState extends State<RegisterForm> {
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20.0),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 1.0,
                                   color: Colors.red,
                                 ),
                               ),
-                              prefixIcon: Icon(
+                              prefixIcon: const Icon(
                                 Icons.mail,
                                 color: Colors.grey,
                               ),
@@ -249,12 +251,12 @@ class _RegisterFormState extends State<RegisterForm> {
                           },
                           onSaved: (value) => _email = value!,
                         ),
-                        SizedBox(height: 20.0),
+                        const SizedBox(height: 20.0),
                         Text(
                           'Enter password',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextFormField(
                           key: passKey,
                           style: TextStyle(
@@ -275,20 +277,20 @@ class _RegisterFormState extends State<RegisterForm> {
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20.0),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 1.0,
                                   color: Colors.red,
                                 ),
                               ),
-                              prefixIcon:
-                                  Icon(Icons.lock_outline, color: Colors.grey),
+                              prefixIcon: const Icon(Icons.lock_outline,
+                                  color: Colors.grey),
                               suffixIcon: IconButton(
                                 color: Colors.grey,
                                 icon: _isPasswordHidden
-                                    ? Icon(
+                                    ? const Icon(
                                         Icons.visibility_off,
                                       )
-                                    : Icon(Icons.visibility),
+                                    : const Icon(Icons.visibility),
                                 onPressed: () {
                                   setState(() {
                                     _isPasswordHidden = !_isPasswordHidden;
@@ -304,12 +306,12 @@ class _RegisterFormState extends State<RegisterForm> {
                           },
                           onSaved: (value) => _password = value!,
                         ),
-                        SizedBox(height: 20.0),
+                        const SizedBox(height: 20.0),
                         Text(
                           'Confirm password',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
                               color: Theme.of(context)
@@ -329,17 +331,18 @@ class _RegisterFormState extends State<RegisterForm> {
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20.0),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 1.0,
                                   color: Colors.red,
                                 ),
                               ),
-                              prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                              prefixIcon:
+                                  const Icon(Icons.lock, color: Colors.grey),
                               suffixIcon: IconButton(
                                 color: Colors.grey,
                                 icon: _isConfirmPasswordHidden
-                                    ? Icon(Icons.visibility_off)
-                                    : Icon(Icons.visibility),
+                                    ? const Icon(Icons.visibility_off)
+                                    : const Icon(Icons.visibility),
                                 onPressed: () {
                                   setState(() {
                                     _isConfirmPasswordHidden =
@@ -354,15 +357,16 @@ class _RegisterFormState extends State<RegisterForm> {
                               return 'Password confirmation cannot be empty';
                             } else if (val != passKey.currentState!.value) {
                               return 'Password confirmation does not match.';
-                            } else
+                            } else {
                               return null;
+                            }
                           },
                           onSaved: (value) => _passwordConfirmation = value!,
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 50.0),
+                  const SizedBox(height: 50.0),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20.0),
                     child: Material(
@@ -372,7 +376,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         child: SizedBox(
                           height: 50.0,
                           width: MediaQuery.of(context).size.width,
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'Register',
                               style: TextStyle(

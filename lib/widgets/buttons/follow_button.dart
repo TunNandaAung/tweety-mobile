@@ -7,13 +7,13 @@ import 'package:tweety_mobile/models/user.dart';
 
 class FollowButton extends StatefulWidget {
   final User user;
-  FollowButton({Key? key, required this.user}) : super(key: key);
+  const FollowButton({Key? key, required this.user}) : super(key: key);
 
   @override
-  _FollowButtonState createState() => _FollowButtonState();
+  FollowButtonState createState() => FollowButtonState();
 }
 
-class _FollowButtonState extends State<FollowButton> {
+class FollowButtonState extends State<FollowButton> {
   bool get _isFollowed => widget.user.isFollowed;
   set _isFollowed(bool isFollowed) => widget.user.isFollowed = isFollowed;
 
@@ -44,7 +44,7 @@ class _FollowButtonState extends State<FollowButton> {
       style: TextButton.styleFrom(
         backgroundColor: Colors.transparent,
         disabledBackgroundColor: Colors.grey,
-        padding: EdgeInsets.all(2.0),
+        padding: const EdgeInsets.all(2.0),
         shape: RoundedRectangleBorder(
           side: BorderSide(
               color: Theme.of(context).primaryColor,
@@ -70,7 +70,7 @@ class _FollowButtonState extends State<FollowButton> {
       style: TextButton.styleFrom(
         backgroundColor: Theme.of(context).primaryColor,
         disabledBackgroundColor: Colors.grey,
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),

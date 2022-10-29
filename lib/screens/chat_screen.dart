@@ -20,14 +20,14 @@ class ChatScreen extends StatefulWidget {
   final User chatUser;
   final String chatId;
 
-  ChatScreen({Key? key, required this.chatUser, required this.chatId})
+  const ChatScreen({Key? key, required this.chatUser, required this.chatId})
       : super(key: key);
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  ChatScreenState createState() => ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<ChatScreen> {
   final _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
 
@@ -82,7 +82,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void listenToChannel() {
-    echo.join("chat." + widget.chatId)
+    echo.join("chat.${widget.chatId}")
         // ..here((users) => log(users.toString()))
         .listenForWhisper("typing", (event) {
       // log(User.fromJson((event)['user']).username);
@@ -90,8 +90,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
       updateActivePeer(true);
 
-      typingTimer =
-          Timer(Duration(milliseconds: 3000), () => updateActivePeer(false));
+      typingTimer = Timer(
+          const Duration(milliseconds: 3000), () => updateActivePeer(false));
     }).listen("MessageSent", (event) {
       Message message = Message.fromJson((event)['message']);
       if (message.sender?.username == widget.chatUser.username) {
@@ -118,7 +118,7 @@ class _ChatScreenState extends State<ChatScreen> {
   // }
 
   void onConnectionStateChange(event) {
-    print("STATE:" + event.currentState);
+    print("STATE:${event.currentState}");
     if (event.currentState == 'CONNECTED') {
       print('connected');
     } else if (event.currentState == 'DISCONNECTED') {
@@ -135,7 +135,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _onMessageChanged() {
-    if (_messageController.text.trim().length > 0) {
+    if (_messageController.text.trim().isNotEmpty) {
       setState(() {
         isPopulated = true;
       });
@@ -148,7 +148,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   _buildMessageComposer() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
       height: MediaQuery.of(context).size.height * 0.09,
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Row(
@@ -177,11 +177,11 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           )),
           IconButton(
-            icon: Icon(Icons.send),
+            icon: const Icon(Icons.send),
             iconSize: 25.0,
             color: Theme.of(context).primaryColor,
             disabledColor: Colors.grey,
-            onPressed: isPopulated ? this._onFormSubmitted : null,
+            onPressed: isPopulated ? _onFormSubmitted : null,
           )
         ],
       ),
@@ -226,13 +226,13 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(30.0),
                     topLeft: Radius.circular(30.0),
                   ),
                 ),
                 child: ClipRRect(
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(30.0),
                       topLeft: Radius.circular(30.0),
                     ),
@@ -249,10 +249,10 @@ class _ChatScreenState extends State<ChatScreen> {
                           );
                         }
                         if (state is MessageLoaded) {
-                          return state.messages.length > 0
+                          return state.messages.isNotEmpty
                               ? ListView.builder(
                                   reverse: true,
-                                  padding: EdgeInsets.only(
+                                  padding: const EdgeInsets.only(
                                       top: 15.0, left: 4.0, right: 4.0),
                                   itemCount: state.hasReachedMax
                                       ? state.messages.length
@@ -261,7 +261,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return index >= state.messages.length
-                                        ? LoadingIndicator()
+                                        ? const LoadingIndicator()
                                         : MessageCard(
                                             message: state.messages[index]);
                                   },
@@ -274,7 +274,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
             isTyping
-                ? Text(widget.chatUser.name + " is typing...")
+                ? Text("${widget.chatUser.name} is typing...")
                 : const SizedBox(
                     height: 0.0,
                   ),
@@ -295,7 +295,7 @@ class _ChatScreenState extends State<ChatScreen> {
           backgroundColor: Theme.of(context).cardColor,
           backgroundImage: NetworkImage(widget.chatUser.avatar),
         ),
-        SizedBox(height: 20.0),
+        const SizedBox(height: 20.0),
         Text(
           "${widget.chatUser.name}\n @${widget.chatUser.username}",
           textAlign: TextAlign.center,
@@ -304,7 +304,7 @@ class _ChatScreenState extends State<ChatScreen> {
               .headline5!
               .copyWith(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 5.0),
+        const SizedBox(height: 5.0),
         Text(
           "Send a message to ${widget.chatUser.name}.",
           textAlign: TextAlign.center,
@@ -320,10 +320,10 @@ class MessageCard extends StatefulWidget {
 
   const MessageCard({Key? key, required this.message}) : super(key: key);
   @override
-  _MessageCardState createState() => _MessageCardState();
+  MessageCardState createState() => MessageCardState();
 }
 
-class _MessageCardState extends State<MessageCard> {
+class MessageCardState extends State<MessageCard> {
   bool _showInfo = false;
 
   void _toggleInfo() {
@@ -340,10 +340,10 @@ class _MessageCardState extends State<MessageCard> {
       InkWell(
         onTap: _toggleInfo,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
           margin: isMe
-              ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: 80.0)
-              : EdgeInsets.only(top: 8.0, bottom: 8.0),
+              ? const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 80.0)
+              : const EdgeInsets.only(top: 8.0, bottom: 8.0),
           width: MediaQuery.of(context).size.width * 0.75,
           decoration: BoxDecoration(
             color: isMe
@@ -354,7 +354,7 @@ class _MessageCardState extends State<MessageCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 5.0),
+              const SizedBox(height: 5.0),
               Text(
                 widget.message.message,
                 style: Theme.of(context).textTheme.subtitle1,
@@ -369,7 +369,7 @@ class _MessageCardState extends State<MessageCard> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
-              padding: EdgeInsets.all(2.0),
+              padding: const EdgeInsets.all(2.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -381,7 +381,7 @@ class _MessageCardState extends State<MessageCard> {
                   ),
                   widget.message.readAt != null && isMe
                       ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 3.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 3.0),
                           child: Icon(
                             Icons.check_circle,
                             size: 15.0,

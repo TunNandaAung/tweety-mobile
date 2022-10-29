@@ -10,16 +10,17 @@ import 'package:tweety_mobile/widgets/cards/user_card.dart';
 
 class FollowListScreen extends StatefulWidget {
   final User profileUser;
-  FollowListScreen({Key? key, required this.profileUser}) : super(key: key);
+  const FollowListScreen({Key? key, required this.profileUser})
+      : super(key: key);
 
   @override
-  _FollowListScreenState createState() => _FollowListScreenState();
+  FollowListScreenState createState() => FollowListScreenState();
 }
 
-class _FollowListScreenState extends State<FollowListScreen>
+class FollowListScreenState extends State<FollowListScreen>
     with SingleTickerProviderStateMixin {
   final _scrollThreshold = 200.0;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   late TabController _tabController;
 
   @override
@@ -69,7 +70,7 @@ class _FollowListScreenState extends State<FollowListScreen>
       body: SafeArea(
         child: NestedScrollView(
           controller: _scrollController,
-          physics: ScrollPhysics(parent: PageScrollPhysics()),
+          physics: const ScrollPhysics(parent: PageScrollPhysics()),
           headerSliverBuilder: (context, innderBoxIsScrolled) {
             return [
               SliverAppBar(
@@ -96,7 +97,7 @@ class _FollowListScreenState extends State<FollowListScreen>
             BlocBuilder<FollowingListBloc, FollowingListState>(
               builder: (context, state) {
                 if (state is FollowingListLoading) {
-                  return LoadingIndicator();
+                  return const LoadingIndicator();
                 }
                 if (state is FollowingListLoaded) {
                   var users = state.users;
@@ -105,9 +106,9 @@ class _FollowListScreenState extends State<FollowListScreen>
                   }
                   return ListView.builder(
                     itemBuilder: (context, index) => index >= users.length
-                        ? LoadingIndicator()
+                        ? const LoadingIndicator()
                         : Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: 5.0,
                             ),
                             child: GestureDetector(
@@ -134,13 +135,13 @@ class _FollowListScreenState extends State<FollowListScreen>
                     },
                   );
                 }
-                return LoadingIndicator();
+                return const LoadingIndicator();
               },
             ),
             BlocBuilder<FollowersListBloc, FollowersListState>(
               builder: (context, state) {
                 if (state is FollowersListLoading) {
-                  return LoadingIndicator();
+                  return const LoadingIndicator();
                 }
                 if (state is FollowersListLoaded) {
                   var users = state.users;
@@ -149,9 +150,9 @@ class _FollowListScreenState extends State<FollowListScreen>
                   }
                   return ListView.builder(
                     itemBuilder: (context, index) => index >= users.length
-                        ? LoadingIndicator()
+                        ? const LoadingIndicator()
                         : Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: 5.0,
                             ),
                             child: GestureDetector(
@@ -178,7 +179,7 @@ class _FollowListScreenState extends State<FollowListScreen>
                     },
                   );
                 }
-                return LoadingIndicator();
+                return const LoadingIndicator();
               },
             ),
           ]),
@@ -201,7 +202,7 @@ class _FollowListScreenState extends State<FollowListScreen>
                       .headline5!
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 5.0),
+                const SizedBox(height: 5.0),
                 Text(
                   "When you follows someone, you'll see them here.",
                   textAlign: TextAlign.center,
@@ -237,7 +238,7 @@ class _FollowListScreenState extends State<FollowListScreen>
                       .headline5!
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 5.0),
+                const SizedBox(height: 5.0),
                 Text(
                   "When someone follows you, you'll see them here.",
                   textAlign: TextAlign.center,
@@ -279,7 +280,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
         unselectedLabelStyle:
             Theme.of(context).tabBarTheme.unselectedLabelStyle,
         indicatorColor: Theme.of(context).primaryColor,
-        tabs: <Widget>[
+        tabs: const <Widget>[
           Tab(
             text: "Following",
           ),

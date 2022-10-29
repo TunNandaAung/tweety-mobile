@@ -46,11 +46,11 @@ class AddChildrenReplyButtonWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AddChildrenReplyButtonWidgetState createState() =>
-      _AddChildrenReplyButtonWidgetState();
+  AddChildrenReplyButtonWidgetState createState() =>
+      AddChildrenReplyButtonWidgetState();
 }
 
-class _AddChildrenReplyButtonWidgetState
+class AddChildrenReplyButtonWidgetState
     extends State<AddChildrenReplyButtonWidget> {
   int get childrenCount => widget.parent.childrenCount;
   set childrenCount(int childrenCount) =>
@@ -109,16 +109,16 @@ class _AddChildrenReplyButtonWidgetState
           children: <Widget>[
             childrenCount > 0
                 ? Padding(
-                    padding: EdgeInsets.only(right: 3.0),
+                    padding: const EdgeInsets.only(right: 3.0),
                     child: Text(
                       childrenCount.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xFFA0AEC0),
                       ),
                     ),
                   )
                 : Container(),
-            Icon(
+            const Icon(
               Icons.comment,
               size: 18.0,
               color: Color(0xFFA0AEC0),

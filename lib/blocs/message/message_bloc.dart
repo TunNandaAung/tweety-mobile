@@ -49,8 +49,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       } catch (_) {
         emit(MessageError());
       }
-    } else
+    } else {
       emit(currentState);
+    }
   }
 
   bool _hasReachedMax(MessageState state, FetchMessages event) {
@@ -115,9 +116,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       if (currentState is MessageLoaded) {
         final List<Message> updatedMessages =
             currentState.messages.map((message) {
-          if (message.readAt == null) {
-            message.readAt = DateTime.now();
-          }
+          message.readAt ??= DateTime.now();
           return message;
         }).toList();
 

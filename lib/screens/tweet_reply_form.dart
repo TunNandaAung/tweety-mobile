@@ -18,7 +18,7 @@ class TweetReplyForm extends StatefulWidget {
   final User? owner;
   final bool shouldDisplayTweet;
 
-  TweetReplyForm({
+  const TweetReplyForm({
     Key? key,
     required this.onSave,
     required this.isReply,
@@ -27,10 +27,10 @@ class TweetReplyForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _TweetReplyFormState createState() => _TweetReplyFormState();
+  TweetReplyFormState createState() => TweetReplyFormState();
 }
 
-class _TweetReplyFormState extends State<TweetReplyForm> {
+class TweetReplyFormState extends State<TweetReplyForm> {
   final TextEditingController _bodyController = TextEditingController();
   final tagRegex = RegExp(r"@([\w\-\.]+)", caseSensitive: false);
 
@@ -53,7 +53,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   String get replyingTo =>
       widget.owner!.username == Prefer.prefs.getString('username')
           ? "Replying to yourself"
-          : 'Replying to @' + widget.owner!.username;
+          : 'Replying to @${widget.owner!.username}';
 
   @override
   void initState() {
@@ -70,7 +70,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
 
   void _onBodyChanged() {
     final sentences = _bodyController.text.split('\n');
-    sentences.forEach((sentence) {
+    for (var sentence in sentences) {
       final words = sentence.split(' ');
       String withAt = words.last;
       var match = tagRegex.firstMatch(withAt);
@@ -87,7 +87,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
           _showUserList = false;
         });
       }
-    });
+    }
 
     setState(() {
       updateCharacterLimit();
@@ -95,7 +95,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   }
 
   updateCharacterLimit() {
-    if (_bodyController.text.length == 0) {
+    if (_bodyController.text.isEmpty) {
       characterLmitValue = 0.0;
     }
     if (_bodyController.text.length > limit) {
@@ -137,7 +137,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
     if (image != null) {
       CroppedFile? croppedImage = await _cropper.cropImage(
           sourcePath: image.path,
-          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
           compressQuality: 100,
           compressFormat: ImageCompressFormat.png,
           uiSettings: [
@@ -159,194 +159,192 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Stack(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ListView(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Text(
-                          'Cancel',
-                          style: Theme.of(context).textTheme.headline6,
+      body: Stack(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ListView(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Text(
+                        'Cancel',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: isButtonEnabled() ? _onFormSubmitted : null,
+                      style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        disabledBackgroundColor: Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      TextButton(
-                        onPressed: isButtonEnabled() ? _onFormSubmitted : null,
-                        style: TextButton.styleFrom(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          disabledBackgroundColor: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
+                      child: Text(
+                        'Publish',
+                        style: Theme.of(context).textTheme.button!.copyWith(
+                              color: Colors.white,
+                            ),
+                      ),
+                    )
+                  ],
+                ),
+                // widget.shouldDisplayTweet
+                //     ? Padding(
+                //         padding: EdgeInsets.symmetric(
+                //             vertical: 8.0, horizontal: 0.0),
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //           children: <Widget>[
+                //             CircleAvatar(
+                //               radius: 15.0,
+                //               backgroundColor: Theme.of(context).cardColor,
+                //               backgroundImage: NetworkImage(widget.owner.avatar),
+                //             ),
+                //             Text(widget.tweet.b)
+                //           ],
+                //         ),
+                //       )
+                //     : Container(),
+                widget.isReply && replyingTo.isNotEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 0.0),
                         child: Text(
-                          'Publish',
-                          style: Theme.of(context).textTheme.button!.copyWith(
-                                color: Colors.white,
-                              ),
+                          replyingTo,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(color: Theme.of(context).primaryColor),
                         ),
                       )
-                    ],
-                  ),
-                  // widget.shouldDisplayTweet
-                  //     ? Padding(
-                  //         padding: EdgeInsets.symmetric(
-                  //             vertical: 8.0, horizontal: 0.0),
-                  //         child: Row(
-                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //           children: <Widget>[
-                  //             CircleAvatar(
-                  //               radius: 15.0,
-                  //               backgroundColor: Theme.of(context).cardColor,
-                  //               backgroundImage: NetworkImage(widget.owner.avatar),
-                  //             ),
-                  //             Text(widget.tweet.b)
-                  //           ],
-                  //         ),
-                  //       )
-                  //     : Container(),
-                  widget.isReply && replyingTo.length > 0
-                      ? Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 0.0),
-                          child: Text(
-                            '$replyingTo',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText2!
-                                .copyWith(
-                                    color: Theme.of(context).primaryColor),
-                          ),
-                        )
-                      : Container(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      _userAvatar(),
-                      Column(
-                        children: <Widget>[
-                          Container(
-                            width: 320.0,
-                            height: null,
-                            child: SingleChildScrollView(
-                              child: TextFormField(
-                                controller: _bodyController,
-                                autofocus: true,
-                                maxLines: null,
-                                style: Theme.of(context).textTheme.subtitle1,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
+                    : Container(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _userAvatar(),
+                    Column(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 320.0,
+                          height: null,
+                          child: SingleChildScrollView(
+                            child: TextFormField(
+                              controller: _bodyController,
+                              autofocus: true,
+                              maxLines: null,
+                              style: Theme.of(context).textTheme.subtitle1,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
 
-                                  hintText: "What's up,doc?",
-                                  // errorStyle: TextStyle(fontFamily: 'Poppins-Medium'),
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                  ),
+                                hintText: "What's up,doc?",
+                                // errorStyle: TextStyle(fontFamily: 'Poppins-Medium'),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
                                 ),
                               ),
                             ),
                           ),
-                          _image != null ? _formImage() : Container(),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                        ),
+                        _image != null ? _formImage() : Container(),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
-            BlocBuilder<MentionBloc, MentionState>(
-              builder: (context, state) {
-                return Align(
-                  alignment: Alignment.bottomCenter,
-                  child: _showUserList
-                      ? Container(
-                          height: MediaQuery.of(context).size.height / 2.9,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context).canvasColor,
-                                offset: Offset(0, 10),
-                                blurRadius: 10.0,
-                              )
-                            ],
-                            color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: _userList(state))
-                      : Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context).canvasColor,
-                                offset: Offset(-10, -10),
-                                blurRadius: 10.0,
-                              )
-                            ],
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20.0),
-                              topRight: Radius.circular(20.0),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    InkWell(
-                                      onTap: () {
-                                        _getImage(ImageSource.camera);
-                                      },
-                                      child: Container(
-                                        height: 40.0,
-                                        child: Icon(
-                                          Icons.camera,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        _getImage(ImageSource.gallery);
-                                      },
-                                      child: Container(
-                                        height: 40.0,
-                                        child: Icon(
-                                          Icons.image,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                _characterLimitIndicator(),
-                              ],
-                            ),
+          ),
+          BlocBuilder<MentionBloc, MentionState>(
+            builder: (context, state) {
+              return Align(
+                alignment: Alignment.bottomCenter,
+                child: _showUserList
+                    ? Container(
+                        height: MediaQuery.of(context).size.height / 2.9,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme.of(context).canvasColor,
+                              offset: const Offset(0, 10),
+                              blurRadius: 10.0,
+                            )
+                          ],
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: _userList(state))
+                    : Container(
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme.of(context).canvasColor,
+                              offset: const Offset(-10, -10),
+                              blurRadius: 10.0,
+                            )
+                          ],
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
                           ),
                         ),
-                );
-              },
-            )
-          ],
-        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  InkWell(
+                                    onTap: () {
+                                      _getImage(ImageSource.camera);
+                                    },
+                                    // ignore: sized_box_for_whitespace
+                                    child: Container(
+                                      height: 40.0,
+                                      child: Icon(
+                                        Icons.camera,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      _getImage(ImageSource.gallery);
+                                    },
+                                    child: SizedBox(
+                                      height: 40.0,
+                                      child: Icon(
+                                        Icons.image,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              _characterLimitIndicator(),
+                            ],
+                          ),
+                        ),
+                      ),
+              );
+            },
+          )
+        ],
       ),
     );
   }
@@ -378,7 +376,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
                   ),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(3.0),
+                  padding: const EdgeInsets.all(3.0),
                   child: Icon(
                     Icons.close,
                     color: Colors.grey[300],
@@ -419,7 +417,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
   Widget _characterLimitIndicator() {
     return reachErrorLimit()
         ? Padding(
-            padding: EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.only(right: 10),
             child: Text(
               '${limit.toInt() - _bodyController.text.length}',
               style: TextStyle(
@@ -432,7 +430,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
         : Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              Container(
+              SizedBox(
                 height: 25.0,
                 width: 25.0,
                 child: CircularProgressIndicator(
@@ -463,7 +461,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
 
   Widget _userList(MentionState state) {
     if (state is MentionUserLoading) {
-      return LoadingIndicator(
+      return const LoadingIndicator(
         size: 15.0,
       );
     } else if (state is MentionUserLoaded) {
@@ -481,7 +479,7 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: ListView.separated(
             separatorBuilder: (builder, state) {
-              return Divider(
+              return const Divider(
                 height: 1.0,
               );
             },
@@ -491,14 +489,14 @@ class _TweetReplyFormState extends State<TweetReplyForm> {
               return InkWell(
                 onTap: () {
                   _bodyController.text = _bodyController.text
-                      .replaceFirst('@' + state.query, '@' + user.username);
+                      .replaceFirst('@${state.query}', '@${user.username}');
                   _bodyController.selection = TextSelection.fromPosition(
                       TextPosition(offset: _bodyController.text.length));
                 },
                 child: ListTile(
                   title: Text(user.name,
                       style: Theme.of(context).textTheme.bodyText1),
-                  subtitle: Text("@" + user.username,
+                  subtitle: Text("@${user.username}",
                       style: Theme.of(context).textTheme.bodyText1),
                 ),
               );

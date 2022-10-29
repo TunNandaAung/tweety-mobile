@@ -15,13 +15,13 @@ import 'package:tweety_mobile/widgets/cards/user_card.dart';
 class ExploreScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  ExploreScreen({Key? key, required this.scaffoldKey}) : super(key: key);
+  const ExploreScreen({Key? key, required this.scaffoldKey}) : super(key: key);
 
   @override
-  _ExploreScreenState createState() => _ExploreScreenState();
+  ExploreScreenState createState() => ExploreScreenState();
 }
 
-class _ExploreScreenState extends State<ExploreScreen> {
+class ExploreScreenState extends State<ExploreScreen> {
   final _scrollController = ScrollController();
   late Completer<void> _exploreRefreshCompleter;
 
@@ -41,7 +41,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   }
 
   List<User> users = [];
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +90,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   child: Container(
                     width: 400.0,
                     height: 36.0,
-                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xFFCBD5E0),
                       borderRadius: BorderRadius.all(
                         Radius.circular(20.0),
@@ -107,14 +107,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
                             color: Colors.grey[500],
                           ),
                         ),
-                        Icon(Icons.search)
+                        const Icon(Icons.search)
                       ],
                     ),
                   ),
                 ),
               ),
               SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                 sliver: SliverToBoxAdapter(
                   child: Text(
                     'Explore Tweety',
@@ -128,7 +129,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
               BlocBuilder<ExploreBloc, ExploreState>(
                 builder: (context, state) {
                   if (state is ExploreUserLoading) {
-                    return SliverFillRemaining(
+                    return const SliverFillRemaining(
                       child: LoadingIndicator(),
                     );
                   }
@@ -145,7 +146,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     return SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) => index >= users.length
-                            ? LoadingIndicator()
+                            ? const LoadingIndicator()
                             : UserCard(user: users[index]),
                         childCount: state.users.length,
                       ),
@@ -153,19 +154,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   }
                   if (state is ExploreError) {
                     return SliverToBoxAdapter(
-                      child: Container(
-                        child: Refresh(
-                          title: 'Couldn\'t load feed',
-                          onPressed: () {
-                            context.read<ExploreBloc>().add(
-                                  RefreshExplore(),
-                                );
-                          },
-                        ),
+                      child: Refresh(
+                        title: 'Couldn\'t load feed',
+                        onPressed: () {
+                          context.read<ExploreBloc>().add(
+                                RefreshExplore(),
+                              );
+                        },
                       ),
                     );
                   }
-                  return SliverFillRemaining(
+                  return const SliverFillRemaining(
                     child: LoadingIndicator(size: 21.0),
                   );
                 },

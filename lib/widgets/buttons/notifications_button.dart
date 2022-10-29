@@ -6,14 +6,14 @@ class NotificationButton extends StatefulWidget {
   final Color? bubbleColor;
   final Icon icon;
 
-  NotificationButton({Key? key, this.bubbleColor, required this.icon})
+  const NotificationButton({Key? key, this.bubbleColor, required this.icon})
       : super(key: key);
 
   @override
-  _NotificationButtonState createState() => _NotificationButtonState();
+  NotificationButtonState createState() => NotificationButtonState();
 }
 
-class _NotificationButtonState extends State<NotificationButton> {
+class NotificationButtonState extends State<NotificationButton> {
   @override
   void initState() {
     context.read<NotificationBloc>().add(FetchNotificationsCount());
@@ -36,15 +36,13 @@ class _NotificationButtonState extends State<NotificationButton> {
                   height: 15.0,
                   width: 15.0,
                   decoration: BoxDecoration(
-                    color: widget.bubbleColor != null
-                        ? widget.bubbleColor
-                        : Colors.white.withOpacity(.4),
+                    color: widget.bubbleColor ?? Colors.white.withOpacity(.4),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Center(
                     child: Text(
                       '${state.notificationsCount}',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 12.0,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
@@ -53,7 +51,7 @@ class _NotificationButtonState extends State<NotificationButton> {
                 ),
               );
             }
-            return Container(height: 0, width: 0);
+            return const SizedBox(height: 0, width: 0);
           },
         )
       ],

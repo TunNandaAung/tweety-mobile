@@ -14,16 +14,16 @@ class Refresh extends StatelessWidget {
       children: <Widget>[
         Text(
           title,
-          style: TextStyle(color: Colors.red),
+          style: const TextStyle(color: Colors.red),
         ),
-        SizedBox(height: 5.0),
+        const SizedBox(height: 5.0),
         RawMaterialButton(
-          padding: EdgeInsets.all(15.0),
-          shape: CircleBorder(),
+          padding: const EdgeInsets.all(15.0),
+          shape: const CircleBorder(),
           elevation: 2.0,
-          fillColor: Color(0xFF4A5568),
-          child: Icon(Icons.refresh, color: Colors.white, size: 20.0),
+          fillColor: const Color(0xFF4A5568),
           onPressed: onPressed,
+          child: const Icon(Icons.refresh, color: Colors.white, size: 20.0),
         ),
       ],
     ));

@@ -8,13 +8,13 @@ import 'package:tweety_mobile/widgets/loading_indicator.dart';
 class UpdateEmailScreen extends StatefulWidget {
   final User user;
 
-  UpdateEmailScreen({Key? key, required this.user}) : super(key: key);
+  const UpdateEmailScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  _UpdateEmailScreenState createState() => _UpdateEmailScreenState();
+  UpdateEmailScreenState createState() => UpdateEmailScreenState();
 }
 
-class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
+class UpdateEmailScreenState extends State<UpdateEmailScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
 
@@ -22,7 +22,7 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
   late String _password;
 
   bool isButtonEnabled(AuthProfileState state) {
-    return !(state is AuthProfileEmailUpdating);
+    return state is! AuthProfileEmailUpdating;
   }
 
   bool _isPasswordHidden = true;
@@ -50,7 +50,7 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
           centerTitle: true,
           elevation: 0.0,
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.transparent,
             ),
           ),
@@ -89,11 +89,12 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
           child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
             builder: (context, state) {
               return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      Container(
+                      SizedBox(
                         height: size.height,
                         child: Stack(
                           children: <Widget>[
@@ -109,18 +110,18 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                     'Current',
                                     style: Theme.of(context).textTheme.caption,
                                   ),
-                                  SizedBox(height: 5.0),
+                                  const SizedBox(height: 5.0),
                                   Text(
                                     widget.user.email!,
                                     style: Theme.of(context).textTheme.caption,
                                   ),
-                                  SizedBox(height: 20.0),
+                                  const SizedBox(height: 20.0),
                                   Text(
                                     'Re-enter your password to verify',
                                     style:
                                         Theme.of(context).textTheme.bodyText2,
                                   ),
-                                  SizedBox(height: 10.0),
+                                  const SizedBox(height: 10.0),
                                   TextFormField(
                                     style: TextStyle(
                                         color: Theme.of(context)
@@ -144,20 +145,21 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                         errorBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(20.0),
-                                          borderSide: BorderSide(
+                                          borderSide: const BorderSide(
                                             width: 1.0,
                                             color: Colors.red,
                                           ),
                                         ),
-                                        prefixIcon: Icon(
+                                        prefixIcon: const Icon(
                                           Icons.lock_outline,
                                           color: Colors.grey,
                                         ),
                                         suffixIcon: IconButton(
                                             color: Colors.grey,
                                             icon: _isPasswordHidden
-                                                ? Icon(Icons.visibility_off)
-                                                : Icon(Icons.visibility),
+                                                ? const Icon(
+                                                    Icons.visibility_off)
+                                                : const Icon(Icons.visibility),
                                             onPressed: () {
                                               _toggleVisibility();
                                             }),
@@ -170,13 +172,13 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                     },
                                     onSaved: (value) => _password = value!,
                                   ),
-                                  SizedBox(height: 30.0),
+                                  const SizedBox(height: 30.0),
                                   Text(
                                     'Enter your new email address',
                                     style:
                                         Theme.of(context).textTheme.bodyText2,
                                   ),
-                                  SizedBox(height: 10.0),
+                                  const SizedBox(height: 10.0),
                                   TextFormField(
                                     style: TextStyle(
                                         color: Theme.of(context)
@@ -199,12 +201,12 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                         errorBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(20.0),
-                                          borderSide: BorderSide(
+                                          borderSide: const BorderSide(
                                             width: 1.0,
                                             color: Colors.red,
                                           ),
                                         ),
-                                        prefixIcon: Icon(
+                                        prefixIcon: const Icon(
                                           Icons.mail,
                                           color: Colors.grey,
                                         ),
@@ -219,9 +221,9 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 30.0),
+                            const SizedBox(height: 30.0),
                             AnimatedPositioned(
-                              duration: Duration(milliseconds: 500),
+                              duration: const Duration(milliseconds: 500),
                               curve: Curves.easeOutQuad,
                               bottom: keyboardOpen ? size.height * 0.55 : 100.0,
                               child: InkWell(
@@ -230,21 +232,22 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                     : null,
                                 child: Container(
                                   width: size.width * 0.94,
-                                  padding: EdgeInsets.symmetric(vertical: 15.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15.0),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20.0)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20.0)),
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   child: (state is AuthProfileEmailUpdating)
-                                      ? LoadingIndicator(
+                                      ? const LoadingIndicator(
                                           color: Colors.white,
                                         )
                                       : Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          children: <Widget>[
+                                          children: const <Widget>[
                                             Text(
                                               'Update',
                                               style: TextStyle(

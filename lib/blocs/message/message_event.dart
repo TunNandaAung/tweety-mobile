@@ -10,7 +10,7 @@ abstract class MessageEvent extends Equatable {
 class FetchMessages extends MessageEvent {
   final String chatId;
 
-  FetchMessages({required this.chatId});
+  const FetchMessages({required this.chatId});
 
   @override
   List<Object> get props => [chatId];

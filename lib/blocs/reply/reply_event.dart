@@ -7,7 +7,7 @@ abstract class ReplyEvent extends Equatable {
 class FetchReply extends ReplyEvent {
   final int tweetID;
 
-  FetchReply({required this.tweetID});
+  const FetchReply({required this.tweetID});
 
   @override
   List<Object> get props => [tweetID];
@@ -16,7 +16,7 @@ class FetchReply extends ReplyEvent {
 class FetchSingleReply extends ReplyEvent {
   final int replyID;
 
-  FetchSingleReply({required this.replyID});
+  const FetchSingleReply({required this.replyID});
 
   @override
   List<Object> get props => [replyID];
@@ -25,7 +25,7 @@ class FetchSingleReply extends ReplyEvent {
 class RefreshReply extends ReplyEvent {
   final int tweetID;
 
-  RefreshReply({required this.tweetID});
+  const RefreshReply({required this.tweetID});
 
   @override
   List<Object> get props => [tweetID];
@@ -45,7 +45,7 @@ class AddReply extends ReplyEvent {
 class DeleteReply extends ReplyEvent {
   final Reply reply;
 
-  DeleteReply({required this.reply});
+  const DeleteReply({required this.reply});
 
   @override
   List<Object> get props => [];
