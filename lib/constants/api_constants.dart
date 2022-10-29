@@ -23,16 +23,6 @@ Echo echoSetup(token, pusherClient) {
   return new Echo({
     'broadcaster': 'pusher',
     'client': pusherClient,
-    "wsHost": '10.0.2.2',
-    "httpHost": '10.0.2.2',
-    "wsPort": 6001,
-    'auth': {
-      "headers": {'Authorization': 'Bearer $token'}
-    },
-    'authEndpoint': 'http://10.0.2.2:8000/api/broadcasting/auth',
-    "disableStats": true,
-    "forceTLS": false,
-    "enabledTransports": ['ws', 'wss']
   });
 }
 
@@ -43,7 +33,7 @@ LaravelFlutterPusher getPusherClient(String token) {
     port: 6001,
     cluster: 'ap1',
     auth: PusherAuth(
-      'http://10.0.2.2:8000/api/broadcasting/auth',
+      ApiConstants.BASE_URL + '/broadcasting/auth',
       headers: {'Authorization': 'Bearer $token'},
     ),
   );

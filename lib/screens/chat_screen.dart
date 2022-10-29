@@ -93,12 +93,15 @@ class _ChatScreenState extends State<ChatScreen> {
       typingTimer =
           Timer(Duration(milliseconds: 3000), () => updateActivePeer(false));
     }).listen("MessageSent", (event) {
-      _messageBloc.add(
-        ReceiveMessage(
-          chatId: widget.chatId,
-          message: Message.fromJson((event)['message']),
-        ),
-      );
+      Message message = Message.fromJson((event)['message']);
+      if (message.sender?.username == widget.chatUser.username) {
+        _messageBloc.add(
+          ReceiveMessage(
+            chatId: widget.chatId,
+            message: message,
+          ),
+        );
+      }
     }).listen("MessageRead", (event) {
       _messageBloc.add(UpdateReadAt());
     });
