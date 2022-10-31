@@ -11,12 +11,13 @@ import 'package:tweety_mobile/services/reply_api_client.dart';
 import 'package:tweety_mobile/services/tweet_api_client.dart';
 
 class ProfileWrapper extends StatelessWidget {
-  const ProfileWrapper({Key key}) : super(key: key);
+  const ProfileWrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final client = http.Client();
-    final username = ModalRoute.of(context).settings.arguments;
+    final String username =
+        ModalRoute.of(context)!.settings.arguments as String;
 
     final ReplyRepository replyRepository = ReplyRepository(
       replyApiClient: ReplyApiClient(httpClient: client),

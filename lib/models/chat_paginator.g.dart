@@ -6,16 +6,14 @@ part of 'chat_paginator.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChatPaginator _$ChatPaginatorFromJson(Map<String, dynamic> json) {
-  return ChatPaginator(
-    currentPage: json['current_page'] as int,
-    lastPage: json['last_page'] as int,
-    chats: (json['data'] as List)
-        ?.map(
-            (e) => e == null ? null : Chat.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+ChatPaginator _$ChatPaginatorFromJson(Map<String, dynamic> json) =>
+    ChatPaginator(
+      currentPage: json['current_page'] as int,
+      lastPage: json['last_page'] as int,
+      chats: (json['data'] as List<dynamic>)
+          .map((e) => Chat.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$ChatPaginatorToJson(ChatPaginator instance) =>
     <String, dynamic>{

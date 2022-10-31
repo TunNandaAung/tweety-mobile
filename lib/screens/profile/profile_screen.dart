@@ -22,15 +22,18 @@ import 'package:tweety_mobile/widgets/cards/tweet_card.dart';
 class ProfileScreen extends StatefulWidget {
   final String username;
   final ReplyRepository replyRepository;
-  const ProfileScreen({Key key, this.username, this.replyRepository})
-      : super(key: key);
+  const ProfileScreen({
+    Key? key,
+    required this.username,
+    required this.replyRepository,
+  }) : super(key: key);
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  ProfileScreenState createState() => ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
+class ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
 
   static double avatarMaximumRadius = 40.0;
   static double avatarMinimumRadius = 15.0;
@@ -140,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           },
           child: NestedScrollView(
             controller: _scrollController,
-            physics: ClampingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
@@ -149,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     iconTheme: Theme.of(context).appBarTheme.iconTheme,
                     leading: isExpanded
                         ? Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
@@ -157,12 +160,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     ? Colors.black.withOpacity(.2)
                                     : Colors.black.withOpacity(.7),
                               ),
-                              child: BackButton(
+                              child: const BackButton(
                                 color: Colors.white,
                               ),
                             ),
                           )
-                        : BackButton(),
+                        : const BackButton(),
                     pinned: true,
                     elevation: 0.0,
                     forceElevated: true,
@@ -177,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           );
                         }
                         if (state is ProfileLoading) {
-                          return LoadingIndicator(
+                          return const LoadingIndicator(
                             size: 21.0,
                           );
                         }
@@ -219,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                           avatar: state.user.avatar,
                                         ),
                                       )
-                                    : SizedBox.shrink(),
+                                    : const SizedBox.shrink(),
                               ),
                             ),
                           );
@@ -253,7 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   Padding(
                                     padding: const EdgeInsets.only(right: 10.0),
                                     child: widget.username !=
-                                            Prefer.prefs.getString('userName')
+                                            Prefer.prefs.getString('username')
                                         ? Row(
                                             children: [
                                               MessageButton(
@@ -287,7 +290,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               BlocBuilder<ProfileTweetBloc, ProfileTweetState>(
                 builder: (context, state) {
                   if (state is ProfileTweetLoading) {
-                    return LoadingIndicator();
+                    return const LoadingIndicator();
                   }
 
                   if (state is ProfileTweetError) {
@@ -310,17 +313,17 @@ class _ProfileScreenState extends State<ProfileScreen>
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
+                            .headline5!
                             .copyWith(fontWeight: FontWeight.bold),
                       ));
                     }
 
                     return ListView.builder(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         itemBuilder: (context, index) => index >= tweets.length
-                            ? LoadingIndicator()
+                            ? const LoadingIndicator()
                             : Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0,
                                   vertical: 5.0,
                                 ),
@@ -343,7 +346,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             : state.tweets.length + 1);
                   }
 
-                  return LoadingIndicator();
+                  return const LoadingIndicator();
                 },
               ),
               // ListView.builder(
@@ -354,7 +357,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               BlocBuilder<ProfileReplyBloc, ProfileReplyState>(
                 builder: (context, state) {
                   if (state is ProfileReplyLoading) {
-                    return LoadingIndicator();
+                    return const LoadingIndicator();
                   }
 
                   if (state is ProfileReplyError) {
@@ -377,17 +380,17 @@ class _ProfileScreenState extends State<ProfileScreen>
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
+                            .headline5!
                             .copyWith(fontWeight: FontWeight.bold),
                       ));
                     }
 
                     return ListView.builder(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         itemBuilder: (context, index) => index >= replies.length
-                            ? LoadingIndicator()
+                            ? const LoadingIndicator()
                             : Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0,
                                   vertical: 5.0,
                                 ),
@@ -415,7 +418,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     child: ReplyWidget(
                                       reply: replies[index],
                                       tweet: replies[index].tweet,
-                                      replyingTo: replies[index].parent ?? null,
+                                      replyingTo: replies[index].parent,
                                       isProfileReply: true,
                                     ),
                                   ),
@@ -426,7 +429,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             : state.replies.length + 1);
                   }
 
-                  return LoadingIndicator();
+                  return const LoadingIndicator();
                 },
               ),
             ]),
@@ -441,7 +444,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
   final double size;
   final TabController controller;
 
-  TweetyTabs(this.size, {@required this.controller});
+  TweetyTabs(this.size, {required this.controller});
 
   @override
   Widget build(
@@ -452,7 +455,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
           boxShadow: [
             BoxShadow(
               color: Theme.of(context).canvasColor,
-              offset: Offset(1, 10),
+              offset: const Offset(1, 10),
               blurRadius: 10.0,
             )
           ]),
@@ -464,7 +467,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
             Theme.of(context).tabBarTheme.unselectedLabelStyle,
         labelStyle: Theme.of(context).tabBarTheme.labelStyle,
         indicatorColor: Theme.of(context).primaryColor,
-        tabs: <Widget>[
+        tabs: const <Widget>[
           Tab(
             text: "Tweets",
           ),
@@ -491,7 +494,7 @@ class TweetyTabs extends SliverPersistentHeaderDelegate {
 class TweetyHeader extends StatelessWidget {
   final User user;
 
-  const TweetyHeader({Key key, this.user}) : super(key: key);
+  const TweetyHeader({Key? key, required this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -501,28 +504,28 @@ class TweetyHeader extends StatelessWidget {
         children: <Widget>[
           Text(
             user.name,
-            style: Theme.of(context).textTheme.caption.copyWith(
+            style: Theme.of(context).textTheme.caption!.copyWith(
                   fontSize: 22.0,
                   fontWeight: FontWeight.bold,
                 ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5.0,
           ),
           Text(
-            "@" + user.username,
+            "@${user.username}",
             style: Theme.of(context).textTheme.bodyText2,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10.0,
           ),
           Text(
             user.description ?? '',
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   fontSize: 15.0,
                 ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10.0,
           ),
           GestureDetector(
@@ -535,7 +538,7 @@ class TweetyHeader extends StatelessWidget {
                 RichText(
                   text: TextSpan(
                       text: user.followsCount.toString(),
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           fontSize: 15.0, fontWeight: FontWeight.bold),
                       children: [
                         TextSpan(
@@ -544,13 +547,13 @@ class TweetyHeader extends StatelessWidget {
                         ),
                       ]),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5.0,
                 ),
                 RichText(
                   text: TextSpan(
                       text: user.followersCount.toString(),
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           fontSize: 15.0, fontWeight: FontWeight.bold),
                       children: [
                         TextSpan(
@@ -568,45 +571,46 @@ class TweetyHeader extends StatelessWidget {
   }
 }
 
-class Tweet extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: EdgeInsets.all(6.0),
-      leading: CircleAvatar(
-        backgroundImage: AssetImage("assets/images/twitter_flutter_logo.jpg"),
-      ),
-      title: RichText(
-        text: TextSpan(
-            text: "Flutter",
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
-            children: [
-              TextSpan(
-                  text: "  @flutterio  04 Dec 18",
-                  style: TextStyle(color: Colors.grey, fontSize: 14)),
-            ]),
-      ),
-      subtitle: Text(
-        "We just announced the general availability of Flutter 1.0 at #FlutterLive! \n\nThank you to all the amazing engineers who made this possible and to our awesome community for their support.",
-        style: TextStyle(color: Colors.white),
-      ),
-    );
-  }
-}
+// class Tweet extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListTile(
+//       contentPadding: EdgeInsets.all(6.0),
+//       leading: CircleAvatar(
+//         backgroundImage: AssetImage("assets/images/twitter_flutter_logo.jpg"),
+//       ),
+//       title: RichText(
+//         text: TextSpan(
+//             text: "Flutter",
+//             style: TextStyle(
+//                 color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
+//             children: [
+//               TextSpan(
+//                   text: "  @flutterio  04 Dec 18",
+//                   style: TextStyle(color: Colors.grey, fontSize: 14)),
+//             ]),
+//       ),
+//       subtitle: Text(
+//         "We just announced the general availability of Flutter 1.0 at #FlutterLive! \n\nThank you to all the amazing engineers who made this possible and to our awesome community for their support.",
+//         style: TextStyle(color: Colors.white),
+//       ),
+//     );
+//   }
+// }
 
 class TweetyAvatar extends StatelessWidget {
   final double size;
-  final String avatar;
+  final String? avatar;
 
-  const TweetyAvatar({Key key, this.size, this.avatar}) : super(key: key);
+  const TweetyAvatar({Key? key, required this.size, this.avatar})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
       child: DecoratedBox(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             // border: Border.all(
             //   color: Colors.grey[800],
             //   width: 2.0,
@@ -619,7 +623,7 @@ class TweetyAvatar extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => PhotoViewScreen(
                   title: '',
-                  imageProvider: NetworkImage(avatar),
+                  imageProvider: NetworkImage(avatar!),
                 ),
               ),
             ),
@@ -627,8 +631,9 @@ class TweetyAvatar extends StatelessWidget {
               radius: size,
               backgroundColor: Theme.of(context).cardColor,
               backgroundImage: avatar == null
-                  ? AssetImage("assets/images/twitter_flutter_logo.jpg")
-                  : NetworkImage(avatar),
+                  ? const AssetImage("assets/images/twitter_flutter_logo.jpg")
+                      as ImageProvider
+                  : NetworkImage(avatar!),
             ),
           ),
         ),
@@ -639,7 +644,7 @@ class TweetyAvatar extends StatelessWidget {
 
 class EditProfileButton extends StatelessWidget {
   final User user;
-  const EditProfileButton({Key key, @required this.user}) : super(key: key);
+  const EditProfileButton({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -657,8 +662,8 @@ class EditProfileButton extends StatelessWidget {
         },
         style: TextButton.styleFrom(
           backgroundColor: Colors.transparent,
-          onSurface: Colors.grey,
-          padding: EdgeInsets.all(8.0),
+          disabledBackgroundColor: Colors.grey.withOpacity(0.38),
+          padding: const EdgeInsets.all(8.0),
           shape: RoundedRectangleBorder(
             side: BorderSide(
                 color: Theme.of(context).primaryColor,
@@ -669,7 +674,7 @@ class EditProfileButton extends StatelessWidget {
         ),
         child: Text(
           'Edit Profile',
-          style: Theme.of(context).textTheme.button.copyWith(
+          style: Theme.of(context).textTheme.button!.copyWith(
                 color: Theme.of(context).primaryColor,
               ),
         ),

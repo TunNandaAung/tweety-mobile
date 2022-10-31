@@ -12,7 +12,7 @@ class SearchApiClient {
       ApiConstants.BASE_URL; //url generated with `valet share command`
   final http.Client httpClient;
 
-  SearchApiClient({http.Client httpClient})
+  SearchApiClient({http.Client? httpClient})
       : httpClient = httpClient ?? http.Client();
 
   Future<List<User>> searchUsers(String query) async {
@@ -20,10 +20,10 @@ class SearchApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting users.');
@@ -39,10 +39,10 @@ class SearchApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting tweets.');

@@ -9,11 +9,14 @@ import 'package:tweety_mobile/screens/reply/add_children_reply_screen.dart';
 class AddChildrenReplyButton extends StatelessWidget {
   final Tweet tweet;
   final Reply parent;
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
 
-  const AddChildrenReplyButton(
-      {Key key, @required this.tweet, this.scaffoldKey, this.parent})
-      : super(key: key);
+  const AddChildrenReplyButton({
+    Key? key,
+    required this.tweet,
+    this.scaffoldKey,
+    required this.parent,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,24 +37,27 @@ class AddChildrenReplyButton extends StatelessWidget {
 class AddChildrenReplyButtonWidget extends StatefulWidget {
   final Tweet tweet;
   final Reply parent;
-  final GlobalKey<ScaffoldState> scaffoldKey;
-  const AddChildrenReplyButtonWidget(
-      {Key key, @required this.tweet, this.scaffoldKey, this.parent})
-      : super(key: key);
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+  const AddChildrenReplyButtonWidget({
+    Key? key,
+    required this.tweet,
+    this.scaffoldKey,
+    required this.parent,
+  }) : super(key: key);
 
   @override
-  _AddChildrenReplyButtonWidgetState createState() =>
-      _AddChildrenReplyButtonWidgetState();
+  AddChildrenReplyButtonWidgetState createState() =>
+      AddChildrenReplyButtonWidgetState();
 }
 
-class _AddChildrenReplyButtonWidgetState
+class AddChildrenReplyButtonWidgetState
     extends State<AddChildrenReplyButtonWidget> {
   int get childrenCount => widget.parent.childrenCount;
   set childrenCount(int childrenCount) =>
       widget.parent.childrenCount = childrenCount;
 
   // ignore: close_sinks
-  ChildrenReplyBloc _childrenReplyBloc;
+  late ChildrenReplyBloc _childrenReplyBloc;
   @override
   void initState() {
     super.initState();
@@ -103,16 +109,16 @@ class _AddChildrenReplyButtonWidgetState
           children: <Widget>[
             childrenCount > 0
                 ? Padding(
-                    padding: EdgeInsets.only(right: 3.0),
+                    padding: const EdgeInsets.only(right: 3.0),
                     child: Text(
                       childrenCount.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xFFA0AEC0),
                       ),
                     ),
                   )
                 : Container(),
-            Icon(
+            const Icon(
               Icons.comment,
               size: 18.0,
               color: Color(0xFFA0AEC0),

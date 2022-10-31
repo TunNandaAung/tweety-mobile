@@ -12,17 +12,18 @@ class LoginState {
 
   bool get isFormValid => isEmailValid && isPasswordValid;
 
-  LoginState(
-      {@required this.isEmailValid,
-      @required this.isPasswordValid,
-      @required this.isSubmitting,
-      @required this.isSuccess,
-      @required this.isFailure,
-      @required this.isPasswordResetMailSent,
-      @required this.isPasswordResetFailure});
+  const LoginState({
+    required this.isEmailValid,
+    required this.isPasswordValid,
+    required this.isSubmitting,
+    required this.isSuccess,
+    required this.isFailure,
+    required this.isPasswordResetMailSent,
+    required this.isPasswordResetFailure,
+  });
 
   factory LoginState.empty() {
-    return LoginState(
+    return const LoginState(
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: false,
@@ -34,7 +35,7 @@ class LoginState {
   }
 
   factory LoginState.loading() {
-    return LoginState(
+    return const LoginState(
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: true,
@@ -46,7 +47,7 @@ class LoginState {
   }
 
   factory LoginState.failure() {
-    return LoginState(
+    return const LoginState(
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: false,
@@ -58,7 +59,7 @@ class LoginState {
   }
 
   factory LoginState.success() {
-    return LoginState(
+    return const LoginState(
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: false,
@@ -70,7 +71,7 @@ class LoginState {
   }
 
   factory LoginState.passwordResetMailSent() {
-    return LoginState(
+    return const LoginState(
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: false,
@@ -82,7 +83,7 @@ class LoginState {
   }
 
   factory LoginState.passwordResetFailure() {
-    return LoginState(
+    return const LoginState(
         isEmailValid: true,
         isPasswordValid: true,
         isSubmitting: false,
@@ -93,8 +94,8 @@ class LoginState {
   }
 
   LoginState update({
-    bool isEmailValid,
-    bool isPasswordValid,
+    bool isEmailValid = true,
+    bool isPasswordValid = true,
   }) {
     return copyWith(
       isEmailValid: isEmailValid,
@@ -107,15 +108,16 @@ class LoginState {
     );
   }
 
-  LoginState copyWith(
-      {bool isEmailValid,
-      bool isPasswordValid,
-      bool isSubmitEnabled,
-      bool isSubmitting,
-      bool isSuccess,
-      bool isFailure,
-      bool isPasswordResetFailure,
-      bool isPasswordResetMailSent}) {
+  LoginState copyWith({
+    bool? isEmailValid,
+    bool? isPasswordValid,
+    bool? isSubmitEnabled,
+    bool? isSubmitting,
+    bool? isSuccess,
+    bool? isFailure,
+    bool? isPasswordResetFailure,
+    bool? isPasswordResetMailSent,
+  }) {
     return LoginState(
       isEmailValid: isEmailValid ?? this.isEmailValid,
       isPasswordValid: isPasswordValid ?? this.isPasswordValid,

@@ -12,41 +12,33 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UserRepository userRepository;
 
-  ProfileBloc({@required this.userRepository})
-      : assert(userRepository != null),
-        super(ProfileInitial());
-
-  @override
-  Stream<ProfileState> mapEventToState(
-    ProfileEvent event,
-  ) async* {
-    if (event is FetchProfile) {
-      yield* _mapFetchProfileToState(event);
-    } else if (event is RefreshProfile) {
-      yield* _mapRefreshProfileToState(event);
-    }
+  ProfileBloc({required this.userRepository}) : super(ProfileInitial()) {
+    on<FetchProfile>(_onFetchProfileToState);
+    on<RefreshProfile>(_onRefreshProfileToState);
   }
 
   bool _sameProfile(ProfileState state, username) =>
       state is ProfileLoaded && state.user.username == username;
-  
-  Stream<ProfileState> _mapFetchProfileToState(FetchProfile event) async* {
+
+  Future<void> _onFetchProfileToState(
+      FetchProfile event, Emitter<ProfileState> emit) async {
     final currentState = state;
 
     if (!_sameProfile(currentState, event.username)) {
-      yield ProfileLoading();
+      emit(ProfileLoading());
       try {
         final user = await userRepository.getUserInfo(event.username);
-        yield ProfileLoaded(user: user);
+        emit(ProfileLoaded(user: user));
       } catch (_) {
-        yield ProfileError();
+        emit(ProfileError());
       }
     } else {
-      yield currentState;
+      emit(currentState);
     }
   }
 
-  Stream<ProfileState> _mapRefreshProfileToState(RefreshProfile event) async* {
-    yield ProfileLoaded(user: event.user);
+  Future<void> _onRefreshProfileToState(
+      RefreshProfile event, Emitter<ProfileState> emit) async {
+    emit(ProfileLoaded(user: event.user));
   }
 }

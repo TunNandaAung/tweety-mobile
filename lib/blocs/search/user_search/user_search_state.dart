@@ -6,13 +6,13 @@ class UserSearchState {
   final bool hasError;
 
   const UserSearchState({
-    this.isLoading,
-    this.users,
-    this.hasError,
+    required this.isLoading,
+    required this.users,
+    required this.hasError,
   });
 
   factory UserSearchState.initial() {
-    return UserSearchState(
+    return const UserSearchState(
       users: [],
       isLoading: false,
       hasError: false,
@@ -20,7 +20,7 @@ class UserSearchState {
   }
 
   factory UserSearchState.loading() {
-    return UserSearchState(
+    return const UserSearchState(
       users: [],
       isLoading: true,
       hasError: false,
@@ -36,7 +36,7 @@ class UserSearchState {
   }
 
   factory UserSearchState.error() {
-    return UserSearchState(
+    return const UserSearchState(
       users: [],
       isLoading: false,
       hasError: true,

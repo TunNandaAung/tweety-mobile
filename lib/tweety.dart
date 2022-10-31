@@ -4,21 +4,21 @@ import 'package:tweety_mobile/blocs/chat/chat_bloc.dart';
 import 'package:tweety_mobile/repositories/chat_repository.dart';
 import 'package:tweety_mobile/screens/screens.dart';
 import 'package:tweety_mobile/theme/app_theme.dart';
-import 'package:tweety_mobile/theme/bloc/theme_bloc.dart';
 import 'package:tweety_mobile/repositories/repositories.dart';
 import 'package:tweety_mobile/blocs/blocs.dart';
+import 'package:tweety_mobile/theme/cubit/theme_cubit.dart';
 
 class Tweety extends StatefulWidget {
   final UserRepository userRepository;
 
-  const Tweety({Key key, this.userRepository}) : super(key: key);
+  const Tweety({Key? key, required this.userRepository}) : super(key: key);
 
   @override
-  _TweetyState createState() => _TweetyState();
+  TweetyState createState() => TweetyState();
 }
 
-class _TweetyState extends State<Tweety> {
-  AuthenticationBloc _authenticationBloc;
+class TweetyState extends State<Tweety> {
+  late AuthenticationBloc _authenticationBloc;
 
   @override
   void initState() {
@@ -32,8 +32,8 @@ class _TweetyState extends State<Tweety> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ThemeBloc>(
-          create: (context) => ThemeBloc(),
+        BlocProvider<ThemeCubit>(
+          create: (context) => ThemeCubit(),
         ),
         BlocProvider<TweetBloc>(
           create: (context) => TweetBloc(
@@ -80,7 +80,7 @@ class _TweetyState extends State<Tweety> {
   }
 
   Widget _buildWithTheme(BuildContext context) {
-    return BlocBuilder<ThemeBloc, AppTheme>(
+    return BlocBuilder<ThemeCubit, AppTheme>(
       builder: (context, appTheme) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -94,19 +94,19 @@ class _TweetyState extends State<Tweety> {
                   return LoginScreen(userRepository: widget.userRepository);
                 }
                 if (state is AuthenticationSuccess) {
-                  return HomeScreen();
+                  return const HomeScreen();
                 }
-                return SplashScreen();
+                return const SplashScreen();
               });
             },
             '/register': (context) =>
                 RegisterScreen(userRepository: widget.userRepository),
-            '/profile': (context) => ProfileWrapper(),
-            '/publish-tweet': (context) => PublishTweetScreen(),
-            '/settings': (context) => SettingsScreen(),
-            '/tweet-reply': (context) => ReplyWrapper(),
-            '/tweet': (context) => TweetWrapper(),
-            '/forgot-password': (context) => ForgotPasswordScreen(),
+            '/profile': (context) => const ProfileWrapper(),
+            '/publish-tweet': (context) => const PublishTweetScreen(),
+            '/settings': (context) => const SettingsScreen(),
+            '/tweet-reply': (context) => const ReplyWrapper(),
+            '/tweet': (context) => const TweetWrapper(),
+            '/forgot-password': (context) => const ForgotPasswordScreen(),
           },
         );
       },

@@ -18,13 +18,12 @@ class ProfileTweetLoaded extends ProfileTweetState {
   final int pageNumber;
 
   const ProfileTweetLoaded(
-      {@required this.tweets, this.hasReachedMax, this.pageNumber = 1})
-      : assert(tweets != null);
+      {required this.tweets, required this.hasReachedMax, this.pageNumber = 1});
 
   ProfileTweetLoaded copyWith({
-    List<Tweet> tweets,
-    bool hasReachedMax,
-    int pageNumber,
+    List<Tweet>? tweets,
+    bool? hasReachedMax,
+    int? pageNumber,
   }) {
     return ProfileTweetLoaded(
       tweets: tweets ?? this.tweets,

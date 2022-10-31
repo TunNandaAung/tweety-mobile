@@ -11,13 +11,13 @@ class FollowInitial extends FollowState {}
 class Followed extends FollowState {
   final User user;
 
-  Followed({this.user});
+  const Followed({required this.user});
 }
 
 class Unfollowed extends FollowState {
   final User user;
 
-  Unfollowed({this.user});
+  const Unfollowed({required this.user});
 }
 
 class FollowError extends FollowState {}

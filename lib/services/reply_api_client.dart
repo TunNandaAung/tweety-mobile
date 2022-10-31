@@ -15,7 +15,7 @@ class ReplyApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  ReplyApiClient({http.Client httpClient})
+  ReplyApiClient({http.Client? httpClient})
       : httpClient = httpClient ?? http.Client();
 
   Future<ReplyPaginator> fetchReplies(int tweetID, int pageNumber) async {
@@ -24,10 +24,10 @@ class ReplyApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting replies.');
@@ -43,10 +43,10 @@ class ReplyApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting reply.');
@@ -64,10 +64,10 @@ class ReplyApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting replies.');
@@ -85,10 +85,10 @@ class ReplyApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting replies.');
@@ -100,27 +100,27 @@ class ReplyApiClient {
   }
 
   Future<Reply> addReply(int tweetID, String body,
-      {File image, int parentID}) async {
+      {File? image, int? parentID}) async {
     final url = '$baseUrl/tweets/$tweetID/reply';
 
     final request = await prepareRequest(body, image, parentID, url);
-    final response = await request.send();
+    final res = await request.send();
 
-    if (response.statusCode != 201) {
-      var _response = await http.Response.fromStream(response);
-      print(_response.body);
+    if (res.statusCode != 201) {
+      var response = await http.Response.fromStream(res);
+      print(response.body);
       throw Exception('Error adding reply');
     }
-    var _response = await http.Response.fromStream(response);
-    print(_response.body);
+    var response = await http.Response.fromStream(res);
+    print(response.body);
 
-    final replyJson = jsonDecode(_response.body)['data'];
+    final replyJson = jsonDecode(response.body)['data'];
 
     return Reply.fromJson(replyJson);
   }
 
   Future<MultipartRequest> prepareRequest(
-      String body, File image, int parentID, url) async {
+      String body, File? image, int? parentID, url) async {
     final token = Prefer.prefs.getString('token');
 
     final request = http.MultipartRequest('POST', Uri.parse(url));
@@ -131,20 +131,20 @@ class ReplyApiClient {
     }
 
     if (image != null) {
-      var stream = new http.ByteStream(Stream.castFrom(image.openRead()));
+      var stream = http.ByteStream(Stream.castFrom(image.openRead()));
       var length = await image.length();
-      var multipartFile = new MultipartFile("image", stream, length,
+      var multipartFile = MultipartFile("image", stream, length,
           filename: basename(image.path),
           contentType: MediaType('multipart', 'form-data'));
       request.files.add(multipartFile);
     }
 
-    Map<String, String> _headers = {
+    Map<String, String> authHeaders = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
 
-    request.headers.addAll(_headers);
+    request.headers.addAll(authHeaders);
     return request;
   }
 
@@ -153,10 +153,10 @@ class ReplyApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.delete(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.delete(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error Deleting replies.');

@@ -13,7 +13,7 @@ import 'package:tweety_mobile/screens/reply/add_reply_screen.dart';
 class AddReplyButton extends StatelessWidget {
   final Widget child;
 
-  const AddReplyButton({Key key, @required this.child}) : super(key: key);
+  const AddReplyButton({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,21 +37,21 @@ class AddReplyButton extends StatelessWidget {
 
 class AddReplyButtonWidget extends StatefulWidget {
   final Tweet tweet;
-  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
+  final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
   const AddReplyButtonWidget(
-      {Key key, @required this.tweet, this.scaffoldMessengerKey})
+      {Key? key, required this.tweet, this.scaffoldMessengerKey})
       : super(key: key);
 
   @override
-  _AddReplyButtonWidgetState createState() => _AddReplyButtonWidgetState();
+  AddReplyButtonWidgetState createState() => AddReplyButtonWidgetState();
 }
 
-class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
+class AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
   int get repliesCount => widget.tweet.repliesCount;
   set repliesCount(int repliesCount) =>
       widget.tweet.repliesCount = repliesCount;
   // ignore: close_sinks
-  ReplyBloc _replyBloc;
+  late ReplyBloc _replyBloc;
   @override
   void initState() {
     super.initState();
@@ -74,9 +74,9 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
 
               var currentState = widget.scaffoldMessengerKey == null
                   ? ScaffoldMessenger.of(context)
-                  : widget.scaffoldMessengerKey.currentState;
+                  : widget.scaffoldMessengerKey!.currentState;
 
-              currentState
+              currentState!
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(
@@ -86,7 +86,7 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
                     backgroundColor: Theme.of(context).primaryColor,
                     content: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: const [
                         Text("Your reply was added!"),
                       ],
                     ),
@@ -116,7 +116,7 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
                     backgroundColor: Colors.red,
                     content: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: const [
                         Text("Couldn't add reply."),
                       ],
                     ),
@@ -144,16 +144,16 @@ class _AddReplyButtonWidgetState extends State<AddReplyButtonWidget> {
           children: <Widget>[
             repliesCount > 0
                 ? Padding(
-                    padding: EdgeInsets.only(right: 3.0),
+                    padding: const EdgeInsets.only(right: 3.0),
                     child: Text(
                       repliesCount.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xFFA0AEC0),
                       ),
                     ),
                   )
                 : Container(),
-            Icon(
+            const Icon(
               Icons.comment,
               size: 18.0,
               color: Color(0xFFA0AEC0),

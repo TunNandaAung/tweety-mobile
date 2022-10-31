@@ -5,13 +5,15 @@ import 'package:tweety_mobile/screens/auth/register_images_form.dart';
 import 'package:tweety_mobile/utils/validators.dart';
 
 class RegisterForm extends StatefulWidget {
+  const RegisterForm({super.key});
+
   @override
-  _RegisterFormState createState() => _RegisterFormState();
+  RegisterFormState createState() => RegisterFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  RegisterBloc _registerBloc;
+  late RegisterBloc _registerBloc;
 
   bool isButtonEnabled(RegisterState state) {
     return state is! RegisterLoading;
@@ -23,11 +25,11 @@ class _RegisterFormState extends State<RegisterForm> {
   bool _isPasswordHidden = true;
   bool _isConfirmPasswordHidden = true;
 
-  String _name;
-  String _username;
-  String _email;
-  String _password;
-  String _passwordConfirmation;
+  late String _name;
+  late String _username;
+  late String _email;
+  late String _password;
+  late String _passwordConfirmation;
 
   @override
   void initState() {
@@ -43,11 +45,11 @@ class _RegisterFormState extends State<RegisterForm> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0.0,
           iconTheme: IconThemeData(
-            color: Theme.of(context).appBarTheme.iconTheme.color,
+            color: Theme.of(context).appBarTheme.iconTheme!.color,
           ),
           title: Text(
             'Register',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
         ),
@@ -86,12 +88,12 @@ class _RegisterFormState extends State<RegisterForm> {
                   backgroundColor: Colors.black26,
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
                         'Registering...',
                       ),
                       CircularProgressIndicator(
-                        valueColor: new AlwaysStoppedAnimation<Color>(
+                        valueColor: AlwaysStoppedAnimation<Color>(
                           Colors.white,
                         ),
                       )
@@ -105,7 +107,7 @@ class _RegisterFormState extends State<RegisterForm> {
               MaterialPageRoute(
                 builder: (context) => BlocProvider.value(
                   value: _registerBloc,
-                  child: RegisterImagesForm(),
+                  child: const RegisterImagesForm(),
                 ),
               ),
             );
@@ -113,7 +115,7 @@ class _RegisterFormState extends State<RegisterForm> {
         }, child: BlocBuilder<RegisterBloc, RegisterState>(
           builder: (context, state) {
             return Padding(
-              padding: EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(12.0),
               child: ListView(
                 children: <Widget>[
                   Form(
@@ -128,7 +130,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           'Name',
                           style: Theme.of(context).textTheme.caption,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
                               color: Theme.of(context)
@@ -139,34 +141,38 @@ class _RegisterFormState extends State<RegisterForm> {
                             filled: true,
                             focusColor: Theme.of(context).primaryColor,
                             enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
                               borderSide: BorderSide.none,
                             ),
                             errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                width: 2.0,
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: const BorderSide(
+                                width: 1.0,
                                 color: Colors.red,
                               ),
                             ),
                             hintText: 'Name',
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                           validator: (val) {
-                            return val.trim().isEmpty
+                            return val!.trim().isEmpty
                                 ? 'Name cannot be empty'
                                 : null;
                           },
-                          onSaved: (value) => _name = value,
+                          onSaved: (value) => _name = value!,
                         ),
-                        SizedBox(height: 20.0),
+                        const SizedBox(height: 20.0),
                         Text(
-                          'Username',
+                          'username',
                           style: Theme.of(context).textTheme.caption,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
                               color: Theme.of(context)
@@ -177,34 +183,38 @@ class _RegisterFormState extends State<RegisterForm> {
                             filled: true,
                             focusColor: Colors.white,
                             enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
                               borderSide: BorderSide.none,
                             ),
                             errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                width: 2.0,
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: const BorderSide(
+                                width: 1.0,
                                 color: Colors.red,
                               ),
                             ),
-                            hintText: 'Username',
-                            hintStyle: TextStyle(
+                            hintText: 'username',
+                            hintStyle: const TextStyle(
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                           validator: (val) {
-                            return val.trim().isEmpty
-                                ? 'Username cannot be empty'
+                            return val!.trim().isEmpty
+                                ? 'username cannot be empty'
                                 : null;
                           },
-                          onSaved: (value) => _username = value,
+                          onSaved: (value) => _username = value!,
                         ),
-                        SizedBox(height: 20.0),
+                        const SizedBox(height: 20.0),
                         Text(
                           'Email',
                           style: Theme.of(context).textTheme.caption,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
                               color: Theme.of(context)
@@ -215,34 +225,38 @@ class _RegisterFormState extends State<RegisterForm> {
                               filled: true,
                               focusColor: Colors.white,
                               enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
                                 borderSide: BorderSide.none,
                               ),
                               errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  width: 2.0,
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: const BorderSide(
+                                  width: 1.0,
                                   color: Colors.red,
                                 ),
                               ),
-                              prefixIcon: Icon(
+                              prefixIcon: const Icon(
                                 Icons.mail,
                                 color: Colors.grey,
                               ),
                               hintText: 'you@example.com'),
                           validator: (val) {
-                            return !Validators.isValidEmail(val)
+                            return !Validators.isValidEmail(val!)
                                 ? 'Invalid email.'
                                 : null;
                           },
-                          onSaved: (value) => _email = value,
+                          onSaved: (value) => _email = value!,
                         ),
-                        SizedBox(height: 20.0),
+                        const SizedBox(height: 20.0),
                         Text(
                           'Enter password',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextFormField(
                           key: passKey,
                           style: TextStyle(
@@ -254,25 +268,29 @@ class _RegisterFormState extends State<RegisterForm> {
                               filled: true,
                               focusColor: Theme.of(context).primaryColor,
                               enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
                                 borderSide: BorderSide.none,
                               ),
                               errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  width: 2.0,
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: const BorderSide(
+                                  width: 1.0,
                                   color: Colors.red,
                                 ),
                               ),
-                              prefixIcon:
-                                  Icon(Icons.lock_outline, color: Colors.grey),
+                              prefixIcon: const Icon(Icons.lock_outline,
+                                  color: Colors.grey),
                               suffixIcon: IconButton(
                                 color: Colors.grey,
                                 icon: _isPasswordHidden
-                                    ? Icon(
+                                    ? const Icon(
                                         Icons.visibility_off,
                                       )
-                                    : Icon(Icons.visibility),
+                                    : const Icon(Icons.visibility),
                                 onPressed: () {
                                   setState(() {
                                     _isPasswordHidden = !_isPasswordHidden;
@@ -282,18 +300,18 @@ class _RegisterFormState extends State<RegisterForm> {
                               hintText: '********'),
                           obscureText: _isPasswordHidden,
                           validator: (val) {
-                            return val.trim().isEmpty
+                            return val!.trim().isEmpty
                                 ? 'Password cannot be empty.'
                                 : null;
                           },
-                          onSaved: (value) => _password = value,
+                          onSaved: (value) => _password = value!,
                         ),
-                        SizedBox(height: 20.0),
+                        const SizedBox(height: 20.0),
                         Text(
                           'Confirm password',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextFormField(
                           style: TextStyle(
                               color: Theme.of(context)
@@ -304,22 +322,27 @@ class _RegisterFormState extends State<RegisterForm> {
                               filled: true,
                               focusColor: Theme.of(context).primaryColor,
                               enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
                                 borderSide: BorderSide.none,
                               ),
                               errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  width: 2.0,
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: const BorderSide(
+                                  width: 1.0,
                                   color: Colors.red,
                                 ),
                               ),
-                              prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                              prefixIcon:
+                                  const Icon(Icons.lock, color: Colors.grey),
                               suffixIcon: IconButton(
                                 color: Colors.grey,
                                 icon: _isConfirmPasswordHidden
-                                    ? Icon(Icons.visibility_off)
-                                    : Icon(Icons.visibility),
+                                    ? const Icon(Icons.visibility_off)
+                                    : const Icon(Icons.visibility),
                                 onPressed: () {
                                   setState(() {
                                     _isConfirmPasswordHidden =
@@ -330,19 +353,20 @@ class _RegisterFormState extends State<RegisterForm> {
                               hintText: 'Password Confirmation'),
                           obscureText: _isConfirmPasswordHidden,
                           validator: (val) {
-                            if (val.trim().isEmpty) {
+                            if (val!.trim().isEmpty) {
                               return 'Password confirmation cannot be empty';
-                            } else if (val != passKey.currentState.value) {
+                            } else if (val != passKey.currentState!.value) {
                               return 'Password confirmation does not match.';
-                            } else
+                            } else {
                               return null;
+                            }
                           },
-                          onSaved: (value) => _passwordConfirmation = value,
+                          onSaved: (value) => _passwordConfirmation = value!,
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 50.0),
+                  const SizedBox(height: 50.0),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20.0),
                     child: Material(
@@ -352,13 +376,14 @@ class _RegisterFormState extends State<RegisterForm> {
                         child: SizedBox(
                           height: 50.0,
                           width: MediaQuery.of(context).size.width,
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'Register',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  letterSpacing: 1.0),
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -373,8 +398,8 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   void _onFormSubmitted() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
 
       _registerBloc.add(
         Submitted(

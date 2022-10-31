@@ -3,58 +3,52 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:tweety_mobile/models/reply.dart';
 import 'package:tweety_mobile/repositories/reply_repository.dart';
+import 'package:tweety_mobile/utils/helpers.dart';
 
 part 'reply_event.dart';
 part 'reply_state.dart';
 
+const throttleDuration = Duration(milliseconds: 100);
+
 class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
   final ReplyRepository replyRepository;
 
-  ReplyBloc({@required this.replyRepository})
-      : assert(replyRepository != null),
-        super(ReplyEmpty());
-
-  @override
-  Stream<Transition<ReplyEvent, ReplyState>> transformEvents(
-    Stream<ReplyEvent> events,
-    TransitionFunction<ReplyEvent, ReplyState> transitionFn,
-  ) {
-    return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 500)),
-      transitionFn,
+  ReplyBloc({required this.replyRepository}) : super(ReplyEmpty()) {
+    on<FetchReply>(
+      _onFetchReply,
+      transformer: throttleDroppable(throttleDuration),
+    );
+    on<RefreshReply>(
+      _onRefreshReply,
+      transformer: throttleDroppable(throttleDuration),
+    );
+    on<AddReply>(
+      _onAddReply,
+      transformer: throttleDroppable(throttleDuration),
+    );
+    on<DeleteReply>(
+      _onDeleteReply,
+      transformer: throttleDroppable(throttleDuration),
+    );
+    on<FetchSingleReply>(
+      _onFetchSingleReply,
+      transformer: throttleDroppable(throttleDuration),
     );
   }
 
-  @override
-  Stream<ReplyState> mapEventToState(ReplyEvent event) async* {
-    if (event is FetchReply) {
-      yield* _mapFetchReplyToState(event);
-    } else if (event is RefreshReply) {
-      yield* _mapRefreshReplyToState(event);
-    } else if (event is AddReply) {
-      yield* _mapAddReplyToState(event);
-    } else if (event is DeleteReply) {
-      yield* _mapDeleteReplyToState(event);
-    } else if (event is FetchSingleReply) {
-      yield* _mapFetchSingleReplyToState(event);
-    }
-  }
-
-  Stream<ReplyState> _mapFetchReplyToState(FetchReply event) async* {
+  Future<void> _onFetchReply(FetchReply event, Emitter<ReplyState> emit) async {
     final currentState = state;
     if (!_hasReachedMax(currentState, event)) {
       try {
         if (currentState is ReplyEmpty) {
           final replyPaginator = await replyRepository.getReplies(
               tweetID: event.tweetID, pageNumber: 1);
-          yield ReplyLoaded(
-              replies: replyPaginator.replies,
-              hasReachedMax: replyPaginator.lastPage == 1 ? true : false);
-          return;
+          return emit(ReplyLoaded(
+            replies: replyPaginator.replies,
+            hasReachedMax: replyPaginator.lastPage == 1 ? true : false,
+          ));
         }
 
         if (currentState is ReplyLoaded) {
@@ -62,7 +56,7 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
           final replyPaginator = await replyRepository.getReplies(
               tweetID: event.tweetID, pageNumber: pageNumber);
 
-          yield replyPaginator.replies.isEmpty
+          emit(replyPaginator.replies.isEmpty
               ? ReplyLoaded(
                   replies: currentState.replies,
                   hasReachedMax: true,
@@ -72,10 +66,10 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
                   replies: currentState.replies + replyPaginator.replies,
                   hasReachedMax: false,
                   pageNumber: pageNumber,
-                );
+                ));
         }
       } catch (_) {
-        yield ReplyError();
+        emit(ReplyError());
       }
     }
   }
@@ -84,20 +78,21 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
     return state is ReplyLoaded && state.hasReachedMax;
   }
 
-  Stream<ReplyState> _mapRefreshReplyToState(RefreshReply event) async* {
+  Future<void> _onRefreshReply(
+      RefreshReply event, Emitter<ReplyState> emit) async {
     try {
       final replyPaginator = await replyRepository.getReplies(
           tweetID: event.tweetID, pageNumber: 1);
-      yield ReplyLoaded(
-          replies: replyPaginator.replies,
-          hasReachedMax: replyPaginator.lastPage == 1 ? true : false);
-      return;
+      return emit(ReplyLoaded(
+        replies: replyPaginator.replies,
+        hasReachedMax: replyPaginator.lastPage == 1 ? true : false,
+      ));
     } catch (_) {
-      yield state;
+      emit(state);
     }
   }
 
-  Stream<ReplyState> _mapAddReplyToState(AddReply event) async* {
+  Future<void> _onAddReply(AddReply event, Emitter<ReplyState> emit) async {
     final currentState = state;
     try {
       final reply = await replyRepository.addReply(event.tweetID, event.body,
@@ -106,17 +101,19 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
         final List<Reply> updatedReplies = List.from(currentState.replies)
           ..add(reply);
 
-        yield ReplyAdded(reply: reply);
-        yield currentState.copyWith(replies: updatedReplies);
-      } else
-        yield ReplyAdded(reply: reply);
+        emit(ReplyAdded(reply: reply));
+        emit(currentState.copyWith(replies: updatedReplies));
+      } else {
+        emit(ReplyAdded(reply: reply));
+      }
     } catch (e) {
-      yield AddReplyError();
+      emit(AddReplyError());
     }
-    // yield AddReplyError();
+    // emit(AddReplyError());
   }
 
-  Stream<ReplyState> _mapDeleteReplyToState(DeleteReply event) async* {
+  Future<void> _onDeleteReply(
+      DeleteReply event, Emitter<ReplyState> emit) async {
     final currentState = state;
     if (currentState is ReplyLoaded) {
       try {
@@ -125,14 +122,14 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
         final List<Reply> updatedReplies =
             _removeReply(currentState.replies, event);
 
-        // yield TweetLoading();
-        yield ReplyDeleted(count: event.reply.childrenCount + 1);
-        yield currentState.copyWith(
+        // emit(TweetLoading());
+        emit(ReplyDeleted(count: event.reply.childrenCount + 1));
+        emit(currentState.copyWith(
           replies: updatedReplies,
-        );
+        ));
       } catch (e) {
-        yield DeleteReplyError();
-        yield currentState;
+        emit(DeleteReplyError());
+        emit(currentState);
       }
     }
   }
@@ -141,14 +138,14 @@ class ReplyBloc extends Bloc<ReplyEvent, ReplyState> {
     return repies.where((reply) => reply.id != event.reply.id).toList();
   }
 
-  Stream<ReplyState> _mapFetchSingleReplyToState(
-      FetchSingleReply event) async* {
-    yield SingleReplyLoading();
+  Future<void> _onFetchSingleReply(
+      FetchSingleReply event, Emitter<ReplyState> emit) async {
+    emit(SingleReplyLoading());
     try {
       final reply = await replyRepository.getReply(replyID: event.replyID);
-      yield SingleReplyLoaded(reply: reply);
+      emit(SingleReplyLoaded(reply: reply));
     } catch (e) {
-      yield SingleReplyError();
+      emit(SingleReplyError());
     }
   }
 }

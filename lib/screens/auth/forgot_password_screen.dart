@@ -5,21 +5,21 @@ import 'package:tweety_mobile/utils/validators.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  ForgotPasswordScreen({Key key}) : super(key: key);
+  const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
+  ForgotPasswordScreenState createState() => ForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
 
   bool isButtonEnabled(AuthProfileState state) {
-    return !(state is ResetPasswordRequestLoading);
+    return state is! ResetPasswordRequestLoading;
   }
 
-  String _email;
+  late String _email;
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +31,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         iconTheme: IconThemeData(
           color: Theme.of(context).textSelectionTheme.cursorColor,
         ),
-        leading: BackButton(),
+        leading: const BackButton(),
         title: Text(
           'Tweety',
-          style: Theme.of(context).appBarTheme.textTheme.caption,
+          style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
         centerTitle: true,
       ),
@@ -56,7 +56,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         Text(
                           state.errorMessage,
                         ),
-                        Icon(Icons.error)
+                        const Icon(Icons.error)
                       ],
                     ),
                     backgroundColor: Colors.red),
@@ -74,13 +74,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   backgroundColor: Colors.blue,
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text('Password reset info successfully sent!'),
                     ],
                   ),
                 ),
               );
-            _formKey.currentState.reset();
+            _formKey.currentState!.reset();
             setState(() {
               _autovalidate = false;
             });
@@ -104,7 +104,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       'Enter your email adress',
                       style: Theme.of(context).textTheme.caption,
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     TextFormField(
                       style: TextStyle(
                           color:
@@ -114,66 +114,70 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         filled: true,
                         focusColor: Theme.of(context).primaryColor,
                         enabledBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(20.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
                           borderSide: BorderSide.none,
                         ),
                         errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                            width: 2.0,
+                          borderRadius: BorderRadius.circular(20.0),
+                          borderSide: const BorderSide(
+                            width: 1.0,
                             color: Colors.red,
                           ),
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.email,
                           color: Colors.grey,
                         ),
                         hintText: 'you@example.com',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontWeight: FontWeight.w400,
                         ),
                       ),
                       validator: (val) {
-                        return !Validators.isValidEmail(val)
+                        return !Validators.isValidEmail(val!)
                             ? 'Invalid email.'
                             : null;
                       },
-                      onSaved: (value) => _email = value,
+                      onSaved: (value) => _email = value!,
                     ),
-                    SizedBox(height: 20.0),
-                    Text(
+                    const SizedBox(height: 20.0),
+                    const Text(
                         "We'll send an email to this address with password reset instructions."),
-                    SizedBox(height: 30.0),
+                    const SizedBox(height: 30.0),
                     InkWell(
                       onTap: isButtonEnabled(state) ? _onFormSubmitted : null,
                       child: Container(
                           width: size.width,
-                          padding: EdgeInsets.symmetric(vertical: 15.0),
+                          padding: const EdgeInsets.symmetric(vertical: 15.0),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                const BorderRadius.all(Radius.circular(20.0)),
                             color: Theme.of(context).primaryColor,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               (state is ResetPasswordRequestLoading)
-                                  ? LoadingIndicator(
+                                  ? const LoadingIndicator(
                                       color: Colors.white,
                                     )
-                                  : Text(
+                                  : const Text(
                                       'Send password reset info',
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.0,
-                                          letterSpacing: 1.0,
-                                          fontWeight: FontWeight.bold),
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                             ],
                           )),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                   ],
@@ -187,8 +191,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   void _onFormSubmitted() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       context.read<AuthProfileBloc>().add(
             RequestPasswordResetInfo(email: _email),
           );

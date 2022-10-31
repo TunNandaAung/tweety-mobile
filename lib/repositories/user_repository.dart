@@ -8,7 +8,7 @@ import 'package:tweety_mobile/services/user_api_client.dart';
 class UserRepository {
   final UserApiClient userApiClient;
 
-  UserRepository({UserApiClient userApiClient})
+  UserRepository({UserApiClient? userApiClient})
       : userApiClient = userApiClient ?? UserApiClient();
 
   Future<Auth> loginWithCredentials(String email, String password) async {
@@ -22,7 +22,7 @@ class UserRepository {
 
   Future<void> logOut() async {
     final token = Prefer.prefs.getString('token');
-    userApiClient.logout(token);
+    userApiClient.logout(token!);
     Prefer.prefs.clear();
   }
 
@@ -48,8 +48,8 @@ class UserRepository {
     return userApiClient.fetchAuthInfo();
   }
 
-  Future<User> getUserInfo(String userName) async {
-    return userApiClient.fetchUserInfo(userName);
+  Future<User> getUserInfo(String username) async {
+    return userApiClient.fetchUserInfo(username);
   }
 
   Future<String> updatePassword(String oldPassword, String newPassword,
@@ -67,12 +67,13 @@ class UserRepository {
     );
   }
 
-  Future<User> updateProfile(
-      {String name,
-      String username,
-      String description,
-      File avatar,
-      File banner}) async {
+  Future<User> updateProfile({
+    required String name,
+    required String username,
+    required String description,
+    File? avatar,
+    File? banner,
+  }) async {
     return userApiClient.editProfile(
       name: name,
       username: username,
@@ -108,7 +109,7 @@ class UserRepository {
     return userApiClient.findMentionedUser(query);
   }
 
-  Future<void> uploadImages({File avatar, File banner}) async {
+  Future<void> uploadImages({File? avatar, File? banner}) async {
     return userApiClient.uploadImages(avatar: avatar, banner: banner);
   }
 }

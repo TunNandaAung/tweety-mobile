@@ -15,9 +15,9 @@ class MessagePaginator {
   List<Message> messages;
 
   MessagePaginator({
-    this.currentPage,
-    this.lastPage,
-    this.messages,
+    required this.currentPage,
+    required this.lastPage,
+    required this.messages,
   });
 
   factory MessagePaginator.fromJson(Map<String, dynamic> json) =>

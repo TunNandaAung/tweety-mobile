@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:tweety_mobile/models/tweet.dart';
@@ -10,8 +9,8 @@ import 'package:tweety_mobile/widgets/modals/tweet_actions_modal.dart';
 
 class TweetCard extends StatelessWidget {
   final Tweet tweet;
-  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
-  const TweetCard({Key key, this.tweet, this.scaffoldMessengerKey})
+  final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
+  const TweetCard({Key? key, required this.tweet, this.scaffoldMessengerKey})
       : super(key: key);
 
   @override
@@ -24,7 +23,7 @@ class TweetCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).canvasColor,
-            offset: Offset(10, 10),
+            offset: const Offset(10, 10),
             blurRadius: 10.0,
           ),
         ],
@@ -32,7 +31,7 @@ class TweetCard extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            contentPadding: EdgeInsets.all(8.0),
+            contentPadding: const EdgeInsets.all(8.0),
             leading: InkWell(
               onTap: () => Navigator.of(context)
                   .pushNamed('/profile', arguments: tweet.user.username),
@@ -50,7 +49,7 @@ class TweetCard extends StatelessWidget {
                 InkWell(
                   onTap: () => Navigator.of(context)
                       .pushNamed('/profile', arguments: tweet.user.username),
-                  child: Container(
+                  child: SizedBox(
                     width: size.width / 1.93,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +72,7 @@ class TweetCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 IconButton(
-                  icon: Icon(Icons.keyboard_arrow_down),
+                  icon: const Icon(Icons.keyboard_arrow_down),
                   color: Theme.of(context).textSelectionTheme.cursorColor,
                   onPressed: () =>
                       TweetActionsModal().mainBottomSheet(context, tweet),
@@ -81,7 +80,7 @@ class TweetCard extends StatelessWidget {
               ],
             ),
             subtitle: Padding(
-              padding: EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -89,14 +88,16 @@ class TweetCard extends StatelessWidget {
                     text: TextSpan(
                       style: Theme.of(context).textTheme.bodyText1,
                       children: parseBody(tweet.body)
-                          .map((body) => bodyTextSpan(body, context,
-                              Theme.of(context).textTheme.bodyText1))
+                          .map(
+                            (body) => bodyTextSpan(body, context,
+                                Theme.of(context).textTheme.bodyText1!),
+                          )
                           .toList(),
                     ),
                   ),
                   tweet.image != null
                       ? Padding(
-                          padding: EdgeInsets.only(top: 12.0),
+                          padding: const EdgeInsets.only(top: 12.0),
                           child: InkWell(
                             onTap: () {
                               Navigator.of(context).push(
@@ -104,7 +105,7 @@ class TweetCard extends StatelessWidget {
                                   builder: (context) => PhotoViewScreen(
                                     title: '',
                                     actionText: '',
-                                    imageProvider: NetworkImage(tweet.image),
+                                    imageProvider: NetworkImage(tweet.image!),
                                     onTap: () {},
                                   ),
                                 ),
@@ -118,12 +119,12 @@ class TweetCard extends StatelessWidget {
                                 boxShadow: [
                                   BoxShadow(
                                     color: Theme.of(context).canvasColor,
-                                    offset: Offset(0, 5),
+                                    offset: const Offset(0, 5),
                                     blurRadius: 10.0,
                                   )
                                 ],
                                 image: DecorationImage(
-                                    image: NetworkImage(tweet.image),
+                                    image: NetworkImage(tweet.image!),
                                     fit: BoxFit.cover),
                               ),
                             ),
@@ -138,11 +139,11 @@ class TweetCard extends StatelessWidget {
             color: Colors.grey[300],
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 8.0),
+            padding: const EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width / 3,
                   child: LikeDislikeButtons(
                     tweet: tweet,

@@ -3,19 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/notification/notification_bloc.dart';
 
 class NotificationButton extends StatefulWidget {
-  final Color bubbleColor;
+  final Color? bubbleColor;
   final Icon icon;
 
-  NotificationButton({Key key, this.bubbleColor, this.icon}) : super(key: key);
+  const NotificationButton({Key? key, this.bubbleColor, required this.icon})
+      : super(key: key);
 
   @override
-  _NotificationButtonState createState() => _NotificationButtonState();
+  NotificationButtonState createState() => NotificationButtonState();
 }
 
-class _NotificationButtonState extends State<NotificationButton> {
+class NotificationButtonState extends State<NotificationButton> {
   @override
   void initState() {
-    context.read<NotificationBloc>().add(FetchNotificationCounts());
+    context.read<NotificationBloc>().add(FetchNotificationsCount());
     super.initState();
   }
 
@@ -26,8 +27,8 @@ class _NotificationButtonState extends State<NotificationButton> {
         widget.icon,
         BlocBuilder<NotificationBloc, NotificationState>(
           builder: (context, state) {
-            if (state is NotificationCountsLoaded &&
-                state.notificationCounts > 0) {
+            if (state is NotificationsCountLoaded &&
+                state.notificationsCount > 0) {
               return Positioned(
                 left: 11.0,
                 top: 0.0,
@@ -35,15 +36,13 @@ class _NotificationButtonState extends State<NotificationButton> {
                   height: 15.0,
                   width: 15.0,
                   decoration: BoxDecoration(
-                    color: widget.bubbleColor != null
-                        ? widget.bubbleColor
-                        : Colors.white.withOpacity(.4),
+                    color: widget.bubbleColor ?? Colors.white.withOpacity(.4),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Center(
                     child: Text(
-                      '${state.notificationCounts}',
-                      style: TextStyle(
+                      '${state.notificationsCount}',
+                      style: const TextStyle(
                           fontSize: 12.0,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
@@ -52,7 +51,7 @@ class _NotificationButtonState extends State<NotificationButton> {
                 ),
               );
             }
-            return Container(height: 0, width: 0);
+            return const SizedBox(height: 0, width: 0);
           },
         )
       ],

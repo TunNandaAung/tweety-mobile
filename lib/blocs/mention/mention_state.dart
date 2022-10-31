@@ -16,7 +16,7 @@ class MentionUserLoaded extends MentionState {
   final String query;
   final List<User> users;
 
-  const MentionUserLoaded({@required this.users, this.query});
+  const MentionUserLoaded({required this.users, required this.query});
 
   @override
   List<Object> get props => [users];

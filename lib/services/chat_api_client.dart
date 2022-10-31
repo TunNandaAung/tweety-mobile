@@ -12,7 +12,7 @@ class ChatApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  ChatApiClient({http.Client httpClient})
+  ChatApiClient({http.Client? httpClient})
       : httpClient = httpClient ?? http.Client();
 
   Future<ChatPaginator> fetchChatList(int pageNumber) async {
@@ -20,10 +20,10 @@ class ChatApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     if (response.statusCode != 200) {
       throw Exception('Error getting chat list.');
     }
@@ -38,10 +38,10 @@ class ChatApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting chat list.');
@@ -57,13 +57,13 @@ class ChatApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.post(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-          body: jsonEncode(
-            <String, String>{'message': message},
-          ),
-        );
+    final response = await httpClient.post(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+      body: jsonEncode(
+        <String, String>{'message': message},
+      ),
+    );
 
     if (response.statusCode != 201) {
       throw Exception('Error sending message');
@@ -77,10 +77,10 @@ class ChatApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    await this.httpClient.patch(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    await httpClient.patch(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
   }
 
   Future<Chat> getChatRoom(String username) async {
@@ -88,10 +88,10 @@ class ChatApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response);
     if (response.statusCode != 200) {
       throw Exception('Error getting chat room!');

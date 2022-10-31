@@ -10,8 +10,7 @@ import 'package:tweety_mobile/widgets/loading_indicator.dart';
 class MessageButton extends StatelessWidget {
   final User messageTo;
 
-  const MessageButton({Key key, @required this.messageTo})
-      : assert(messageTo != null);
+  const MessageButton({super.key, required this.messageTo});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +26,12 @@ class MessageButton extends StatelessWidget {
 class MessageButtonBuilder extends StatefulWidget {
   final User messageTo;
 
-  const MessageButtonBuilder({Key key, @required this.messageTo})
-      : assert(messageTo != null);
+  const MessageButtonBuilder({super.key, required this.messageTo});
   @override
-  _MessageButtonBuilderState createState() => _MessageButtonBuilderState();
+  MessageButtonBuilderState createState() => MessageButtonBuilderState();
 }
 
-class _MessageButtonBuilderState extends State<MessageButtonBuilder> {
+class MessageButtonBuilderState extends State<MessageButtonBuilder> {
   bool isLoading = false;
 
   ChatRepository chatRepository = ChatRepository();
@@ -58,7 +56,7 @@ class _MessageButtonBuilderState extends State<MessageButtonBuilder> {
                   backgroundColor: Colors.red,
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text("Oops! Something went wrong"),
                     ],
                   ),
@@ -76,7 +74,7 @@ class _MessageButtonBuilderState extends State<MessageButtonBuilder> {
                   ),
                   child: ChatScreen(
                     chatUser: widget.messageTo,
-                    chatId: state.chat.id,
+                    chatId: state.chat!.id,
                   ),
                 ),
               ),
@@ -100,23 +98,23 @@ class _MessageButtonBuilderState extends State<MessageButtonBuilder> {
               shape: BoxShape.circle,
             ),
             child: RawMaterialButton(
-                shape: CircleBorder(),
-                child: isLoading
-                    ? LoadingIndicator(
-                        size: 18.0,
-                      )
-                    : Icon(
-                        Icons.messenger_rounded,
-                        size: 18.0,
-                        color: Theme.of(context).primaryColor,
-                      ),
+                shape: const CircleBorder(),
                 onPressed: isLoading
                     ? null
                     : () => context.read<ChatRoomBloc>().add(
                           FetchChatRoom(
                             username: widget.messageTo.username,
                           ),
-                        )),
+                        ),
+                child: isLoading
+                    ? const LoadingIndicator(
+                        size: 18.0,
+                      )
+                    : Icon(
+                        Icons.messenger_rounded,
+                        size: 18.0,
+                        color: Theme.of(context).primaryColor,
+                      )),
           );
         });
   }

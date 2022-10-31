@@ -17,13 +17,14 @@ class ProfileReplyLoaded extends ProfileReplyState {
   final int pageNumber;
 
   const ProfileReplyLoaded(
-      {@required this.replies, this.hasReachedMax, this.pageNumber = 1})
-      : assert(replies != null);
+      {required this.replies,
+      required this.hasReachedMax,
+      this.pageNumber = 1});
 
   ProfileReplyLoaded copyWith({
-    List<Reply> replies,
-    bool hasReachedMax,
-    int pageNumber,
+    List<Reply>? replies,
+    bool? hasReachedMax,
+    int? pageNumber,
   }) {
     return ProfileReplyLoaded(
       replies: replies ?? this.replies,

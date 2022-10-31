@@ -8,20 +8,21 @@ import 'package:tweety_mobile/screens/tweet/tweet_screen.dart';
 import 'package:tweety_mobile/services/reply_api_client.dart';
 
 class TweetWrapper extends StatelessWidget {
-  final Tweet tweet;
-  const TweetWrapper({Key key, this.tweet}) : super(key: key);
+  final Tweet? tweet;
+  const TweetWrapper({Key? key, this.tweet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _tweetJson = ModalRoute.of(context).settings.arguments;
-    final _tweet = _tweetJson != null ? Tweet.fromJson(_tweetJson) : tweet;
+    final tweetJson =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    final tweetData = tweetJson != null ? Tweet.fromJson(tweetJson) : tweet;
     final ReplyRepository replyRepository = ReplyRepository(
       replyApiClient: ReplyApiClient(httpClient: http.Client()),
     );
     return BlocProvider<ReplyBloc>(
       create: (context) => ReplyBloc(replyRepository: replyRepository),
       child: TweetScreen(
-        tweet: _tweet,
+        tweet: tweetData!,
         replyRepository: replyRepository,
       ),
     );

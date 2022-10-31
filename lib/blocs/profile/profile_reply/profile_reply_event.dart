@@ -7,7 +7,7 @@ abstract class ProfileReplyEvent extends Equatable {
 class FetchProfileReply extends ProfileReplyEvent {
   final String username;
 
-  const FetchProfileReply({@required this.username});
+  const FetchProfileReply({required this.username});
 
   @override
   List<Object> get props => [];
@@ -16,7 +16,7 @@ class FetchProfileReply extends ProfileReplyEvent {
 class RefreshProfileReply extends ProfileReplyEvent {
   final String username;
 
-  const RefreshProfileReply({@required this.username});
+  const RefreshProfileReply({required this.username});
   @override
   List<Object> get props => [];
 }

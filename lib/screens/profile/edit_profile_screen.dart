@@ -10,64 +10,60 @@ import 'package:tweety_mobile/models/user.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final User user;
-  EditProfileScreen({Key key, @required this.user}) : super(key: key);
+  const EditProfileScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  EditProfileScreenState createState() => EditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class EditProfileScreenState extends State<EditProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  final ImagePicker _picker = ImagePicker();
+  final ImageCropper _cropper = ImageCropper();
+
   bool isButtonEnabled(AuthProfileState state) {
-    return _formKey.currentState.validate() &&
+    return _formKey.currentState!.validate() &&
         state is! AuthProfileInfoUpdating;
   }
 
   bool _autovalidate = false;
-  File _avatar;
-  File _banner;
-  bool _imageInProcess = false;
+  File? _avatar;
+  File? _banner;
 
-  String _name;
-  String _username;
-  String _description;
+  late String _name;
+  late String _username;
+  late String _description;
 
   Future _getImage(ImageSource source, bool isAvatar) async {
-    final picker = ImagePicker();
-
-    setState(() {
-      _imageInProcess = true;
-    });
-    final pickedFile = await picker.getImage(source: source);
-
-    File image = File(pickedFile.path);
+    setState(() {});
+    final XFile? image = await _picker.pickImage(source: source);
 
     if (image != null) {
-      File croppedImage = await ImageCropper.cropImage(
-        sourcePath: image.path,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 100,
-        compressFormat: ImageCompressFormat.png,
-        androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Edit Photo',
-          toolbarColor: Theme.of(context).cardColor,
-          activeControlsWidgetColor: Colors.blue,
-        ),
-      );
+      CroppedFile? croppedImage = await _cropper.cropImage(
+          sourcePath: image.path,
+          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+          compressQuality: 100,
+          compressFormat: ImageCompressFormat.png,
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Edit Photo',
+              toolbarColor: Theme.of(context).cardColor,
+              activeControlsWidgetColor: Colors.blue,
+            ),
+          ]);
 
       setState(() {
-        isAvatar ? _avatar = croppedImage : _banner = croppedImage;
-        _imageInProcess = false;
+        isAvatar
+            ? _avatar = File(croppedImage!.path)
+            : _banner = File(croppedImage!.path);
       });
     } else {
-      setState(() {
-        _imageInProcess = false;
-      });
+      setState(() {});
     }
   }
 
-  Future<bool> selectImageDialog(context, {bool isAvatar = true}) {
+  selectImageDialog(context, {bool isAvatar = true}) {
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -78,7 +74,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: Container(
             height: 230.0,
             width: 200.0,
-            padding: EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(30.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               color: Theme.of(context).cardColor,
@@ -91,22 +87,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     'Choose an option',
                     style: Theme.of(context)
                         .textTheme
-                        .caption
+                        .caption!
                         .copyWith(fontSize: 20.0),
                   ),
                 ),
-                SizedBox(height: 30.0),
+                const SizedBox(height: 30.0),
                 InkWell(
                   onTap: () {
                     _getImage(ImageSource.camera, isAvatar);
                     Navigator.of(context).pop();
                   },
-                  child: Container(
+                  child: SizedBox(
                     height: 40.0,
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.camera),
-                        SizedBox(width: 20.0),
+                        const Icon(Icons.camera),
+                        const SizedBox(width: 20.0),
                         Text(
                           'Camera',
                           style: TextStyle(
@@ -120,18 +116,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 30.0),
+                const SizedBox(height: 30.0),
                 InkWell(
                   onTap: () {
                     _getImage(ImageSource.gallery, isAvatar);
                     Navigator.of(context).pop();
                   },
-                  child: Container(
+                  child: SizedBox(
                     height: 40.0,
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.image),
-                        SizedBox(width: 20.0),
+                        const Icon(Icons.image),
+                        const SizedBox(width: 20.0),
                         Text(
                           'Gallery',
                           style: TextStyle(
@@ -160,11 +156,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0.0,
           iconTheme: IconThemeData(
-            color: Theme.of(context).appBarTheme.iconTheme.color,
+            color: Theme.of(context).appBarTheme.iconTheme!.color,
           ),
           title: Text(
             'Edit Profile',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
           actions: <Widget>[
@@ -175,14 +171,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 onPressed: _onFormSubmitted,
                 style: TextButton.styleFrom(
                   backgroundColor: Theme.of(context).primaryColor,
-                  onSurface: Colors.grey,
+                  disabledBackgroundColor: Colors.grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),
                 ),
                 child: Text(
                   'Save',
-                  style: Theme.of(context).textTheme.button.copyWith(
+                  style: Theme.of(context).textTheme.button!.copyWith(
                         color: Colors.white,
                       ),
                 ),
@@ -225,12 +221,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     backgroundColor: Colors.black26,
                     content: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: const [
                         Text(
                           'Saving...',
                         ),
                         CircularProgressIndicator(
-                          valueColor: new AlwaysStoppedAnimation<Color>(
+                          valueColor: AlwaysStoppedAnimation<Color>(
                             Colors.white,
                           ),
                         )
@@ -249,7 +245,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             }
           },
           child: Padding(
-            padding: EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12.0),
             child: ListView(
               children: <Widget>[
                 Form(
@@ -264,7 +260,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         'Profile Avatar',
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      SizedBox(width: 20.0),
+                      const SizedBox(width: 20.0),
                       Center(
                         child: Padding(
                           padding: const EdgeInsets.all(2.0),
@@ -276,17 +272,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               backgroundColor: Theme.of(context).cardColor,
                               backgroundImage: _avatar == null
                                   ? NetworkImage(widget.user.avatar)
-                                  : FileImage(_avatar),
+                                  : FileImage(_avatar!) as ImageProvider,
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       Text(
                         'Profile Banner',
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       GestureDetector(
                         onTap: () =>
                             selectImageDialog(context, isAvatar: false),
@@ -295,17 +291,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: Image(
                             image: _banner == null
                                 ? NetworkImage(widget.user.banner)
-                                : FileImage(_banner),
+                                : FileImage(_banner!) as ImageProvider,
                             width: 400.0,
                           ),
                         ),
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       Text(
                         'Name',
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       TextFormField(
                         style: TextStyle(
                             color: Theme.of(context)
@@ -317,34 +313,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           filled: true,
                           focusColor: Theme.of(context).primaryColor,
                           enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
                             borderSide: BorderSide.none,
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              width: 2.0,
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: const BorderSide(
+                              width: 1.0,
                               color: Colors.red,
                             ),
                           ),
                           hintText: 'Name',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                         validator: (val) {
-                          return val.trim().isEmpty
+                          return val!.trim().isEmpty
                               ? 'Name cannot be empty'
                               : null;
                         },
-                        onSaved: (value) => _name = value,
+                        onSaved: (value) => _name = value!,
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       Text(
-                        'Username',
+                        'username',
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       TextFormField(
                         style: TextStyle(
                             color: Theme.of(context)
@@ -356,34 +356,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           filled: true,
                           focusColor: Colors.white,
                           enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
                             borderSide: BorderSide.none,
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              width: 2.0,
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: const BorderSide(
+                              width: 1.0,
                               color: Colors.red,
                             ),
                           ),
-                          hintText: 'Username',
-                          hintStyle: TextStyle(
+                          hintText: 'username',
+                          hintStyle: const TextStyle(
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                         validator: (val) {
-                          return val.trim().isEmpty
-                              ? 'Username cannot be empty'
+                          return val!.trim().isEmpty
+                              ? 'username cannot be empty'
                               : null;
                         },
-                        onSaved: (value) => _username = value,
+                        onSaved: (value) => _username = value!,
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       Text(
                         'Description',
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       TextFormField(
                         maxLines: 5,
                         style: TextStyle(
@@ -396,22 +400,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           filled: true,
                           focusColor: Colors.white,
                           enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
                             borderSide: BorderSide.none,
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              width: 2.0,
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: const BorderSide(
+                              width: 1.0,
                               color: Colors.red,
                             ),
                           ),
                           hintText: 'A little info about yourself?',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        onSaved: (value) => _description = value,
+                        onSaved: (value) => _description = value!,
                       ),
                     ],
                   ),
@@ -423,8 +431,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   void _onFormSubmitted() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
 
       context.read<AuthProfileBloc>().add(
             UpdateAuthProfileInfo(

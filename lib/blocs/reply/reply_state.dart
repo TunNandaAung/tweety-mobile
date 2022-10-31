@@ -16,14 +16,16 @@ class ReplyLoaded extends ReplyState {
   final bool hasReachedMax;
   final int pageNumber;
 
-  const ReplyLoaded(
-      {@required this.replies, this.hasReachedMax, this.pageNumber = 1})
-      : assert(replies != null);
+  const ReplyLoaded({
+    required this.replies,
+    required this.hasReachedMax,
+    this.pageNumber = 1,
+  });
 
   ReplyLoaded copyWith({
-    List<Reply> replies,
-    bool hasReachedMax,
-    int pageNumber,
+    List<Reply>? replies,
+    bool? hasReachedMax,
+    int? pageNumber,
   }) {
     return ReplyLoaded(
       replies: replies ?? this.replies,
@@ -47,7 +49,7 @@ class ReplyAdding extends ReplyState {}
 class ReplyAdded extends ReplyState {
   final Reply reply;
 
-  const ReplyAdded({@required this.reply}) : assert(reply != null);
+  const ReplyAdded({required this.reply});
 
   @override
   List<Object> get props => [reply];
@@ -61,9 +63,9 @@ class AddReplyError extends ReplyState {}
 class ReplyDeleting extends ReplyState {}
 
 class ReplyDeleted extends ReplyState {
-  final count;
+  final int count;
 
-  ReplyDeleted({@required this.count});
+  const ReplyDeleted({required this.count});
 
   @override
   List<Object> get props => [count];
@@ -76,7 +78,7 @@ class SingleReplyLoading extends ReplyState {}
 class SingleReplyLoaded extends ReplyState {
   final Reply reply;
 
-  const SingleReplyLoaded({@required this.reply}) : assert(reply != null);
+  const SingleReplyLoaded({required this.reply});
 
   @override
   List<Object> get props => [reply];

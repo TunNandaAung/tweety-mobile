@@ -23,18 +23,19 @@ class UpdateAuthProfileInfo extends AuthProfileEvent {
   final String name;
   final String username;
   final String description;
-  final File avatar;
-  final File banner;
+  final File? avatar;
+  final File? banner;
 
-  const UpdateAuthProfileInfo(
-      {@required this.name,
-      @required this.username,
-      @required this.description,
-      @required this.avatar,
-      @required this.banner});
+  const UpdateAuthProfileInfo({
+    required this.name,
+    required this.username,
+    required this.description,
+    this.avatar,
+    this.banner,
+  });
 
   @override
-  List<Object> get props => [name, username, description, avatar, banner];
+  List<Object> get props => [name, username, description];
 
   @override
   String toString() {
@@ -47,8 +48,8 @@ class UpdateAuthProfileEmail extends AuthProfileEvent {
   final String email;
 
   const UpdateAuthProfileEmail({
-    @required this.password,
-    @required this.email,
+    required this.password,
+    required this.email,
   });
 
   @override
@@ -66,9 +67,9 @@ class UpdateAuthProfilePassword extends AuthProfileEvent {
   final String newPasswordConfirmation;
 
   const UpdateAuthProfilePassword({
-    @required this.oldPassword,
-    @required this.newPassword,
-    @required this.newPasswordConfirmation,
+    required this.oldPassword,
+    required this.newPassword,
+    required this.newPasswordConfirmation,
   });
 
   @override
@@ -84,7 +85,7 @@ class UpdateAuthProfileImage extends AuthProfileEvent {
   final File image;
 
   const UpdateAuthProfileImage({
-    @required this.image,
+    required this.image,
   });
 
   @override
@@ -95,7 +96,7 @@ class RequestPasswordResetInfo extends AuthProfileEvent {
   final String email;
 
   const RequestPasswordResetInfo({
-    @required this.email,
+    required this.email,
   });
 
   @override
@@ -105,7 +106,7 @@ class RequestPasswordResetInfo extends AuthProfileEvent {
 class ReloadAuthProfile extends AuthProfileEvent {
   final User user;
 
-  const ReloadAuthProfile({@required this.user});
+  const ReloadAuthProfile({required this.user});
 
   @override
   List<Object> get props => [];

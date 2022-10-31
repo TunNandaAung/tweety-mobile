@@ -1,50 +1,36 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/repositories/search_repository.dart';
+import 'package:tweety_mobile/utils/helpers.dart';
 
 part 'user_search_event.dart';
 part 'user_search_state.dart';
 
+const userThrottleDuration = Duration(milliseconds: 300);
+
 class UserSearchBloc extends Bloc<UserSearchEvent, UserSearchState> {
   final SearchRepository searchRepository;
 
-  UserSearchBloc({@required this.searchRepository})
-      : assert(searchRepository != null),
-        super(UserSearchState.initial());
-
-  @override
-  void onTransition(Transition<UserSearchEvent, UserSearchState> transition) {
-    print(transition.toString());
-    super.onTransition(transition);
-  }
-
-  @override
-  Stream<Transition<UserSearchEvent, UserSearchState>> transformEvents(
-    Stream<UserSearchEvent> events,
-    TransitionFunction<UserSearchEvent, UserSearchState> transitionFn,
-  ) {
-    return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 300)),
-      transitionFn,
+  UserSearchBloc({required this.searchRepository})
+      : super(UserSearchState.initial()) {
+    on<UserSearchEvent>(
+      _onUserSearch,
+      transformer: throttleDroppable(userThrottleDuration),
     );
   }
 
-  @override
-  Stream<UserSearchState> mapEventToState(
-    UserSearchEvent event,
-  ) async* {
-    yield UserSearchState.loading();
+  Future<void> _onUserSearch(
+      UserSearchEvent event, Emitter<UserSearchState> emit) async {
+    emit(UserSearchState.loading());
     try {
       List<User> users = await searchRepository.searchUsers(event.query);
       _saveToRecentSearch(event.query);
-      yield UserSearchState.success(users);
+      emit(UserSearchState.success(users));
     } catch (_) {
-      yield UserSearchState.error();
+      emit(UserSearchState.error());
     }
   }
 

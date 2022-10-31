@@ -8,8 +8,8 @@ part 'reply.g.dart';
 class Reply {
   int id;
 
-  @JsonKey(nullable: true)
-  String image;
+  String? image;
+
   String body;
 
   @JsonKey(name: 'children_count')
@@ -31,24 +31,24 @@ class Reply {
 
   Tweet tweet;
 
-  @JsonKey(nullable: true)
-  Reply parent;
+  Reply? parent;
 
   @JsonKey(name: 'created_at')
   DateTime createdAt;
 
   Reply({
-    this.id,
+    required this.id,
     this.image,
-    this.body,
-    this.childrenCount,
-    this.isLiked,
-    this.isDisliked,
-    this.likesCount,
-    this.dislikesCount,
-    this.owner,
-    this.tweet,
-    this.createdAt,
+    required this.body,
+    required this.childrenCount,
+    required this.isLiked,
+    required this.isDisliked,
+    required this.likesCount,
+    required this.dislikesCount,
+    required this.owner,
+    required this.tweet,
+    required this.createdAt,
+    this.parent,
   });
 
   factory Reply.fromJson(Map<String, dynamic> json) => _$ReplyFromJson(json);

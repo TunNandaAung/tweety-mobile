@@ -8,12 +8,13 @@ import 'package:tweety_mobile/screens/tweet/tweet_reply_screen.dart';
 import 'package:tweety_mobile/services/reply_api_client.dart';
 
 class ReplyWrapper extends StatelessWidget {
-  final Reply reply;
+  final Reply? reply;
 
-  const ReplyWrapper({Key key, this.reply}) : super(key: key);
+  const ReplyWrapper({Key? key, this.reply}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final replyJson = ModalRoute.of(context).settings.arguments;
+    final replyJson =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     final reply = replyJson != null ? Reply.fromJson(replyJson) : this.reply;
     final ReplyRepository replyRepository = ReplyRepository(
       replyApiClient: ReplyApiClient(httpClient: http.Client()),
@@ -21,7 +22,7 @@ class ReplyWrapper extends StatelessWidget {
     return BlocProvider<ReplyBloc>(
       create: (context) => ReplyBloc(replyRepository: replyRepository),
       child: TweetReplyScreen(
-        reply: reply,
+        reply: reply!,
         replyRepository: replyRepository,
       ),
     );

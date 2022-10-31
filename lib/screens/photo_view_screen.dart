@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class PhotoViewScreen extends StatefulWidget {
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String title;
   final String actionText;
   final ImageProvider imageProvider;
 
-  PhotoViewScreen(
-      {Key key,
-      this.onTap,
-      this.title = '',
-      this.actionText = '',
-      this.imageProvider})
-      : super(key: key);
+  const PhotoViewScreen({
+    Key? key,
+    this.onTap,
+    this.title = '',
+    this.actionText = '',
+    required this.imageProvider,
+  }) : super(key: key);
 
   @override
-  _PhotoViewScreenState createState() => _PhotoViewScreenState();
+  PhotoViewScreenState createState() => PhotoViewScreenState();
 }
 
-class _PhotoViewScreenState extends State<PhotoViewScreen> {
+class PhotoViewScreenState extends State<PhotoViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +30,6 @@ class _PhotoViewScreenState extends State<PhotoViewScreen> {
           widget.title,
           style: TextStyle(
             fontSize: 25.0,
-            letterSpacing: 1.0,
             color: Theme.of(context).textSelectionTheme.cursorColor,
             fontWeight: FontWeight.bold,
           ),
@@ -39,7 +38,7 @@ class _PhotoViewScreenState extends State<PhotoViewScreen> {
         iconTheme: IconThemeData(
             color: Theme.of(context).textSelectionTheme.cursorColor),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: <Widget>[
@@ -55,10 +54,8 @@ class _PhotoViewScreenState extends State<PhotoViewScreen> {
           ),
         ],
       ),
-      body: Container(
-        child: PhotoView(
-          imageProvider: widget.imageProvider,
-        ),
+      body: PhotoView(
+        imageProvider: widget.imageProvider,
       ),
     );
   }

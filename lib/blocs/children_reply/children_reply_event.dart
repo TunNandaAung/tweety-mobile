@@ -7,7 +7,7 @@ class FetchChildrenReply extends ChildrenReplyEvent {
   final int parentID;
   final int childrenCount;
 
-  FetchChildrenReply({@required this.parentID, this.childrenCount});
+  FetchChildrenReply({required this.parentID, required this.childrenCount});
 
   @override
   List<Object> get props => [];
@@ -16,12 +16,15 @@ class FetchChildrenReply extends ChildrenReplyEvent {
 class AddChildrenReply extends ChildrenReplyEvent {
   final int tweetID;
   final String body;
-  final File image;
-  final int parentID;
+  final File? image;
+  final int? parentID;
 
-  AddChildrenReply(
-      {@required this.tweetID, @required this.body, this.image, this.parentID})
-      : assert(body != null);
+  AddChildrenReply({
+    required this.tweetID,
+    required this.body,
+    this.image,
+    this.parentID,
+  });
 
   @override
   List<Object> get props => [];
@@ -30,7 +33,7 @@ class AddChildrenReply extends ChildrenReplyEvent {
 class DeleteChildrenReply extends ChildrenReplyEvent {
   final Reply reply;
 
-  DeleteChildrenReply({this.reply}) : assert(reply != null);
+  DeleteChildrenReply({required this.reply});
 
   @override
   List<Object> get props => [];

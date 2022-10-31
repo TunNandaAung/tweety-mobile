@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tweety_mobile/blocs/auth/authentication/authentication_bloc.dart';
@@ -6,15 +5,17 @@ import 'package:tweety_mobile/blocs/auth/login/login_bloc.dart';
 import 'package:tweety_mobile/widgets/wave.dart';
 
 class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
+
   @override
-  _LoginFormState createState() => _LoginFormState();
+  LoginFormState createState() => LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  LoginBloc _loginBloc;
+  late LoginBloc _loginBloc;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -62,10 +63,10 @@ class _LoginFormState extends State<LoginForm> {
                     elevation: 6.0,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
+                        borderRadius: BorderRadius.circular(20.0)),
                     content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text('Invalid Credentials!'),
                           Icon(Icons.error)
                         ]),
@@ -80,10 +81,10 @@ class _LoginFormState extends State<LoginForm> {
                     elevation: 6.0,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
+                        borderRadius: BorderRadius.circular(20.0)),
                     content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
                             'error',
                           ),
@@ -99,10 +100,10 @@ class _LoginFormState extends State<LoginForm> {
                   elevation: 6.0,
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
+                      borderRadius: BorderRadius.circular(20.0)),
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
                           'Password reset mail has been sent to your email address'),
                       Icon(Icons.check)
@@ -117,11 +118,11 @@ class _LoginFormState extends State<LoginForm> {
                   elevation: 6.0,
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  backgroundColor: Color(0xFF5d74e3),
+                      borderRadius: BorderRadius.circular(20.0)),
+                  backgroundColor: const Color(0xFF5d74e3),
                   content: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: const [
                         Text('Logging in...'),
                         CircularProgressIndicator()
                       ])));
@@ -135,10 +136,10 @@ class _LoginFormState extends State<LoginForm> {
               children: <Widget>[
                 Container(
                   height: size.height - 350,
-                  color: Color(0xff4A64FE),
+                  color: Theme.of(context).primaryColor,
                 ),
                 AnimatedPositioned(
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   curve: Curves.easeOutQuad,
                   top: keyboardOpen ? -size.height / 3.7 : 0.0,
                   child: Wave(
@@ -164,7 +165,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.all(30.0),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -179,22 +180,27 @@ class _LoginFormState extends State<LoginForm> {
                                         .cursorColor,
                                     fontWeight: FontWeight.w500),
                                 decoration: InputDecoration(
-                                    filled: true,
-                                    focusColor: Theme.of(context).primaryColor,
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide.none,
+                                  filled: true,
+                                  focusColor: Theme.of(context).primaryColor,
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: const BorderSide(
+                                      width: 1.0,
+                                      color: Colors.red,
                                     ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                        width: 2.0,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                    prefixIcon:
-                                        Icon(Icons.mail, color: Colors.grey),
-                                    hintText: 'Email'),
+                                  ),
+                                  prefixIcon: const Icon(Icons.mail,
+                                      color: Colors.grey),
+                                  hintText: 'Email',
+                                ),
                                 controller: _emailController,
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
@@ -206,7 +212,7 @@ class _LoginFormState extends State<LoginForm> {
                                   return null;
                                 },
                               ),
-                              SizedBox(height: 30.0),
+                              const SizedBox(height: 30.0),
                               TextFormField(
                                 style: TextStyle(
                                     color: Theme.of(context)
@@ -217,23 +223,27 @@ class _LoginFormState extends State<LoginForm> {
                                     filled: true,
                                     focusColor: Theme.of(context).primaryColor,
                                     enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
                                       borderSide: BorderSide.none,
                                     ),
                                     errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                        width: 2.0,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      borderSide: const BorderSide(
+                                        width: 1.0,
                                         color: Colors.red,
                                       ),
                                     ),
-                                    prefixIcon: Icon(Icons.lock_outline,
+                                    prefixIcon: const Icon(Icons.lock_outline,
                                         color: Colors.grey),
                                     suffixIcon: IconButton(
                                         icon: _isPasswordHidden
-                                            ? Icon(Icons.visibility_off,
+                                            ? const Icon(Icons.visibility_off,
                                                 color: Colors.grey)
-                                            : Icon(Icons.visibility,
+                                            : const Icon(Icons.visibility,
                                                 color: Colors.grey),
                                         onPressed: () {
                                           _toggleVisibility();
@@ -254,7 +264,7 @@ class _LoginFormState extends State<LoginForm> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 50.0),
+                        const SizedBox(height: 50.0),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20.0),
                           child: Material(
@@ -266,20 +276,21 @@ class _LoginFormState extends State<LoginForm> {
                               child: SizedBox(
                                 height: 50.0,
                                 width: size.width,
-                                child: Center(
+                                child: const Center(
                                   child: Text(
                                     'Login',
                                     style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                        letterSpacing: 1.0),
+                                      color: Colors.white,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 50.0),
+                        const SizedBox(height: 50.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -287,33 +298,37 @@ class _LoginFormState extends State<LoginForm> {
                                 style: TextStyle(
                                     color: Theme.of(context).hintColor,
                                     fontSize: 16.0)),
-                            SizedBox(width: 10.0),
+                            const SizedBox(width: 20.0),
                             InkWell(
                               onTap: () {
                                 Navigator.pushNamed(context, '/register');
                               },
-                              child: Text('Register',
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1.0)),
+                              child: Text(
+                                'Register',
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             )
                           ],
                         ),
-                        SizedBox(height: 30.0),
+                        const SizedBox(height: 30.0),
                         Align(
                           alignment: FractionalOffset.bottomCenter,
                           child: InkWell(
                             onTap: () {
                               Navigator.pushNamed(context, '/forgot-password');
                             },
-                            child: Text('Forgot your password?',
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.0)),
+                            child: Text(
+                              'Forgot your password?',
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         )
                       ]),

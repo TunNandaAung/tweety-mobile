@@ -14,14 +14,14 @@ class Chat {
   @JsonKey(name: 'updated_at')
   DateTime updatedAt;
 
-  List<Message> messages;
+  List<Message>? messages;
 
-  List<User> participants;
+  List<User>? participants;
 
   Chat({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
+    required this.id,
+    required this.createdAt,
+    required this.updatedAt,
     this.messages,
     this.participants,
   });

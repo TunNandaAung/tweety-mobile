@@ -10,7 +10,7 @@ abstract class ChatRoomEvent extends Equatable {
 class FetchChatRoom extends ChatRoomEvent {
   final String username;
 
-  const FetchChatRoom({@required this.username}) : assert(username != null);
+  const FetchChatRoom({required this.username});
 
   @override
   List<Object> get props => [username];

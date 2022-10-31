@@ -16,14 +16,16 @@ class TweetLoaded extends TweetState {
   final bool hasReachedMax;
   final int pageNumber;
 
-  const TweetLoaded(
-      {@required this.tweets, this.hasReachedMax, this.pageNumber = 1})
-      : assert(tweets != null);
+  const TweetLoaded({
+    required this.tweets,
+    required this.hasReachedMax,
+    this.pageNumber = 1,
+  });
 
   TweetLoaded copyWith({
-    List<Tweet> tweets,
-    bool hasReachedMax,
-    int pageNumber,
+    List<Tweet>? tweets,
+    bool? hasReachedMax,
+    int? pageNumber,
   }) {
     return TweetLoaded(
       tweets: tweets ?? this.tweets,
@@ -47,7 +49,7 @@ class TweetPublishing extends TweetState {}
 class TweetPublished extends TweetState {
   final Tweet tweet;
 
-  const TweetPublished({@required this.tweet}) : assert(tweet != null);
+  const TweetPublished({required this.tweet});
 
   @override
   List<Object> get props => [tweet];

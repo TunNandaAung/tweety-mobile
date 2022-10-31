@@ -4,7 +4,11 @@ class NavigationModel {
   String title;
   IconData icon;
   String route;
-  NavigationModel({this.title, this.icon, this.route});
+  NavigationModel({
+    required this.title,
+    required this.icon,
+    required this.route,
+  });
 }
 
 List<NavigationModel> navItems = [
@@ -29,7 +33,7 @@ List<NavigationModel> navItems = [
   // ),
 ];
 
-final TextStyle navItemStyle = TextStyle(fontSize: 18, color: Colors.black);
+const TextStyle navItemStyle = TextStyle(fontSize: 18, color: Colors.black);
 
-final TextStyle navItemSelectedStyle =
+const TextStyle navItemSelectedStyle =
     TextStyle(fontSize: 18, color: Colors.white);

@@ -9,14 +9,18 @@ class NotificationData {
   User notifier;
   String link;
   String type;
-  @JsonKey(nullable: true)
+  // ignore: prefer_typing_uninitialized_variables
   final arg;
+  String? screen;
 
-  @JsonKey(nullable: true)
-  String screen;
-
-  NotificationData(
-      {this.message, this.notifier, this.link, this.screen, this.arg});
+  NotificationData({
+    required this.message,
+    required this.notifier,
+    required this.link,
+    required this.type,
+    this.screen,
+    this.arg,
+  });
 
   factory NotificationData.fromJson(Map<String, dynamic> json) =>
       _$NotificationDataFromJson(json);

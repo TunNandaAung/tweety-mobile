@@ -10,16 +10,16 @@ import 'package:timeago/timeago.dart' as timeago;
 class NotificationsScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const NotificationsScreen({Key key, @required this.scaffoldKey})
+  const NotificationsScreen({Key? key, required this.scaffoldKey})
       : super(key: key);
   @override
-  _NotificationsScreenState createState() => _NotificationsScreenState();
+  NotificationsScreenState createState() => NotificationsScreenState();
 }
 
-class _NotificationsScreenState extends State<NotificationsScreen> {
+class NotificationsScreenState extends State<NotificationsScreen> {
   final double targetElevation = 20.0;
   double _elevation = 0;
-  ScrollController _scrollController;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
@@ -32,8 +32,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -65,23 +65,23 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           ),
           title: Text(
             'Notifications',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
         ),
         body: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: BlocBuilder<NotificationBloc, NotificationState>(
               builder: (context, state) {
                 if (state is NotificationLoading) {
-                  return LoadingIndicator();
+                  return const LoadingIndicator();
                 }
                 if (state is NotificationsLoaded) {
-                  return state.notifications.length > 0
+                  return state.notifications.isNotEmpty
                       ? ListView.separated(
                           controller: _scrollController,
                           separatorBuilder: (context, index) {
-                            return SizedBox(height: 10.0);
+                            return const SizedBox(height: 10.0);
                           },
                           itemCount: state.notifications.length,
                           itemBuilder: (context, index) {
@@ -90,7 +90,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                               onTap: notification.data.screen != null
                                   ? () {
                                       Navigator.of(context).pushNamed(
-                                          notification.data.screen,
+                                          notification.data.screen!,
                                           arguments: notification.data.arg);
                                     }
                                   : () {},
@@ -103,60 +103,58 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                   boxShadow: [
                                     BoxShadow(
                                         color: Theme.of(context).canvasColor,
-                                        offset: Offset(0, 10),
+                                        offset: const Offset(0, 10),
                                         blurRadius: 10.0)
                                   ],
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      SizedBox(width: 10.0),
+                                      const SizedBox(width: 10.0),
                                       mapNotificationTypeToIcon(
                                           notification.type),
-                                      SizedBox(width: 15.0),
+                                      const SizedBox(width: 15.0),
                                       Flexible(
-                                        child: Container(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Container(
-                                                width: 30.0,
-                                                height: 30.0,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Container(
+                                              width: 30.0,
+                                              height: 30.0,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white,
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      notification.data.notifier
+                                                          .avatar),
+                                                  fit: BoxFit.contain,
+                                                ),
+                                                border: Border.all(
                                                   color: Colors.white,
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        notification.data
-                                                            .notifier.avatar),
-                                                    fit: BoxFit.contain,
-                                                  ),
-                                                  border: Border.all(
-                                                    color: Colors.white,
-                                                    width: 2.0,
-                                                  ),
+                                                  width: 2.0,
                                                 ),
                                               ),
-                                              SizedBox(height: 5.0),
-                                              Text(notification.data.message,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .caption),
-                                              SizedBox(height: 5.0),
-                                              Text(
-                                                timeago.format(
-                                                    notification.createdAt),
-                                                style: TextStyle(
-                                                    color: Colors.grey[700]),
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                            const SizedBox(height: 5.0),
+                                            Text(notification.data.message,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .caption),
+                                            const SizedBox(height: 5.0),
+                                            Text(
+                                              timeago.format(
+                                                  notification.createdAt),
+                                              style: TextStyle(
+                                                  color: Colors.grey[700]),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -171,7 +169,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline5
+                                .headline5!
                                 .copyWith(fontWeight: FontWeight.bold),
                           ),
                         );

@@ -8,23 +8,21 @@ import 'package:tweety_mobile/widgets/loading_indicator.dart';
 class UpdateEmailScreen extends StatefulWidget {
   final User user;
 
-  UpdateEmailScreen({Key key, @required this.user})
-      : assert(user != null),
-        super(key: key);
+  const UpdateEmailScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  _UpdateEmailScreenState createState() => _UpdateEmailScreenState();
+  UpdateEmailScreenState createState() => UpdateEmailScreenState();
 }
 
-class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
+class UpdateEmailScreenState extends State<UpdateEmailScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
 
-  String _email;
-  String _password;
+  late String _email;
+  late String _password;
 
   bool isButtonEnabled(AuthProfileState state) {
-    return !(state is AuthProfileEmailUpdating);
+    return state is! AuthProfileEmailUpdating;
   }
 
   bool _isPasswordHidden = true;
@@ -43,16 +41,16 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leading: BackButton(
-            color: Theme.of(context).appBarTheme.iconTheme.color,
+            color: Theme.of(context).appBarTheme.iconTheme!.color,
           ),
           title: Text(
             'Update Email',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           centerTitle: true,
           elevation: 0.0,
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.transparent,
             ),
           ),
@@ -91,11 +89,12 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
           child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
             builder: (context, state) {
               return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      Container(
+                      SizedBox(
                         height: size.height,
                         child: Stack(
                           children: <Widget>[
@@ -111,18 +110,18 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                     'Current',
                                     style: Theme.of(context).textTheme.caption,
                                   ),
-                                  SizedBox(height: 5.0),
+                                  const SizedBox(height: 5.0),
                                   Text(
-                                    widget.user.email,
+                                    widget.user.email!,
                                     style: Theme.of(context).textTheme.caption,
                                   ),
-                                  SizedBox(height: 20.0),
+                                  const SizedBox(height: 20.0),
                                   Text(
                                     'Re-enter your password to verify',
                                     style:
                                         Theme.of(context).textTheme.bodyText2,
                                   ),
-                                  SizedBox(height: 10.0),
+                                  const SizedBox(height: 10.0),
                                   TextFormField(
                                     style: TextStyle(
                                         color: Theme.of(context)
@@ -135,51 +134,51 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                             Theme.of(context).primaryColor,
                                         enabledBorder: UnderlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10.0),
+                                              BorderRadius.circular(20.0),
                                           borderSide: BorderSide.none,
                                         ),
                                         focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 2.0,
-                                              color: Theme.of(context)
-                                                  .primaryColor),
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                          borderSide: BorderSide.none,
                                         ),
                                         errorBorder: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            width: 2.0,
+                                              BorderRadius.circular(20.0),
+                                          borderSide: const BorderSide(
+                                            width: 1.0,
                                             color: Colors.red,
                                           ),
                                         ),
-                                        prefixIcon: Icon(
+                                        prefixIcon: const Icon(
                                           Icons.lock_outline,
                                           color: Colors.grey,
                                         ),
                                         suffixIcon: IconButton(
                                             color: Colors.grey,
                                             icon: _isPasswordHidden
-                                                ? Icon(Icons.visibility_off)
-                                                : Icon(Icons.visibility),
+                                                ? const Icon(
+                                                    Icons.visibility_off)
+                                                : const Icon(Icons.visibility),
                                             onPressed: () {
                                               _toggleVisibility();
                                             }),
                                         hintText: 'Password'),
                                     obscureText: _isPasswordHidden,
                                     validator: (val) {
-                                      return val.trim().isEmpty
+                                      return val!.trim().isEmpty
                                           ? 'Password cannot be empty.'
                                           : null;
                                     },
-                                    onSaved: (value) => _password = value,
+                                    onSaved: (value) => _password = value!,
                                   ),
-                                  SizedBox(height: 30.0),
+                                  const SizedBox(height: 30.0),
                                   Text(
                                     'Enter your new email address',
                                     style:
                                         Theme.of(context).textTheme.bodyText2,
                                   ),
-                                  SizedBox(height: 10.0),
+                                  const SizedBox(height: 10.0),
                                   TextFormField(
                                     style: TextStyle(
                                         color: Theme.of(context)
@@ -191,35 +190,40 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                         focusColor: Colors.white,
                                         enabledBorder: UnderlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10.0),
+                                              BorderRadius.circular(20.0),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
                                           borderSide: BorderSide.none,
                                         ),
                                         errorBorder: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            width: 2.0,
+                                              BorderRadius.circular(20.0),
+                                          borderSide: const BorderSide(
+                                            width: 1.0,
                                             color: Colors.red,
                                           ),
                                         ),
-                                        prefixIcon: Icon(
+                                        prefixIcon: const Icon(
                                           Icons.mail,
                                           color: Colors.grey,
                                         ),
                                         hintText: 'Email'),
                                     validator: (val) {
-                                      return !Validators.isValidEmail(val)
+                                      return !Validators.isValidEmail(val!)
                                           ? 'Invalid email.'
                                           : null;
                                     },
-                                    onSaved: (value) => _email = value,
+                                    onSaved: (value) => _email = value!,
                                   ),
                                 ],
                               ),
                             ),
-                            SizedBox(height: 30.0),
+                            const SizedBox(height: 30.0),
                             AnimatedPositioned(
-                              duration: Duration(milliseconds: 500),
+                              duration: const Duration(milliseconds: 500),
                               curve: Curves.easeOutQuad,
                               bottom: keyboardOpen ? size.height * 0.55 : 100.0,
                               child: InkWell(
@@ -228,32 +232,33 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
                                     : null,
                                 child: Container(
                                   width: size.width * 0.94,
-                                  padding: EdgeInsets.symmetric(vertical: 15.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15.0),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20.0)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20.0)),
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   child: (state is AuthProfileEmailUpdating)
-                                      ? LoadingIndicator(
+                                      ? const LoadingIndicator(
                                           color: Colors.white,
                                         )
                                       : Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          children: <Widget>[
+                                          children: const <Widget>[
                                             Text(
                                               'Update',
                                               style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 18.0,
-                                                  letterSpacing: 1.0,
-                                                  fontWeight: FontWeight.bold),
+                                                color: Colors.white,
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                            SizedBox(width: 20.0),
+                                            SizedBox(width: 5.0),
                                             Icon(
-                                              Icons.arrow_forward,
+                                              Icons.chevron_right,
                                               color: Colors.white,
                                             )
                                           ],
@@ -274,8 +279,8 @@ class _UpdateEmailScreenState extends State<UpdateEmailScreen> {
   }
 
   void _onFormSubmitted() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       context.read<AuthProfileBloc>().add(
             UpdateAuthProfileEmail(password: _password, email: _email),
           );

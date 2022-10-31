@@ -5,18 +5,20 @@ import 'package:tweety_mobile/services/follow_api_client.dart';
 class FollowRepository {
   final FollowApiClient followApiClient;
 
-  FollowRepository({FollowApiClient followApiClient})
+  FollowRepository({FollowApiClient? followApiClient})
       : followApiClient = followApiClient ?? FollowApiClient();
 
   Future<User> toggleFollow(String username) async {
     return followApiClient.toggleFollow(username);
   }
 
-  Future<UserPaginator> getFollowing({String username, int pageNumber}) async {
+  Future<UserPaginator> getFollowing(
+      {required String username, required int pageNumber}) async {
     return followApiClient.fetchFollowing(username, pageNumber);
   }
 
-  Future<UserPaginator> getFollowers({String username, int pageNumber}) async {
+  Future<UserPaginator> getFollowers(
+      {required String username, required int pageNumber}) async {
     return followApiClient.fetchFollowers(username, pageNumber);
   }
 }

@@ -19,18 +19,18 @@ class ChildrenReplyLoaded extends ChildrenReplyState {
   final int repliesLeft;
 
   const ChildrenReplyLoaded({
-    @required this.childrenReplies,
-    this.hasReachedMax,
+    required this.childrenReplies,
+    required this.hasReachedMax,
     this.pageNumber = 1,
-    this.repliesLeft,
-  }) : assert(childrenReplies != null);
+    required this.repliesLeft,
+  });
 
   ChildrenReplyLoaded copyWith({
-    List<Reply> childrenReplies,
-    bool hasReachedMax,
-    int pageNumber,
-    int repliesLeft,
-    bool isLoading,
+    List<Reply>? childrenReplies,
+    bool? hasReachedMax,
+    int? pageNumber,
+    int? repliesLeft,
+    bool? isLoading,
   }) {
     return ChildrenReplyLoaded(
       childrenReplies: childrenReplies ?? this.childrenReplies,
@@ -42,7 +42,7 @@ class ChildrenReplyLoaded extends ChildrenReplyState {
 
   @override
   List<Object> get props =>
-      [childrenReplies, hasReachedMax, pageNumber, this.repliesLeft];
+      [childrenReplies, hasReachedMax, pageNumber, repliesLeft];
 
   @override
   String toString() =>
@@ -56,7 +56,7 @@ class ChildrenReplyAdding extends ChildrenReplyState {}
 class ChildrenReplyAdded extends ChildrenReplyState {
   final Reply reply;
 
-  const ChildrenReplyAdded({@required this.reply}) : assert(reply != null);
+  const ChildrenReplyAdded({required this.reply});
 
   @override
   List<Object> get props => [reply];
@@ -70,9 +70,9 @@ class AddChildrenReplyError extends ChildrenReplyState {}
 class ChildrenReplyDeleting extends ChildrenReplyState {}
 
 class ChildrenReplyDeleted extends ChildrenReplyState {
-  final count;
+  final int count;
 
-  ChildrenReplyDeleted({@required this.count});
+  const ChildrenReplyDeleted({required this.count});
 
   @override
   List<Object> get props => [count];

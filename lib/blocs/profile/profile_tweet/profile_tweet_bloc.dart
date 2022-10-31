@@ -4,41 +4,31 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/tweet.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:tweety_mobile/repositories/tweet_repository.dart';
+import 'package:tweety_mobile/utils/helpers.dart';
 
 part 'profile_tweet_event.dart';
 part 'profile_tweet_state.dart';
 
+const throttleDuration = Duration(milliseconds: 500);
+
 class ProfileTweetBloc extends Bloc<ProfileTweetEvent, ProfileTweetState> {
   final TweetRepository tweetRepository;
 
-  ProfileTweetBloc({@required this.tweetRepository})
-      : assert(tweetRepository != null),
-        super(ProfileTweetInitial());
-
-  @override
-  Stream<Transition<ProfileTweetEvent, ProfileTweetState>> transformEvents(
-    Stream<ProfileTweetEvent> events,
-    TransitionFunction<ProfileTweetEvent, ProfileTweetState> transitionFn,
-  ) {
-    return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 500)),
-      transitionFn,
+  ProfileTweetBloc({required this.tweetRepository})
+      : super(ProfileTweetInitial()) {
+    on<FetchProfileTweet>(
+      _onFetchProfileTweet,
+      transformer: throttleDroppable(throttleDuration),
+    );
+    on<RefreshProfileTweet>(
+      _onRefreshProfileTweet,
+      transformer: throttleDroppable(throttleDuration),
     );
   }
 
-  @override
-  Stream<ProfileTweetState> mapEventToState(ProfileTweetEvent event) async* {
-    if (event is FetchProfileTweet) {
-      yield* _mapFetchProfileTweetToState(event);
-    } else if (event is RefreshProfileTweet) {
-      yield* _mapRefreshProfileTweetToState(event);
-    }
-  }
-
-  Stream<ProfileTweetState> _mapFetchProfileTweetToState(
-      FetchProfileTweet event) async* {
+  Future<void> _onFetchProfileTweet(
+      FetchProfileTweet event, Emitter<ProfileTweetState> emit) async {
     final currentState = state;
 
     if (!_hasReachedMax(currentState)) {
@@ -46,10 +36,10 @@ class ProfileTweetBloc extends Bloc<ProfileTweetEvent, ProfileTweetState> {
         if (currentState is ProfileTweetInitial) {
           final tweetPaginator = await tweetRepository.getUserTweets(
               username: event.username, pageNumber: 1);
-          yield ProfileTweetLoaded(
-              tweets: tweetPaginator.tweets,
-              hasReachedMax: tweetPaginator.lastPage == 1 ? true : false);
-          return;
+          return emit(ProfileTweetLoaded(
+            tweets: tweetPaginator.tweets,
+            hasReachedMax: tweetPaginator.lastPage == 1 ? true : false,
+          ));
         }
 
         if (currentState is ProfileTweetLoaded) {
@@ -57,7 +47,7 @@ class ProfileTweetBloc extends Bloc<ProfileTweetEvent, ProfileTweetState> {
           final tweetPaginator = await tweetRepository.getUserTweets(
               username: event.username, pageNumber: pageNumber);
 
-          yield tweetPaginator.tweets.isEmpty
+          emit(tweetPaginator.tweets.isEmpty
               ? ProfileTweetLoaded(
                   tweets: currentState.tweets,
                   hasReachedMax: true,
@@ -67,10 +57,10 @@ class ProfileTweetBloc extends Bloc<ProfileTweetEvent, ProfileTweetState> {
                   tweets: currentState.tweets + tweetPaginator.tweets,
                   hasReachedMax: false,
                   pageNumber: pageNumber,
-                );
+                ));
         }
       } catch (_) {
-        yield ProfileTweetError();
+        emit(ProfileTweetError());
       }
     }
   }
@@ -78,17 +68,18 @@ class ProfileTweetBloc extends Bloc<ProfileTweetEvent, ProfileTweetState> {
   bool _hasReachedMax(ProfileTweetState state) =>
       state is ProfileTweetLoaded && state.hasReachedMax;
 
-  Stream<ProfileTweetState> _mapRefreshProfileTweetToState(
-      RefreshProfileTweet event) async* {
+  Future<void> _onRefreshProfileTweet(
+      RefreshProfileTweet event, Emitter<ProfileTweetState> emit) async {
     try {
       final tweetPaginator = await tweetRepository.getUserTweets(
           username: event.username, pageNumber: 1);
-      yield ProfileTweetLoaded(
-          tweets: tweetPaginator.tweets,
-          hasReachedMax: tweetPaginator.lastPage == 1 ? true : false);
+      emit(ProfileTweetLoaded(
+        tweets: tweetPaginator.tweets,
+        hasReachedMax: tweetPaginator.lastPage == 1 ? true : false,
+      ));
       return;
     } catch (_) {
-      yield state;
+      emit(state);
     }
   }
 }

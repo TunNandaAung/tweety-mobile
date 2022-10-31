@@ -4,28 +4,28 @@ import 'package:tweety_mobile/blocs/auth_profile/auth_profile_bloc.dart';
 import 'package:tweety_mobile/widgets/loading_indicator.dart';
 
 class UpdatePasswordScreen extends StatefulWidget {
-  UpdatePasswordScreen({Key key}) : super(key: key);
+  const UpdatePasswordScreen({Key? key}) : super(key: key);
 
   @override
-  _UpdatePasswordScreenState createState() => _UpdatePasswordScreenState();
+  UpdatePasswordScreenState createState() => UpdatePasswordScreenState();
 }
 
-class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
+class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final passKey = GlobalKey<FormFieldState>();
 
   bool _autovalidate = false;
 
-  String _oldPassword;
-  String _password;
-  String _confirmPassword;
+  late String _oldPassword;
+  late String _password;
+  late String _confirmPassword;
 
   bool _isCurrentPasswordHidden = true;
   bool _isPasswordHidden = true;
   bool _isConfirmPasswordHidden = true;
 
   bool isButtonEnabled(AuthProfileState state) {
-    return !(state is AuthProfilePasswordUpdating);
+    return state is! AuthProfilePasswordUpdating;
   }
 
   @override
@@ -37,16 +37,16 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(
-          color: Theme.of(context).appBarTheme.iconTheme.color,
+          color: Theme.of(context).appBarTheme.iconTheme!.color,
         ),
         title: Text(
           'Update Password',
-          style: Theme.of(context).appBarTheme.textTheme.caption,
+          style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
         centerTitle: true,
         elevation: 0.0,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.transparent,
           ),
         ),
@@ -85,11 +85,12 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
         child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
           builder: (context, state) {
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Container(
+                    SizedBox(
                       height: size.height,
                       child: Stack(
                         children: <Widget>[
@@ -105,7 +106,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                   'Your current password',
                                   style: Theme.of(context).textTheme.bodyText2,
                                 ),
-                                SizedBox(height: 10.0),
+                                const SizedBox(height: 10.0),
                                 TextFormField(
                                   style: TextStyle(
                                       color: Theme.of(context)
@@ -118,24 +119,29 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                           Theme.of(context).primaryColor,
                                       enabledBorder: UnderlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
+                                            BorderRadius.circular(20.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
                                         borderSide: BorderSide.none,
                                       ),
                                       errorBorder: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(
-                                          width: 2.0,
+                                            BorderRadius.circular(20.0),
+                                        borderSide: const BorderSide(
+                                          width: 1.0,
                                           color: Colors.red,
                                         ),
                                       ),
-                                      prefixIcon: Icon(Icons.lock_outline,
+                                      prefixIcon: const Icon(Icons.lock_outline,
                                           color: Colors.grey),
                                       suffixIcon: IconButton(
                                         color: Colors.grey,
                                         icon: _isCurrentPasswordHidden
-                                            ? Icon(Icons.visibility_off)
-                                            : Icon(Icons.visibility),
+                                            ? const Icon(Icons.visibility_off)
+                                            : const Icon(Icons.visibility),
                                         onPressed: () {
                                           setState(() {
                                             _isCurrentPasswordHidden =
@@ -146,51 +152,57 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                       hintText: 'Current Password'),
                                   obscureText: _isCurrentPasswordHidden,
                                   validator: (val) {
-                                    return val.trim().isEmpty
+                                    return val!.trim().isEmpty
                                         ? 'Current password cannot be empty.'
                                         : null;
                                   },
-                                  onSaved: (value) => _oldPassword = value,
+                                  onSaved: (value) => _oldPassword = value!,
                                 ),
-                                SizedBox(height: 30.0),
+                                const SizedBox(height: 30.0),
                                 Text(
                                   'Enter new password',
                                   style: Theme.of(context).textTheme.bodyText2,
                                 ),
-                                SizedBox(height: 10.0),
+                                const SizedBox(height: 10.0),
                                 TextFormField(
                                   key: passKey,
                                   style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textSelectionTheme
-                                          .cursorColor,
-                                      fontWeight: FontWeight.w500),
+                                    color: Theme.of(context)
+                                        .textSelectionTheme
+                                        .cursorColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                   decoration: InputDecoration(
                                       filled: true,
                                       focusColor:
                                           Theme.of(context).primaryColor,
                                       enabledBorder: UnderlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
+                                            BorderRadius.circular(20.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
                                         borderSide: BorderSide.none,
                                       ),
                                       errorBorder: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(
-                                          width: 2.0,
+                                            BorderRadius.circular(20.0),
+                                        borderSide: const BorderSide(
+                                          width: 1.0,
                                           color: Colors.red,
                                         ),
                                       ),
-                                      prefixIcon: Icon(Icons.lock_outline,
+                                      prefixIcon: const Icon(Icons.lock_outline,
                                           color: Colors.grey),
                                       suffixIcon: IconButton(
                                         color: Colors.grey,
                                         icon: _isPasswordHidden
-                                            ? Icon(
+                                            ? const Icon(
                                                 Icons.visibility_off,
                                               )
-                                            : Icon(Icons.visibility),
+                                            : const Icon(Icons.visibility),
                                         onPressed: () {
                                           setState(() {
                                             _isPasswordHidden =
@@ -201,18 +213,18 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                       hintText: 'New Password'),
                                   obscureText: _isPasswordHidden,
                                   validator: (val) {
-                                    return val.trim().isEmpty
+                                    return val!.trim().isEmpty
                                         ? 'Password cannot be empty.'
                                         : null;
                                   },
-                                  onSaved: (value) => _password = value,
+                                  onSaved: (value) => _password = value!,
                                 ),
-                                SizedBox(height: 30.0),
+                                const SizedBox(height: 30.0),
                                 Text(
                                   'Confirm new password',
                                   style: Theme.of(context).textTheme.bodyText2,
                                 ),
-                                SizedBox(height: 10.0),
+                                const SizedBox(height: 10.0),
                                 TextFormField(
                                   style: TextStyle(
                                       color: Theme.of(context)
@@ -225,24 +237,29 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                           Theme.of(context).primaryColor,
                                       enabledBorder: UnderlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
+                                            BorderRadius.circular(20.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
                                         borderSide: BorderSide.none,
                                       ),
                                       errorBorder: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(
-                                          width: 2.0,
+                                            BorderRadius.circular(20.0),
+                                        borderSide: const BorderSide(
+                                          width: 1.0,
                                           color: Colors.red,
                                         ),
                                       ),
-                                      prefixIcon:
-                                          Icon(Icons.lock, color: Colors.grey),
+                                      prefixIcon: const Icon(Icons.lock,
+                                          color: Colors.grey),
                                       suffixIcon: IconButton(
                                         color: Colors.grey,
                                         icon: _isConfirmPasswordHidden
-                                            ? Icon(Icons.visibility_off)
-                                            : Icon(Icons.visibility),
+                                            ? const Icon(Icons.visibility_off)
+                                            : const Icon(Icons.visibility),
                                         onPressed: () {
                                           setState(() {
                                             _isConfirmPasswordHidden =
@@ -253,22 +270,23 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                       hintText: 'Password Confirmation'),
                                   obscureText: _isConfirmPasswordHidden,
                                   validator: (val) {
-                                    if (val.trim().isEmpty) {
+                                    if (val!.trim().isEmpty) {
                                       return 'Password confirmation cannot be empty';
                                     } else if (val !=
-                                        passKey.currentState.value) {
+                                        passKey.currentState!.value) {
                                       return 'Password confirmation does not match.';
-                                    } else
+                                    } else {
                                       return null;
+                                    }
                                   },
-                                  onSaved: (value) => _confirmPassword = value,
+                                  onSaved: (value) => _confirmPassword = value!,
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(height: 30.0),
+                          const SizedBox(height: 30.0),
                           AnimatedPositioned(
-                            duration: Duration(milliseconds: 500),
+                            duration: const Duration(milliseconds: 500),
                             curve: Curves.easeOutQuad,
                             bottom: keyboardOpen ? size.height * 0.52 : 100.0,
                             child: InkWell(
@@ -277,32 +295,33 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                   : null,
                               child: Container(
                                 width: size.width * 0.94,
-                                padding: EdgeInsets.symmetric(vertical: 15.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 15.0),
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(20.0)),
                                   color: Theme.of(context).primaryColor,
                                 ),
                                 child: (state is AuthProfilePasswordUpdating)
-                                    ? LoadingIndicator(
+                                    ? const LoadingIndicator(
                                         color: Colors.white,
                                       )
                                     : Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                        children: <Widget>[
+                                        children: const <Widget>[
                                           Text(
                                             'Update',
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18.0,
-                                                letterSpacing: 1.0,
-                                                fontWeight: FontWeight.bold),
+                                              color: Colors.white,
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                          SizedBox(width: 20.0),
+                                          SizedBox(width: 5.0),
                                           Icon(
-                                            Icons.arrow_forward,
+                                            Icons.chevron_right,
                                             color: Colors.white,
                                           )
                                         ],
@@ -324,8 +343,8 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   }
 
   void _onFormSubmitted() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       context.read<AuthProfileBloc>().add(
             UpdateAuthProfilePassword(
                 oldPassword: _oldPassword,

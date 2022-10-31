@@ -6,13 +6,13 @@ class TweetSearchState {
   final bool hasError;
 
   const TweetSearchState({
-    this.isLoading,
-    this.tweets,
-    this.hasError,
+    required this.isLoading,
+    required this.tweets,
+    required this.hasError,
   });
 
   factory TweetSearchState.initial() {
-    return TweetSearchState(
+    return const TweetSearchState(
       tweets: [],
       isLoading: false,
       hasError: false,
@@ -20,7 +20,7 @@ class TweetSearchState {
   }
 
   factory TweetSearchState.loading() {
-    return TweetSearchState(
+    return const TweetSearchState(
       tweets: [],
       isLoading: true,
       hasError: false,
@@ -36,7 +36,7 @@ class TweetSearchState {
   }
 
   factory TweetSearchState.error() {
-    return TweetSearchState(
+    return const TweetSearchState(
       tweets: [],
       isLoading: false,
       hasError: true,

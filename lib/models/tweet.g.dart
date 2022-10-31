@@ -6,24 +6,18 @@ part of 'tweet.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Tweet _$TweetFromJson(Map<String, dynamic> json) {
-  return Tweet(
-    id: json['id'] as int,
-    image: json['image'] as String,
-    body: json['body'] as String,
-    isLiked: json['is_liked'] as bool,
-    isDisliked: json['is_disliked'] as bool,
-    repliesCount: json['replies_count'] as int,
-    likesCount: json['likes_count'] as int,
-    dislikesCount: json['dislikes_count'] as int,
-    createdAt: json['created_at'] == null
-        ? null
-        : DateTime.parse(json['created_at'] as String),
-    user: json['user'] == null
-        ? null
-        : User.fromJson(json['user'] as Map<String, dynamic>),
-  );
-}
+Tweet _$TweetFromJson(Map<String, dynamic> json) => Tweet(
+      id: json['id'] as int,
+      image: json['image'] as String?,
+      body: json['body'] as String,
+      isLiked: json['is_liked'] as bool,
+      isDisliked: json['is_disliked'] as bool,
+      repliesCount: json['replies_count'] as int,
+      likesCount: json['likes_count'] as int,
+      dislikesCount: json['dislikes_count'] as int,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      user: User.fromJson(json['user'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$TweetToJson(Tweet instance) => <String, dynamic>{
       'id': instance.id,
@@ -35,5 +29,5 @@ Map<String, dynamic> _$TweetToJson(Tweet instance) => <String, dynamic>{
       'likes_count': instance.likesCount,
       'dislikes_count': instance.dislikesCount,
       'user': instance.user,
-      'created_at': instance.createdAt?.toIso8601String(),
+      'created_at': instance.createdAt.toIso8601String(),
     };

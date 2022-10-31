@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tweety_mobile/models/user.dart';
 
-Widget settingsListTile(context, String name,
-    {Function onTap, String heroTag, User user}) {
+Widget settingsListTile(
+  context,
+  String name, {
+  Function()? onTap,
+  String? heroTag,
+  User? user,
+}) {
   return InkWell(
     onTap: onTap,
     child: Container(
@@ -12,7 +17,7 @@ Widget settingsListTile(context, String name,
           boxShadow: [
             BoxShadow(
               color: Theme.of(context).canvasColor,
-              offset: Offset(0, 10),
+              offset: const Offset(0, 10),
               blurRadius: 10,
             )
           ]),
@@ -27,7 +32,7 @@ Widget settingsListTile(context, String name,
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            user != null ? Text(user.email) : Text(''),
+            user != null ? Text(user.email!) : const Text(''),
             Icon(
               Icons.chevron_right,
               color: Theme.of(context).textSelectionTheme.cursorColor,

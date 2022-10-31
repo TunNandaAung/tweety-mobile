@@ -6,24 +6,24 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:tweety_mobile/widgets/buttons/like_dislike_buttons.dart';
 import 'package:tweety_mobile/widgets/modals/reply_actions_modal.dart';
 
-class ChildrenReply extends StatefulWidget {
+class ChildrenReplyCard extends StatefulWidget {
   final Reply reply;
-  ChildrenReply({Key key, this.reply}) : super(key: key);
+  const ChildrenReplyCard({Key? key, required this.reply}) : super(key: key);
 
   @override
-  _ChildrenReplyState createState() => _ChildrenReplyState();
+  ChildrenReplyCardState createState() => ChildrenReplyCardState();
 }
 
-class _ChildrenReplyState extends State<ChildrenReply> {
+class ChildrenReplyCardState extends State<ChildrenReplyCard> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 0.0),
+      padding: const EdgeInsets.symmetric(horizontal: 0.0),
       child: Column(
         children: <Widget>[
           ListTile(
-            contentPadding: EdgeInsets.all(8.0),
+            contentPadding: const EdgeInsets.all(8.0),
             leading: InkWell(
               onTap: () => Navigator.of(context).pushNamed('/profile',
                   arguments: widget.reply.owner.username),
@@ -41,14 +41,14 @@ class _ChildrenReplyState extends State<ChildrenReply> {
                 InkWell(
                   onTap: () => Navigator.of(context).pushNamed('/profile',
                       arguments: widget.reply.owner.username),
-                  child: Container(
+                  child: SizedBox(
                     width: size.width / 2.2,
                     child: RichText(
                       text: TextSpan(
-                        text: widget.reply.owner.name + "\n",
+                        text: "${widget.reply.owner.name}\n",
                         style: Theme.of(context)
                             .textTheme
-                            .caption
+                            .caption!
                             .copyWith(fontSize: 14.0),
                         children: [
                           TextSpan(
@@ -65,7 +65,7 @@ class _ChildrenReplyState extends State<ChildrenReply> {
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 IconButton(
-                  icon: Icon(Icons.keyboard_arrow_down),
+                  icon: const Icon(Icons.keyboard_arrow_down),
                   onPressed: () => ReplyActionsModal()
                       .mainBottomSheet(context, widget.reply, onTap: () {
                     Navigator.of(context).pop();
@@ -77,7 +77,7 @@ class _ChildrenReplyState extends State<ChildrenReply> {
               ],
             ),
             subtitle: Padding(
-              padding: EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 10.0),
               child: Text(
                 widget.reply.body,
                 style: Theme.of(context).textTheme.bodyText1,
@@ -85,11 +85,11 @@ class _ChildrenReplyState extends State<ChildrenReply> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(90.0, 0.0, 50.0, 0.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width / 3,
                   child: LikeDislikeButtons(
                     reply: widget.reply,
@@ -100,16 +100,16 @@ class _ChildrenReplyState extends State<ChildrenReply> {
                   children: <Widget>[
                     widget.reply.childrenCount > 0
                         ? Padding(
-                            padding: EdgeInsets.only(right: 3.0),
+                            padding: const EdgeInsets.only(right: 3.0),
                             child: Text(
                               widget.reply.childrenCount.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color(0xFFA0AEC0),
                               ),
                             ),
                           )
                         : Container(),
-                    Icon(
+                    const Icon(
                       Icons.comment,
                       size: 18.0,
                       color: Color(0xFFA0AEC0),

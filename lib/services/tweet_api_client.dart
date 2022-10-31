@@ -16,7 +16,7 @@ class TweetApiClient {
   static const baseUrl = ApiConstants.BASE_URL;
   final http.Client httpClient;
 
-  TweetApiClient({http.Client httpClient})
+  TweetApiClient({http.Client? httpClient})
       : httpClient = httpClient ?? http.Client();
 
   Future<TweetPaginator> fetchTweets(int pageNumber) async {
@@ -24,10 +24,10 @@ class TweetApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting tweets.');
@@ -45,10 +45,10 @@ class TweetApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.get(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.get(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error getting tweets.');
@@ -59,8 +59,8 @@ class TweetApiClient {
     return TweetPaginator.fromJson(tweetsJson);
   }
 
-  Future<Tweet> publishTweet(String body, {File image}) async {
-    final url = '$baseUrl/tweets';
+  Future<Tweet> publishTweet(String body, {File? image}) async {
+    const url = '$baseUrl/tweets';
 
     final token = Prefer.prefs.getString('token');
 
@@ -68,31 +68,31 @@ class TweetApiClient {
     request.fields['body'] = body;
 
     if (image != null) {
-      var stream = new http.ByteStream(Stream.castFrom(image.openRead()));
+      var stream = http.ByteStream(Stream.castFrom(image.openRead()));
       var length = await image.length();
-      var multipartFile = new MultipartFile("image", stream, length,
+      var multipartFile = MultipartFile("image", stream, length,
           filename: basename(image.path),
           contentType: MediaType('multipart', 'form-data'));
       request.files.add(multipartFile);
     }
 
-    Map<String, String> _headers = {
+    Map<String, String> authHeaders = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
 
-    request.headers.addAll(_headers);
-    final response = await request.send();
+    request.headers.addAll(authHeaders);
+    final res = await request.send();
 
-    if (response.statusCode != 201) {
-      var _response = await http.Response.fromStream(response);
-      print(_response.body);
+    if (res.statusCode != 201) {
+      var response = await http.Response.fromStream(res);
+      print(response.body);
       throw Exception('Error publish tweets');
     }
-    var _response = await http.Response.fromStream(response);
-    print(jsonDecode(_response.body));
+    var response = await http.Response.fromStream(res);
+    print(jsonDecode(response.body));
 
-    final tweetJson = jsonDecode(_response.body)['data'];
+    final tweetJson = jsonDecode(response.body)['data'];
     print(Tweet.fromJson(tweetJson));
 
     return Tweet.fromJson(tweetJson);
@@ -103,10 +103,10 @@ class TweetApiClient {
 
     final token = Prefer.prefs.getString('token');
 
-    final response = await this.httpClient.delete(
-          Uri.parse(url),
-          headers: requestHeaders(token),
-        );
+    final response = await httpClient.delete(
+      Uri.parse(url),
+      headers: requestHeaders(token!),
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception('Error Deleting tweets.');

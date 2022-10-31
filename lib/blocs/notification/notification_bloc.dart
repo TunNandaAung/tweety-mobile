@@ -13,73 +13,47 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   // final PushNotificationRepository pushNotificationRepository;
   final NotificationRepository notificationRepository;
 
-  NotificationBloc({@required this.notificationRepository})
-      : assert(notificationRepository != null),
-        super(NotificationInitial());
-
-  @override
-  Stream<NotificationState> mapEventToState(
-    NotificationEvent event,
-  ) async* {
-    if (event is FetchNotificationCounts) {
-      yield* _mapFetchNotificationCountsToState(event);
-    } else if (event is ResetNotificationCounts) {
-      yield* _mapResetNotificationCountsToState(event);
-    } else if (event is FetchNotifications) {
-      yield* _mapFetchNotificationsToState(event);
-    }
+  NotificationBloc({required this.notificationRepository})
+      : super(NotificationInitial()) {
+    on<FetchNotificationsCount>(_onFetchNotificationsCount);
+    on<ResetNotificationsCount>(_onResetNotificationsCount);
+    on<FetchNotifications>(_onFetchNotifications);
   }
 
-  // Stream<NotificationState> _mapInitPushNotificationToState(event) async* {
-  //   try {
-  //     pushNotificationRepository.init();
-  //   } catch (_) {}
-  // }
-
-  Stream<NotificationState> _mapFetchNotificationCountsToState(event) async* {
-    // final currentState = state;
-    // if (!(currentState is NotificationCountsLoaded)) {
-    //   try {
-    //     final notificationCounts =
-    //         await notificationRepository.getNotificationCounts();
-    //     yield NotificationCountLoading();
-
-    //     yield NotificationCountsLoaded(notificationCounts: notificationCounts);
-    //   } catch (_) {
-    //     yield NotificationError();
-    //   }
-    // } else
-    //   yield currentState;
-    yield NotificationCountLoading();
+  Future<void> _onFetchNotificationsCount(
+      FetchNotificationsCount event, Emitter<NotificationState> emit) async {
+    emit(NotificationCountLoading());
     try {
-      final notificationCounts =
-          await notificationRepository.getNotificationCounts();
+      final notificationsCount =
+          await notificationRepository.getNotificationsCount();
 
-      yield NotificationCountsLoaded(notificationCounts: notificationCounts);
+      emit(NotificationsCountLoaded(notificationsCount: notificationsCount));
     } catch (_) {
-      yield NotificationError();
+      emit(NotificationError());
     }
   }
 
-  Stream<NotificationState> _mapResetNotificationCountsToState(event) async* {
-    yield NotificationCountLoading();
+  Future<void> _onResetNotificationsCount(
+      ResetNotificationsCount event, Emitter<NotificationState> emit) async {
+    emit(NotificationCountLoading());
     final currentState = state;
-    if (currentState is NotificationCountsLoaded) {
+    if (currentState is NotificationsCountLoaded) {
       try {
-        yield NotificationCountsLoaded(notificationCounts: 0);
+        emit(const NotificationsCountLoaded(notificationsCount: 0));
       } catch (_) {
-        yield NotificationError();
+        emit(NotificationError());
       }
     }
   }
 
-  Stream<NotificationState> _mapFetchNotificationsToState(event) async* {
-    yield NotificationLoading();
+  Future<void> _onFetchNotifications(
+      FetchNotifications event, Emitter<NotificationState> emit) async {
+    emit(NotificationLoading());
     try {
       final notifications = await notificationRepository.getNotifications();
-      yield NotificationsLoaded(notifications: notifications);
+      emit(NotificationsLoaded(notifications: notifications));
     } catch (_) {
-      yield NotificationError();
+      emit(NotificationError());
     }
   }
 }

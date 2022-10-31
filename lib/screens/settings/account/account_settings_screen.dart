@@ -9,34 +9,32 @@ import 'package:tweety_mobile/widgets/list_tiles/settings_list_tile.dart';
 class AccountSettingsScreen extends StatefulWidget {
   final User user;
 
-  AccountSettingsScreen({Key key, @required this.user})
-      : assert(user != null),
-        super(key: key);
+  const AccountSettingsScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  _AccountSettingsScreenState createState() => _AccountSettingsScreenState();
+  AccountSettingsScreenState createState() => AccountSettingsScreenState();
 }
 
-class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
+class AccountSettingsScreenState extends State<AccountSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(
-          color: Theme.of(context).appBarTheme.iconTheme.color,
+          color: Theme.of(context).appBarTheme.iconTheme!.color,
         ),
         title: Hero(
           tag: 'settings__account',
           child: Text(
             'Account',
-            style: Theme.of(context).appBarTheme.textTheme.caption,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
         ),
         centerTitle: true,
         elevation: 0.0,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.transparent,
           ),
         ),
@@ -54,7 +52,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                   backgroundColor: Theme.of(context).primaryColor,
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text("Email successfully updated!"),
                     ],
                   ),
@@ -72,7 +70,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                   backgroundColor: Theme.of(context).primaryColor,
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text("Password successfully updated!"),
                     ],
                   ),
@@ -84,7 +82,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           builder: (context, state) {
             var user = (state is AuthProfileLoaded) ? state.user : widget.user;
             return ListView(
-              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
               children: <Widget>[
                 settingsListTile(
                   context,
@@ -100,14 +99,14 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                     );
                   },
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 settingsListTile(
                   context,
                   'Password',
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => UpdatePasswordScreen(),
+                        builder: (context) => const UpdatePasswordScreen(),
                       ),
                     );
                   },

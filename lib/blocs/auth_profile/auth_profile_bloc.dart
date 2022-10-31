@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
-import 'package:meta/meta.dart';
 
 part 'auth_profile_event.dart';
 part 'auth_profile_state.dart';
@@ -14,137 +13,124 @@ part 'auth_profile_state.dart';
 class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
   final UserRepository userRepository;
 
-  AuthProfileBloc({@required this.userRepository})
-      : assert(userRepository != null),
-        super(AuthProfileEmpty());
-
-  @override
-  Stream<AuthProfileState> mapEventToState(AuthProfileEvent event) async* {
-    if (event is FetchAuthProfile) {
-      yield* _mapFetchAuthProfileToState(event);
-    } else if (event is RefreshAuthProfile) {
-      yield* _mapRefreshAuthProfileToState(event);
-    } else if (event is UpdateAuthProfileInfo) {
-      yield* _mapUpdateAuthProfileInfoToState(event);
-    } else if (event is UpdateAuthProfilePassword) {
-      yield* _mapUpdateAuthProfilePasswordToState(event);
-    } else if (event is UpdateAuthProfileEmail) {
-      yield* _mapUpdateAuthProfileEmailToState(event);
-    } else if (event is RequestPasswordResetInfo) {
-      yield* _mapRequestPasswordResetInfoToState(event);
-    } else if (event is GetAvatar) {
-      yield* _mapGetAvatarToState(event);
-    } else if (event is ReloadAuthProfile) {
-      yield* _mapReloadAuthProfileToState(event);
-    } else if (event is UpdateAuthProfileEmail) {
-      yield* _mapUpdateAuthProfileEmailToState(event);
-    }
+  AuthProfileBloc({required this.userRepository}) : super(AuthProfileEmpty()) {
+    on<FetchAuthProfile>(_onFetchAuthProfile);
+    on<RefreshAuthProfile>(_onRefreshAuthProfile);
+    on<UpdateAuthProfileInfo>(_onUpdateAuthProfileInfo);
+    on<UpdateAuthProfilePassword>(_onUpdateAuthProfilePassword);
+    on<UpdateAuthProfileEmail>(_onUpdateAuthProfileEmail);
+    on<RequestPasswordResetInfo>(_onRequestPasswordResetInfo);
+    on<GetAvatar>(_onGetAvatar);
+    on<ReloadAuthProfile>(_onReloadAuthProfile);
   }
 
-  Stream<AuthProfileState> _mapFetchAuthProfileToState(
-      FetchAuthProfile event) async* {
+  Future<void> _onFetchAuthProfile(
+      FetchAuthProfile event, Emitter<AuthProfileState> emit) async {
     final currentState = state;
-    yield AuthProfileLoading();
+    emit(AuthProfileLoading());
     if (currentState is AuthProfileLoaded) {
-      yield AuthProfileLoaded(user: currentState.user);
+      emit(AuthProfileLoaded(user: currentState.user));
     } else {
       try {
         final user = await userRepository.getAuthUserInfo();
-        yield AuthProfileLoaded(user: user);
+        emit(AuthProfileLoaded(user: user));
       } catch (_) {
-        yield AuthProfileError();
+        emit(AuthProfileError());
       }
     }
   }
 
-  // Stream<ProfileState> _mapFetchProfileToState(FetchProfile event) async* {
-  //   yield ProfileLoading();
+  // Stream<ProfileState> _onFetchProfileToState(FetchProfile {
+  //   emit(ProfileLoading());
   //   try {
   //     final user = await userRepository.getUserInfo();
-  //     yield ProfileLoaded(user: user);
+  //     emit(ProfileLoaded(user: user));
   //   } catch (_) {
-  //     yield ProfileError();
+  //     emit(ProfileError());
   //   }
   // }
 
-  Stream<AuthProfileState> _mapRefreshAuthProfileToState(
-      RefreshAuthProfile event) async* {
-    yield AuthProfileLoading();
+  Future<void> _onRefreshAuthProfile(
+      RefreshAuthProfile event, Emitter<AuthProfileState> emit) async {
+    emit(AuthProfileLoading());
     try {
       final user = await userRepository.getAuthUserInfo();
-      yield AuthProfileLoaded(user: user);
+      emit(AuthProfileLoaded(user: user));
     } catch (_) {
-      yield AuthProfileError();
+      emit(AuthProfileError());
     }
   }
 
-  Stream<AuthProfileState> _mapReloadAuthProfileToState(
-      ReloadAuthProfile event) async* {
-    yield AuthProfileLoaded(user: event.user);
+  Future<void> _onReloadAuthProfile(
+      ReloadAuthProfile event, Emitter<AuthProfileState> emit) async {
+    emit(AuthProfileLoaded(user: event.user));
   }
 
-  Stream<AuthProfileState> _mapUpdateAuthProfileInfoToState(
-      UpdateAuthProfileInfo event) async* {
-    yield AuthProfileInfoUpdating();
+  Future<void> _onUpdateAuthProfileInfo(
+      UpdateAuthProfileInfo event, Emitter<AuthProfileState> emit) async {
+    emit(AuthProfileInfoUpdating());
     try {
       final user = await userRepository.updateProfile(
-          name: event.name,
-          username: event.username,
-          description: event.description,
-          avatar: event.avatar,
-          banner: event.banner);
+        name: event.name,
+        username: event.username,
+        description: event.description,
+        avatar: event.avatar,
+        banner: event.banner,
+      );
 
-      Prefer.prefs.remove('userName');
-      Prefer.prefs.setString('userName', user.username);
+      Prefer.prefs.remove('username');
+      Prefer.prefs.setString('username', user.username);
 
-      yield AuthProfileInfoUpdateSuccess(user: user);
+      emit(AuthProfileInfoUpdateSuccess(user: user));
     } catch (e) {
-      yield AuthProfileErrorMessage(errorMessage: e.message);
+      emit(AuthProfileErrorMessage(errorMessage: e.toString()));
     }
   }
 
-  Stream<AuthProfileState> _mapUpdateAuthProfilePasswordToState(
-      UpdateAuthProfilePassword event) async* {
-    yield AuthProfilePasswordUpdating();
+  Future<void> _onUpdateAuthProfilePassword(
+      UpdateAuthProfilePassword event, Emitter<AuthProfileState> emit) async {
+    emit(AuthProfilePasswordUpdating());
     try {
       String token = await userRepository.updatePassword(
           event.oldPassword, event.newPassword, event.newPasswordConfirmation);
       Prefer.prefs.remove('token');
       Prefer.prefs.setString('token', token);
-      yield AuthProfilePasswordUpdateSuccess();
+      emit(AuthProfilePasswordUpdateSuccess());
     } catch (e) {
-      yield AuthProfileErrorMessage(errorMessage: e.message);
+      emit(AuthProfileErrorMessage(errorMessage: e.toString()));
     }
   }
 
-  Stream<AuthProfileState> _mapUpdateAuthProfileEmailToState(
-      UpdateAuthProfileEmail event) async* {
-    yield AuthProfileEmailUpdating();
+  Future<void> _onUpdateAuthProfileEmail(
+      UpdateAuthProfileEmail event, Emitter<AuthProfileState> emit) async {
+    emit(AuthProfileEmailUpdating());
     try {
       final user =
           await userRepository.updateEmail(event.password, event.email);
-      yield AuthProfileInfoUpdateSuccess(user: user);
+      emit(AuthProfileInfoUpdateSuccess(user: user));
     } catch (e) {
-      yield AuthProfileErrorMessage(errorMessage: e.message);
+      emit(AuthProfileErrorMessage(errorMessage: e.toString()));
     }
   }
 
-  Stream<AuthProfileState> _mapRequestPasswordResetInfoToState(event) async* {
-    yield ResetPasswordRequestLoading();
+  Future<void> _onRequestPasswordResetInfo(
+      RequestPasswordResetInfo event, Emitter<AuthProfileState> emit) async {
+    emit(ResetPasswordRequestLoading());
     try {
       await userRepository.requestPasswordResetInfo(event.email);
-      yield ResetPasswordRequestSuccess();
+      emit(ResetPasswordRequestSuccess());
     } catch (e) {
-      yield AuthProfileErrorMessage(errorMessage: e.message);
+      emit(AuthProfileErrorMessage(errorMessage: e.toString()));
     }
   }
 
-  Stream<AuthProfileState> _mapGetAvatarToState(event) async* {
+  Future<void> _onGetAvatar(
+      GetAvatar event, Emitter<AuthProfileState> emit) async {
     try {
       String avatar = await userRepository.getAvatar();
-      yield AvatarLoaded(avatar: avatar);
+      emit(AvatarLoaded(avatar: avatar));
     } catch (e) {
-      yield state;
+      emit(state);
     }
   }
 }

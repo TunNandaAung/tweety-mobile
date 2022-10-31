@@ -15,9 +15,9 @@ class ChatPaginator {
   List<Chat> chats;
 
   ChatPaginator({
-    this.currentPage,
-    this.lastPage,
-    this.chats,
+    required this.currentPage,
+    required this.lastPage,
+    required this.chats,
   });
 
   factory ChatPaginator.fromJson(Map<String, dynamic> json) =>

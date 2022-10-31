@@ -5,7 +5,11 @@ class LikeDislike extends Equatable {
   final bool disliked;
   final bool removed;
 
-  const LikeDislike({this.liked, this.disliked, this.removed});
+  const LikeDislike({
+    required this.liked,
+    required this.disliked,
+    required this.removed,
+  });
 
   @override
   List<Object> get props => [

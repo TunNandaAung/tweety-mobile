@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:tweety_mobile/models/user.dart';
 import 'package:tweety_mobile/repositories/follow_repository.dart';
 
@@ -12,36 +11,28 @@ part 'follow_state.dart';
 class FollowBloc extends Bloc<FollowEvent, FollowState> {
   final FollowRepository followRepository;
 
-  FollowBloc({@required this.followRepository})
-      : assert(followRepository != null),
-        super(FollowInitial());
+  FollowBloc({required this.followRepository}) : super(FollowInitial()) {
+    on<FollowUser>(_onFollowUser);
+    on<UnfollowUser>(_onUnfollowUser);
+  }
 
-  @override
-  Stream<FollowState> mapEventToState(
-    FollowEvent event,
-  ) async* {
-    if (event is FollowUser) {
-      yield* _mapFollowUserToState(event);
-    } else if (event is UnfollowUser) {
-      yield* _mapUnfollowUserToState(event);
+  Future<void> _onFollowUser(
+      FollowUser event, Emitter<FollowState> emit) async {
+    try {
+      final user = await followRepository.toggleFollow(event.user.username);
+      emit(Followed(user: user));
+    } catch (e) {
+      emit(FollowError());
     }
   }
 
-  Stream<FollowState> _mapFollowUserToState(FollowUser event) async* {
+  Future<void> _onUnfollowUser(
+      UnfollowUser event, Emitter<FollowState> emit) async {
     try {
       final user = await followRepository.toggleFollow(event.user.username);
-      yield Followed(user: user);
+      emit(Unfollowed(user: user));
     } catch (e) {
-      yield FollowError();
-    }
-  }
-
-  Stream<FollowState> _mapUnfollowUserToState(UnfollowUser event) async* {
-    try {
-      final user = await followRepository.toggleFollow(event.user.username);
-      yield Unfollowed(user: user);
-    } catch (e) {
-      yield FollowError();
+      emit(FollowError());
     }
   }
 }

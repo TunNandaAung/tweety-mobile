@@ -9,13 +9,13 @@ import 'package:tweety_mobile/widgets/nav/nav_item.dart';
 
 class NavDrawer extends StatefulWidget {
   final String currentRoute;
-  const NavDrawer(this.currentRoute);
+  const NavDrawer(this.currentRoute, {super.key});
 
   @override
-  _NavDrawerState createState() => _NavDrawerState();
+  NavDrawerState createState() => NavDrawerState();
 }
 
-class _NavDrawerState extends State<NavDrawer> {
+class NavDrawerState extends State<NavDrawer> {
   int currentSelectedIndex = -1;
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _NavDrawerState extends State<NavDrawer> {
               BlocBuilder<AuthProfileBloc, AuthProfileState>(
                   builder: (context, state) {
                 if (state is AuthProfileLoaded) {
-                  return new Container(
+                  return Container(
                     width: double.infinity,
                     height: size.height * 0.24,
                     decoration: BoxDecoration(
@@ -53,12 +53,12 @@ class _NavDrawerState extends State<NavDrawer> {
                         BoxShadow(
                             color:
                                 Theme.of(context).primaryColor.withOpacity(.1),
-                            offset: Offset(10, 10),
+                            offset: const Offset(10, 10),
                             blurRadius: 12),
                         BoxShadow(
                             color:
                                 Theme.of(context).primaryColor.withOpacity(.1),
-                            offset: Offset(-10, -10),
+                            offset: const Offset(-10, -10),
                             blurRadius: 12),
                       ],
                     ),
@@ -76,13 +76,14 @@ class _NavDrawerState extends State<NavDrawer> {
                           SizedBox(height: size.height * 0.01),
                           Text(
                             state.user.name,
-                            style: Theme.of(context).textTheme.caption.copyWith(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style:
+                                Theme.of(context).textTheme.caption!.copyWith(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                           ),
                           Text(
-                            '@' + state.user.username,
+                            '@${state.user.username}',
                             style: Theme.of(context).textTheme.bodyText2,
                           ),
                           SizedBox(height: size.height * 0.02),
@@ -94,13 +95,13 @@ class _NavDrawerState extends State<NavDrawer> {
                                     state.user.followsCount.toString(),
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
+                                        .bodyText1!
                                         .copyWith(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16.0,
                                         ),
                                   ),
-                                  SizedBox(width: 5.0),
+                                  const SizedBox(width: 5.0),
                                   Text(
                                     'Following',
                                     style:
@@ -115,13 +116,13 @@ class _NavDrawerState extends State<NavDrawer> {
                                     state.user.followersCount.toString(),
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
+                                        .bodyText1!
                                         .copyWith(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16.0,
                                         ),
                                   ),
-                                  SizedBox(width: 5.0),
+                                  const SizedBox(width: 5.0),
                                   Text(
                                     'Follower',
                                     style:
@@ -145,19 +146,19 @@ class _NavDrawerState extends State<NavDrawer> {
                     boxShadow: [
                       BoxShadow(
                         color: Theme.of(context).canvasColor,
-                        offset: Offset(10, 15),
+                        offset: const Offset(10, 15),
                         blurRadius: 20.0,
                       ),
                     ],
                   ),
-                  child: LoadingIndicator(size: 20.0),
+                  child: const LoadingIndicator(size: 20.0),
                 );
               }),
               Expanded(
                 flex: 1,
                 child: ListView.separated(
                   separatorBuilder: (context, counter) {
-                    return SizedBox(height: 10.0);
+                    return const SizedBox(height: 10.0);
                   },
                   itemBuilder: (context, counter) {
                     return navigationItem(
@@ -170,11 +171,12 @@ class _NavDrawerState extends State<NavDrawer> {
                           Navigator.pushNamed(
                             context,
                             '/${navItems[counter].route}',
-                            arguments: Prefer.prefs.getString('userName'),
+                            arguments: Prefer.prefs.getString('username'),
                           );
-                        } else
+                        } else {
                           Navigator.pushNamed(
                               context, '/${navItems[counter].route}');
+                        }
                       },
                       boxColor: Theme.of(context).hintColor.withOpacity(.05),
                       title: navItems[counter].title,
@@ -188,7 +190,7 @@ class _NavDrawerState extends State<NavDrawer> {
               ),
               Column(
                 children: <Widget>[
-                  SizedBox(height: 5.0),
+                  const SizedBox(height: 5.0),
                   navigationItem(
                     context,
                     title: 'Log out',

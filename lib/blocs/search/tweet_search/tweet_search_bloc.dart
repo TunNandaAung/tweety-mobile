@@ -1,50 +1,36 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:tweety_mobile/models/tweet.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/repositories/search_repository.dart';
+import 'package:tweety_mobile/utils/helpers.dart';
 
 part 'tweet_search_event.dart';
 part 'tweet_search_state.dart';
 
+const tweetSearchThrottleDuration = Duration(milliseconds: 300);
+
 class TweetSearchBloc extends Bloc<TweetSearchEvent, TweetSearchState> {
   final SearchRepository searchRepository;
 
-  TweetSearchBloc({@required this.searchRepository})
-      : assert(searchRepository != null),
-        super(TweetSearchState.initial());
-
-  @override
-  void onTransition(Transition<TweetSearchEvent, TweetSearchState> transition) {
-    print(transition.toString());
-    super.onTransition(transition);
-  }
-
-  @override
-  Stream<Transition<TweetSearchEvent, TweetSearchState>> transformEvents(
-    Stream<TweetSearchEvent> events,
-    TransitionFunction<TweetSearchEvent, TweetSearchState> transitionFn,
-  ) {
-    return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 300)),
-      transitionFn,
+  TweetSearchBloc({required this.searchRepository})
+      : super(TweetSearchState.initial()) {
+    on<TweetSearchEvent>(
+      _onTweetSearch,
+      transformer: throttleDroppable(tweetSearchThrottleDuration),
     );
   }
 
-  @override
-  Stream<TweetSearchState> mapEventToState(
-    TweetSearchEvent event,
-  ) async* {
-    yield TweetSearchState.loading();
+  Future<void> _onTweetSearch(
+      TweetSearchEvent event, Emitter<TweetSearchState> emit) async {
+    emit(TweetSearchState.loading());
     try {
       List<Tweet> tweets = await searchRepository.searchTweets(event.query);
       _saveToRecentSearch(event.query);
-      yield TweetSearchState.success(tweets);
+      emit(TweetSearchState.success(tweets));
     } catch (_) {
-      yield TweetSearchState.error();
+      emit(TweetSearchState.error());
     }
   }
 

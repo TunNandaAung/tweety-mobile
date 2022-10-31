@@ -4,13 +4,13 @@ import 'package:tweety_mobile/blocs/tweet/tweet_bloc.dart';
 import 'package:tweety_mobile/screens/tweet_reply_form.dart';
 
 class PublishTweetScreen extends StatefulWidget {
-  PublishTweetScreen({Key key}) : super(key: key);
+  const PublishTweetScreen({Key? key}) : super(key: key);
 
   @override
-  _PublishTweetScreenState createState() => _PublishTweetScreenState();
+  PublishTweetScreenState createState() => PublishTweetScreenState();
 }
 
-class _PublishTweetScreenState extends State<PublishTweetScreen> {
+class PublishTweetScreenState extends State<PublishTweetScreen> {
   @override
   Widget build(BuildContext context) {
     return TweetReplyForm(

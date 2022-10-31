@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:tweety_mobile/models/auth.dart';
 import 'package:tweety_mobile/preferences/preferences.dart';
 import 'package:tweety_mobile/repositories/user_repository.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'register_event.dart';
@@ -15,23 +14,14 @@ part 'register_state.dart';
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final UserRepository userRepository;
 
-  RegisterBloc({@required this.userRepository})
-      : assert(userRepository != null),
-        super(RegisterInitial());
-
-  @override
-  Stream<RegisterState> mapEventToState(
-    RegisterEvent event,
-  ) async* {
-    if (event is Submitted) {
-      yield* _mapSubmittedToState(event);
-    } else if (event is UploadRegisterImages) {
-      yield* _mapUploadRegisterImagesToState(event);
-    }
+  RegisterBloc({required this.userRepository}) : super(RegisterInitial()) {
+    on<Submitted>(_onSubmitted);
+    on<UploadRegisterImages>(_onUploadRegisterImages);
   }
 
-  Stream<RegisterState> _mapSubmittedToState(Submitted event) async* {
-    yield RegisterLoading();
+  Future<void> _onSubmitted(
+      Submitted event, Emitter<RegisterState> emit) async {
+    emit(RegisterLoading());
     try {
       final Auth auth = await userRepository.register(
         event.name,
@@ -41,29 +31,28 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         event.passwordConfirmation,
       );
       storeUserData(auth.token, auth.userID, auth.username);
-      yield RegisterSuccess();
+      emit(RegisterSuccess());
     } catch (e) {
-      yield RegisterFailureMessage(errorMessage: e.message);
+      emit(RegisterFailureMessage(errorMessage: e.toString()));
     }
   }
 
-  Stream<RegisterState> _mapUploadRegisterImagesToState(
-      UploadRegisterImages event) async* {
-    print("CALLEd");
-    yield RegisterImagesUploading();
+  Future<void> _onUploadRegisterImages(
+      UploadRegisterImages event, Emitter<RegisterState> emit) async {
+    emit(RegisterImagesUploading());
     try {
       await userRepository.uploadImages(
           avatar: event.avatar, banner: event.banner);
-      yield RegisterImagesSuccess();
+      emit(RegisterImagesSuccess());
     } catch (e) {
-      yield RegisterError();
+      emit(RegisterError());
     }
   }
 
-  void storeUserData(String token, int userID, String userName) async {
+  void storeUserData(String token, int userID, String username) async {
     Prefer.prefs = await SharedPreferences.getInstance();
     Prefer.prefs.setString('token', token);
     Prefer.prefs.setInt('userID', userID);
-    Prefer.prefs.setString('userName', userName);
+    Prefer.prefs.setString('username', username);
   }
 }

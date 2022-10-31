@@ -7,7 +7,7 @@ import 'package:tweety_mobile/services/tweet_api_client.dart';
 class TweetRepository {
   final TweetApiClient tweetApiClient;
 
-  TweetRepository({TweetApiClient tweetApiClient})
+  TweetRepository({TweetApiClient? tweetApiClient})
       : tweetApiClient = tweetApiClient ?? TweetApiClient();
 
   Future<TweetPaginator> getTweets(int pageNumber) async {
@@ -15,11 +15,11 @@ class TweetRepository {
   }
 
   Future<TweetPaginator> getUserTweets(
-      {String username, int pageNumber}) async {
+      {required String username, required int pageNumber}) async {
     return tweetApiClient.fetchUserTweets(username, pageNumber);
   }
 
-  Future<Tweet> publishTweet(String body, {File image}) async {
+  Future<Tweet> publishTweet(String body, {File? image}) async {
     return tweetApiClient.publishTweet(body, image: image);
   }
 
